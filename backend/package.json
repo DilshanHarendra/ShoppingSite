@@ -1,19 +1,15 @@
 {
-  "name": "react-backend",
+  "name": "shoppingsite",
   "version": "1.0.0",
-  "description": "AF Project 2020",
+  "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
-    "devStart": "nodemon server.js"
-
+    "start": "node app"
   },
-  "author": "Group4",
+  "author": "group4",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
-  },
-  "devDependencies": {
+    "express": "^4.17.1",
     "nodemon": "^2.0.2"
   }
 }

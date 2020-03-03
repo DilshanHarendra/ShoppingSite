@@ -1,10 +1,11 @@
-const express = require('express');
+const express= require("express");
 
-const app = express();
+const app= express();
 
 app.get('/',function (req,res) {
-    res.send("Hello world");
+res.send("hellow world");
 });
+
 app.listen(3001,function () {
-console.log("Server start 3001");
+    console.log("server is running");
 });
