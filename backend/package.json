@@ -1,0 +1,19 @@
+{
+  "name": "react-backend",
+  "version": "1.0.0",
+  "description": "AF Project 2020",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js",
+    "devStart": "nodemon server.js"
+
+  },
+  "author": "Group4",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.2"
+  }
+}
