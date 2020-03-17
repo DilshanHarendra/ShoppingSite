@@ -1,0 +1,89 @@
+import React,{Component} from "react";
+import {Link} from "react-router-dom";
+
+class Header extends Component{
+
+
+    render() {
+        return <div>
+            <div id="preloder">
+                <div className="loader"></div>
+            </div>
+
+
+            <header className="header-section">
+                <div className="header-top">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-2 text-center text-lg-left">
+                                <Link to="/" className="site-logo">
+                                    <img src="images/logo.png" alt=""/>
+                                </Link>
+                            </div>
+                            <div className="col-xl-6 col-lg-5">
+                                <form className="header-search-form">
+                                    <input type="text" placeholder="Search on divisima ...."/>
+                                        <button><i className="flaticon-search"></i></button>
+                                </form>
+                            </div>
+                            <div className="col-xl-4 col-lg-5">
+                                <div className="user-panel">
+                                    <div className="up-item">
+                                        <i className="flaticon-profile"></i>
+                                        <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link>
+                                    </div>
+                                    <div className="up-item">
+                                        <div className="shopping-card">
+                                            <i className="flaticon-bag"></i>
+                                            <span>0</span>
+                                        </div>
+                                        <Link to="/">Shopping Cart</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav className="main-navbar">
+                    <div className="container">
+                        <ul className="main-menu">
+                            <li><Link to="/" >Home</Link></li>
+                            <li><Link to="/allProducts?woman">Women</Link></li>
+                            <li><Link to="/allProducts?men">Men</Link></li>
+                            <li><Link to="/allProducts?jewelry">Jewelry
+                                <span className="new">New</span>
+                            </Link></li>
+                            <li><Link to="/allProducts?shoes">Shoes</Link>
+                                <ul className="sub-menu">
+                                    <li><Link to="/">Sneakers</Link></li>
+                                    <li><Link to="/">Sandals</Link></li>
+                                    <li><Link to="/">Formal Shoes</Link></li>
+                                    <li><Link to="/">Boots</Link></li>
+                                    <li><Link to="/">Flip Flops</Link></li>
+                                </ul>
+                            </li>
+                            <li><Link to="/">Pages</Link>
+                                <ul className="sub-menu">
+                                    <li><Link to="/">Product Page</Link></li>
+                                    <li><Link to="/">Category Page</Link></li>
+                                    <li><Link to="/">Cart Page</Link></li>
+                                    <li><Link to="/">Checkout Page</Link></li>
+                                    <li><Link to="/">Contact Page</Link></li>
+                                </ul>
+                            </li>
+                            <li><Link to="/">My Shop</Link>
+                                <ul className="sub-menu">
+                                    <li><Link  to="/Myshop/addProduct">Add Product</Link></li>
+
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+        </div>;
+    }
+}
+
+export  default  Header;
