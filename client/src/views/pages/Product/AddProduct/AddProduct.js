@@ -1,6 +1,6 @@
 import React,{Component} from "react";
 import ShowError from "./ShowError";
-import '../../../css/addProduct.css'
+import '../../../../css/addProduct.css'
 
 import axios from 'axios'
 

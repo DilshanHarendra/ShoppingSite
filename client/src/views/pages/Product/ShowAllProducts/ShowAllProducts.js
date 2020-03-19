@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import '../../../css/showAllProducts.css'
+import '../../../../css/showAllProducts.css'
 import SideBar from "./SideBar";
 import ProductResults from "./ProductResults";
 class ShowAllProducts extends Component{

@@ -25,11 +25,11 @@ mydb.once('open', () => {
 
 app.get('/',function (req,res) {
 
-<<<<<<< HEAD
+
 res.send("helo world");
-=======
-res.send("hhhh");
->>>>>>> 9eb1f16... D_2020_3_17_1
+
+
+
 });
 
 
