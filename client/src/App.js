@@ -4,7 +4,7 @@ import './App.css';
 import  Header from './Componnent/Header';
 import Footer from "./Componnent/Footer";
 import AddProduct from "./Componnent/Product/AddProduct/AddProduct";
-import ShowAllProducts from "./Componnent/Product/ShowAllProducts";
+import ShowAllProducts from "./Componnent/Product/ShowAllProducts/ShowAllProducts";
 import ShowOneProduct from "./Componnent/Product/ShowOneProduct/ShowOneProduct";
 
 function App() {

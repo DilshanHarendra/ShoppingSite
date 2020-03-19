@@ -48,12 +48,12 @@ class Header extends Component{
                     <div className="container">
                         <ul className="main-menu">
                             <li><Link to="/" >Home</Link></li>
-                            <li><Link to="/allProducts?woman">Women</Link></li>
-                            <li><Link to="/allProducts?men">Men</Link></li>
-                            <li><Link to="/allProducts?jewelry">Jewelry
+                            <li><Link to="/allProducts">Women</Link></li>
+                            <li><Link to="/allProducts">Men</Link></li>
+                            <li><Link to="/allProducts">Jewelry
                                 <span className="new">New</span>
                             </Link></li>
-                            <li><Link to="/allProducts?shoes">Shoes</Link>
+                            <li><Link to="/allProducts">Shoes</Link>
                                 <ul className="sub-menu">
                                     <li><Link to="/">Sneakers</Link></li>
                                     <li><Link to="/">Sandals</Link></li>

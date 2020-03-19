@@ -1,15 +1,15 @@
 import React,{Component} from "react";
 import ShowError from "./ShowError";
 import '../../../css/addProduct.css'
-import {browserHistory} from 'react-router';
+
 import axios from 'axios'
 
 class AddProduct extends  Component{
 
-constructor() {
+constructor(props) {
 
 
-    super();
+    super(props);
     this.state={
 
         error:"",
@@ -41,7 +41,8 @@ constructor() {
 
 }
 componentDidMount() {
-    fetch('/product/getProducts').then(data=>data.json()).then(data=>console.log(data)).catch(err=>console.log(err));
+   // fetch('/product/getProducts').then(data=>data.json()).then(data=>console.log(data)).catch(err=>console.log(err));
+
 
 }
 
@@ -320,16 +321,16 @@ componentDidMount() {
                 formData.append('file', this.state.files[key])
             }
             axios.post('/product/addProduct',values)
-                .then(response=>{
-                    console.log(response.statusText);
+                .then(response1=>{
+                    console.log(response1.statusText);
                     axios.post('/product/uploadProduct',formData)
-                        .then(response=>{
+                        .then(response2=>{
 
-                            console.log(response.statusText);
+                            console.log(response2.statusText);
                             this.setState({
-                                error:response.statusText
+                                error:response2.statusText
                             });
-
+                            this.props.history.push('/oneProduct?'+response2.data);
                         })
                         .catch(error=>{
                             console.log(error);
@@ -346,7 +347,7 @@ componentDidMount() {
                 });
 
         }catch (e) {
-
+            console.log(e);
         }
 
     }

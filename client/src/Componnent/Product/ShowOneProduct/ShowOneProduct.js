@@ -1,25 +1,16 @@
 import React,{Component} from "react";
 import '../../../css/showOneProduct.css'
-import axios from 'axios'
+
 import RelatedProduct from "./RelatedProduct";
 class ShowOneProduct extends Component{
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state={
             mydata:[]
         }
     }
     componentDidMount() {
-        fetch("/Product/getProducts")
-            .then(response => response.json())
-            .then(function(data){
-                this.setState({mydata: data});
-                console.log(data);
-            }).catch(function (err) {
-            console.log(err);
-        });
-
 
 
 
@@ -39,7 +30,7 @@ class ShowOneProduct extends Component{
             <section className="product-section">
                 <div className="container">
                     <div className="back-link">
-                        <a href="./category.html"> &lt;&lt; Back to Category</a>
+                        <a href="#"> &lt;&lt; Back to Category</a>
                     </div>
                     <div className="row">
                         <div className="col-lg-6">
