@@ -1,3 +1,29 @@
+<<<<<<< HEAD
+import React from 'react';
+import {BrowserRouter as Router,Switch,Route} from "react-router-dom";
+import './App.css';
+import  Header from './Componnent/Header';
+import Footer from "./Componnent/Footer";
+import AddProduct from "./Componnent/Product/AddProduct/AddProduct";
+import ShowAllProducts from "./Componnent/Product/ShowAllProducts/ShowAllProducts";
+import ShowOneProduct from "./Componnent/Product/ShowOneProduct/ShowOneProduct";
+
+function App() {
+  return (
+      <Router>
+    <div className="App">
+      <Header/>
+        <Switch>
+            <Route path="/" exact component={ShowAllProducts} />
+            <Route path="/allProducts" exact component={ShowAllProducts} />
+            <Route path="/oneProduct" exact component={ShowOneProduct} />
+            <Route path="/Myshop/addProduct" component={AddProduct} />
+        </Switch>
+      <Footer/>
+    </div>
+      </Router>
+  );
+=======
 import React, { Component } from 'react';
 import { HashRouter, Route, Switch } from 'react-router-dom';
 // import { renderRoutes } from 'react-router-config';
@@ -33,6 +59,7 @@ class App extends Component {
       </HashRouter>
     );
   }
+>>>>>>> 630598c7488c7295a39112f0711ce3d6047950d3
 }
 
 export default App;

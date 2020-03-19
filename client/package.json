@@ -10,6 +10,9 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
+<<<<<<< HEAD
+    "axios": "^0.19.2",
+=======
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
     "classnames": "^2.2.6",
@@ -19,16 +22,23 @@
     "font-awesome": "^4.7.0",
     "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
+>>>>>>> 630598c7488c7295a39112f0711ce3d6047950d3
     "react": "^16.13.0",
     "react-app-polyfill": "^1.0.6",
     "react-chartjs-2": "^2.9.0",
     "react-dom": "^16.13.0",
+<<<<<<< HEAD
+    "react-hook-form": "^5.1.1",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.0"
+=======
     "react-router-config": "^5.1.1",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0",
     "react-test-renderer": "^16.13.0",
     "reactstrap": "^8.4.1",
     "simple-line-icons": "^2.4.1"
+>>>>>>> 630598c7488c7295a39112f0711ce3d6047950d3
   },
   "scripts": {
     "start": "react-scripts start",
@@ -36,6 +46,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
+  "proxy": "http://localhost:3001",
   "eslintConfig": {
     "extends": "react-app"
   },
