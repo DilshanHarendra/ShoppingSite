@@ -24,15 +24,19 @@ const loading = () => <div className="animated fadeIn pt-3 text-center">Loading.
 
 class App extends Component {
 
+
+
+
   render() {
     return (
         <Router>
+
             <div className="App">
                 <DefaultHeader/>
                 <Switch>
                     <Route  path="/" exact   component={Home} />
                     <Route path="/allProducts" exact component={ShowAllProducts} />
-                    <Route path="/oneProduct" exact component={ShowOneProduct} />
+                    <Route path="/oneProduct/" exact component={ShowOneProduct} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
                 </Switch>
                 <DefaultFooter/>

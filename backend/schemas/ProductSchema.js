@@ -9,6 +9,18 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    subCatogory:{
+        type: String,
+        required: true
+    },
+    size:{
+        type: String,
+        required: true
+    },
+    brand:{
+        type: String,
+        required: true
+    },
     quantity:{
         type:Number,
         required:true
@@ -30,12 +42,20 @@ const ProductSchema = new mongoose.Schema({
     discount:{
         type:Number
     },
+    sellerID:{
+        type:String,
+        required:true
+    },
     id:{
         type:String,
+        required:true
+    },
+    addDate:{
+        type:Date,
         required:true
     }
 
 
 
 });
-module.exports =mongoose.model('Prosucts',ProductSchema,'product');
+module.exports =mongoose.model('Products',ProductSchema,'product');

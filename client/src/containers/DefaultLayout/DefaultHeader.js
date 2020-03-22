@@ -1,22 +1,59 @@
 import React, { Component } from 'react';
+import { Button, Card, CardBody, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem,Form } from 'reactstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import "../../style.css";
+import Login from "../../views/pages/Login"
+import Register from "../../views/pages/Register"
+
+import '../../css/animate.css';
+import '../../css/bootstrap.min.css';
+import '../../css/flaticon.css';
+import '../../css/font-awesome.min.css';
+
+
+import '../../css/slicknav.min.css';
+import '../../css/style.css';
+
+
 const propTypes = {
     children: PropTypes.node,
   };
-  
+
+
   const defaultProps = {};
 
 class DefaultHeader extends Component {
+
+	constructor(props) {
+		super(props);
+		this.state = {
+		  modal: false,
+		  large: false,
+		  small: false,
+		  primary: false,
+		  success: false,
+		  warning: false,
+		  danger: false,
+		  info: false,
+		};
+	
+	
+		this.toggleLarge = this.toggleLarge.bind(this);
+		
+	  }
+
+	toggleLarge() {
+		this.setState({
+		  large: !this.state.large,
+		});
+	  }
+    componentDidMount(){
+
+    }
     state = {  }
     render() { 
         return ( <React.Fragment>
-            <div id="preloder">
-                <div className="loader"></div>
-            </div>
+
 
 
             <header className="header-section">
@@ -37,14 +74,29 @@ class DefaultHeader extends Component {
                             <div className="col-xl-4 col-lg-5">
                                 <div className="user-panel">
                                     <div className="up-item">
-                                        <i className="flaticon-profile"></i>
-                                        <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link>
+                                       <a onClick={this.toggleLarge}> <i className="flaticon-profile"></i>
+                                        <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link></a>
+										<Modal isOpen={this.state.large} toggle={this.toggleLarge}
+                       className={'modal-lg ' + this.props.className}>
+                  
+                  <ModalBody>
+                   <Login/>
+                  </ModalBody>
+                  <ModalFooter>
+					  <Link to="/Register">
+                    <Button color="primary" onClick={this.toggleLarge}>Sign Up!</Button>{' '}
+					</Link>
+                    <Button color="secondary" onClick={this.toggleLarge}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
                                     </div>
                                     <div className="up-item">
                                         <div className="shopping-card">
                                             <i className="flaticon-bag"></i>
+											
                                             <span>0</span>
                                         </div>
+										
                                         <Link to="/">Shopping Cart</Link>
                                     </div>
                                 </div>

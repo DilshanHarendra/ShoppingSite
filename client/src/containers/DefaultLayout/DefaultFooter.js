@@ -1,5 +1,12 @@
 import React,{Component} from "react";
+import '../../css/animate.css';
+import '../../css/bootstrap.min.css';
+import '../../css/flaticon.css';
+import '../../css/font-awesome.min.css';
 
+
+import '../../css/slicknav.min.css';
+import '../../css/style.css';
 
 class DefaultFooter extends Component{
 
