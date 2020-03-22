@@ -1,0 +1,119 @@
+.upload-btn-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+}
+
+.ubtn {
+      border: 2px solid gray;
+      color: gray;
+      background-color: white;
+      padding: 5px 10px;
+      border-radius: 8px;
+      width: 200px;
+      font-size: 15px;
+      font-weight: bold;
+}
+		
+.upload-btn-wrapper input[type=file] {
+      font-size: 100px;
+      position: absolute;
+      left: 0;
+      top: 0;
+      opacity: 0;
+}
+.box{
+    width: 96%;
+    height: 100%;
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 2%
+}
+
+.forward{
+    width: 50%;
+    border: 2px solid blue;
+    text-align: center;
+    padding: 5px;
+    color: blue;
+    border-radius: 10px;
+    margin: 5px;
+}
+.back{
+    width: 50%;
+    border: 2px solid orange;
+    text-align: center;
+    padding: 5px;
+    color: orange;
+    border-radius: 10px;
+    margin: 5px;
+}
+.back:hover{
+    border: 2px solid #d67700;
+}
+.forward:hover{
+    border: 2px solid #000084;
+}
+.btnbgroup{
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+
+}
+.submit{
+
+    width: 60%;
+    background-color: blue;
+    text-align: center;
+    padding: 5px;
+    color: white;
+    border-radius: 10px;
+    margin: 5px;
+}
+.submit:hover{
+    background-color: #0000a8;
+}
+.mainBox{
+    height: 1300px;
+}
+
+input[type=checkbox] {
+    margin-left: 10px;
+}
+.imgContainor{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2,50%);
+    grid-template-rows: 220px 220px;
+
+
+}
+.imgBox{
+    width: 96%;
+    height: 200px;
+    border: 1px solid black;
+    margin: 10px;
+    margin-top: 10px;
+}
+.imgBox:hover{
+    background-color: red;
+    color: white;
+    background-image: url('/images/cammera.png');
+    background-size: cover;
+    cursor: pointer;
+}
+.product{
+    width: 100%;
+    height: 200px;
+    background-size: contain;
+}
+.error{
+    color:red;
+}
+span{
+    color: red;
+    font-size: 20px;
+}
+

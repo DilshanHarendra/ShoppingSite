@@ -13,100 +13,94 @@ const propTypes = {
 class DefaultHeader extends Component {
     state = {  }
     render() { 
-        return (
-          <div>
-           <header className="header-section">
-		
-		<div className="header-top">
-			<div className="container">
-				<div className="row">
-					<div className="col-lg-2 text-center text-lg-left">
-					
-						<a href="./index.html" className="site-logo">
-							<img src="img/logo.png" alt=""/>
-						</a>
-					</div>
-					<div className="col-xl-6 col-lg-5">
-						<Form className="header-search-form">
-							<input type="text" placeholder="Search on divisima ...."/>
-							<button><i className="fa fa-scribd fa-lg mt-4"></i></button>
-						</Form>
-					</div>
-					<div className="col-xl-4 col-lg-5">
-						<div className="user-panel">
-							<div className="up-item">
-								<i className="flaticon-profile"></i>
-								<a href="#">Sign</a> In or <a href="#">Create Account</a>
-							</div>
-							<div className="up-item">
-								<div className="shopping-card">
-									<i className="icon-user icons font-2xl d-block mt-4"></i>
-									<span>0</span>
-								</div>
-								<a href="#">Shopping Cart</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<Nav className="main-navbar">
-			<div className="container">
-      
-				<ul className="main-menu">
-        <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >Home</NavLink>
-          </NavItem>
-          <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >Women</NavLink>
-          </NavItem>
-          <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >men</NavLink>
-          </NavItem>
-          <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >jewellery</NavLink>
-          </NavItem>
-					
-					
-					
-					<li>
-          <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >Shoes</NavLink>
-          </NavItem>
-						<ul className="sub-menu">
-            <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >sneakers</NavLink>
-          </NavItem>
-          <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >Sandals</NavLink>
-          </NavItem>
-          <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >Formal shoes</NavLink>
-          </NavItem>
-          <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >Boots</NavLink>
-          </NavItem>
-          <NavItem >
-            <NavLink to="/dashboard" className="nav-link" >Flip flops</NavLink>
-          </NavItem>
+        return ( <React.Fragment>
+            <div id="preloder">
+                <div className="loader"></div>
+            </div>
 
-						</ul>
-					</li>
-					<li><a href="#">Pages</a>
-						<ul className="sub-menu">
-							<li><a href="./product.html">Product Page</a></li>
-							<li><a href="./category.html">Category Page</a></li>
-							<li><a href="./cart.html">Cart Page</a></li>
-							<li><a href="./checkout.html">Checkout Page</a></li>
-							<li><a href="./contact.html">Contact Page</a></li>
-						</ul>
-					</li>
-					<li><a href="#">Blog</a></li>
-				</ul>
-			</div>
-		</Nav>
-	</header>
-  </div>
+
+            <header className="header-section">
+                <div className="header-top">
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-lg-2 text-center text-lg-left">
+                                <Link to="/" className="site-logo">
+                                    <img src="images/logo.png" alt=""/>
+                                </Link>
+                            </div>
+                            <div className="col-xl-6 col-lg-5">
+                                <form className="header-search-form">
+                                    <input type="text" placeholder="Search on divisima ...."/>
+                                    <button><i className="flaticon-search"></i></button>
+                                </form>
+                            </div>
+                            <div className="col-xl-4 col-lg-5">
+                                <div className="user-panel">
+                                    <div className="up-item">
+                                        <i className="flaticon-profile"></i>
+                                        <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link>
+                                    </div>
+                                    <div className="up-item">
+                                        <div className="shopping-card">
+                                            <i className="flaticon-bag"></i>
+                                            <span>0</span>
+                                        </div>
+                                        <Link to="/">Shopping Cart</Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <nav className="main-navbar">
+                    <div className="container">
+                        <ul className="main-menu">
+                            <li><Link to="/" >Home</Link></li>
+                            <li><Link to="/allProducts">Women</Link></li>
+                            <li><Link to="/allProducts">Men</Link></li>
+                            <li><Link to="/allProducts">Jewelry
+                                <span className="new">New</span>
+                            </Link></li>
+                            <li><Link to="/allProducts">Shoes</Link>
+                                <ul className="sub-menu">
+                                    <li><Link to="/">Sneakers</Link></li>
+                                    <li><Link to="/">Sandals</Link></li>
+                                    <li><Link to="/">Formal Shoes</Link></li>
+                                    <li><Link to="/">Boots</Link></li>
+                                    <li><Link to="/">Flip Flops</Link></li>
+                                </ul>
+                            </li>
+                            <li><Link to="/">Pages</Link>
+                                <ul className="sub-menu">
+                                    <li><Link to="/">Product Page</Link></li>
+                                    <li><Link to="/">Category Page</Link></li>
+                                    <li><Link to="/">Cart Page</Link></li>
+                                    <li><Link to="/">Checkout Page</Link></li>
+                                    <li><Link to="/">Contact Page</Link></li>
+                                </ul>
+                            </li>
+                            <li><Link to="/">My Shop</Link>
+                                <ul className="sub-menu">
+                                    <li><Link  to="/Myshop/addProduct">Add Product</Link></li>
+
+                                </ul>
+                            </li>
+                            <li>
+                                <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
+                            </li>
+                            <li>
+                                <Link to="/users" className="nav-link">Users</Link>
+                            </li>
+                            <li>
+                                <NavLink to="#" className="nav-link">Settings</NavLink>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+
+
+  </React.Fragment>
         );
     }
 
