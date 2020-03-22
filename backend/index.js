@@ -24,9 +24,7 @@ mydb.once('open', () => {
 
 
 app.get('/',function (req,res) {
-
-
-res.send("helo world");
+    res.send("helo world");
 
 
 
