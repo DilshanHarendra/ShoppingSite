@@ -1,12 +1,26 @@
 import React,{Component} from "react";
 
+
+
 class Home extends Component{
+
+
+
+    componentDidMount(){
+        const script = document.createElement("script");
+        script.src = "../../../js/main.js";
+        script.async = true;
+        document.body.appendChild(script);
+
+    }
+
+
 
     render() {
         return <>
             <section className="hero-section">
                 <div className="hero-slider owl-carousel">
-                    <div className="hs-item set-bg" data-setbg="./images/bg.jpg">
+                    <div className="hs-item set-bg" data-setbg="images/bg.jpg">
                         <div className="container">
                             <div className="row">
                                 <div className="col-xl-6 col-lg-7 text-white">
@@ -15,8 +29,8 @@ class Home extends Component{
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                         incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices
                                         gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
-                                    <a href="/" className="site-btn sb-line">DISCOVER</a>
-                                    <a href="/" className="site-btn sb-white">ADD TO CART</a>
+                                    <a href="#" className="site-btn sb-line">DISCOVER</a>
+                                    <a href="#" className="site-btn sb-white">ADD TO CART</a>
                                 </div>
                             </div>
                             <div className="offer-card text-white">
@@ -26,7 +40,7 @@ class Home extends Component{
                             </div>
                         </div>
                     </div>
-                    <div className="hs-item set-bg" data-setbg="./images/bg-2.jpg">
+                    <div className="hs-item set-bg" data-setbg="images/bg-2.jpg">
                         <div className="container">
                             <div className="row">
                                 <div className="col-xl-6 col-lg-7 text-white">
@@ -35,8 +49,8 @@ class Home extends Component{
                                     <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
                                         incididunt ut labore et dolore magna aliqua. Quis ipsum sus-pendisse ultrices
                                         gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
-                                    <a href="/" className="site-btn sb-line">DISCOVER</a>
-                                    <a href="/" className="site-btn sb-white">ADD TO CART</a>
+                                    <a href="#" className="site-btn sb-line">DISCOVER</a>
+                                    <a href="#" className="site-btn sb-white">ADD TO CART</a>
                                 </div>
                             </div>
                             <div className="offer-card text-white">
@@ -51,6 +65,7 @@ class Home extends Component{
                     <div className="slide-num-holder" id="snh-1"></div>
                 </div>
             </section>
+
 
 
 

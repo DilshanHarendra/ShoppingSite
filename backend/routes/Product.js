@@ -16,30 +16,28 @@ router.get('/',function (req,res) {
 router.use(bodyParser());
 router.use(fileUpload());
 
-
-
-
 router.get('/getProducts',async function (req,res) {
 
-        productSchema.find({},function (err,data) {
-            if (err){
-               // console.log("error"+err);
-                res.send("error"+err);
-            }else {
-                //console.log(data);
-                res.send(data);
-            }
-
-        });
-
-
-
+    try {
+        if (req.query.s){
+            delete req.query.s;
+            var data=await productSchema.find(req.query);
+            res.send( JSON.stringify(data));
+        }else {
+            res.status(500).send("query err");
+        }
+    }catch (e) {
+        console.log(e);
+        res.status(500).send("err " + e);
+    }
 });
+
 router.post('/addProduct',async function (req,res) {
     console.log("methode call");
     delete req.body['files'];
     pId=uniqid()
     req.body['id']=pId;
+    req.body['addDate']=new Date();
     var data=req.body;
     console.log(data);
   const newProduct = new productSchema(data);
@@ -61,7 +59,7 @@ router.post('/uploadProduct',async (req, res) => {
                 if (data === null) {
                      res.status(400).json({ msg: 'No file uploaded' });
                 }else{
-                    data.mv(`${__dirname}/../../client/public/uploads/${pId}_${data.name}`, err => {
+                    data.mv(`${__dirname}/../uploads/products/${pId}_${data.name}`, err => {
                         if (err) {
                             console.log("cannot upload "+err);
                             productSchema.deleteOne({'id':pId},function (err) {
@@ -87,7 +85,7 @@ router.post('/uploadProduct',async (req, res) => {
             if (data === null) {
                  res.status(400).json({ msg: 'No file uploaded' });
             }else{
-                data.mv(`${__dirname}/../../client/public/uploads/${pId}_${data.name}`, err => {
+                data.mv(`${__dirname}/../uploads/products/${pId}_${data.name}`, err => {
                     if (err) {
                         console.log("cannot upload "+err);
                         productSchema.deleteOne({'id':pId},function (err) {

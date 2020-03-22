@@ -3,6 +3,7 @@ import ShowError from "./ShowError";
 import '../../../../css/addProduct.css'
 
 import axios from 'axios'
+import {Link} from "react-router-dom";
 
 class AddProduct extends  Component{
 
@@ -25,6 +26,9 @@ constructor(props) {
         addDiscount:false,
         proName:'',
         catogory:'',
+        subCatogory:'',
+        size:'',
+        brand:'',
         quantity:'',
         condition:'',
         description:'',
@@ -34,6 +38,7 @@ constructor(props) {
         sucss1:false,
         sucss2:false,
         sucss3:false,
+        sellerID:"001"
 
     }
 
@@ -151,7 +156,61 @@ componentDidMount() {
         }
     }
 
+showSubCatogory() {
+    if (this.state.catogory === "Woman") {
 
+        return<div className="subctogory" >
+            <label htmlFor="validationCustom05">Sub Catagory<span>*</span></label>
+            <select name="subCatogory" value={this.state.subCatogory} onChange={this.changeHandler} className="form-control" >
+                <option >Choose</option>
+                <option value="Midi Dresses">Midi Dresses</option>
+                <option value="Maxi Dresses">Maxi Dresses</option>
+                <option value="Prom Dresses">Prom Dresses</option>
+                <option value="Mini Dresses">Mini Dresses</option>
+                <option value="Shorts & Pants">Shorts & Pants</option>
+                <option value="T-Shirt">T-Shirt</option>
+
+            </select>
+            <ShowError isShow={this.state.sucss1} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
+            <br/>
+        </div>;
+
+    }else if (this.state.catogory === "Men") {
+
+        return<div>
+            <label htmlFor="validationCustom05">Sub Catagory<span>*</span></label>
+            <select name="subCatogory" value={this.state.subCatogory} onChange={this.changeHandler} className="form-control" >
+                <option >Choose</option>
+                <option value="Shorts & Pants">Shorts & Pants</option>
+                <option value="T-Shirt">T-Shirt</option>
+                <option value="Shirts">Shirts</option>
+                <option value="Ties">Ties</option>
+                <option value="Belts">Belts</option>
+
+            </select>
+            <ShowError isShow={this.state.sucss1} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
+            <br/>
+        </div>;
+
+    }else if (this.state.catogory === "Jewelry") {
+
+        return<div>
+            <label htmlFor="validationCustom05">Sub Catagory<span>*</span></label>
+            <select name="subCatogory" value={this.state.subCatogory} onChange={this.changeHandler} className="form-control" >
+                <option >Choose</option>
+                <option value="Engagement & Wedding Jewelry">Engagement & Wedding Jewelry</option>
+                <option value="Vintage & Antique Jewelry">Vintage & Antique Jewelry</option>
+                <option value="Handcrafted & Artisan Jewelry">Handcrafted & Artisan Jewelry</option>
+                <option value="Loose Diamonds & Gemstones">Loose Diamonds & Gemstones</option>
+
+            </select>
+            <ShowError isShow={this.state.sucss1} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
+            <br/>
+        </div>;
+
+    }
+
+}
 
 
 
@@ -172,11 +231,34 @@ componentDidMount() {
                         <option >Choose</option>
                         <option value="Woman">Woman</option>
                         <option value="Men">Men</option>
-                        <option value="Electronic">Electronic</option>
-                        <option value="Health">Health</option>
+                        <option value="Childern">Childern</option>
+                        <option value="Bags & Purses">Bags & Purses</option>
+                        <option value="Footwear">Footwear</option>
+                        <option value="Jewelry">Jewelry</option>
+
                     </select>
                     <ShowError isShow={this.state.sucss1} value={this.state.catogory} name={"Select Cataogory"} />
                     <br/>
+                    {this.showSubCatogory()}
+                    <label htmlFor="validationCustom05">SIZE<span>*</span></label>
+                    <select name="size" value={this.state.size} onChange={this.changeHandler} className="form-control" >
+                        <option >Choose</option>
+                        <option value="XS">XS</option>
+                        <option value="S">S</option>
+                        <option value="M">M</option>
+                        <option value="L">L</option>
+                        <option value="XL">XL</option>
+                        <option value="XXL">XXL</option>
+
+                    </select>
+                    <ShowError isShow={this.state.sucss1} value={this.state.size} name={"Select Size"} />
+                    <br/>
+                    <label htmlFor="validationCustom01">Brand<span>*</span></label>
+                    <input type="text" name="brand" value={this.state.brand}  onChange={this.changeHandler} className="form-control"
+                           placeholder="Brand name" required/>
+                    <ShowError isShow={this.state.sucss1} value={this.state.brand} name={"Enter Brand"} />
+                    <br/>
+
                     <label htmlFor="validationCustom01">Quantity<span>*</span></label>
                     <input type="number" name="quantity" value={this.state.quantity}  onChange={this.changeHandler} className="form-control"
                            placeholder="quantity" required/>
@@ -190,6 +272,9 @@ componentDidMount() {
                     </select>
                     <ShowError isShow={this.state.sucss1} value={this.state.condition} name={"Select Condition"} />
                     <br/>
+
+
+
                     <label htmlFor="validationCustom04">Descriprion</label>
                     <textarea name="description" cols="30" rows="10" className="form-control"
                                placeholder="Desctiption.." value={this.state.description} onChange={this.changeHandler} ></textarea>
@@ -237,26 +322,9 @@ componentDidMount() {
                         <ShowError isShow={this.state.sucss3} value={this.state.files} name={"Select Images"} />
                     </div>
 
-                    <div className="imgContainor">
+                    <div className="imgContainor" id="imgContainor">
 
-                        <div className="imgBox" >
-                            <img className="product" ref="img1" src={this.state.img1} alt=""/>
-                        </div>
-                        <div className="imgBox" >
-                            <img className="product" ref="img1" src={this.state.img2} alt=""/>
-                        </div>
-                        <div className="imgBox" >
-                            <img className="product" ref="img1" src={this.state.img3} alt=""/>
-                        </div>
-                        <div className="imgBox" >
-                            <img className="product" ref="img1" src={this.state.img4} alt=""/>
-                        </div>
-                        <div className="imgBox" >
-                            <img className="product" ref="img1" src={this.state.img5} alt=""/>
-                        </div>
-                        <div className="imgBox" >
-                            <img className="product" ref="img1" src={this.state.img6} alt=""/>
-                        </div>
+
 
                     </div>
                     <br/>
@@ -281,6 +349,14 @@ componentDidMount() {
         }
     }
 
+    ResetPage=()=>{
+        if (this.state.error==="Can not Upload the images"||this.state.error==="Can not Add the Product"){
+            return <div><Link  to="/"><div className="site-btn sb-line sb-dark" >Go Back</div></Link>
+                <button className="site-btn sb-line sb-dark" style={{"margin-left":"15px"}} type="submit">Try Again</button>
+                <br/><br/><br/>
+            </div>;
+        }
+    }
     submitHandler=e=>{
     e.preventDefault();
 
@@ -336,7 +412,9 @@ componentDidMount() {
                             console.log(error);
                             this.setState({
                                 error:"Can not Upload the images"
+
                             });
+
                         });
                 })
                 .catch(error=>{
@@ -344,6 +422,7 @@ componentDidMount() {
                     this.setState({
                         error:"Can not Add the Product"
                     });
+
                 });
 
         }catch (e) {
@@ -365,6 +444,7 @@ componentDidMount() {
         this.setState({
             [name]: value
         });
+
     }
 
 
@@ -382,6 +462,18 @@ componentDidMount() {
                     reader = new FileReader();
                     var name="img"+(i+1);
                     reader.readAsDataURL(file);
+
+                    var d1= document.createElement("div")
+                        d1.setAttribute("class",'imgBox');
+
+                    var img1= document.createElement("img");
+                    img1.setAttribute("class","product");
+                    img1.setAttribute("ref",name);
+                    img1.src=URL.createObjectURL(file);
+
+                    d1.appendChild(img1);
+                    document.getElementById("imgContainor").appendChild(d1);
+
 
                     this.setState({
                         [name]:URL.createObjectURL(file),
@@ -416,14 +508,16 @@ componentDidMount() {
                                 <a href="index.html">Shop</a>
                             </div>
                             <h3 className="error">{this.state.error}</h3>
+
                         </div>
                     </div>
                     <div className="container">
                         <div className="row">
-                            <div className="col-md-3"></div>
-                            <div className="col-md-6">
+                            <div className="col-md-2"></div>
+                            <div className="col-md-8">
                                 <form ref={form => this.formEl = form} className="needs-validation" encType="multipart/form-data" onSubmit={this.submitHandler} noValidate>
                                     {this.showBox()}
+                                    {this.ResetPage()}
                                 </form>
                             </div>
                         </div>

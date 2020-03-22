@@ -1,21 +1,35 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import { Badge, UncontrolledDropdown, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem } from 'reactstrap';
+
+
+import '../../css/animate.css';
+import '../../css/bootstrap.min.css';
+import '../../css/flaticon.css';
+import '../../css/font-awesome.min.css';
+
+
+import '../../css/slicknav.min.css';
+import '../../css/style.css';
+
 
 const propTypes = {
     children: PropTypes.node,
   };
-  
+
+
   const defaultProps = {};
 
 class DefaultHeader extends Component {
+
+
+    componentDidMount(){
+
+    }
     state = {  }
     render() { 
         return ( <React.Fragment>
-            <div id="preloder">
-                <div className="loader"></div>
-            </div>
+
 
 
             <header className="header-section">
