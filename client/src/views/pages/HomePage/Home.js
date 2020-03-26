@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+import React, { Component } from "react";
 
 
 
@@ -17,7 +17,7 @@ class Home extends Component{
 
 
     render() {
-        return <>
+        return (<>
             <section className="hero-section">
                 <div className="hero-slider owl-carousel">
                     <div className="hs-item set-bg" data-setbg="images/bg.jpg">
@@ -340,8 +340,8 @@ class Home extends Component{
                     </div>
                 </div>
             </section>
-        </>;
-    }
-
+        </>
+    );
+  }
 }
 export default Home;

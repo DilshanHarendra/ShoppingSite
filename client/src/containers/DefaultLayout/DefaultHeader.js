@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { Button, Card, CardBody, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-
+import Login from "../../views/pages/Login"
+import Register from "../../views/pages/Register"
 
 import '../../css/animate.css';
 import '../../css/bootstrap.min.css';
@@ -22,7 +24,29 @@ const propTypes = {
 
 class DefaultHeader extends Component {
 
+	constructor(props) {
+		super(props);
+		this.state = {
+		  modal: false,
+		  large: false,
+		  small: false,
+		  primary: false,
+		  success: false,
+		  warning: false,
+		  danger: false,
+		  info: false,
+		};
+	
+	
+		this.toggleLarge = this.toggleLarge.bind(this);
+		
+	  }
 
+	toggleLarge() {
+		this.setState({
+		  large: !this.state.large,
+		});
+	  }
     componentDidMount(){
 
     }
@@ -50,14 +74,29 @@ class DefaultHeader extends Component {
                             <div className="col-xl-4 col-lg-5">
                                 <div className="user-panel">
                                     <div className="up-item">
-                                        <i className="flaticon-profile"></i>
-                                        <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link>
+                                       <a onClick={this.toggleLarge}> <i className="flaticon-profile"></i>
+                                        <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link></a>
+										<Modal isOpen={this.state.large} toggle={this.toggleLarge}
+                       className={'modal-lg ' + this.props.className}>
+                  
+                  <ModalBody>
+                   <Login/>
+                  </ModalBody>
+                  <ModalFooter>
+					  <Link to="/Register">
+                    <Button color="primary" onClick={this.toggleLarge}>Sign Up!</Button>{' '}
+					</Link>
+                    <Button color="secondary" onClick={this.toggleLarge}>Cancel</Button>
+                  </ModalFooter>
+                </Modal>
                                     </div>
                                     <div className="up-item">
                                         <div className="shopping-card">
                                             <i className="flaticon-bag"></i>
+											
                                             <span>0</span>
                                         </div>
+										
                                         <Link to="/">Shopping Cart</Link>
                                     </div>
                                 </div>
@@ -113,7 +152,8 @@ class DefaultHeader extends Component {
             </header>
 
 
-        </React.Fragment> );
+  </React.Fragment>
+        );
     }
 
 }

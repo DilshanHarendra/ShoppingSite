@@ -10,6 +10,7 @@ import {DefaultLayout} from "./containers";
 import ShowAllProducts from "./views/pages/Product/ShowAllProducts/ShowAllProducts";
 import ShowOneProduct from "./views/pages/Product/ShowOneProduct/ShowOneProduct";
 import Home from "./views/pages/HomePage";
+import Register from "./views/pages/Register"
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -18,7 +19,6 @@ const loading = () => <div className="animated fadeIn pt-3 text-center">Loading.
 
 // Pages
 // const Login = React.lazy(() => import('./views/Pages/Login'));
-// const Register = React.lazy(() => import('./views/Pages/Register'));
 // const Page404 = React.lazy(() => import('./views/Pages/Page404'));
 // const Page500 = React.lazy(() => import('./views/Pages/Page500'));
 
@@ -35,11 +35,14 @@ class App extends Component {
                 <DefaultHeader/>
                 <Switch>
                     <Route  path="/" exact   component={Home} />
+                    <Route exact path="/Register" component={Register} />
                     <Route path="/allProducts" exact component={ShowAllProducts} />
                     <Route path="/oneProduct/" exact component={ShowOneProduct} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
+                    
                 </Switch>
                 <DefaultFooter/>
+                
             </div>
         </Router>
     );
