@@ -14,16 +14,11 @@ constructor(props) {
     this.state={
 
         error:"",
-        img1:'/images/cammera.png',
-        img2:'/images/cammera.png',
-        img3:'/images/cammera.png',
-        img4:'/images/cammera.png',
-        img5:'/images/cammera.png',
-        img6:'/images/cammera.png',
         box:1,
         freeShipping:true,
         agree:"click",
         addDiscount:false,
+        proimages:[],
         proName:'',
         catogory:'',
         subCatogory:'',
@@ -373,15 +368,10 @@ showSubCatogory() {
             sucss3:false
         })
         const  values=this.state;
+
         delete values.box;
         delete values.freeShipping;
         delete values.addDiscount;
-        delete values.img1;
-        delete values.img2;
-        delete values.img3;
-        delete values.img4;
-        delete values.img5;
-        delete values.img6;
         delete values.error;
         delete values.sucss1;
         delete values.sucss2;
@@ -396,10 +386,11 @@ showSubCatogory() {
             for (const key of Object.keys(this.state.files)) {
                 formData.append('file', this.state.files[key])
             }
-            axios.post('/product/addProduct',values)
+            console.log(values);
+            axios.post('http://localhost:3001/product/addProduct',values)
                 .then(response1=>{
                     console.log(response1.statusText);
-                    axios.post('/product/uploadProduct',formData)
+                    axios.post('http://localhost:3001/product/uploadProduct',formData)
                         .then(response2=>{
 
                             console.log(response2.statusText);
@@ -452,15 +443,22 @@ showSubCatogory() {
         try{
             var file;
             var reader;
+            var proImages=[];
             this.setState({
                 files:e.target.files
             })
-            console.log(e.target.files);
+
             for (var i=0;i<e.target.files.length;i++){
                 file = e.target.files[i];
+                console.log(file);
+
                 if (file.type.startsWith("image")){
                     reader = new FileReader();
-                    var name="img"+(i+1);
+                    var tname="img"+(i+1);
+
+
+                    proImages=[file.name,...proImages];
+
                     reader.readAsDataURL(file);
 
                     var d1= document.createElement("div")
@@ -468,7 +466,7 @@ showSubCatogory() {
 
                     var img1= document.createElement("img");
                     img1.setAttribute("class","product");
-                    img1.setAttribute("ref",name);
+                    img1.setAttribute("ref",tname);
                     img1.src=URL.createObjectURL(file);
 
                     d1.appendChild(img1);
@@ -476,7 +474,7 @@ showSubCatogory() {
 
 
                     this.setState({
-                        [name]:URL.createObjectURL(file),
+                        [tname]:URL.createObjectURL(file),
                     });
 
                 }else{
@@ -487,6 +485,9 @@ showSubCatogory() {
 
 
             }
+            this.setState({
+                proimages:proImages
+            },()=>console.log(this.state.proimages))
         }catch (e) {
             console.error("err"+e);
         }

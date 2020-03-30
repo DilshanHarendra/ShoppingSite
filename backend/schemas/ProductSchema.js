@@ -53,6 +53,10 @@ const ProductSchema = new mongoose.Schema({
     addDate:{
         type:Date,
         required:true
+    },
+    images:{
+        type:Array,
+        required:true
     }
 
 

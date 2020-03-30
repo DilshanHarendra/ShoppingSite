@@ -38,3 +38,17 @@ body{
 hr{
     border: 1px solid #8A8A8A;
 }
+.priceinput{
+    width: 200px;
+    display: flex;
+    align-items: flex-start;
+}
+.priceinput label{
+margin-left: 8px;
+}
+.priceinput input[type="number"]{
+width: 90px;
+
+}
+
+

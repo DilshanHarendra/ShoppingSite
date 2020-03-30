@@ -1,12 +1,13 @@
 const express= require("express");
 const app= express();
 const mongoose= require('mongoose');
-
+const core = require('cors');
 //******************************************Routers***********************************************************************
 const productRoute = require('./routes/Product');
 app.use('/product',productRoute);
-
-
+app.use(core());
+app.use(express.static('public'));
+app.use('/uploads',express.static('./uploads'));
 /*************************************************************************************************************************/
 
 
@@ -24,7 +25,7 @@ mydb.once('open', () => {
 
 
 app.get('/',function (req,res) {
-    res.send("helo world");
+    res.send('hello');
 
 
 

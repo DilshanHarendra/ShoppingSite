@@ -1,14 +1,16 @@
 import React,{Component} from "react";
 import '../../../../css/showOneProduct.css'
-
+import $ from 'jquery';
 import RelatedProduct from "./RelatedProduct";
+import axios from "axios";
 class ShowOneProduct extends Component{
 
     constructor(props) {
         super(props);
-        console.log(this.props);
+
         this.state={
-            mydata:[]
+            id:this.props.match.params.id,
+            data:[]
         }
     }
     componentDidMount(){
@@ -17,6 +19,47 @@ class ShowOneProduct extends Component{
         script.src = "../../../../js/main.js";
         script.async = true;
         document.body.appendChild(script);
+
+        const scrip2 = document.createElement("script");
+        scrip2.src = "../../../../js/owl.carousel.min.js";
+        scrip2.async = true;
+        document.body.appendChild(scrip2);
+
+
+
+        axios({
+            methode: 'GET',
+            url:'http://localhost:3001/product/getProducts',
+            params:{s:true,id:this.state.id}
+        }).then(res=>{
+            this.setState({
+                data:res.data
+            },()=>{this.showImages()})
+        }).catch(err=>console.log(err));
+    }
+
+
+    showImages(){
+            var arr=this.state.data[0].images;
+            for (var i=0;i<arr.length;i++){
+
+                var iDiv = document.createElement("div");
+                if (i==0){
+                    iDiv.setAttribute("class",'pt active');
+                }else {
+                    iDiv.setAttribute("class",'pt');
+                }
+                iDiv.setAttribute("data-imgbigurl",'http://localhost:3001'+arr[i]);
+                var iImage=document.createElement('img');
+                iImage.setAttribute("src",'http://localhost:3001'+arr[i]);
+
+                iDiv.appendChild(iImage);
+                document.getElementById("images").appendChild(iDiv);
+            }
+
+
+
+
     }
 
 
@@ -26,33 +69,28 @@ class ShowOneProduct extends Component{
 
 
         return <div>
-
-            <section className="product-section">
+            {this.state.data.map(product=>(
+            <section className="product-section" key={product.id} >
                 <div className="container">
                     <div className="back-link">
                         <a href="#"> &lt;&lt; Back to Category</a>
                     </div>
                     <div className="row">
+
+
+
                         <div className="col-lg-6">
                             <div className="product-pic-zoom">
-                                <img className="product-big-img" src="images/single-product/1.jpg" alt=""/>
+                                <img className="product-big-img" src={'http://localhost:3001'+product.images[0]} alt="" alt=""/>
                             </div>
                             <div className="product-thumbs pthumbs" tabIndex="1" >
-                                <div className="product-thumbs-track">
-                                    <div className="pt active" data-imgbigurl="images/single-product/1.jpg"><img
-                                        src="images/single-product/thumb-1.jpg" alt=""/></div>
-                                    <div className="pt" data-imgbigurl="images/single-product/2.jpg"><img
-                                        src="images/single-product/thumb-2.jpg" alt=""/></div>
-                                    <div className="pt" data-imgbigurl="images/single-product/3.jpg"><img
-                                        src="images/single-product/thumb-3.jpg" alt=""/></div>
-                                    <div className="pt" data-imgbigurl="images/single-product/4.jpg"><img
-                                        src="images/single-product/thumb-4.jpg" alt=""/></div>
+                                <div className="product-thumbs-track" id="images">
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-6 product-details">
-                            <h2 className="p-title">White peplum top</h2>
-                            <h3 className="p-price">$39.90</h3>
+                            <h2 className="p-title">{product.proName}</h2>
+                            <h3 className="p-price">{product.price}</h3>
                             <h4 className="p-stock">Available: <span>In Stock</span></h4>
                             <div className="p-rating">
                                 <i className="fa fa-star-o"></i>
@@ -107,14 +145,7 @@ class ShowOneProduct extends Component{
                                     <div id="collapse1" className="collapse show" aria-labelledby="headingOne"
                                          data-parent="#accordion">
                                         <div className="panel-body">
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra
-                                                tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum
-                                                sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla
-                                                euismod nec.</p>
-                                            <p>Approx length 66cm/26" (Based on a UK size 8 sample)</p>
-                                            <p>Mixed fibres</p>
-                                            <p>The Model wears a UK size 8/ EU size 36/ US size 4 and her height is
-                                                5'8"</p>
+                                            <p>{product.description}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -162,11 +193,19 @@ class ShowOneProduct extends Component{
                                 <a href=""><i className="fa fa-youtube"></i></a>
                             </div>
                         </div>
+
+
                     </div>
+
+
+
+
+
                 </div>
             </section>
-            <RelatedProduct/>
-        </div>;
+
+            ))}
+        </div> ;
     }
 }
 export default ShowOneProduct;
