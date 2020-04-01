@@ -4,9 +4,9 @@ const uniqid = require('uniqid');
 const bodyParser =require('body-parser');
 const fileUpload = require('express-fileupload');
 const core = require('cors');
-var MongoClient = require('mongodb').MongoClient;
 
-const mogoose=require('mongoose');
+
+
 
 const productSchema = require('../schemas/ProductSchema');
 
@@ -55,33 +55,23 @@ router.get('/getProduct',async function (req,res) {
 
 
 router.post('/addProduct',async function (req,res) {
-    console.log("methode call");
-    var newQuery=[];
+
+    try {
+        var newQuery=[];
     pId=uniqid()
     let productImages =[];
     req.body['proimages'].forEach(img=>{
         productImages=['/uploads/products/'+pId+'_'+img,...productImages]
     });
 
-    newQuery['proName']=req.body['proName'];
-    newQuery['catogory']=req.body['catogory'];
-    newQuery['subCatogory']=req.body['subCatogory'];
-    newQuery['size']=req.body['size'];
-    newQuery['brand']=req.body['brand'];
-    newQuery['quantity']=req.body['quantity'];
-    newQuery['condition']=req.body['condition'];
-    newQuery['description']=req.body['description'];
-    newQuery['price']=req.body['price'];
-    newQuery['shipping']=req.body['shipping'];
-    newQuery['discount']=req.body['discount'];
-    newQuery['sellerID']=req.body['sellerID'];
+    newQuery=req.body;
+
     newQuery['id']=pId;
     newQuery['addDate']=new Date();
     newQuery['images']=productImages;
 
     console.log(newQuery);
 
-try {
     const newProduct = new productSchema(newQuery);
     await newProduct.save(function (err, product) {
         if (err) {
@@ -95,10 +85,10 @@ try {
 
 }
 
-
 });
 
 router.post('/uploadProduct',async (req, res) => {
+
     try{
         if (req.files.file.length>1){
             req.files.file.forEach(data=>{

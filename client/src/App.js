@@ -11,6 +11,7 @@ import ShowAllProducts from "./views/pages/Product/ShowAllProducts/ShowAllProduc
 import ShowOneProduct from "./views/pages/Product/ShowOneProduct/ShowOneProduct";
 import Home from "./views/pages/HomePage";
 import Register from "./views/pages/Register"
+import $ from "jquery";
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -28,6 +29,14 @@ class App extends Component {
 
 
   render() {
+      $(window).on('load', function() {
+          /*------------------
+              Preloder
+          --------------------*/
+          $(".loader").fadeOut();
+          $("#preloder").delay(400).fadeOut("slow");
+
+      });
     return (
         <Router>
 

@@ -3,7 +3,23 @@ import ShowError from "./ShowError";
 import '../../../../css/addProduct.css'
 
 import axios from 'axios'
-import {Link} from "react-router-dom";
+import {BrowserRouter as Router, Link} from "react-router-dom";
+
+
+
+import { FilePond, File, registerPlugin } from 'react-filepond';
+import 'filepond/dist/filepond.min.css'
+import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.css'
+
+import FilePondPluginImageExifOrientation from 'filepond-plugin-image-exif-orientation';
+import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
+import FilePondPluginImageResize from 'filepond-plugin-image-resize';
+import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
+import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size';
+import $ from "jquery";
+
+registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,FilePondPluginImageResize,FilePondPluginFileValidateType,FilePondPluginImageValidateSize)
+
 
 class AddProduct extends  Component{
 
@@ -18,11 +34,10 @@ constructor(props) {
         freeShipping:true,
         agree:"click",
         addDiscount:false,
-        proimages:[],
         proName:'',
         catogory:'',
         subCatogory:'',
-        size:'',
+        size:[false,false,false,false,false,false],
         brand:'',
         quantity:'',
         condition:'',
@@ -33,8 +48,9 @@ constructor(props) {
         sucss1:false,
         sucss2:false,
         sucss3:false,
-        sellerID:"001"
-
+        sellerID:"001",
+        files: [],
+        sSize:''
     }
 
 
@@ -150,6 +166,40 @@ componentDidMount() {
             </div>
         }
     }
+    handleInit() {
+    //console.log('FilePond instance has initialised', this.state.files);
+
+    }
+    setSize =e=>{
+        var temp = this.state.size;
+        if (this.state.size[e.target.value]){
+            temp[e.target.value]=false;
+        }else{
+            temp[e.target.value]=true;
+        }
+        this.setState({
+            size:temp
+        })
+
+        for (let i=0;i<6; i++){
+            if(this.state.size[i]){
+                this.setState({
+                    sSize:"Ok"
+                })
+                break;
+            }else{
+                this.setState({
+                    sSize:""
+                })
+            }
+        }
+
+    }
+
+
+
+
+
 
 showSubCatogory() {
     if (this.state.catogory === "Woman") {
@@ -224,7 +274,7 @@ showSubCatogory() {
                     <label htmlFor="validationCustom05">Catagory<span>*</span></label>
                     <select name="catogory" value={this.state.catogory} onChange={this.changeHandler} className="form-control" >
                         <option >Choose</option>
-                        <option value="Woman">Woman</option>
+                        <option className="opt" value="Woman">Woman</option>
                         <option value="Men">Men</option>
                         <option value="Childern">Childern</option>
                         <option value="Bags & Purses">Bags & Purses</option>
@@ -236,17 +286,39 @@ showSubCatogory() {
                     <br/>
                     {this.showSubCatogory()}
                     <label htmlFor="validationCustom05">SIZE<span>*</span></label>
-                    <select name="size" value={this.state.size} onChange={this.changeHandler} className="form-control" >
-                        <option >Choose</option>
-                        <option value="XS">XS</option>
-                        <option value="S">S</option>
-                        <option value="M">M</option>
-                        <option value="L">L</option>
-                        <option value="XL">XL</option>
-                        <option value="XXL">XXL</option>
 
-                    </select>
-                    <ShowError isShow={this.state.sucss1} value={this.state.size} name={"Select Size"} />
+                    <div className="checkBox">
+                        <div className="a" >
+                            <label className="checkContainer">XS
+                                <input type="checkbox" name="size"  value="0" checked={this.state.size[0]} onClick={this.setSize} />
+                                <span className="checkmark"></span>
+                            </label>
+                            <label className="checkContainer">S
+                                <input type="checkbox" name="size"  value="1" checked={this.state.size[1]} onClick={this.setSize} />
+                                <span className="checkmark"></span>
+                            </label>
+                            <label className="checkContainer">M
+                                <input type="checkbox" name="size"  value="2" checked={this.state.size[2]} onClick={this.setSize} />
+                                <span className="checkmark"></span>
+                            </label>
+                        </div>
+                        <div className="a" >
+                            <label className="checkContainer">L
+                                <input type="checkbox" name="size"  value="3" checked={this.state.size[3]} onClick={this.setSize} />
+                                <span className="checkmark"></span>
+                            </label>
+                            <label className="checkContainer">XL
+                                <input type="checkbox" name="size"  value="4" checked={this.state.size[4]} onClick={this.setSize} />
+                                <span className="checkmark"></span>
+                            </label>
+                            <label className="checkContainer">XXL
+                                <input type="checkbox" name="size"  value="5" checked={this.state.size[5]} onClick={this.setSize} />
+                                <span className="checkmark"></span>
+                            </label>
+                        </div>
+                </div>
+
+                    <ShowError isShow={this.state.sucss1} value={this.state.sSize} name={"Select Size"} />
                     <br/>
                     <label htmlFor="validationCustom01">Brand<span>*</span></label>
                     <input type="text" name="brand" value={this.state.brand}  onChange={this.changeHandler} className="form-control"
@@ -294,7 +366,7 @@ showSubCatogory() {
                     <input type="checkbox"  onClick={()=>this.addShipping()}  checked={this.state.freeShipping} />
                     <br/><br/>
                     {this.showShippingPrice()}
-                    <label htmlFor="validationCustom02">Add Discount</label>
+                    <label htmlFor="validationCustom02">Add Discount (%)</label>
                     <input type="checkbox" checked={this.state.addDiscount} onClick={()=>this.addDiscount()} />
                     <br/><br/>
                     {this.showDiscountPrice()}
@@ -311,17 +383,46 @@ showSubCatogory() {
                 <div className="box">
                     <label htmlFor="validationCustom01">Choose Images<span>*</span></label><br/>
 
-                    <div className="upload-btn-wrapper">
-                        <button className="ubtn">Upload a file</button>
-                        <input type="file" id="mainBgImage" onChange={this.previewImage} multiple required/>
-                        <ShowError isShow={this.state.sucss3} value={this.state.files} name={"Select Images"} />
-                    </div>
 
-                    <div className="imgContainor" id="imgContainor">
+                    <FilePond
+                        required={true}
+                        ref={ref => this.pond = ref}
+                        files={this.state.files}
+                        allowMultiple={true}
+                        maxFiles={6}
+                        labelIdle='Drag & Drop your Product Images or <span class="filepond--label-action"> Browse </span>'
+                        acceptedFileTypes={['image/*']}
+                        labelFileTypeNotAllowed={"Invalid file"}
+                        imageResizeMode={'cover'}
+                        imagePreviewMaxHeight={400}
+                        imageResizeTargetWidth={500}
+                        imageResizeTargetHeight={775}
+                        imageValidateSizeMinHeight={200}
+                        imageValidateSizeMinWidth={200}
+                        oninit={() => this.handleInit() }
+                        onupdatefiles={(fileItems) => {
+                            this.setState({
+                                files: fileItems.map(fileItem => fileItem.file)
+
+                            });
+
+                            if (this.state.files!=null||this.state.files.length!=0) {
+                                this.setState({
+                                    sucss3: false
+                                })
+                            }
 
 
 
-                    </div>
+
+                        }}
+
+
+                    >
+
+                    </FilePond>
+
+                    <ShowError isShow={this.state.sucss3} value={null} name={"Please add Product Images"} />
                     <br/>
                     <input type="checkbox"  onClick={()=>this.agreement()} defaultChecked="false"  />
                     <label className="form-check-label" htmlFor="invalidCheck">
@@ -346,7 +447,7 @@ showSubCatogory() {
 
     ResetPage=()=>{
         if (this.state.error==="Can not Upload the images"||this.state.error==="Can not Add the Product"){
-            return <div><Link  to="/"><div className="site-btn sb-line sb-dark" >Go Back</div></Link>
+            return <div style={{cursor:'pointer'}} onClick={()=>{window.history.back()}} ><div className="site-btn sb-line sb-dark" >Go Back</div>
                 <button className="site-btn sb-line sb-dark" style={{"margin-left":"15px"}} type="submit">Try Again</button>
                 <br/><br/><br/>
             </div>;
@@ -355,7 +456,7 @@ showSubCatogory() {
     submitHandler=e=>{
     e.preventDefault();
 
-    if (this.state.files==null){
+    if (this.state.files==null||this.state.files.length===0){
         this.setState({
             sucss3:true
         })
@@ -377,16 +478,20 @@ showSubCatogory() {
         delete values.sucss2;
         delete values.sucss3;
         delete  values.agree;
+        delete  values.sSize;
 
-
+        let imgs=[];
 
 
         try {
             const formData = new FormData();
             for (const key of Object.keys(this.state.files)) {
                 formData.append('file', this.state.files[key])
+                imgs=[this.state.files[key].name,...imgs]
             }
-            console.log(values);
+            delete  values.files;
+            values.proimages = imgs;
+
             axios.post('http://localhost:3001/product/addProduct',values)
                 .then(response1=>{
                     console.log(response1.statusText);
@@ -397,7 +502,7 @@ showSubCatogory() {
                             this.setState({
                                 error:response2.statusText
                             });
-                            this.props.history.push('/oneProduct?'+response2.data);
+                            this.props.history.push('/oneProduct/'+response2.data);
                         })
                         .catch(error=>{
                             console.log(error);
@@ -439,60 +544,6 @@ showSubCatogory() {
     }
 
 
-    previewImage=(e)=> {
-        try{
-            var file;
-            var reader;
-            var proImages=[];
-            this.setState({
-                files:e.target.files
-            })
-
-            for (var i=0;i<e.target.files.length;i++){
-                file = e.target.files[i];
-                console.log(file);
-
-                if (file.type.startsWith("image")){
-                    reader = new FileReader();
-                    var tname="img"+(i+1);
-
-
-                    proImages=[file.name,...proImages];
-
-                    reader.readAsDataURL(file);
-
-                    var d1= document.createElement("div")
-                        d1.setAttribute("class",'imgBox');
-
-                    var img1= document.createElement("img");
-                    img1.setAttribute("class","product");
-                    img1.setAttribute("ref",tname);
-                    img1.src=URL.createObjectURL(file);
-
-                    d1.appendChild(img1);
-                    document.getElementById("imgContainor").appendChild(d1);
-
-
-                    this.setState({
-                        [tname]:URL.createObjectURL(file),
-                    });
-
-                }else{
-                    this.setState({
-                        error:"Unsuuported File Type Please Select jpg/png/jpeg images"
-                    });
-                }
-
-
-            }
-            this.setState({
-                proimages:proImages
-            },()=>console.log(this.state.proimages))
-        }catch (e) {
-            console.error("err"+e);
-        }
-
-    }
 
 
 
