@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col} from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
-import cpayment from ""
 
 class PaymentMain extends Component {
     state = {  }
