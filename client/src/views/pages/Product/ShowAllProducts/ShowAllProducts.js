@@ -191,7 +191,12 @@ render() {
                                     <Link to={"/oneProduct/"+oneRow.id} >
                                     <div className="product-item">
                                         <div className="pi-pic">
-                                            <div className="tag-sale">ON SALE</div>
+
+                                                { oneRow.discount!=null?(
+                                                    <div className="tag-sale" style={{'font-size':12}}>{oneRow.discount}% off</div>
+                                                ):(<></>)}
+
+
                                             <img src={'http://localhost:3001'+oneRow.images[0]} alt={oneRow.images[0]} style={{width:'350px',height:'400px'}} />
                                             <div className="pi-links">
                                                 <a href="#" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
@@ -199,7 +204,7 @@ render() {
                                             </div>
                                         </div>
                                         <div className="pi-text">
-                                            <h6>{oneRow.price}</h6>
+                                            <h6>{oneRow.price}$  </h6>
                                             <p>{oneRow.proName}</p>
                                         </div>
 

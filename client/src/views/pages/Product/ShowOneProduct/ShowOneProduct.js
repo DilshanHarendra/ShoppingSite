@@ -1,8 +1,10 @@
 import React,{Component} from "react";
 import '../../../../css/showOneProduct.css'
-import $ from 'jquery';
+import jQuery from 'jquery';
 import RelatedProduct from "./RelatedProduct";
+
 import axios from "axios";
+import {Link} from "react-router-dom";
 class ShowOneProduct extends Component{
 
     constructor(props) {
@@ -12,6 +14,7 @@ class ShowOneProduct extends Component{
             id:this.props.match.params.id,
             data:[]
         }
+
     }
     componentDidMount(){
 
@@ -69,11 +72,12 @@ class ShowOneProduct extends Component{
 
 
         return <div>
+
             {this.state.data.map(product=>(
             <section className="product-section" key={product.id} >
                 <div className="container">
                     <div className="back-link">
-                        <a href="#"> &lt;&lt; Back to Category</a>
+                        <div style={{cursor:'pointer'}} onClick={()=>{window.history.back()}} > &lt;&lt; Back to Category</div>
                     </div>
                     <div className="row">
 
@@ -85,12 +89,15 @@ class ShowOneProduct extends Component{
                             </div>
                             <div className="product-thumbs pthumbs" tabIndex="1" >
                                 <div className="product-thumbs-track" id="images">
+
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-6 product-details">
                             <h2 className="p-title">{product.proName}</h2>
-                            <h3 className="p-price">{product.price}</h3>
+                            <h5 style={{'color':'gray'}} className="p-title"><span>CATEGORY </span>{product.catogory+" "+product.subCatogory}</h5>
+                            <h2 style={{'color':'gray'}} className="p-title"><span>BRAND </span>{product.brand}</h2>
+                            <h3 className="p-price">{product.price} $</h3>
                             <h4 className="p-stock">Available: <span>In Stock</span></h4>
                             <div className="p-rating">
                                 <i className="fa fa-star-o"></i>
@@ -106,27 +113,27 @@ class ShowOneProduct extends Component{
                                 <p>Size</p>
                                 <div className="sc-item">
                                     <input type="radio" name="sc" id="xs-size"/>
-                                        <label htmlFor="xs-size">32</label>
+                                        <label htmlFor="xs-size">XS</label>
                                 </div>
                                 <div className="sc-item">
                                     <input type="radio" name="sc" id="s-size"/>
-                                        <label htmlFor="s-size">34</label>
+                                        <label htmlFor="s-size">S</label>
                                 </div>
                                 <div className="sc-item">
                                     <input type="radio" name="sc" id="m-size" checked=""/>
-                                        <label htmlFor="m-size">36</label>
+                                        <label htmlFor="m-size">M</label>
                                 </div>
                                 <div className="sc-item">
                                     <input type="radio" name="sc" id="l-size"/>
-                                        <label htmlFor="l-size">38</label>
+                                        <label htmlFor="l-size">L</label>
                                 </div>
                                 <div className="sc-item disable">
                                     <input type="radio" name="sc" id="xl-size" disabled/>
-                                        <label htmlFor="xl-size">40</label>
+                                        <label htmlFor="xl-size">XL</label>
                                 </div>
                                 <div className="sc-item">
                                     <input type="radio" name="sc" id="xxl-size"/>
-                                        <label htmlFor="xxl-size">42</label>
+                                        <label htmlFor="xxl-size">XXL</label>
                                 </div>
                             </div>
                             <div className="quantity">
