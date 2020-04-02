@@ -11,8 +11,9 @@ import ShowAllProducts from "./views/pages/Product/ShowAllProducts/ShowAllProduc
 import ShowOneProduct from "./views/pages/Product/ShowOneProduct/ShowOneProduct";
 import Home from "./views/pages/HomePage";
 import Register from "./views/pages/Register"
-
-import $ from "jquery";
+import PaymentMain from "./views/pages/Payment/PaymentMain"
+import cardPayment from "./views/pages/Payment/cardPayment"
+import payConfirm from "./views/pages/Payment/payConfirm"
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -30,14 +31,6 @@ class App extends Component {
 
 
   render() {
-      $(window).on('load', function() {
-          /*------------------
-              Preloder
-          --------------------*/
-          $(".loader").fadeOut();
-          $("#preloder").delay(400).fadeOut("slow");
-
-      });
     return (
         <Router>
 
@@ -49,7 +42,9 @@ class App extends Component {
                     <Route path="/allProducts" exact component={ShowAllProducts} />
                     <Route path="/oneProduct/:id" exact component={ShowOneProduct} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
-                    
+                    <Route path="/paymentMain" component={PaymentMain} />
+                    <Route path="/cardPayment" component={cardPayment} />
+                    <Route path="/payConfirm" component={payConfirm} />
                 </Switch>
                 <DefaultFooter/>
                 

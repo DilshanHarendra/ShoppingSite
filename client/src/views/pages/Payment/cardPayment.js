@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col} from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
+import Form from "reactstrap/es/Form";
+import FormGroup from "reactstrap/es/FormGroup";
+import Label from "reactstrap/es/Label";
+import Input from "reactstrap/es/Input";
+import FormText from "reactstrap/es/FormText";
 
 class cardPayment extends Component {
     state = {  }
@@ -9,16 +14,59 @@ class cardPayment extends Component {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">PAYMENT</h1>
+                    <h1 className="my-5 mx-auto text-center text-dark">PAYMENT-CARD</h1>
                     <Row className="my-2">
-                        <Col className="mx-auto mb-5" xl="4">
+                        <Col className="mx-auto mb-5" xl="6">
                             <Card>
                                 <CardImg top width="100%" src="./images/Payment/1.jpg" alt="Card image cap" />
                                 <CardBody>
-                                    <CardTitle className="text-info font-weight-bold">Credit/Debit</CardTitle>
-                                    <CardSubtitle>Pay by Credit/Debit card</CardSubtitle>
-                                    <CardText>Clients will be able to make online payments through Credit/Debit card. We assure that this method is 100% secure. <br /> <br /></CardText>
-                                    <Button color="primary">Next</Button>
+                                    <CardTitle ><h3 className="text-info font-weight-bold">Credit/Debit</h3></CardTitle>
+                                    <CardSubtitle className="font-weight-bold">Pay by Credit/Debit card </CardSubtitle>
+                                    <br />
+                                    <Form>
+                                        <Row form>
+                                            <Col md={6}>
+                                                <FormGroup>
+                                                    <Label>Email</Label>
+                                                    <Input type="email" name="email" id="exampleEmail" placeholder="Card holder email" />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup>
+                                                    <Label>Name</Label>
+                                                    <Input type="text" name="name" id="holderName" placeholder="Card holder name" />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <FormGroup>
+                                            <Label>Card number</Label>
+                                            <Input type="text" name="cardNumber" id="cardNumber" placeholder="16 digits card number"/>
+                                        </FormGroup>
+                                        <Row form>
+                                            <Col md={6}>
+                                                <FormGroup>
+                                                    <Label>Secret number</Label>
+                                                    <Input type="text" name="csv" id="csv" placeholder="3 digits CSV number" />
+                                                </FormGroup>
+                                            </Col>
+                                            <Col md={6}>
+                                                <FormGroup>
+                                                    <Label>Expire Date</Label>
+                                                    <Input type="date" name="date" id="date" />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <FormGroup row>
+                                            <Label for="exampleSelect" sm={2}>Card</Label>
+                                            <Col sm={5}>
+                                                <Input type="select" name="select" id="exampleSelect">
+                                                    <option>VISA</option>
+                                                    <option>MASTER</option>
+                                                </Input>
+                                            </Col>
+                                        </FormGroup>
+                                        <Button color="danger">PAY</Button>
+                                    </Form>
                                 </CardBody>
                                 <CardFooter>
                                     <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>
@@ -26,29 +74,27 @@ class cardPayment extends Component {
                             </Card>
                         </Col>
 
-                        <Col className="mx-auto mb-5" xl="4">
+                        <Col className="mx-auto mb-5" xl="6">
                             <Card>
-                                <CardImg top width="100%" src="./images/Payment/2.jpg" alt="Card image cap" />
+                                <CardImg top width="100%" src="./images/Payment/4.jpg" alt="Card image cap" />
                                 <CardBody>
-                                    <CardTitle className="text-info font-weight-bold">Bank receipt</CardTitle>
-                                    <CardSubtitle>Pay through bank receipt</CardSubtitle>
-                                    <CardText>Make payment to our bank account and submit the receipt here. <br /> Bank account: 11223345678  <br /> Bank: Commercial Bank PLC</CardText>
-                                    <Button color="primary">Next</Button>
-                                </CardBody>
-                                <CardFooter>
-                                    <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>
-                                </CardFooter>
-                            </Card>
-                        </Col>
-
-                        <Col className="mx-auto mb-5" xl="4">
-                            <Card>
-                                <CardImg top width="100%" src="./images/Payment/3.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle className="text-info font-weight-bold">Refund payment</CardTitle>
-                                    <CardSubtitle>Raise request for refund</CardSubtitle>
-                                    <CardText>Only credit/debit card payments can be refunded. If you need to refund a bank payment, please send a request to below email. <br /> Email: support@adminpayment.com</CardText>
-                                    <Button color="primary">Next</Button>
+                                    <CardTitle ><h3 className="text-info font-weight-bold text-center">Order Details</h3></CardTitle>
+                                    <CardSubtitle className="font-weight-bold text-center mb-4">Refer below your order items before proceed further</CardSubtitle>
+                                    <CardText className="text-center">
+                                        Make payment to our bank account and submit the receipt here
+                                        <br />
+                                        Make payment to our bank account and submit the receipt here
+                                        <br />
+                                        Make payment to our bank account and submit the receipt here
+                                        <br />
+                                        Make payment to our bank account and submit the receipt here
+                                        <br />
+                                        Make payment to our bank account and submit the receipt here
+                                        <br />
+                                        Make payment to our bank account and submit the receipt here
+                                        <br />
+                                        Make payment to our bank account and submit the receipt here
+                                    </CardText>
                                 </CardBody>
                                 <CardFooter>
                                     <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>
