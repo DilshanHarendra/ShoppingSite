@@ -108,12 +108,13 @@ class DefaultHeader extends Component {
                     <div className="container">
                         <ul className="main-menu">
                             <li><Link to="/" >Home</Link></li>
-                            <li><Link to="/allProducts">Women</Link></li>
-                            <li><Link to="/allProducts">Men</Link></li>
-                            <li><Link to="/allProducts">Jewelry
+                            <li><Link to="/allProducts/Woman">Women</Link></li>
+                            <li><Link to="/allProducts/Men">Men</Link></li>
+                            <li><Link to="/allProducts/BP">Bags & Purses</Link></li>
+                            <li><Link to="/allProducts/Jewelry">Jewelry
                                 <span className="new">New</span>
                             </Link></li>
-                            <li><Link to="/allProducts">Shoes</Link>
+                            <li><Link to="/allProducts/Footwear">Footwear</Link>
                                 <ul className="sub-menu">
                                     <li><Link to="/">Sneakers</Link></li>
                                     <li><Link to="/">Sandals</Link></li>

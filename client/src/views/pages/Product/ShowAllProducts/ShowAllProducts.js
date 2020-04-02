@@ -5,7 +5,7 @@ import {Link} from "react-router-dom";
 
 class ShowAllProducts extends Component{
 
-    constructor() {
+    constructor(props) {
         super();
         this.state={
             womanCount:0,
@@ -13,9 +13,13 @@ class ShowAllProducts extends Component{
             childenCount:0,
             minPrice:0,
             maxPrice:10000,
-            size:null,
+            size:[false,false,false,false,false,false],
             data:[]
+
         }
+
+
+
     }
 
 
@@ -38,18 +42,31 @@ class ShowAllProducts extends Component{
         script.src = "../../../../js/main.js";
         script.async = true;
         document.body.appendChild(script);
-        this.getData();
+
+        this.getData(this.cCatogory);
+            this.props.history.listen((location, action) => {
+                this.getData();
+            });
 
 
     }
 
     getData =()=>{
+
+        let mnPrice=0;
+        let mxPrice=10000;
+        if (this.state.minPrice!=""){
+            mnPrice=this.state.minPrice;
+        }
+        if(this.state.maxPrice!=""){
+            mxPrice=this.state.maxPrice;
+        }
+        console.log("mnPrice"+mnPrice)
+        let catogory=this.props.history.location.pathname.split("/")[2]
         axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getProduct',
-            params:{s:true},
-
-
+            url:'http://localhost:3001/product/getProducts',
+            params:{s:true,catogory:catogory,size:this.state.size,minprice:mnPrice,maxprice:mxPrice  },
         }).then(res=>{
             this.setState({
                 data:res.data
@@ -60,16 +77,22 @@ class ShowAllProducts extends Component{
 
 
 
-selectSize(x){
+    setSize =e=>{
+        var temp = this.state.size;
+        if (this.state.size[e.target.value]){
+            temp[e.target.value]=false;
+        }else{
+            temp[e.target.value]=true;
+        }
         this.setState({
-            size:x
-        },()=>console.log(this.state.size))
-}
+            size:temp
+        })
+    }
 
     setPrice=e=>{
         this.setState({
             [e.target.name]:e.target.value
-        },()=>console.log(this.state.minPrice))
+        },()=>this.getData())
 
     }
 
@@ -86,8 +109,8 @@ render() {
             <div className="container">
                 <h4>CAtegory PAge</h4>
                 <div className="site-pagination">
-                    <a href="">Home</a> /
-                    <a href="">Shop</a> /
+                    <Link to="/">Home</Link> /
+                    <Link >Shop</Link> /
                 </div>
             </div>
         </div>
@@ -98,7 +121,7 @@ render() {
                         <div className="filter-widget">
                             <h2 className="fw-title">Categories</h2>
                             <ul className="category-menu">
-                                <li><a href="#">Woman wear</a>
+                                <li><Link to="/allProducts/Woman" >Woman</Link>
                                     <ul className="sub-menu">
                                         <li>Midi Dresses <span>(2)</span></li>
                                         <li>Maxi Dresses<span>(56)</span></li>
@@ -107,17 +130,19 @@ render() {
                                         <li>Mini Dresses<span>(19)</span></li>
                                     </ul>
                                 </li>
-                                <li><a href="#">Man Wear</a>
+                                <li><Link to="/allProducts/Men" >Man</Link>
                                     <ul className="sub-menu">
-                                        <li>Midi Dresses <span>(2)</span></li>
-                                        <li>Maxi Dresses<span>(56)</span></li>
-                                        <li>Prom Dresses<span>(36)</span></li>
+                                        <li>Shorts & Pants <span>(10)</span> </li>
+                                        <li>T-Shirt <span>(10)</span></li>
+                                        <li>Shirts <span>(10)</span></li>
+                                        <li>Ties <span>(10)</span></li>
+                                        <li>Belts <span>(10)</span></li>
                                     </ul>
                                 </li>
-                                <li><a href="#">Children</a></li>
-                                <li><a href="#">Bags & Purses</a></li>
-                                <li><a href="#">Eyewear</a></li>
-                                <li><a href="#">Footwear</a></li>
+                                <li><Link to="/allProducts/Children">Children</Link></li>
+                                <li><Link to="/allProducts/BP">Bags & Purses</Link></li>
+                                <li><Link to="/allProducts/Jewelry">Jewelry</Link></li>
+                                <li><Link to="/allProducts/Footwear">Footwear</Link></li>
                             </ul>
                         </div>
                         <div className="filter-widget mb-0">
@@ -146,27 +171,27 @@ render() {
                             <h2 className="fw-title">Size</h2>
                             <div className="fw-size-choose">
                                 <div className="sc-item">
-                                    <input type="radio"  name="sc" id="xs-size"/>
+                                    <input type="radio" name="size" value="0" checked={this.state.size[0]} onClick={this.setSize} />
                                     <label htmlFor="xs-size" onClick={()=>this.selectSize('XS')}>XS</label>
                                 </div>
                                 <div className="sc-item">
-                                    <input type="radio" name="sc" id="s-size"/>
+                                    <input type="radio" name="size" value="1" checked={this.state.size[1]} onClick={this.setSize} />
                                     <label htmlFor="s-size" onClick={()=>this.selectSize('S')}>S</label>
                                 </div>
                                 <div className="sc-item">
-                                    <input type="radio" name="sc" id="m-size" />
+                                    <input type="radio" name="size" value="2" checked={this.state.size[2]} onClick={this.setSize} />
                                     <label htmlFor="m-size" onClick={()=>this.selectSize('M')}>M</label>
                                 </div>
                                 <div className="sc-item">
-                                    <input type="radio" name="sc" id="l-size"/>
+                                    <input type="radio" name="size" value="3" checked={this.state.size[3]} onClick={this.setSize} />
                                     <label htmlFor="l-size" onClick={()=>this.selectSize('L')}>L</label>
                                 </div>
                                 <div className="sc-item">
-                                    <input type="radio" name="sc" id="xl-size"/>
+                                    <input type="radio" name="size" value="4" checked={this.state.size[4]} onClick={this.setSize} />
                                     <label htmlFor="xl-size" onClick={()=>this.selectSize('XL')}>XL</label>
                                 </div>
                                 <div className="sc-item">
-                                    <input type="radio" name="sc" id="xxl-size"/>
+                                    <input type="radio" name="size" value="5" checked={this.state.size[5]} onClick={this.setSize} />
                                     <label htmlFor="xxl-size" onClick={()=>this.selectSize('XXL')}>XXL</label>
                                 </div>
                             </div>
@@ -199,8 +224,8 @@ render() {
 
                                             <img src={'http://localhost:3001'+oneRow.images[0]} alt={oneRow.images[0]} style={{width:'350px',height:'400px'}} />
                                             <div className="pi-links">
-                                                <a href="#" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                                <a href="#" className="wishlist-btn"><i className="flaticon-heart"></i></a>
+                                                <Link to="#" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></Link>
+                                                <Link to="#"  className="wishlist-btn"><i className="flaticon-heart"></i></Link>
                                             </div>
                                         </div>
                                         <div className="pi-text">

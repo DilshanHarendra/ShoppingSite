@@ -45,9 +45,9 @@ class App extends Component {
                 <Switch>
                     <Route  path="/" exact   component={Home} />
                     <Route exact path="/Register" component={Register} />
-                    <Route path="/allProducts" exact component={ShowAllProducts} />
+                    <Route path="/allProducts/:catogory" exact component={ShowAllProducts} />
                     <Route path="/oneProduct/:id" exact component={ShowOneProduct} />
-                    <Route path="/Myshop/addProduct" component={AddProduct} />
+                    <Route path="/Myshop/addProduct" exact component={AddProduct} />
                     
                 </Switch>
                 <DefaultFooter/>

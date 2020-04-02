@@ -16,7 +16,7 @@ import FilePondPluginImagePreview from 'filepond-plugin-image-preview';
 import FilePondPluginImageResize from 'filepond-plugin-image-resize';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size';
-import $ from "jquery";
+
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,FilePondPluginImageResize,FilePondPluginFileValidateType,FilePondPluginImageValidateSize)
 
@@ -157,9 +157,9 @@ componentDidMount() {
     showDiscountPrice(){
         if (this.state.addDiscount){
             return <div>
-                <label htmlFor="validationCustom04">Discount<span>*</span></label>
+                <label htmlFor="validationCustom04">Discount<span>*</span>  (%)</label>
                 <input type="number" className="form-control" name="discount" value={this.state.discount}   onChange={this.changeHandler}
-                       id="validationCustom06"    placeholder="1$"/>
+                       id="validationCustom06"    placeholder="10%"/>
                 <ShowError isShow={this.state.sucss2} value={this.state.discount} name={"Enter Discount Price"} />
                 <br/>
 
@@ -248,6 +248,22 @@ showSubCatogory() {
                 <option value="Handcrafted & Artisan Jewelry">Handcrafted & Artisan Jewelry</option>
                 <option value="Loose Diamonds & Gemstones">Loose Diamonds & Gemstones</option>
 
+            </select>
+            <ShowError isShow={this.state.sucss1} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
+            <br/>
+        </div>;
+
+    }else if (this.state.catogory === "Footwear") {
+
+        return<div>
+            <label htmlFor="validationCustom05">Sub Catagory<span>*</span></label>
+            <select name="subCatogory" value={this.state.subCatogory} onChange={this.changeHandler} className="form-control" >
+                <option >Choose</option>
+                <option value="Sneakers">Sneakers</option>
+                <option value="Sandals">Sandals</option>
+                <option value="Formal Shoes">Formal Shoes</option>
+                <option value="Boots">Boots</option>
+                <option value="Flip Flops">Flip Flops</option>
             </select>
             <ShowError isShow={this.state.sucss1} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
             <br/>
@@ -366,7 +382,7 @@ showSubCatogory() {
                     <input type="checkbox"  onClick={()=>this.addShipping()}  checked={this.state.freeShipping} />
                     <br/><br/>
                     {this.showShippingPrice()}
-                    <label htmlFor="validationCustom02">Add Discount (%)</label>
+                    <label htmlFor="validationCustom02">Add Discount</label>
                     <input type="checkbox" checked={this.state.addDiscount} onClick={()=>this.addDiscount()} />
                     <br/><br/>
                     {this.showDiscountPrice()}

@@ -21,8 +21,17 @@ router.use(core());
 router.get('/getProducts',async function (req,res) {
 
     try {
+
         if (req.query.s){
             delete req.query.s;
+
+            if (req.query.maxprice!=""){
+                req.query['price']={$gte: parseInt(req.query.minprice),$lte: parseInt(req.query.maxprice)}
+                delete req.query.maxprice;
+                delete req.query.minprice;
+            }
+
+            console.log(req.query);
             var data=await productSchema.find(req.query);
             res.send( data);
         }else {
@@ -32,11 +41,13 @@ router.get('/getProducts',async function (req,res) {
         console.log(e);
         res.status(500).send("err " + e);
     }
+
 });
 
 router.get('/getProduct',async function (req,res) {
 
     try {
+       // console.log(req.query);
         if (req.query.s){
             delete req.query.s;
             var data=await productSchema.find(req.query);
