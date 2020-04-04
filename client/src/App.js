@@ -12,6 +12,10 @@ import ShowOneProduct from "./views/pages/Product/ShowOneProduct/ShowOneProduct"
 import Home from "./views/pages/HomePage";
 import Register from "./views/pages/Register"
 import Login from "././views/pages/Login"
+import PaymentMain from "./views/pages/Payment/PaymentMain"
+import cardPayment from "./views/pages/Payment/cardPayment"
+import receiptPayment from "./views/pages/Payment/receiptPayment"
+import payConfirm from "./views/pages/Payment/payConfirm"
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -37,11 +41,13 @@ class App extends Component {
                 <Switch>
                     <Route  path="/" exact   component={Home} />
                     <Route exact path="/Register" component={Register} />
-                    <Route exact path="/Login" component={Login} />
-                    <Route path="/allProducts" exact component={ShowAllProducts} />
+                    <Route path="/allProducts/:id" exact component={ShowAllProducts} />
                     <Route path="/oneProduct/:id" exact component={ShowOneProduct} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
-                    
+                    <Route path="/paymentMain" component={PaymentMain} />
+                    <Route path="/cardPayment" component={cardPayment} />
+                    <Route path="/receiptPayment" component={receiptPayment} />
+                    <Route path="/payConfirm" component={payConfirm} />
                 </Switch>
                 <DefaultFooter/>
                 

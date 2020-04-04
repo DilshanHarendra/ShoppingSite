@@ -1,27 +1,4 @@
-.upload-btn-wrapper {
-      position: relative;
-      overflow: hidden;
-      display: inline-block;
-}
 
-.ubtn {
-      border: 2px solid gray;
-      color: gray;
-      background-color: white;
-      padding: 5px 10px;
-      border-radius: 8px;
-      width: 200px;
-      font-size: 15px;
-      font-weight: bold;
-}
-		
-.upload-btn-wrapper input[type=file] {
-      font-size: 100px;
-      position: absolute;
-      left: 0;
-      top: 0;
-      opacity: 0;
-}
 .box{
     width: 96%;
     height: 100%;
@@ -126,4 +103,45 @@ option{
     margin-right: auto;
     margin-right: auto;
 
+}
+.filepond--root,
+.filepond--root .filepond--drop-label {
+    background-color: rgba(255,255,255,0.8);
+    border: 1px dashed gray;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* The container */
+.checkContainer {
+    display: block;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 15px;
+    width: 150px;
+}
+.form-control{
+    background-color: transparent;
+}
+
+
+
+
+
+
+
+
+
+
+
+.checkBox{
+    margin-top: 50px;
+
+}
+.a{
+    display: flex;
+    width: 100%;
+    padding: 10px;
 }

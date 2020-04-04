@@ -1,8 +1,9 @@
 import React,{Component} from "react";
 import '../../../../css/showOneProduct.css'
-import $ from 'jquery';
-import RelatedProduct from "./RelatedProduct";
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
+import {Link} from "react-router-dom";
 class ShowOneProduct extends Component{
 
     constructor(props) {
@@ -12,6 +13,7 @@ class ShowOneProduct extends Component{
             id:this.props.match.params.id,
             data:[]
         }
+
     }
     componentDidMount(){
 
@@ -29,17 +31,17 @@ class ShowOneProduct extends Component{
 
         axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getProducts',
+            url:'http://localhost:3001/product/getProduct',
             params:{s:true,id:this.state.id}
         }).then(res=>{
             this.setState({
                 data:res.data
-            },()=>{this.showImages()})
+            },()=>{this.setElemets()})
         }).catch(err=>console.log(err));
     }
 
 
-    showImages(){
+    setElemets(){
             var arr=this.state.data[0].images;
             for (var i=0;i<arr.length;i++){
 
@@ -58,6 +60,38 @@ class ShowOneProduct extends Component{
             }
 
 
+            var sizearr=this.state.data[0].size;
+
+            var labels  =["XS","S","M","L","XL","XXL"];
+        for (var j=0;j<sizearr.length;j++){
+                var iDiv = document.createElement("div");
+                var ilabel = document.createElement("label");
+                ilabel.innerHTML=labels[j];
+                ilabel.setAttribute("for",labels[j]+'-size');
+
+                var iInput = document.createElement("input");
+                iInput.setAttribute("type",'radio');
+                iInput.setAttribute("name",'size');
+                iInput.setAttribute("value",labels[j]);
+                iInput.setAttribute("id",labels[j]+'-size');
+
+               if (sizearr[j]!="false"){
+                   iDiv.setAttribute("class",'sc-item');
+               }else{
+                   iDiv.setAttribute("class",'sc-item disable');
+                   iInput.setAttribute("disable",false);
+               }
+               iDiv.appendChild(iInput);
+               iDiv.appendChild(ilabel);
+               document.getElementById("sizeContainor").appendChild(iDiv);
+
+        }
+
+
+
+
+
+
 
 
     }
@@ -69,11 +103,12 @@ class ShowOneProduct extends Component{
 
 
         return <div>
+
             {this.state.data.map(product=>(
             <section className="product-section" key={product.id} >
                 <div className="container">
                     <div className="back-link">
-                        <a href="#"> &lt;&lt; Back to Category</a>
+                        <div style={{cursor:'pointer'}} onClick={()=>{window.history.back()}} > &lt;&lt; Back to Category</div>
                     </div>
                     <div className="row">
 
@@ -85,12 +120,15 @@ class ShowOneProduct extends Component{
                             </div>
                             <div className="product-thumbs pthumbs" tabIndex="1" >
                                 <div className="product-thumbs-track" id="images">
+
                                 </div>
                             </div>
                         </div>
                         <div className="col-lg-6 product-details">
                             <h2 className="p-title">{product.proName}</h2>
-                            <h3 className="p-price">{product.price}</h3>
+                            <h5 style={{'color':'gray'}} className="p-title"><span>CATEGORY </span>{product.catogory+" "+product.subCatogory}</h5>
+                            <h2 style={{'color':'gray'}} className="p-title"><span>BRAND </span>{product.brand}</h2>
+                            <h3 className="p-price">{product.price} $</h3>
                             <h4 className="p-stock">Available: <span>In Stock</span></h4>
                             <div className="p-rating">
                                 <i className="fa fa-star-o"></i>
@@ -102,32 +140,14 @@ class ShowOneProduct extends Component{
                             <div className="p-review">
                                 <a href="">3 reviews</a>|<a href="">Add your review</a>
                             </div>
-                            <div className="fw-size-choose">
+                            <div className="fw-size-choose" id="sizeContainor">
                                 <p>Size</p>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="xs-size"/>
-                                        <label htmlFor="xs-size">32</label>
-                                </div>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="s-size"/>
-                                        <label htmlFor="s-size">34</label>
-                                </div>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="m-size" checked=""/>
-                                        <label htmlFor="m-size">36</label>
-                                </div>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="l-size"/>
-                                        <label htmlFor="l-size">38</label>
-                                </div>
-                                <div className="sc-item disable">
-                                    <input type="radio" name="sc" id="xl-size" disabled/>
-                                        <label htmlFor="xl-size">40</label>
-                                </div>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="xxl-size"/>
-                                        <label htmlFor="xxl-size">42</label>
-                                </div>
+
+
+
+
+
+
                             </div>
                             <div className="quantity">
                                 <p>Quantity</p>
