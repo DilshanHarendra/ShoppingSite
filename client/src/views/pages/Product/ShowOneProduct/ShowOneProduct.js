@@ -1,8 +1,7 @@
 import React,{Component} from "react";
 import '../../../../css/showOneProduct.css'
-import jQuery from 'jquery';
-import RelatedProduct from "./RelatedProduct";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import {Link} from "react-router-dom";
 class ShowOneProduct extends Component{
@@ -32,17 +31,17 @@ class ShowOneProduct extends Component{
 
         axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getProducts',
+            url:'http://localhost:3001/product/getProduct',
             params:{s:true,id:this.state.id}
         }).then(res=>{
             this.setState({
                 data:res.data
-            },()=>{this.showImages()})
+            },()=>{this.setElemets()})
         }).catch(err=>console.log(err));
     }
 
 
-    showImages(){
+    setElemets(){
             var arr=this.state.data[0].images;
             for (var i=0;i<arr.length;i++){
 
@@ -59,6 +58,38 @@ class ShowOneProduct extends Component{
                 iDiv.appendChild(iImage);
                 document.getElementById("images").appendChild(iDiv);
             }
+
+
+            var sizearr=this.state.data[0].size;
+
+            var labels  =["XS","S","M","L","XL","XXL"];
+        for (var j=0;j<sizearr.length;j++){
+                var iDiv = document.createElement("div");
+                var ilabel = document.createElement("label");
+                ilabel.innerHTML=labels[j];
+                ilabel.setAttribute("for",labels[j]+'-size');
+
+                var iInput = document.createElement("input");
+                iInput.setAttribute("type",'radio');
+                iInput.setAttribute("name",'size');
+                iInput.setAttribute("value",labels[j]);
+                iInput.setAttribute("id",labels[j]+'-size');
+
+               if (sizearr[j]!="false"){
+                   iDiv.setAttribute("class",'sc-item');
+               }else{
+                   iDiv.setAttribute("class",'sc-item disable');
+                   iInput.setAttribute("disable",false);
+               }
+               iDiv.appendChild(iInput);
+               iDiv.appendChild(ilabel);
+               document.getElementById("sizeContainor").appendChild(iDiv);
+
+        }
+
+
+
+
 
 
 
@@ -109,32 +140,14 @@ class ShowOneProduct extends Component{
                             <div className="p-review">
                                 <a href="">3 reviews</a>|<a href="">Add your review</a>
                             </div>
-                            <div className="fw-size-choose">
+                            <div className="fw-size-choose" id="sizeContainor">
                                 <p>Size</p>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="xs-size"/>
-                                        <label htmlFor="xs-size">XS</label>
-                                </div>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="s-size"/>
-                                        <label htmlFor="s-size">S</label>
-                                </div>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="m-size" checked=""/>
-                                        <label htmlFor="m-size">M</label>
-                                </div>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="l-size"/>
-                                        <label htmlFor="l-size">L</label>
-                                </div>
-                                <div className="sc-item disable">
-                                    <input type="radio" name="sc" id="xl-size" disabled/>
-                                        <label htmlFor="xl-size">XL</label>
-                                </div>
-                                <div className="sc-item">
-                                    <input type="radio" name="sc" id="xxl-size"/>
-                                        <label htmlFor="xxl-size">XXL</label>
-                                </div>
+
+
+
+
+
+
                             </div>
                             <div className="quantity">
                                 <p>Quantity</p>

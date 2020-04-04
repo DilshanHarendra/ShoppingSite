@@ -4,15 +4,15 @@ import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
 import Login from "../../views/pages/Login"
 import Register from "../../views/pages/Register"
-
 import '../../css/animate.css';
 import '../../css/bootstrap.min.css';
 import '../../css/flaticon.css';
 import '../../css/font-awesome.min.css';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../../css/slicknav.min.css';
 import '../../css/style.css';
+
 
 
 const propTypes = {
@@ -48,12 +48,14 @@ class DefaultHeader extends Component {
 		});
 	  }
     componentDidMount(){
-
+        const script = document.createElement("script");
+        script.src = "../../js/main.js";
+        script.async = true;
+        document.body.appendChild(script);
     }
     state = {  }
     render() { 
         return ( <React.Fragment>
-
 
 
             <header className="header-section">
@@ -62,7 +64,7 @@ class DefaultHeader extends Component {
                         <div className="row">
                             <div className="col-lg-2 text-center text-lg-left">
                                 <Link to="/" className="site-logo">
-                                    <img src="images/logo.png" alt=""/>
+                                    <img src="/images/logo.png" alt=""/>
                                 </Link>
                             </div>
                             <div className="col-xl-6 col-lg-5">
@@ -108,7 +110,7 @@ class DefaultHeader extends Component {
                     <div className="container">
                         <ul className="main-menu">
                             <li><Link to="/" >Home</Link></li>
-                            <li><Link to="/allProducts/Woman">Women</Link></li>
+                            <li><Link to="/allProducts/Women">Women</Link></li>
                             <li><Link to="/allProducts/Men">Men</Link></li>
                             <li><Link to="/allProducts/BP">Bags & Purses</Link></li>
                             <li><Link to="/allProducts/Jewelry">Jewelry
@@ -141,11 +143,9 @@ class DefaultHeader extends Component {
                             <li>
                                 <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
                             </li>
+
                             <li>
-                                <Link to="/users" className="nav-link">Users</Link>
-                            </li>
-                            <li>
-                                <NavLink to="#" className="nav-link">Settings</NavLink>
+                                <Link to="/payConfirm" className="nav-link">Payment</Link>
                             </li>
                         </ul>
                     </div>
