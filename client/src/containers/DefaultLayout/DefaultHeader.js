@@ -79,14 +79,14 @@ class DefaultHeader extends Component {
                        className={'modal-lg ' + this.props.className}>
                   
                   <ModalBody>
-                   <Login/>
+                   <Login toggle={this.toggleLarge}/>
                   </ModalBody>
-                  <ModalFooter>
+                  {/* <ModalFooter>
 					  <Link to="/Register">
                     <Button color="primary" onClick={this.toggleLarge}>Sign Up!</Button>{' '}
 					</Link>
                     <Button color="secondary" onClick={this.toggleLarge}>Cancel</Button>
-                  </ModalFooter>
+                  </ModalFooter> */}
                 </Modal>
                                     </div>
                                     <div className="up-item">
