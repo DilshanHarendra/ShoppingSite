@@ -1,5 +1,5 @@
 import React,{Component} from "react";
-import ShowError from "./ShowError";
+import ShowError from "../ShowError";
 import '../../../../css/addProduct.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
@@ -289,7 +289,8 @@ showSubCatogory() {
                             this.setState({
                                 error:response2.statusText
                             });
-                            this.props.history.push('/oneProduct/'+response2.data);
+                            window.location.replace('/oneProduct/'+response2.data);
+
                         })
                         .catch(error=>{
                             console.log(error);
@@ -447,7 +448,7 @@ showSubCatogory() {
                                         <ShowError isShow={this.state.check} value={this.state.quantity} name={"Enter Quantity"} />
                                         <br/>
                                         <label htmlFor="validationCustom03">Condition<span>*</span></label>
-                                        <select name="condition" value={this.state.condtion} className="form-control"  onChange={this.changeHandler} required>
+                                        <select name="condition" value={this.state.condition} className="form-control"  onChange={this.changeHandler} required>
                                             <option value="">Choose</option>
                                             <option value="BarandNew">Barand New</option>
                                             <option value="Used">Used</option>
@@ -499,7 +500,7 @@ showSubCatogory() {
                                             inputProps={{ 'aria-label': 'secondary checkbox' }}
                                         />
 
-                                        <label className="form-check-label" htmlFor="invalidCheck">
+                                        <label className="form-check-label"  onClick={()=>this.agreement()} htmlFor="invalidCheck">
                                             Agree to terms and conditions
                                         </label>
                                         <ShowError isShow={this.state.check} value={this.state.agree} name={" You must agree before submitting"} />
@@ -514,7 +515,7 @@ showSubCatogory() {
                                         <br/><br/><br/><br/>
                                     </div>
                                     <div className="col-md-6">
-                                        <label htmlFor="validationCustom01">Choose Images<span>*</span></label><br/>
+                                        <label htmlFor="validationCustom01">Choose Images (max 6 images) <span>*</span></label><br/>
 
 
                                         <FilePond

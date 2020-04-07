@@ -48,10 +48,7 @@ class DefaultHeader extends Component {
 		});
 	  }
     componentDidMount(){
-        const script = document.createElement("script");
-        script.src = "../../js/main.js";
-        script.async = true;
-        document.body.appendChild(script);
+       
     }
     state = {  }
     render() { 
@@ -134,8 +131,9 @@ class DefaultHeader extends Component {
                                     <li><Link to="/">Contact Page</Link></li>
                                 </ul>
                             </li>
-                            <li><Link to="/">My Shop</Link>
+                            <li><Link to="/Myshop">My Shop</Link>
                                 <ul className="sub-menu">
+                                    <li><Link  to="/Myshop">My Shop</Link></li>
                                     <li><Link  to="/Myshop/addProduct">Add Product</Link></li>
 
                                 </ul>
