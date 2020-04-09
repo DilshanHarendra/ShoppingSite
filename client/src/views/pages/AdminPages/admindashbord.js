@@ -1,11 +1,9 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class admindashbord extends Component {
-    render() {
-        return (
-            <div>
-                <h1>admin Dashbord </h1>
-            </div>
-        )
-    }
+export default function admindashbord() {
+    return (
+        <div>
+            <p>huuu</p>
+        </div>
+    )
 }
