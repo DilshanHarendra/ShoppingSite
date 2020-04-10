@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col,FormGroup ,Label, Input, Button } from 'reactstrap';
+import axios from 'axios';
 
 
 export default class storemanagerform extends Component {
@@ -58,7 +59,20 @@ export default class storemanagerform extends Component {
 
     onSubmitForm(event){
        event.preventDefault();
-       console.log(this.state.firstName);
+       
+       const storeManager={
+            firstName:this.state.firstName,
+            lastName:this.state.lastName,
+            birthDay:this.state.birthDay,
+            email:this.state.email,
+            password:this.state.password,
+            address:this.state.address,
+            telephonenumber:this.state.telephonenumber
+       }
+       axios.post('http://localhost:3001/storeManager/add',storeManager)
+       .then(res=>console.log(res.data))
+       .catch(console.log('error in sendig storemanager '));
+       window.location='http://localhost:3000/adminDashbord';
        
         
     }
@@ -69,7 +83,7 @@ export default class storemanagerform extends Component {
     render() {
         return (
            <div style={Styles.regForm}>
-            <Form   onSubmit={this.onSubmitForm}>
+            <Form  method="POST"  onSubmit={this.onSubmitForm}>
                 <h4 style={Styles.regHeadertext}>Register new Store Manager</h4>
              <Row form>
                 <Col md={6}>

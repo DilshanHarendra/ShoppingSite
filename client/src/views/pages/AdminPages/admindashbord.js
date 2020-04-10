@@ -1,6 +1,7 @@
 import React,{Component} from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import StoreManagerForm from './StoreManagerRegister/storemanagerform';
+import StoreManagerTable from './StoreManagerRegister/storemanagerview';
 
 
 
@@ -12,8 +13,8 @@ export default class admindashbord extends Component {
                 <Col style={colStyle}>
                     <StoreManagerForm/>
                 </Col>
-                <Col>
-                    <p>2</p>
+                <Col style={colStyle}>
+                    <StoreManagerTable/>
                 </Col>
             </Row>
             <Row>
