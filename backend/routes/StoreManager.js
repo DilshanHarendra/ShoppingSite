@@ -9,46 +9,14 @@ router.use(core());
 
 let StoreManager = require('../schemas/StoreManagerSchema');
 
-// router.post('/add',function(rqs,res){
-//     const body = rqs.body
-//     if (!body) {
-//         return res.status(400).json({
-//             success: false,
-//             error: 'You must provide a StoreManager',
-//         })
-//     }
-
-//     const storeManager = new StoreManager(body);
-
-//     if (!storeManager) {
-//         return res.status(400).json({ success: false, error: err })
-//     }
-
-//     storeManager.save().then(() => {
-//             return res.status(201).json({
-//                 success: true,
-//                 id: storeManager._id,
-//                 message: 'Store Manager created!',
-//             })
-//         })
-//         .catch(error => {
-//             return res.status(400).json({
-//                 error,
-//                 message: 'Store Manager not created!',
-//             })
-//         })
-
-
-   
-// });
-
 
 router.route('/add').post((req,res)=>{
     const firstName=req.body.firstName;
     const lastName=req.body.lastName;
     const birthDay=req.body.birthDay;
-    const password =req.body.password
+    const password =req.body.password;
     const emailAddress=req.body.email;
+    const address=req.body.address;
     const telephoneNumber=req.body.telephonenumber;
 
     const newStoreManager=new StoreManager({
@@ -57,6 +25,7 @@ router.route('/add').post((req,res)=>{
         password,
         emailAddress,
         birthDay,
+        address,
         telephoneNumber
     })
 
@@ -67,7 +36,41 @@ router.route('/add').post((req,res)=>{
 
 });
 
+router.route('/:id').delete((req,res)=>{
+    StoreManager.findByIdAndDelete(req.params.id)
+        .then(storemanager=>res.json('storemanager delete'))
+        .catch(err=>res.status(400).json('Error: '+err));
+});
 
+router.route('/:id').get((req,res)=>{
+    StoreManager.findById(req.params.id)
+        .then(exercise=>res.json(exercise))
+        .catch(err=>res.status(400).json('Error: '+err));
+});
+
+router.route('/').get((req,res)=>{
+    StoreManager.find()
+        .then(exercise=>res.json(exercise))
+        .catch(err=>res.status(400).json('Error: '+err));
+});
+
+
+
+router.route('/update/:id').post((req,res)=>{
+    StoreManager.findById(req.params.id)
+        .then(storemaager=>{
+            storemaager.firstName=req.body.firstName;
+            storemaager.lastName=req.body.lastName;
+            storemaager.birthDay=req.body.birthDay;
+            storemaager.password =req.body.password;
+            storemaager.emailAddress=req.body.email;
+            storemaager.telephoneNumber=req.body.telephonenumber;
+            storemaager.save()
+            .then(user=>res.json('storemanager updated'))
+            .catch(err=>res.status(400).json('Error: '+err));
+        })
+        .catch(err=>res.status(400).json('Error: '+err));
+});
 
 
 

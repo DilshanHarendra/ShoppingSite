@@ -15,9 +15,14 @@ const StoreManagerSchema = new mongoose.Schema({
     },
     emailAddress:{
         type: String,
-        required: true
+        required: true,
+        
     },
     birthDay:{
+        type:String,
+        required:true
+    },
+    address:{
         type:String,
         required:true
     },

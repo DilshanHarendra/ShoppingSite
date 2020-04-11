@@ -10,10 +10,10 @@ export default class admindashbord extends Component {
         return (
             <Container style={divStyle}>
             <Row>
-                <Col style={colStyle}>
+                <Col   style={colStyle}>
                     <StoreManagerForm/>
                 </Col>
-                <Col style={colStyle}>
+                <Col xs="auto" style={colStyle}>
                     <StoreManagerTable/>
                 </Col>
             </Row>
