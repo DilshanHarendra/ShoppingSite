@@ -7,6 +7,9 @@ const productRoute = require('./routes/Product');
 const userRoute=require('./routes/User')
 app.use('/product',productRoute);
 app.use('/User',userRoute);
+const storeManagerRoute =require('./routes/StoreManager');
+app.use('/storeManager',storeManagerRoute);
+
 app.use(core());
 app.use(express.static('public'));
 app.use('/uploads',express.static('./uploads'));

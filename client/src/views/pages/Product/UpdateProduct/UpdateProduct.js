@@ -1,6 +1,6 @@
 import React,{Component} from "react";
-import ShowError from "../ShowError";
-import '../../../../css/addProduct.css'
+
+import '../../../../css/updateProduct.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 import {BrowserRouter as Router, Link} from "react-router-dom";
@@ -17,12 +17,13 @@ import FilePondPluginImageResize from 'filepond-plugin-image-resize';
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size';
 import {Checkbox, TextField} from "@material-ui/core";
+import ShowError from "../ShowError";
 
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,FilePondPluginImageResize,FilePondPluginFileValidateType,FilePondPluginImageValidateSize)
 
 
-class AddProduct extends  Component{
+class UpdateProduct extends  Component{
 
 constructor(props) {
 
@@ -47,23 +48,78 @@ constructor(props) {
         discount:null,
         check:false,
         sellerID:"001",
-        files: [],
-        sSize:''
+        files:  [ ],
+        cImages:[],
+        sSize:'',
+        id:this.props.match.params.id,
+        maxImages:6
     }
 
 
 
 }
-componentDidMount() {
-   // fetch('/product/getProducts').then(data=>data.json()).then(data=>console.log(data)).catch(err=>console.log(err));
-    const script = document.createElement("script");
-    script.src = "../../../../js/main.js";
-    script.async = true;
-    document.body.appendChild(script);
+    componentDidMount(){
+    axios({
+            methode: 'GET',
+            url:'http://localhost:3001/product/getProduct',
+            params:{s:true,id:this.state.id}
+        }).then(res=>{
+            this.setState({
+                data:res.data
+            },()=>{this.setElemets()})
+        }).catch(err=>console.log(err));
+    }
 
-}
+    setElemets(){
+    let pData=this.state.data[0];
+    let imgArr=[];
+
+    for (let i=0;i<pData.images.length;i++){
+        let tarr={
+            source: 'http://localhost:3001'+pData.images[i],
+            options: {type: 'local'}
+        }
+        imgArr=[...imgArr,tarr];
+
+    }
+        console.log(imgArr);
+
+    let isShippingFree,isDiscount;
+    if (pData.shipping==""||pData.shipping==null){
+        isShippingFree=true;
+    }else{
+        isShippingFree=false;
+    }
+    if (pData.discount==""||pData.discount==null){
+        isDiscount=false;
+    }else {
+        isDiscount=true;
+    }
 
 
+    this.setState({
+        freeShipping:isShippingFree,
+        agree:false,
+        addDiscount:isDiscount,
+        proName:pData.proName,
+        catogory:pData.catogory,
+        subCatogory:pData.subCatogory,
+        size:[pData.size[0],pData.size[1],pData.size[2],pData.size[3],pData.size[4],pData.size[5]],
+        brand:pData.brand,
+        quantity:pData.quantity,
+        condition:pData.condition,
+        description:pData.description,
+        price:pData.price,
+        shipping:pData.shipping,
+        discount:pData.discount,
+        check:false,
+        sellerID:"001",
+        files:[],
+        cImages:pData.images,
+        sSize:'',
+        maxImages:(6-pData.images.length)
+    })
+    }
 
 
 
@@ -103,6 +159,9 @@ componentDidMount() {
         }
     }
 
+
+
+
     showShippingPrice(){
         if (!this.state.freeShipping){
             return <div> <br/><br/>
@@ -128,7 +187,7 @@ componentDidMount() {
         }
     }
     handleInit() {
-    //console.log('FilePond instance has initialised', this.state.files);
+    console.log('FilePond instance has initialised', this.state.files);
 
     }
     setSize =e=>{
@@ -159,7 +218,23 @@ componentDidMount() {
     }
 
 
+    deleteImage=(image)=>{
+       var tImage=this.state.cImages;
+       tImage.splice(tImage.indexOf(image),1);
+      this.setState({
+          cImages:tImage,
+          maxImages:(this.state.maxImages+1)
+      })
+        let sendData={
+          id:this.state.id,
+          img:image,
+          uImages:tImage
+        }
+axios.post("http://localhost:3001/product/deleteImage",sendData)
+    .then(res=>console.log("img delete res",res))
+    .catch(err=>console.log("img delete err",err))
 
+    }
 
 
 
@@ -246,7 +321,6 @@ showSubCatogory() {
             this.state.quantity===""||this.state.condition===""||
             this.state.price===""||(!this.state.freeShipping&&this.state.shipping==="")||
                 (this.state.addDiscount&&this.state.discount ==="")||
-            (this.state.files==null||this.state.files.length===0)||
             this.state.agree===""){
             this.setState({
                 check:true
@@ -264,9 +338,11 @@ showSubCatogory() {
         delete values.sucss1;
         delete values.sucss2;
         delete values.sucss3;
-        delete  values.agree;
-        delete  values.sSize;
+        delete values.agree;
+        delete values.sSize;
+        delete values.maxImages;
 
+        delete  values.check;
         let imgs=[];
 
 
@@ -276,30 +352,39 @@ showSubCatogory() {
                 formData.append('file', this.state.files[key])
                 imgs=[this.state.files[key].name,...imgs]
             }
+            var len=this.state.files.length;
             delete  values.files;
-            values.proimages = imgs;
+            delete  values.cImages;
+            delete  values.data;
 
-            axios.post('http://localhost:3001/product/addProduct',values)
+            values.proimages = imgs;
+            console.log("form data",len)
+
+            axios.post('http://localhost:3001/product/updateProduct',values)
                 .then(response1=>{
                     console.log(response1.statusText);
-                    axios.post('http://localhost:3001/product/uploadProduct',formData)
-                        .then(response2=>{
+                    if(len!=0){
+                        axios.post('http://localhost:3001/product/uploadProduct',formData)
+                            .then(response2=>{
 
-                            console.log(response2.statusText);
-                            this.setState({
-                                error:response2.statusText
+                                console.log(response2.statusText);
+                                this.setState({
+                                    error:response2.statusText
+                                });
+                               window.location.replace('/oneProduct/'+response2.data);
+                            })
+                            .catch(error=>{
+                                console.log(error);
+                                this.setState({
+                                    error:"Can not Upload the images"
+
+                                });
+
                             });
-                            window.location.replace('/oneProduct/'+response2.data);
+                    }else{
+                        window.location.replace('/oneProduct/'+response1.data);
+                    }
 
-                        })
-                        .catch(error=>{
-                            console.log(error);
-                            this.setState({
-                                error:"Can not Upload the images"
-
-                            });
-
-                        });
                 })
                 .catch(error=>{
                     console.log(error);
@@ -343,17 +428,16 @@ showSubCatogory() {
 
                     <div className="page-top-info">
                         <div className="container">
-                            <h2>Add New Product</h2>
+                            <h2>Update Product {this.state.proName}</h2>
                             <div className="site-pagination">
-                                <a href="index.html">Home</a> /
-                                <a href="index.html">Shop</a>
+                                Home / Shop / Update Product/{this.state.proName}
                             </div>
                             <h3 className="error">{this.state.error}</h3>
 
                         </div>
                     </div>
 
-                            <form ref={form => this.formEl = form} className="needs-validation" encType="multipart/form-data" onSubmit={this.submitHandler} >
+                            <form ref={form => this.formEl = form} className="needs-validation" onSubmit={this.submitHandler} encType="multipart/form-data"  >
                                 <div className="container">
                                     <div className="row">
                                     <div className="col-md-6">
@@ -515,15 +599,27 @@ showSubCatogory() {
                                         <br/><br/><br/><br/>
                                     </div>
                                     <div className="col-md-6">
-                                        <label htmlFor="validationCustom01">Choose Images (max 6 images) <span>*</span></label><br/>
+                                        <label htmlFor="validationCustom01">Choose Images (max Images {this.state.maxImages})<span>*</span></label><br/>
 
+                                        {this.state.cImages.map(image=>(
+
+
+                                        <div className="imgconatinor" key={image}>
+                                            <div >
+                                                <img className="imgbox" src={"http://localhost:3001"+image} alt=""/>
+                                                <i onClick={()=>this.deleteImage(image)} className="fa fa-close"></i>
+
+                                            </div>
+                                        </div>
+                                        ))}
 
                                         <FilePond
-                                            required={true}
+
+                                            required={this.state.cImages.length<=0}
                                             ref={ref => this.pond = ref}
                                             files={this.state.files}
                                             allowMultiple={true}
-                                            maxFiles={6}
+                                            maxFiles={this.state.maxImages}
                                             labelIdle='Drag & Drop your Product Images or <span class="filepond--label-action"> Browse </span>'
                                             acceptedFileTypes={['image/*']}
                                             labelFileTypeNotAllowed={"Invalid file"}
@@ -546,7 +642,7 @@ showSubCatogory() {
                                                     })
                                                 }
 
-
+console.log(fileItems)
 
 
                                             }}
@@ -572,4 +668,4 @@ showSubCatogory() {
 
 
 }
-export default AddProduct;
+export default UpdateProduct;
