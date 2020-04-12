@@ -36,4 +36,9 @@ try{
 
 }
 });
+
+router.get('/checkEmail',async function(req,res){
+
+
+});
 module.exports = router;

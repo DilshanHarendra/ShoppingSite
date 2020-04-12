@@ -24,7 +24,7 @@ class Register extends Component {
       newPassword: "",
       newPasswordck: "",
       valid: [false,false,false,false,false],
-      Invalid: [true,true,true,true,true]
+      Invalid: [false,false,false,false,false]
     };
   }
 
@@ -32,6 +32,13 @@ class Register extends Component {
     this.setState({
       [e.target.name]: e.target.value,
     });
+
+    if(this.state.newPassword===this.state.newPasswordck)
+    {
+      
+    }else{
+      
+    }
   };
 
   submitHandler = (e) => {
@@ -40,6 +47,10 @@ class Register extends Component {
     const data = this.state;
 
     delete data.newPasswordck;
+    delete data.valid;
+    delete data.Invalid;
+
+    
 
     try {
       axios.post("http://localhost:3001/User/addUser", data).then((res) => {
@@ -71,6 +82,8 @@ class Register extends Component {
                         placeholder="Full Name"
                         name="Fullname"
                         autoComplete="Fullname"
+                        valid={this.state.valid[0]}
+                        invalid={this.state.Invalid[0]}
                         value={this.state.Fullname}
                         onChange={this.onChangeHandler}
                       />
@@ -86,6 +99,8 @@ class Register extends Component {
                         placeholder="Username"
                         name="Username"
                         autoComplete="Username"
+                        valid={this.state.valid[1]}
+                        invalid={this.state.Invalid[1]}
                         value={this.state.Username}
                         onChange={this.onChangeHandler}
                       />
@@ -100,6 +115,8 @@ class Register extends Component {
                         placeholder="Email"
                         name="email"
                         className="form-control-warning"
+                        valid={this.state.valid[2]}
+                        invalid={this.state.Invalid[2]}
                         autoComplete="email"
                         onChange={this.onChangeHandler}
                       />
@@ -115,21 +132,22 @@ class Register extends Component {
                         placeholder="Password"
                         className="form-control-success"
                         name="newPassword"
-                        valid={this.state.valid}
-                        invalid={this.state.Invalid}
+                        valid={this.state.valid[3]}
+                        invalid={this.state.Invalid[3]}
                         autoComplete="new-password"
                         onChange={this.onChangeHandler}
                         
                       />
                     </InputGroup>
-                    {/* <InputGroup className="mb-4">
+                    <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="flaticon-unlock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Repeat password" name="newPasswordck" autoComplete="new-password" value={this.state.newPasswordck}/>
-                    </InputGroup> */}
+                      <Input type="password" placeholder="Repeat password" name="newPasswordck" autoComplete="new-password" valid={this.state.valid[4]}
+                        invalid={this.state.Invalid[4]} value={this.state.newPasswordck} onChange={this.onChangeHandler}/>
+                    </InputGroup>
                     <Button type="submit" color="success" block>
                       Create Account
                     </Button>
