@@ -9,21 +9,24 @@ export default class admindashbord extends Component {
     render() {
         return (
             <Container style={divStyle}>
-            <Row>
-                <Col   style={colStyle}>
-                    <StoreManagerForm/>
-                </Col>
-                <Col xs="auto" style={colStyle}>
-                    <StoreManagerTable/>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <p>3</p>
-                </Col>
-               
-            </Row>
-
+                <Row>
+                    <Col style={colStyleheder}>
+                        <h2>Admin Dashbrod</h2>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col style={colStyle}>
+                        <StoreManagerForm/>
+                    </Col>
+                    <Col xs="auto" style={colStyle}>
+                        <StoreManagerTable/>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <p>3</p>
+                    </Col>
+                </Row>
         </Container>
         )
     }
@@ -37,4 +40,10 @@ const divStyle={
 
 const colStyle={
     padding:'5px'
+}
+
+const colStyleheder={
+    backgroundColor:"white",
+    padding: '10px',
+    borderRadius:'10px'
 }
