@@ -2,19 +2,13 @@ const express= require("express");
 const app= express();
 const mongoose= require('mongoose');
 const core = require('cors');
-
 //******************************************Routers***********************************************************************
 const productRoute = require('./routes/Product');
-const storeManagerRoute =require('./routes/StoreManager');
-
-//payment
-const paymentRoute = require('./routes/Payment');
-
+const userRoute=require('./routes/User')
 app.use('/product',productRoute);
+app.use('/User',userRoute);
+const storeManagerRoute =require('./routes/StoreManager');
 app.use('/storeManager',storeManagerRoute);
-
-//payment
-app.use('/payment',paymentRoute);
 
 app.use(core());
 app.use(express.static('public'));
