@@ -18,7 +18,8 @@ import payConfirm from "./views/pages/Payment/payConfirm"
 import UpdateProduct from "./views/pages/Product/UpdateProduct/UpdateProduct";
 import MyShop from "./views/pages/Product/MyShop/MyShop";
 import AdminDashbord from "./views/pages/AdminPages/admindashbord";
-
+import fakeAuth from "../src/views/pages/fakeAuth"
+import Login from "../../client/src/views/pages/Login"
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
 // Containers
@@ -29,10 +30,17 @@ const loading = () => <div className="animated fadeIn pt-3 text-center">Loading.
 // const Page404 = React.lazy(() => import('./views/Pages/Page404'));
 // const Page500 = React.lazy(() => import('./views/Pages/Page500'));
 
+// const PrivateRoute = ({ component: Component, ...rest }) => (
+//   <Route {...rest} render={(props) => (
+//     fakeAuth.isAuthenticated === true
+//       ? <Component {...props} />
+//       : <Redirect to={{
+//           pathname: '/login',
+//           state: { from: props.location }
+//         }} />
+//   )} />
+// )
 class App extends Component {
-
-
-
 
   render() {
     return (
@@ -42,6 +50,7 @@ class App extends Component {
                 <DefaultHeader/>
                 <Switch>
                     <Route  path="/" exact   component={Home} />
+                    <Route path="/login" exact component={Login}/>
                     <Route exact path="/Register" component={Register} />
                     <Route path="/allProducts/:id" exact component={ShowAllProducts} />
                     <Route path="/oneProduct/:id" exact component={ShowOneProduct} />
