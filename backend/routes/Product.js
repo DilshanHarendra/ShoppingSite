@@ -4,7 +4,7 @@ const uniqid = require('uniqid');
 const bodyParser =require('body-parser');
 const fileUpload = require('express-fileupload');
 const core = require('cors');
-
+const fs= require('fs')
 
 
 
@@ -21,8 +21,17 @@ router.use(core());
 router.get('/getProducts',async function (req,res) {
 
     try {
+
         if (req.query.s){
             delete req.query.s;
+
+            if (req.query.maxprice!=""){
+                req.query['price']={$gte: parseInt(req.query.minprice),$lte: parseInt(req.query.maxprice)}
+                delete req.query.maxprice;
+                delete req.query.minprice;
+            }
+
+            console.log(req.query);
             var data=await productSchema.find(req.query);
             res.send( data);
         }else {
@@ -32,11 +41,13 @@ router.get('/getProducts',async function (req,res) {
         console.log(e);
         res.status(500).send("err " + e);
     }
+
 });
 
 router.get('/getProduct',async function (req,res) {
 
     try {
+       // console.log(req.query);
         if (req.query.s){
             delete req.query.s;
             var data=await productSchema.find(req.query);
@@ -50,8 +61,90 @@ router.get('/getProduct',async function (req,res) {
     }
 });
 
+router.post('/deleteImage',async  function (req,res) {
+console.log(req.body);
+
+    var result=await productSchema.updateOne({id:req.body.id},{images:req.body.uImages});
+    if (result.ok==1){
+        fs.unlink("."+req.body.img,function (err) {
+            if (err){
+                res.status(404).send(err)
+            }else{
+                res.send( req.body.id+" deleted");
+            }
+
+        })
+    }else {
+        res.status(404).send("parameter error")
+    }
 
 
+
+});
+
+router.post('/deleteProduct',async function (req,res) {
+    try {
+        if (req.body.isDelete){
+            console.log("id ",req.body);
+            var data= await  productSchema.findOne({id:req.body.id})
+            console.log("no find err ");
+            for (var i=0;i<data.images.length;i++){
+                fs.unlink("."+data.images[i],function (err) {
+                    if (err){
+                        res.status(404).send("image delete error");
+                    }
+                });
+            }
+            productSchema.deleteOne({'id':req.body.id},function (err) {
+                if (err){
+                    console.log("error"+err);
+                    res.status(500).send(err);
+                }else{
+                    res.send("ok");
+                }
+            });
+        } else{
+            res.status(404).send("error query");
+        }
+    }catch (e) {
+
+    }
+
+
+});
+
+
+router.post('/updateProduct',async  function (req,res) {
+
+let newdata=req.body;
+    newdata['addDate']=new Date();
+pId=  req.body.id;
+
+    let productImages =[];
+    req.body['proimages'].forEach(img=>{
+        productImages=['/uploads/products/'+pId+'_'+img,...productImages]
+    });
+    delete newdata.id;
+
+
+    newdata={ '$addToSet':{
+            images:productImages
+        },...newdata};
+    console.log(newdata);
+   var result =await productSchema.updateOne({id:pId},newdata);
+console.log(result)
+   if (result.ok==1){
+       console.log("ok",result);
+       res.send(pId);
+   }else{
+       res.status(404).send("parameter error");
+   }
+
+
+
+
+
+});
 
 
 router.post('/addProduct',async function (req,res) {

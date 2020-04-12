@@ -125,17 +125,6 @@ option{
 .form-control{
     background-color: transparent;
 }
-
-
-
-
-
-
-
-
-
-
-
 .checkBox{
     margin-top: 50px;
 
@@ -144,4 +133,31 @@ option{
     display: flex;
     width: 100%;
     padding: 10px;
+}
+.imgconatinor {
+    width: 350px;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 20px;
+
+}
+.imgbox{
+    width: 100%;
+    height: 450px;
+}
+.fa-close{
+    padding: 12px;
+    border-radius: 60px;
+    border: 2px solid gray;
+    color: red;
+    position: absolute;
+    z-index: 5;
+    margin-top: 5px;
+    margin-left: -40px;
+    font-size: 15px;
+
+}
+.fa-close:hover{
+    border: 2px solid red;
 }

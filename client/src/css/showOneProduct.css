@@ -2,3 +2,29 @@
     overflow: hidden;
     outline: none;
 }
+.tag{
+    color: #ff1058;
+    font-weight: bold;
+}
+body{
+    background-color: white;
+}
+.fa{
+    color: #1d2124;
+    font-size: 25px;
+}
+.fa:hover{
+    color: gray;
+}
+.btnGroup{
+    border: 1px solid gray;
+    padding: 20px;
+    align-items: center;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    width: 300px;
+
+}
+.btn-danger{
+    margin-left: 5%;
+}
