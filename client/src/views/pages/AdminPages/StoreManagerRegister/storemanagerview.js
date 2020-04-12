@@ -76,7 +76,8 @@ export default class storemanagerview extends Component {
     render() {
         return (
           <Container style={Styles.regTablePlanal}>
-                    <Table >
+                <h4 style={Styles.regHeadertext}>Register new Store Manager</h4>
+                    <Table  responsive >
                         <thead>
                               <tr>
             <th>fname</th>
@@ -109,5 +110,8 @@ const Styles={
         backgroundColor:"white",
         padding: '10px',
         borderRadius:'10px'
+    },
+    regHeadertext:{
+        padding: '10px',
     }
 }

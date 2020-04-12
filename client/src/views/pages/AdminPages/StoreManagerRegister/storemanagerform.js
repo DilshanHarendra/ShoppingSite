@@ -84,8 +84,9 @@ export default class storemanagerform extends Component {
     render() {
         return (
            <div style={Styles.regForm}>
-            <Form  method="POST"  onSubmit={this.onSubmitForm}>
                 <h4 style={Styles.regHeadertext}>Register new Store Manager</h4>
+            <Form  method="POST"  onSubmit={this.onSubmitForm}>
+               
              <Row form>
                 <Col md={6}>
                     <FormGroup>
