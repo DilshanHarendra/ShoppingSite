@@ -28,37 +28,36 @@ class cardPayment extends Component {
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <Label>Bank Name:</Label>
-                                                    <Input type="text" name="bname" id="bname" placeholder="Enter bank name" />
+                                                    <Input type="text" name="bname" id="bname" placeholder="Enter bank name" required />
                                                 </FormGroup>
                                             </Col>
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <Label>Branch</Label>
-                                                    <Input type="text" name="branch" id="branch" placeholder="Enter bank branch" />
+                                                    <Input type="text" name="branch" id="branch" placeholder="Enter bank branch" required />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
                                         <FormGroup>
                                             <Label>Amount</Label>
-                                            <Input type="text" name="Amount" id="Amount" placeholder="Enter deposited amount"/>
+                                            <Input type="text" name="Amount" id="Amount" placeholder="Enter deposited amount" required />
                                         </FormGroup>
                                         <Row form>
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <Label>Deposited date</Label>
-                                                    <Input type="date" name="ddate" id="ddate" />
+                                                    <Input type="date" name="ddate" id="ddate" required />
                                                 </FormGroup>
                                             </Col>
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <Label>Attach the slip here</Label>
                                                     <br />
-                                                    <Button color="dark">ATTACH</Button>
+                                                    <Input type="file" required />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <br />
-                                        <Button color="danger">SUBMIT</Button>
+                                        <Button color="danger" className="ml-auto my-2">SUBMIT</Button>
                                     </Form>
                                 </CardBody>
                                 <CardFooter>

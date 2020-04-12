@@ -6,40 +6,50 @@ import Form from "reactstrap/es/Form";
 import FormGroup from "reactstrap/es/FormGroup";
 import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
-import FormText from "reactstrap/es/FormText";
+import axios from "axios";
 
-class payConfirm extends Component {
-    state = {  }
+class payDummyLogin extends Component {
+    state = {  };
+
+    paymentLogin = () =>{
+        axios({
+            method: 'POST',
+            url:'http://localhost:3001/payment/login'
+        });
+    };
+
     render() {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">VERIFICATION</h1>
-                    <Row className="my-2 justify-content-center">
+                    <h1 className="my-5 mx-auto text-center text-dark">Login-Payment</h1>
+                    <Row className="my-2">
                         <Col className="mx-auto mb-5" xl="6">
                             <Card>
+                                <CardImg top width="100%" src="./images/Payment/1.jpg" alt="Card image cap" />
                                 <CardBody>
-                                    <CardTitle ><h3 className="text-info font-weight-bold">Two-step verification</h3></CardTitle>
-                                    <CardSubtitle className="font-weight-bold">Check your email inbox </CardSubtitle>
+                                    <CardTitle ><h3 className="text-info font-weight-bold">Login Auth</h3></CardTitle>
+                                    <CardSubtitle className="font-weight-bold">Admin or Client</CardSubtitle>
                                     <br />
-                                    <Form>
+
+                                    <Form onSubmit={this.paymentLogin()} method="post">
                                         <Row form>
                                             <Col md={6}>
                                                 <FormGroup>
-                                                    <Label>Email</Label>
-                                                    <Input type="tel" name="email" id="exampleEmail" placeholder="Card holder email" required />
-                                                </FormGroup>
-                                            </Col>
-                                            <Col md={8}>
-                                                <FormGroup>
-                                                    <Label>Serial number</Label>
-                                                    <Input type="text" name="serialNumber" id="exampleEmail" placeholder="Enter secret code in email" />
+                                                    <Label>Username</Label>
+                                                    <Input type="text" name="username" id="username" placeholder="Username" required />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Button color="secondary">VERIFY</Button>
-                                        <br />
-                                        <Label>Did not get the code? <a href="#">Send again</a></Label>
+                                        <Row form>
+                                            <Col md={6}>
+                                                <FormGroup>
+                                                    <Label>Password</Label>
+                                                    <Input type="text" name="password" id="password" placeholder="Password" required />
+                                                </FormGroup>
+                                            </Col>
+                                        </Row>
+                                        <Button type="submit" color="danger" className="ml-auto">LOGIN</Button>
                                     </Form>
                                 </CardBody>
                                 <CardFooter>
@@ -47,6 +57,7 @@ class payConfirm extends Component {
                                 </CardFooter>
                             </Card>
                         </Col>
+
                     </Row>
                     <CFooter><h6 className="text-right">By <span className="text-danger">PaymentAdmin</span></h6></CFooter>
                 </Container>
@@ -57,4 +68,4 @@ class payConfirm extends Component {
     }
 }
 
-export default payConfirm;
+export default payDummyLogin;

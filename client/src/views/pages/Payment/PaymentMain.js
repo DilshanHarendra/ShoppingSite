@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col} from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
+import {Link,NavLink} from 'react-router-dom';
 
 class PaymentMain extends Component {
-    state = {  }
+    state = {}
+
     render() {
         return (
             <div>
@@ -18,7 +20,9 @@ class PaymentMain extends Component {
                                     <CardTitle className="text-info font-weight-bold">Credit/Debit</CardTitle>
                                     <CardSubtitle>Pay by Credit/Debit card</CardSubtitle>
                                     <CardText>Clients will be able to make online payments through Credit/Debit card. We assure that this method is 100% secure. <br /> <br /></CardText>
-                                    <Button color="primary">Next</Button>
+                                    <Link to="/cardPayment">
+                                        <Button color="primary">Next</Button>
+                                    </Link>
                                 </CardBody>
                                 <CardFooter>
                                     <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>
@@ -30,10 +34,13 @@ class PaymentMain extends Component {
                             <Card>
                                 <CardImg top width="100%" src="./images/Payment/2.jpg" alt="Card image cap" />
                                 <CardBody>
+
                                     <CardTitle className="text-info font-weight-bold">Bank receipt</CardTitle>
                                     <CardSubtitle>Pay through bank receipt</CardSubtitle>
                                     <CardText>Make payment to our bank account and submit the receipt here. <br /> Bank account: 11223345678  <br /> Bank: Commercial Bank PLC</CardText>
-                                    <Button color="primary">Next</Button>
+                                    <Link to="/receiptPayment">
+                                        <Button color="primary">Next</Button>
+                                    </Link>
                                 </CardBody>
                                 <CardFooter>
                                     <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>

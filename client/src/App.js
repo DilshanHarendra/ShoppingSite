@@ -18,6 +18,7 @@ import payConfirm from "./views/pages/Payment/payConfirm"
 import UpdateProduct from "./views/pages/Product/UpdateProduct/UpdateProduct";
 import MyShop from "./views/pages/Product/MyShop/MyShop";
 import AdminDashbord from "./views/pages/AdminPages/admindashbord";
+import payLogin from "./views/pages/Payment/payDummyLogin"
 
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -53,6 +54,7 @@ class App extends Component {
                     <Route path="/receiptPayment" component={receiptPayment} />
                     <Route path="/payConfirm" component={payConfirm} />
                     <Route path="/adminDashbord" component={AdminDashbord}/>
+                    <Route path="/payLogin" component={payLogin} />
                 </Switch>
                 <DefaultFooter/>
                 
