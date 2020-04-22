@@ -10,7 +10,7 @@ const StoreManagerSchema = new mongoose.Schema({
         required: true
     },
     password:{
-        type: Array,
+        type: String,
         required: true
     },
     emailAddress:{

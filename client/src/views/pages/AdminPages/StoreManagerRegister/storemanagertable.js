@@ -32,6 +32,7 @@ export default class storemanagerview extends Component {
         super(props)
           this.deleteStoreManager=this.deleteStoreManager.bind(this);
           this.loadStoreManagerData=this.loadStoreManagerData.bind(this);
+          this.handleSearch=this.handleSearch.bind(this);
           this.state={storemanagerlist:[]};
   
  
@@ -73,6 +74,9 @@ export default class storemanagerview extends Component {
         })
    }
    
+   handleSearch(event){
+
+   }
     
     
     

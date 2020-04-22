@@ -9,7 +9,7 @@ export default class StoremanagerPanal extends Component {
             <Container style={divStyle}>
             <Row>
                 <Col style={colStyleheder}>
-                    <h2>Admin Dashbrod</h2>
+                    <h2>Admin Dashboard</h2>
                 </Col>
             </Row>
             <Row>
@@ -33,7 +33,7 @@ export default class StoremanagerPanal extends Component {
 
 const divStyle={
     width:'100%',
-    backgroundColor:'#f5ebeb'
+    backgroundColor:'#F6F6F6'
 }
 
 const colStyle={

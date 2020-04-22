@@ -16,8 +16,8 @@ export default function Admindashbord() {
 
     return (
         <div className="container" style={divStyle}>
-        <Nav tabs>
-          <NavItem>
+        <Nav tabs >
+          <NavItem  >
             <NavLink 
               className={classnames({ active: activeTab === '1' })}
               onClick={() => { toggle('1'); }}
@@ -25,7 +25,7 @@ export default function Admindashbord() {
               Store Manager
             </NavLink>
           </NavItem>
-          <NavItem>
+          <NavItem    >
             <NavLink
               className={classnames({ active: activeTab === '2' })}
               onClick={() => { toggle('2'); }}
@@ -34,8 +34,8 @@ export default function Admindashbord() {
             </NavLink>
           </NavItem>
         </Nav>
-        <TabContent activeTab={activeTab}>
-          <TabPane tabId="1">
+        <TabContent activeTab={activeTab} >
+          <TabPane tabId="1" >
             <Row>
               <Col sm="12">
                   <br></br>
@@ -59,7 +59,7 @@ export default function Admindashbord() {
 
 const divStyle={
     width:'100%',
-    backgroundColor:'#f5ebeb'
+    backgroundColor:'#F6F6F6'
 }
 
 const colStyle={
@@ -71,3 +71,8 @@ const colStyleheder={
     padding: '10px',
     borderRadius:'10px'
 }
+
+
+
+
+

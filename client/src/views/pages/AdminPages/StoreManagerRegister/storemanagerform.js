@@ -3,7 +3,7 @@ import { Form, Row, Col,FormGroup ,Label, Input, Button } from 'reactstrap';
 import axios from 'axios';
 
 
-export default class storemanagerform extends Component {
+export default class Storemanagerform extends Component {
 
     constructor(props){
         super(props)
