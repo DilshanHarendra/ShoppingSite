@@ -28,3 +28,22 @@ body{
 .btn-danger{
     margin-left: 5%;
 }
+.card{
+    padding: 20px;
+    width: 100%;
+    height: auto;
+    margin: 20px;
+}
+.errmess{
+    color: red;
+}
+.btn-primary{
+    margin-bottom: 20px;
+}
+.fa-star-o{
+    color: #ff1058;
+
+}
+.fa-fade{
+    color: gray;
+}

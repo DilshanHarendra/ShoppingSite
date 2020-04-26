@@ -8,6 +8,11 @@ app.use('/product',productRoute);
 app.use(core());
 app.use(express.static('public'));
 app.use('/uploads',express.static('./uploads'));
+
+app.use('/public', express.static('./Files'));
+
+
+
 /*************************************************************************************************************************/
 
 
@@ -45,4 +50,5 @@ app.get('/',function (req,res) {
 app.listen(3001,function () {
     console.log("server is running");
 });
+
 

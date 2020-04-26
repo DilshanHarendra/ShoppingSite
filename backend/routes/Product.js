@@ -4,11 +4,29 @@ const uniqid = require('uniqid');
 const bodyParser =require('body-parser');
 const fileUpload = require('express-fileupload');
 const core = require('cors');
-const fs= require('fs')
-
-
+const fs= require('fs');
+const io = require('socket.io')(4000);
+const Suggsions= require('../Functions/Suggesions');
 
 const productSchema = require('../schemas/ProductSchema');
+const reviewSchema = require('../schemas/Review');
+const users = {};
+io.on('connection', socket => {
+
+    socket.on('addReview', review => {
+        console.log(review);
+        socket.broadcast.emit('newReview', review);
+    });
+
+});
+
+var suggsions=new Suggsions();
+setInterval(()=>{
+    suggsions.ProductSuggesions();
+
+},10000);
+
+
 
 var pId;
 router.get('/',function (req,res) {
@@ -24,15 +42,16 @@ router.get('/getProducts',async function (req,res) {
 
         if (req.query.s){
             delete req.query.s;
-
+            console.log("getProducts");
             if (req.query.maxprice!=""){
-                req.query['price']={$gte: parseInt(req.query.minprice),$lte: parseInt(req.query.maxprice)}
+                req.query['price']={$gte: parseInt(req.query.minprice),$lte: parseInt(req.query.maxprice)};
                 delete req.query.maxprice;
+                delete req.query.minprice;
                 delete req.query.minprice;
             }
 
             console.log(req.query);
-            var data=await productSchema.find(req.query);
+            var data=await productSchema.find(req.query).sort( { totClicks: -1 } );
             res.send( data);
         }else {
             res.status(500).send("query err");
@@ -47,9 +66,17 @@ router.get('/getProducts',async function (req,res) {
 router.get('/getProduct',async function (req,res) {
 
     try {
-       // console.log(req.query);
+
         if (req.query.s){
             delete req.query.s;
+
+            if (req.query.tclick==='true'){
+             var result=  await productSchema.updateOne({id:req.query.id},{ $inc:{totClicks:0.5}});
+                delete req.query.tclick;
+                console.log(req.query);
+            }
+
+
             var data=await productSchema.find(req.query);
             res.send( data);
         }else {
@@ -60,6 +87,48 @@ router.get('/getProduct',async function (req,res) {
         res.status(500).send("err " + e);
     }
 });
+
+router.get('/getSearchProduct',async function (req,res) {
+
+    try {
+        if (req.query.s){
+            delete req.query.s;
+
+            var searchOptions;
+            searchOptions=new RegExp(req.query.key,'i')
+
+            var data=await productSchema.find({proName:searchOptions});
+            res.send( data);
+        }else {
+            res.status(500).send("query err");
+        }
+    }catch (e) {
+        console.log(e);
+        res.status(500).send("err " + e);
+    }
+});
+
+
+
+router.get('/letestProduct',async function (req,res) {
+
+    try {
+        // console.log(req.query);
+        if (req.query.s){
+            delete req.query.s;
+            console.log(req.query);
+            var data=await productSchema.find({}).sort({addDate:-1});
+            res.send( data);
+        }else {
+            res.status(500).send("query err");
+        }
+    }catch (e) {
+        console.log(e);
+        res.status(500).send("err " + e);
+    }
+});
+
+
 
 router.post('/deleteImage',async  function (req,res) {
 console.log(req.body);
@@ -75,7 +144,7 @@ console.log(req.body);
 
         })
     }else {
-        res.status(404).send("parameter error")
+        res.status(404).send("parameter error");
     }
 
 
@@ -162,6 +231,7 @@ router.post('/addProduct',async function (req,res) {
     newQuery['id']=pId;
     newQuery['addDate']=new Date();
     newQuery['images']=productImages;
+    newQuery['totClicks']=0;
 
     console.log(newQuery);
 
@@ -245,9 +315,68 @@ router.get('/sucess',function (req,res) {
 
 
 
+/*
+router.get('/subCatogory',function (req,res) {
+
+    const path='../File/subCatagory.txt';
+    console.log(path)
+
+
+    fs.writeFile(path, "hrllo", function(err) {
+        if (err)res.status(404).send(err)
+        else res.send("ok");
+
+    });
+});
+
+router.post('/addCatogory',function (req,res) {
 
 
 
+});
+*/
+router.post('/addReview',async function (req,res) {
+
+    try {
+        var newQuery=[];
+        newQuery=req.body;
+        newQuery['addDate']=new Date();
+
+
+        console.log(newQuery);
+
+        const nReviewew = new reviewSchema(newQuery);
+        await nReviewew.save(function (err) {
+            if (err) {
+                console.error(err);
+                res.status(500).send( "Eroor"+err);
+            }
+            console.log("Review saved");
+            res.redirect('/product/sucess');
+        });
+    }catch (e) {
+        res.status(404).send( "Eroor"+e);
+    }
+
+});
+
+router.get('/getReviews',async function (req,res) {
+
+    try {
+        // console.log(req.query);
+        if (req.query.s){
+            delete req.query.s;
+            console.log("review",req.query);
+            var data=await reviewSchema.find(req.query);
+            res.send( data);
+        }else {
+            res.status(500).send("query err");
+        }
+    }catch (e) {
+        console.log(e);
+        res.status(500).send("err " + e);
+    }
+});
 
 
 module.exports = router;

@@ -18,9 +18,11 @@ class ShowAllProducts extends Component{
             mCatogory:props.history.location.pathname.split("/")[2],
             size:null,
             data:[],
-            price:[0,1000]
-
-        }
+            products:[],
+            length:0,
+            price:[0,1000],
+            pageloading:'block'
+        };
 
 
 
@@ -63,12 +65,20 @@ class ShowAllProducts extends Component{
                     minPrice:0,
                     maxPrice:10000,
                     size:null,
-                },()=>this.getData());
+                },()=>{this.getData();});
                 window.location.reload();
             });
-
+        window.onscroll = function(){
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            var scrolled = (winScroll / height) * 100;
+            console.log(scrolled);
+    };
 
     }
+
+
+
 
     getData =()=>{
         let cancel;
@@ -80,10 +90,15 @@ class ShowAllProducts extends Component{
         }).then(res=>{
             this.setState({
                 data:res.data
-            },()=>console.log(this.state.data))
+            },()=>{
+
+                setTimeout(()=>{
+                    document.getElementById('preloder').style.display="none";
+                },400);
+            });
         }).catch(err=>{
 
-            console.log(err)
+            console.log(err);
         });
 
 
@@ -105,7 +120,7 @@ clearSize(){
         this.setState({
             subCatogory:s,
             mCatogory:mc
-        },()=>this.getData())
+        },()=>this.getData());
 
     }
     setSize =e=>{
@@ -114,19 +129,19 @@ clearSize(){
        clicked.checked=true;
         this.setState({
             size:clicked.id
-        },()=>this.getData())
+        },()=>this.getData());
     }
 
     setPrice=(e,values)=>{
         console.log("price change")
        this.setState({
             price:values
-        })
+        });
 
     }
 
     getDataByPrice=()=>{
-        this.getData()
+        this.getData();
     }
 
 
@@ -138,12 +153,20 @@ clearSize(){
     }
 
 
+    setActive(x){
 
+      document.getElementById(x).setAttribute("class","active");
+    }
+    removeActive(x){
+        document.getElementById(x).setAttribute("class","");
+    }
 render() {
 
 
     return <>
-
+        <div id="preloder">
+            <div className="loader"></div>
+        </div>
         <div className="page-top-info" style={{height: '50px'}}>
             <div className="container">
                 <h4>CAtegory PAge</h4>
@@ -160,16 +183,19 @@ render() {
                         <div className="filter-widget">
                             <h2 className="fw-title">Categories</h2>
                             <ul className="category-menu">
-                                <li><Link to="/allProducts/Women" >Women</Link>
+                                <li id="c1" onMouseOver={()=>this.setActive("c1")} onMouseOut={()=>this.removeActive("c1")} ><Link to="/allProducts/Women"  >Women</Link>
                                     <ul className="sub-menu">
                                         <li  onClick={()=>this.setCatogories("Women","Midi Dresses")} >Midi Dresses </li>
                                         <li onClick={()=>this.setCatogories("Women", "Maxi Dresses")}>Maxi Dresses</li>
                                         <li onClick={()=>this.setCatogories("Women", "Prom Dresses")}>Prom Dresses</li>
                                         <li onClick={()=>this.setCatogories("Women", "Little Black Dresses")}>Little Black Dresses</li>
                                         <li onClick={()=>this.setCatogories("Women", "Mini Dresses")}>Mini Dresses</li>
+                                        <li onClick={()=>this.setCatogories("Women", "Coats")}>Coats</li>
+                                        <li onClick={()=>this.setCatogories("Women", "Jeans")}>Jeans</li>
+
                                     </ul>
                                 </li>
-                                <li><Link to="/allProducts/Men" >Man</Link>
+                                <li id="c2" onMouseOver={()=>this.setActive("c2")} onMouseOut={()=>this.removeActive("c2")} ><Link to="/allProducts/Men" >Man</Link>
                                     <ul className="sub-menu">
                                         <li  onClick={()=>this.setCatogories("Men","Shorts & Pants")}>Shorts & Pants  </li>
                                         <li  onClick={()=>this.setCatogories("Men", "T-Shirt")}>T-Shirt </li>
@@ -178,9 +204,9 @@ render() {
                                         <li  onClick={()=>this.setCatogories("Men", "Belts")}>Belts </li>
                                     </ul>
                                 </li>
-                                <li><Link to="/allProducts/Children">Children</Link></li>
-                                <li><Link to="/allProducts/BP">Bags & Purses</Link></li>
-                                <li><Link to="/allProducts/Jewelry">Jewelry</Link>
+                                <li id="c3" onMouseOver={()=>this.setActive("c3")} onMouseOut={()=>this.removeActive("c3")} ><Link to="/allProducts/Children">Children</Link></li>
+                                <li id="c4" onMouseOver={()=>this.setActive("c4")} onMouseOut={()=>this.removeActive("c4")}><Link to="/allProducts/BP">Bags & Purses</Link></li>
+                                <li id="c5" onMouseOver={()=>this.setActive("c5")} onMouseOut={()=>this.removeActive("c5")}><Link to="/allProducts/Jewelry">Jewelry</Link>
                                     <ul className="sub-menu">
                                         <li  onClick={()=>this.setCatogories("Jewelry","Engagement & Wedding Jewelry")}>Engagement & Wedding Jewelry  </li>
                                         <li  onClick={()=>this.setCatogories("Jewelry", "Vintage & Antique Jewelry")}>Vintage & Antique Jewelry </li>
@@ -190,7 +216,7 @@ render() {
                                     </ul>
 
                                 </li>
-                                <li><Link to="/allProducts/Footwear">Footwear</Link>
+                                <li id="c6" onMouseOver={()=>this.setActive("c6")} onMouseOut={()=>this.removeActive("c6")}><Link to="/allProducts/Footwear">Footwear</Link>
                                     <ul className="sub-menu">
                                         <li  onClick={()=>this.setCatogories("Footwear","Sneakers")}>Sneakers  </li>
                                         <li  onClick={()=>this.setCatogories("Footwear", "Sandals")}>Sandals </li>
@@ -279,7 +305,7 @@ render() {
                     </div>
 
 
-                    <div className="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
+                    <div className="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0" id="products">
                         <div className="row">
                             {this.state.data.length==0?(
                                 <h1>No Results Found</h1>

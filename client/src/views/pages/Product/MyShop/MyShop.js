@@ -68,6 +68,7 @@ componentDidMount() {
                 <tr>
                     <th style={{'max-width':'450px'}} >Product</th>
                     <th>Orders</th>
+                    <th style={{'width':'110px'}}>Total Clicks</th>
                     <th>price ($)</th>
                     <th>Shipping ($)</th>
                     <th>Discount (%)</th>

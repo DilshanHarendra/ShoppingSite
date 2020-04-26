@@ -35,6 +35,7 @@ class DefaultHeader extends Component {
 		  warning: false,
 		  danger: false,
 		  info: false,
+          skeyWord:''
 		};
 	
 	
@@ -50,6 +51,19 @@ class DefaultHeader extends Component {
     componentDidMount(){
        
     }
+    getKeyWord=e=>{
+
+	    this.setState({
+            skeyWord:e.target.value
+        })
+    }
+    search=e=>{
+        e.preventDefault();
+        window.location.replace('/search/'+this.state.skeyWord);
+
+    }
+
+
     state = {  }
     render() { 
         return ( <React.Fragment>
@@ -65,8 +79,8 @@ class DefaultHeader extends Component {
                                 </Link>
                             </div>
                             <div className="col-xl-6 col-lg-5">
-                                <form className="header-search-form">
-                                    <input type="text" placeholder="Search on divisima ...."/>
+                                <form className="header-search-form" onSubmit={this.search}>
+                                    <input type="text" onChange={this.getKeyWord} value={this.skeyWord} placeholder="Search on divisima ...."/>
                                     <button><i className="flaticon-search"></i></button>
                                 </form>
                             </div>

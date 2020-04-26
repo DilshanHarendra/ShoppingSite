@@ -49,7 +49,7 @@ constructor(props) {
         sellerID:"001",
         files: [],
         sSize:''
-    }
+    };
 
 
 
@@ -71,11 +71,11 @@ componentDidMount() {
     if (this.state.freeShipping){
         this.setState({
             freeShipping:false
-        })
+        });
     }else{
             this.setState({
                 freeShipping:true
-            })
+            });
         }
     }
 
@@ -83,11 +83,11 @@ componentDidMount() {
         if (this.state.addDiscount){
             this.setState({
                 addDiscount:false
-            })
+            });
         }else{
             this.setState({
                 addDiscount:true
-            })
+            });
         }
     }
 
@@ -95,11 +95,11 @@ componentDidMount() {
         if (this.state.agree){
             this.setState({
                 agree:true
-            })
+            });
         }else{
             this.setState({
                 agree:false
-            })
+            });
         }
     }
 
@@ -141,18 +141,18 @@ componentDidMount() {
         }
         this.setState({
             size:temp
-        })
+        });
 
        for (let i=0;i<6; i++){
             if(this.state.size[i]!='false'){
                 this.setState({
                     sSize:"ok"
-                })
+                });
                 break;
             }else{
                 this.setState({
                     sSize:""
-                })
+                });
             }
         }
 
@@ -176,6 +176,8 @@ showSubCatogory() {
                 <option value="Mini Dresses">Mini Dresses</option>
                 <option value="Shorts & Pants">Shorts & Pants</option>
                 <option value="T-Shirt">T-Shirt</option>
+                <option value="Coats">Coats</option>
+                <option value="Jeans">Jeans</option>
 
             </select>
             <ShowError isShow={this.state.check} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
@@ -250,11 +252,11 @@ showSubCatogory() {
             this.state.agree===""){
             this.setState({
                 check:true
-            })
+            });
         } else{
         this.setState({
             check:false
-        })
+        });
         const  values=this.state;
 
         delete values.box;
@@ -274,7 +276,7 @@ showSubCatogory() {
             const formData = new FormData();
             for (const key of Object.keys(this.state.files)) {
                 formData.append('file', this.state.files[key])
-                imgs=[this.state.files[key].name,...imgs]
+                imgs=[this.state.files[key].name,...imgs];
             }
             delete  values.files;
             values.proimages = imgs;
@@ -353,7 +355,7 @@ showSubCatogory() {
                         </div>
                     </div>
 
-                            <form ref={form => this.formEl = form} className="needs-validation" encType="multipart/form-data" onSubmit={this.submitHandler} >
+                            <form  ref={form => this.formEl = form} noValidate className="needs-validation" encType="multipart/form-data" onSubmit={this.submitHandler} >
                                 <div className="container">
                                     <div className="row">
                                     <div className="col-md-6">
@@ -543,7 +545,7 @@ showSubCatogory() {
                                                 if (this.state.files!=null||this.state.files.length!=0) {
                                                     this.setState({
                                                         sucss3: false
-                                                    })
+                                                    });
                                                 }
 
 

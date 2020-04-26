@@ -595,7 +595,7 @@ showSubCatogory() {
                                         <br/><br/>
 
 
-                                        <button className="submit" type="submit">Add Product</button>
+                                        <button className="submit" type="submit">Update Product</button>
                                         <br/><br/><br/><br/>
                                     </div>
                                     <div className="col-md-6">
@@ -639,7 +639,7 @@ showSubCatogory() {
                                                 if (this.state.files!=null||this.state.files.length!=0) {
                                                     this.setState({
                                                         sucss3: false
-                                                    })
+                                                    });
                                                 }
 
 console.log(fileItems)
