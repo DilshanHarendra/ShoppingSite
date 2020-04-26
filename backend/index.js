@@ -4,7 +4,14 @@ const mongoose= require('mongoose');
 const core = require('cors');
 //******************************************Routers***********************************************************************
 const productRoute = require('./routes/Product');
+const userRoute=require('./routes/User')
 app.use('/product',productRoute);
+app.use('/User',userRoute);
+const storeManagerRoute =require('./routes/StoreManager');
+app.use('/storeManager',storeManagerRoute);
+const productCategory=require('./routes/ProductCategory');
+app.use('/productCategory',productCategory);
+
 app.use(core());
 app.use(express.static('public'));
 app.use('/uploads',express.static('./uploads'));
