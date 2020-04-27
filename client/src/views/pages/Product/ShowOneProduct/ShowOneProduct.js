@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {Carousel} from "react-responsive-carousel";
-import styles from 'react-responsive-carousel/lib/styles/carousel.min.css';
+
 //npm install react-responsive-carousel --save
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -56,7 +56,16 @@ class ShowOneProduct extends Component{
     componentDidMount(){
 console.log("componentDidMount()");
 
+        socketIOClient('http://localhost:4000').on('newReview', data => {
+            console.log("response",data);
+            if(data.pid==this.state.id){
+                console.log(data)
+                this.setState({
+                    reviews:[data,...this.state.reviews]
+                },()=>this.calAverageRating());
+            }
 
+        });
 
 
         this.getData();
@@ -218,17 +227,11 @@ console.log("componentDidMount()");
                     .catch(err=>{
                         console.log(err)
                     });
-                socketIOClient('http://localhost:4000').on('newReview', data => {
-                    console.log("response",data);
-                    if(data.pid==this.state.id){
-                        console.log(data)
-                        this.setState({
-                            reviews:[data,...this.state.reviews]
-                        },()=>this.calAverageRating());
-                    }
 
+                this.setState({
+                    reviewText:'',
+                    rating:-1,
                 });
-
 
             }
 
