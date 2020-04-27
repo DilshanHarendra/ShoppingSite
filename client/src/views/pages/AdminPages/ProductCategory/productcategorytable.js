@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import axios from 'axios'
-import { Container, Table,Badge } from 'reactstrap'
+import { Container, Table,Badge, Input } from 'reactstrap'
 
 
 
@@ -30,6 +30,8 @@ export default class productcategorytable extends Component {
         this.loadProductCategoryData=this.loadProductCategoryData.bind(this);
         this.categoryList=this.categoryList.bind(this);
         this.deleteProductCategory=this.deleteProductCategory.bind(this);
+        this.handleSearch=this.handleSearch.bind(this);
+
         this.state={
             productcategorylist:[]
         };
@@ -63,6 +65,26 @@ export default class productcategorytable extends Component {
         
     }
 
+    handleSearch(event){
+        let storemng= event.target.value.trim().toLowerCase();
+ 
+        if(storemng.length>0){
+        this.setState({
+            productcategorylist: this.state.productcategorylist.filter(item=>{
+             return (
+                        item.categoryName.toLowerCase().match(event.target.value)||
+                        item.categoryDiscription.toLowerCase().match(event.target.value)||
+                        item.categoryNote.toLowerCase().match(event.target.value)||
+                        item.subCategory.filter(sub=>sub.toLowerCase().match(event.target.value))
+                    
+                     )
+             })
+         })
+         }else{
+             this.loadProductCategoryData()
+         }
+    
+    }
 
     categoryList(){
         return this.state.productcategorylist.map(currentproductcategory=>{
@@ -74,6 +96,7 @@ export default class productcategorytable extends Component {
         return (
             <Container style={Styles.regTablePlanal}>
             <h4 style={Styles.regHeadertext}>Product Catergory</h4>
+                <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
                 <Table  responsive >
                     <thead>
                           <tr>
