@@ -13,12 +13,13 @@ router.route('/add').post((req,res)=>{
     const categoryName=req.body.productCategoryName;
     const categoryDiscription=req.body.productCategoryDiscription;
     const categoryNote=req.body.productCategoryNote;
-    
+    const subCategory=req.body.subCategoryArry;
 
     const newProductCategory=new ProductCategory({
         categoryName,
         categoryDiscription,
-        categoryNote
+        categoryNote,
+        subCategory
     })
 
     newProductCategory.save()

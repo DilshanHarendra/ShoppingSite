@@ -6,7 +6,7 @@ import StoreManagerTable from './storemanagertable';
 export default class StoremanagerPanal extends Component {
     render() {
         return (
-            <Container style={divStyle}>
+    <Container style={divStyle}>
             <Row>
                 <Col style={colStyleheder}>
                     <h2>Admin Dashboard</h2>

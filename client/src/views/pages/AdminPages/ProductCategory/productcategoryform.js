@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Row, Col,FormGroup ,Label, Input, Button,Alert,Fade  } from 'reactstrap';
+import { Form, Row, Col,FormGroup ,Label, Input, Button,Alert,Fade ,Badge } from 'reactstrap';
 import axios from 'axios';
 
 export default class Productcategoryform extends Component {
@@ -11,6 +11,8 @@ export default class Productcategoryform extends Component {
             productCategoryName:'',
             productCategoryDiscription:'',
             productCategoryNote:'',
+            subCategory:'',
+            subCategoryArry:[],
             datasendError: false,
             datasendSuccessful: false,
         }
@@ -20,6 +22,8 @@ export default class Productcategoryform extends Component {
         this.handeleproductCategoryNote=this.handeleproductCategoryNote.bind(this);
         this.onSubmitForm=this.onSubmitForm.bind(this);
         this.cleartextFilde=this.cleartextFilde.bind(this);
+        this.handeleproductSubCategory=this.handeleproductSubCategory.bind(this);
+        this.handeleproductAddCategory=this.handeleproductAddCategory.bind(this);
     }
     
     handeleproductCategoryName(event){
@@ -34,11 +38,22 @@ export default class Productcategoryform extends Component {
         this.setState({productCategoryNote:event.target.value})
     }
 
+    handeleproductSubCategory(event){
+        this.setState({subCategory:event.target.value});
+      
+    }
+    handeleproductAddCategory(event){
+      
+        this.state.subCategoryArry.push(this.state.subCategory);
+        this.setState({subCategory:''})
+    }
+
     cleartextFilde(){
         this.setState({
             productCategoryName:'',
             productCategoryDiscription:'',
-            productCategoryNote:''
+            productCategoryNote:'',
+            subCategory:''
         })
     }
     
@@ -50,7 +65,8 @@ export default class Productcategoryform extends Component {
 
             productCategoryName:this.state.productCategoryName,
             productCategoryDiscription:this.state.productCategoryDiscription,
-            productCategoryNote:this.state.productCategoryNote
+            productCategoryNote:this.state.productCategoryNote,
+            subCategoryArry:this.state.subCategoryArry
         }
 
         axios.post('http://localhost:3001/productCategory/add',productCategory)
@@ -112,7 +128,7 @@ export default class Productcategoryform extends Component {
         }
          
         
-            <h4 style={Styles.regHeadertext}>Create Product Category</h4>
+<h4 style={Styles.regHeadertext}>Create Product Category</h4>
         <Form  method="POST"  onSubmit={this.onSubmitForm}>
          <Row form>
             <Col md={6}>
@@ -126,17 +142,30 @@ export default class Productcategoryform extends Component {
                     <Input type="text" name="categoryDiscription"   placeholder=" Discription"  value={this.state.productCategoryDiscription} onChange={this.handeleproductCategoryDiscription}  required/>
                 </FormGroup>
              </Col>
-             <Col md={6}>
+           
+            <Col md={6}>
                  <FormGroup>
                      <Label for="examplePassword">Product Category Note</Label>
                     <Input type="text" name="categoryNote"   placeholder="Note" value={this.state.productCategoryNote}  onChange={this.handeleproductCategoryNote} required/>
                 </FormGroup>
-             
-              
             </Col>
+         
         </Row>
-        <Button type="submit" value="Submit" color="success">Create Product Category</Button>
-                     
+        <Form inline>
+            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                <Input type="text" name="categoryNote"   placeholder="Sub Category" value={this.state.subCategory} onChange={this.handeleproductSubCategory} />
+            </FormGroup>
+            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                <Button color="primary" onClick={this.handeleproductAddCategory} >+</Button>
+            </FormGroup>
+                <h2><Badge color="primary">{this.state.subCategoryArry.length}</Badge></h2> 
+    
+                  
+        </Form>
+         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+           
+            <Button type="submit" value="Submit" color="success">Create Product Category</Button>
+        </FormGroup>                 
         </Form>
         </div> 
         )

@@ -45,7 +45,7 @@ export default function Admindashbord() {
           </TabPane>
           <TabPane tabId="2">
             <Row>
-              <Col sm="6">
+              <Col sm="12">
               <ProductCategoryPanal></ProductCategoryPanal>
               </Col>
             </Row>
