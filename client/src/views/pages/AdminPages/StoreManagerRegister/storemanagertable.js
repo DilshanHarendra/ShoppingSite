@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Container } from 'reactstrap';
+import { Table, Container, Input } from 'reactstrap';
 import axios from 'axios';
 
 
@@ -13,6 +13,9 @@ const StoreManager=props=>(
         <td>{props.storemanager.telephoneNumber}</td>
         <td>
         <button className="btn btn-danger" onClick={()=>{props.deleteStoreManager(props.storemanager._id)}}>Delete</button>
+        </td>
+        <td>
+        <button className="btn btn-warning"  >Edit </button>
         </td>
     </tr>
 
@@ -29,7 +32,10 @@ export default class storemanagerview extends Component {
         super(props)
           this.deleteStoreManager=this.deleteStoreManager.bind(this);
           this.loadStoreManagerData=this.loadStoreManagerData.bind(this);
-          this.state={storemanagerlist:[]};
+          this.handleSearch=this.handleSearch.bind(this);
+          this.state={storemanagerlist:[],
+                      searchkeyword:''  
+        };
   
  
     }
@@ -70,6 +76,26 @@ export default class storemanagerview extends Component {
         })
    }
    
+   handleSearch(event){
+       let storemng= event.target.value.trim().toLowerCase();
+
+       if(storemng.length>0){
+       this.setState({
+          storemanagerlist: this.state.storemanagerlist.filter(item=>{
+            return (item.firstName.toLowerCase().match(event.target.value)||
+                    item.lastName.toLowerCase().match(event.target.value)||
+                    item.emailAddress.toLowerCase().match(event.target.value)||
+                    item.address.toLowerCase().match(event.target.value)||
+                    item.birthDay.toLowerCase().match(event.target.value)||
+                    item.telephoneNumber.toLowerCase().match(event.target.value)
+                    )
+            })
+        })
+        }else{
+            this.loadStoreManagerData()
+        }
+   
+   }
     
     
     
@@ -77,16 +103,18 @@ export default class storemanagerview extends Component {
         return (
           <Container style={Styles.regTablePlanal}>
                 <h4 style={Styles.regHeadertext}>Register new Store Manager</h4>
+                    <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
                     <Table  responsive >
                         <thead>
                               <tr>
-            <th>fname</th>
+            <th>Fname</th>
             <th>lname</th>
             <th>Birthday</th>
             <th>Email</th> 
             <th>Address</th>
             <th>Telnumber</th>
-            <th>Action</th>
+            <th>Delete</th>
+            <th>Edite</th>
 
          
         </tr>

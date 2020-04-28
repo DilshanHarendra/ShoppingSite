@@ -1,41 +1,65 @@
-import React,{Component} from 'react';
-import { Container, Row, Col } from 'reactstrap';
-import StoreManagerForm from './StoreManagerRegister/storemanagerform';
-import StoreManagerTable from './StoreManagerRegister/storemanagerview';
+import React, { useState } from 'react';
+import{ TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col } from 'reactstrap';
+import StoreManagerPanal from './StoreManagerRegister/StoremanagerPanal';
+import ProductCategoryPanal from './ProductCategory/createcategoryPanal';
+import classnames from 'classnames';
 
 
+export default function Admindashbord() {
+   
+    const [activeTab, setActiveTab] = useState('1');
 
-export default class admindashbord extends Component {
-    render() {
-        return (
-            <Container style={divStyle}>
-                <Row>
-                    <Col style={colStyleheder}>
-                        <h2>Admin Dashbrod</h2>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col style={colStyle}>
-                        <StoreManagerForm/>
-                    </Col>
-                    <Col xs="auto" style={colStyle}>
-                        <StoreManagerTable/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
-                        <p>3</p>
-                    </Col>
-                </Row>
-        </Container>
-        )
-    }
+   
+    const toggle = tab => {
+        if(activeTab !== tab) setActiveTab(tab);
+      }
+
+    return (
+        <div className="container" style={divStyle}>
+        <Nav tabs >
+          <NavItem  >
+            <NavLink 
+              className={classnames({ active: activeTab === '1' })}
+              onClick={() => { toggle('1'); }}
+            >
+              Store Manager
+            </NavLink>
+          </NavItem>
+          <NavItem    >
+            <NavLink
+              className={classnames({ active: activeTab === '2' })}
+              onClick={() => { toggle('2'); }}
+            >
+              Product Catergory
+            </NavLink>
+          </NavItem>
+        </Nav>
+        <TabContent activeTab={activeTab} >
+          <TabPane tabId="1" >
+            <Row>
+              <Col sm="12">
+                  <br></br>
+                <StoreManagerPanal></StoreManagerPanal>
+              </Col>
+            </Row>
+          </TabPane>
+          <TabPane tabId="2">
+            <Row>
+              <Col sm="12">
+              <ProductCategoryPanal></ProductCategoryPanal>
+              </Col>
+            </Row>
+          </TabPane>
+        </TabContent>
+      </div>
+    )
 }
+
 
 
 const divStyle={
     width:'100%',
-    backgroundColor:'#f5ebeb'
+    backgroundColor:'#F6F6F6'
 }
 
 const colStyle={
@@ -47,3 +71,8 @@ const colStyleheder={
     padding: '10px',
     borderRadius:'10px'
 }
+
+
+
+
+
