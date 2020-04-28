@@ -7,6 +7,7 @@ import FormGroup from "reactstrap/es/FormGroup";
 import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import axios from "axios";
+import {Link,NavLink} from 'react-router-dom';
 
 class payDummyLogin extends Component {
     constructor(props) {
@@ -14,7 +15,8 @@ class payDummyLogin extends Component {
 
         this.state = {
             username:"",
-            password:""
+            password:"",
+            auth:false
         }
     }
 
@@ -24,14 +26,27 @@ class payDummyLogin extends Component {
         });
     };
 
+    makeGetRequest = () => {
+        if(this.state.auth === true){
+            return  <Link to="/payAdmin" />
+        }
+        else {
+            return <Link to="/payDummyLogin" />
+        }
+    };
+
     paymentLogin = (e) =>{
         e.preventDefault();
         const data = this.state;
         try {
-            axios.post("http://localhost:3001/Payment/login", data).then((res) => {
-                console.log(res.data);
+            axios.post("http://localhost:3001/Payment/login", data).then(res=>{
+                this.setState({
+                    auth:res.data
+                });
             });
         } catch (e) {}
+
+        this.makeGetRequest();
     };
 
 

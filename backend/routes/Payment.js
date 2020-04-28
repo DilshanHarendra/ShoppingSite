@@ -18,32 +18,38 @@ router.use(sessions({
     saveUninitialized: true
 }));
 
-router.get('/',function (req,res) {
-    res.sendFile('./views/pages/Payment/payDummyLogin', {root:__dirname});
-});
 
-// router.get('/login',async function (req,res) {
-//     res.sendFile('./views/pages/Payment/payDummyLogin', {root:__dirname});
-// });
+router.get('/login',async function (req,res) {
+     session = req.session;
+     if(session.uniqueId)
+     {
+         res.redirect('/Payment/login')
+     }
+     res.send(false);
+});
 
 router.post('/login',async function (req,res) {
     //res.end(JSON.stringify(req.body));
     session = req.session;
+    if(session.uniqueId)
+    {
+        res.send(true);
+    }
     if(req.body.username === 'admin' && req.body.password === 'admin'){
         session.uniqueId=req.body.username;
     }
-
-    res.redirect('/redirects');
+    res.redirect('/Payment/redirects');
 });
 
 router.get('/redirects', function(req, res) {
     session = req.session;
     if(session.uniqueId)
     {
-        res.redirect('/admin')
+        res.send(true)
     }else
     {
-        res.end("Unauthorized")
+        res.send(false)
     }
 });
+
 module.exports = router;

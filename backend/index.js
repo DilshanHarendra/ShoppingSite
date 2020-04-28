@@ -4,8 +4,8 @@ const mongoose= require('mongoose');
 const core = require('cors');
 //******************************************Routers***********************************************************************
 const productRoute = require('./routes/Product');
-const userRoute=require('./routes/User')
-const paymentRoute=require('./routes/Payment')
+const userRoute=require('./routes/User');
+const paymentRoute=require('./routes/Payment');
 
 app.use('/product',productRoute);
 app.use('/User',userRoute);
