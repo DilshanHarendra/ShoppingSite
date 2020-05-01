@@ -46,7 +46,9 @@ export default class Productcategoryform extends Component {
       
         this.state.subCategoryArry.push(this.state.subCategory);
         this.setState({subCategory:''})
+         
     }
+    
 
     cleartextFilde(){
         this.setState({
