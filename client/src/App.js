@@ -66,7 +66,8 @@ class App extends Component {
                     <Route path="/receiptPayment" component={receiptPayment} />
                     <Route path="/payConfirm" component={payConfirm} />
                     <Route path="/adminDashbord" component={AdminDashbord}/>
-                    <Route path="/adminDashbord/productcategory" component={ProductCategory}/>
+                    <Route path="/productCategory" component={ProductCategory}/>
+                   
                 </Switch>
                 <DefaultFooter/>
                 

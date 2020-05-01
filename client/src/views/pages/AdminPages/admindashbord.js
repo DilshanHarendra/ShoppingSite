@@ -16,7 +16,7 @@ export default function Admindashbord() {
 
     return (
         <div className="container" style={divStyle}>
-        <Nav tabs >
+        {/* <Nav tabs >
           <NavItem  >
             <NavLink 
               className={classnames({ active: activeTab === '1' })}
@@ -50,7 +50,8 @@ export default function Admindashbord() {
               </Col>
             </Row>
           </TabPane>
-        </TabContent>
+        </TabContent> */}
+         <StoreManagerPanal></StoreManagerPanal>
       </div>
     )
 }
