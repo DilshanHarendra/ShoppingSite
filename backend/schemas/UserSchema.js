@@ -20,6 +20,10 @@ const UserSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    accTocken:{
+        type:String,
+        required:true
+    },
 
 });
 module.exports=mongoose.model('Users',UserSchema,'User')
