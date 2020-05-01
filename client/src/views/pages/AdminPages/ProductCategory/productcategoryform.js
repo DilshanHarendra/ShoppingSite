@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Row, Col,FormGroup ,Label, Input, Button,Alert,Fade ,Badge } from 'reactstrap';
+import { Form, Row, Col,FormGroup ,Label, Input, Button,Alert,Fade ,Badge, ListGroup, ListGroupItem } from 'reactstrap';
 import axios from 'axios';
 
 export default class Productcategoryform extends Component {
@@ -24,6 +24,7 @@ export default class Productcategoryform extends Component {
         this.cleartextFilde=this.cleartextFilde.bind(this);
         this.handeleproductSubCategory=this.handeleproductSubCategory.bind(this);
         this.handeleproductAddCategory=this.handeleproductAddCategory.bind(this);
+        this.handeleshowSubCategory=this.handeleshowSubCategory.bind(this);
     }
     
     handeleproductCategoryName(event){
@@ -47,6 +48,12 @@ export default class Productcategoryform extends Component {
         this.state.subCategoryArry.push(this.state.subCategory);
         this.setState({subCategory:''})
          
+    }
+
+    handeleshowSubCategory(){
+    return  this.state.subCategoryArry.map(subcat=>{
+        return  <ListGroupItem>{subcat}</ListGroupItem>
+    })
     }
     
 
@@ -96,6 +103,7 @@ export default class Productcategoryform extends Component {
         });
         // window.location='http://localhost:3000/adminDashbord';
         this.cleartextFilde();
+        this.setState({subCategoryArry:[]})
 
 
 
@@ -153,21 +161,23 @@ export default class Productcategoryform extends Component {
             </Col>
          
         </Row>
+
+            <ListGroup>
+               
+                {this.handeleshowSubCategory()}
+            </ListGroup>
         <Form inline>
             <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                 <Input type="text" name="categoryNote"   placeholder="Sub Category" value={this.state.subCategory} onChange={this.handeleproductSubCategory} />
             </FormGroup>
             <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
                 <Button color="primary" onClick={this.handeleproductAddCategory} >+</Button>
-            </FormGroup>
-                <h2><Badge color="primary">{this.state.subCategoryArry.length}</Badge></h2> 
-    
-                  
+            </FormGroup> 
+            <br></br>        
         </Form>
-         <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-           
-            <Button type="submit" value="Submit" color="success">Create Product Category</Button>
-        </FormGroup>                 
+            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                <Button type="submit" value="Submit" color="success">Create Product Category</Button>
+            </FormGroup>                 
         </Form>
         </div> 
         )
