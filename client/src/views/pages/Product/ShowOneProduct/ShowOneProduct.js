@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from "axios";
 import {Link} from "react-router-dom";
 import {Carousel} from "react-responsive-carousel";
-
+import styles from 'react-responsive-carousel/lib/styles/carousel.min.css';
 //npm install react-responsive-carousel --save
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';

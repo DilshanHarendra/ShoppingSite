@@ -20,14 +20,6 @@ io.on('connection', socket => {
 
 });
 
-var suggsions=new Suggsions();
-setInterval(()=>{
-    suggsions.ProductSuggesions();
-
-},10000);
-
-
-
 var pId;
 router.get('/',function (req,res) {
     res.send("product root");
@@ -43,15 +35,21 @@ router.get('/getProducts',async function (req,res) {
         if (req.query.s){
             delete req.query.s;
             console.log("getProducts");
+            var set=parseInt(req.query.sets);
             if (req.query.maxprice!=""){
+
                 req.query['price']={$gte: parseInt(req.query.minprice),$lte: parseInt(req.query.maxprice)};
+
+                delete req.query.sets;
                 delete req.query.maxprice;
                 delete req.query.minprice;
                 delete req.query.minprice;
             }
 
             console.log(req.query);
-            var data=await productSchema.find(req.query).sort( { totClicks: -1 } );
+            var data=await productSchema.find(req.query).skip(set).limit(3).sort( { totClicks: -1 } );
+
+
             res.send( data);
         }else {
             res.status(500).send("query err");

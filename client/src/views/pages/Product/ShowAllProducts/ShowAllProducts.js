@@ -21,7 +21,8 @@ class ShowAllProducts extends Component{
             products:[],
             length:0,
             price:[0,1000],
-            pageloading:'block'
+            pageloading:'block',
+            next:0
         };
 
 
@@ -68,11 +69,26 @@ class ShowAllProducts extends Component{
                 },()=>{this.getData();});
                 window.location.reload();
             });
-        window.onscroll = function(){
+        var scrollPos = 0;
+        window.onscroll = ()=>{
             const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            var ditection= window.pageYOffset|| document.documentElement.scrollTop;
+
             var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            var scrolled = (winScroll / height) * 100;
-            console.log(scrolled);
+
+            var productBox=document.getElementById('productBox').scrollHeight*(0.5); //  box height 80%
+          //  var scrolled = (winScroll / height) * 100-productBox;
+            var scrolled =winScroll;
+            //console.log(scrolled+" "+productBox);
+            if(scrolled>productBox &&((document.body.getBoundingClientRect()).top < scrollPos)){
+                    this.state.next+=3;
+                    console.log(scrolled+" "+productBox);
+                     this.getData();
+                }
+
+            scrollPos = (document.body.getBoundingClientRect()).top;
+
+
     };
 
     }
@@ -85,16 +101,16 @@ class ShowAllProducts extends Component{
         axios({
             methode: 'GET',
             url:'http://localhost:3001/product/getProducts',
-            params:{s:true,catogory:this.state.mCatogory,minprice:this.state.price[0],maxprice:this.state.price[1],size:this.state.size ,subCatogory:this.state.subCatogory },
+            params:{s:true,catogory:this.state.mCatogory,minprice:this.state.price[0],maxprice:this.state.price[1],size:this.state.size ,subCatogory:this.state.subCatogory,sets:this.state.next },
 
         }).then(res=>{
             this.setState({
-                data:res.data
+                data:[...this.state.data,...res.data]
             },()=>{
 
                 setTimeout(()=>{
                     document.getElementById('preloder').style.display="none";
-                },400);
+                },200);
             });
         }).catch(err=>{
 
@@ -306,7 +322,7 @@ render() {
 
 
                     <div className="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0" id="products">
-                        <div className="row">
+                        <div className="row" id="productBox">
                             {this.state.data.length==0?(
                                 <h1>No Results Found</h1>
                             ):(this.state.data.map(oneRow=>(
@@ -351,9 +367,7 @@ render() {
                             {this.state.data.length==0?(
                                 <></>
                             ):(
-                                <div className="text-center w-100 pt-3">
-                                    <button className="site-btn sb-line sb-dark">LOAD MORE</button>
-                                </div>
+                                <></>
                                 )}
 
 
