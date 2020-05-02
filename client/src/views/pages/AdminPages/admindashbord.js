@@ -27,11 +27,11 @@ export default function Admindashbord() {
       <Row style={iconpanalStyle}>
         <Col style={storeManagerColor} onClick={handleStoreManager}>
           <h2>Store Manager</h2>
-          <GrUserManager />
+          <GrUserManager size="3em" color="balck" />
         </Col>
         <Col style={productCategoryanagerColor} onClick={handleProductCategory}>
           <h2>Product Category </h2>
-          <GiTShirt/>
+          <GiTShirt size="3em" color="black"/>
 
 
 

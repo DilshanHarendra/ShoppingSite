@@ -44,9 +44,14 @@ export default class Productcategoryform extends Component {
       
     }
     handeleproductAddCategory(event){
-      
-        this.state.subCategoryArry.push(this.state.subCategory);
-        this.setState({subCategory:''})
+        if(this.state.subCategory.length>0){
+            this.state.subCategoryArry.push(this.state.subCategory);
+            this.setState({subCategory:''})
+        }else{
+            alert("SubCategory is empty"); 
+        }
+
+       
          
     }
 
@@ -147,10 +152,6 @@ export default class Productcategoryform extends Component {
                     <Input type="text" name="categoryName"  placeholder="Name" value={this.state.productCategoryName} onChange={this.handeleproductCategoryName} required/>
                  </FormGroup>
           
-                 <FormGroup>
-                     <Label for="examplePassword">Product Category Discription</Label>
-                    <Input type="text" name="categoryDiscription"   placeholder=" Discription"  value={this.state.productCategoryDiscription} onChange={this.handeleproductCategoryDiscription}  required/>
-                </FormGroup>
              </Col>
            
             <Col md={6}>
@@ -161,23 +162,46 @@ export default class Productcategoryform extends Component {
             </Col>
          
         </Row>
-
-            <ListGroup>
-               
-                {this.handeleshowSubCategory()}
-            </ListGroup>
-        <Form inline>
-            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                <Input type="text" name="categoryNote"   placeholder="Sub Category" value={this.state.subCategory} onChange={this.handeleproductSubCategory} />
+        <Row form>
+            <Col md={5}>
+                    
+                 <FormGroup>
+                     <Label for="examplePassword">Product Category Discription</Label>
+                    <Input type="text" name="categoryDiscription"   placeholder=" Discription"  value={this.state.productCategoryDiscription} onChange={this.handeleproductCategoryDiscription}  required/>
+                </FormGroup>
+            </Col>
+            <Col md={3}>
+                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                 <Label for="examplePassword">Sub-Category </Label>
+                    <Input type="text" name="categoryNote"   placeholder="Sub Category" value={this.state.subCategory} onChange={this.handeleproductSubCategory} />
+                </FormGroup>
+            </Col>
+            <Col Col md={3} >
+                <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
+                <Label for="examplePassword">SubCategory  </Label>
+                    <Button color="primary" onClick={this.handeleproductAddCategory} >+</Button>
+                </FormGroup> 
+            </Col>
+        </Row>
+        <Row>
+        <Col Col md={12} >
+            <FormGroup className="mb-2 mr-sm-2 mb-sm-0" >
+            <Label for="examplePassword">
+                <ListGroup>
+                    {this.handeleshowSubCategory()}
+                </ListGroup>
+            </Label>    
             </FormGroup>
-            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                <Button color="primary" onClick={this.handeleproductAddCategory} >+</Button>
-            </FormGroup> 
-            <br></br>        
-        </Form>
-            <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                <Button type="submit" value="Submit" color="success">Create Product Category</Button>
-            </FormGroup>                 
+        </Col>
+        </Row>
+        <Row >
+        <Col md={6}>
+          <FormGroup>
+                <Button type="submit" value="Submit" color="success">Create Product Category</Button>                  
+          </FormGroup>
+        </Col>
+       </Row>
+
         </Form>
         </div> 
         )

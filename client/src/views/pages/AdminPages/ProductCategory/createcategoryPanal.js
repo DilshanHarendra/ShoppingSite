@@ -13,7 +13,7 @@ export default class Createcategory extends Component {
                         <Col><h1>Product Category</h1></Col>
                     </Row>
                     <Row xs="2">
-                        <Col><ProductCategoryForm></ProductCategoryForm></Col>
+                        <Col ><ProductCategoryForm></ProductCategoryForm></Col>
                         <Col><ProductCategoryTable></ProductCategoryTable></Col>
                         
                     </Row>
