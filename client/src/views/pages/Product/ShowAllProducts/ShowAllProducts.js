@@ -140,8 +140,7 @@ clearSize(){
 
     }
     setSize =e=>{
-
-       var clicked=document.getElementById(e);
+        var clicked=document.getElementById(e);
        clicked.checked=true;
         this.setState({
             size:clicked.id
@@ -153,33 +152,25 @@ clearSize(){
        this.setState({
             price:values
         });
-
     }
 
     getDataByPrice=()=>{
         this.getData();
     }
 
-
-
-
     imgHover(id,image){
-
         document.getElementById(id).src='http://localhost:3001'+image;
     }
 
-
     setActive(x){
-
-      document.getElementById(x).setAttribute("class","active");
+        document.getElementById(x).setAttribute("class","active");
     }
     removeActive(x){
         document.getElementById(x).setAttribute("class","");
     }
-render() {
 
-
-    return <>
+    render() {
+        return <>
         <div id="preloder">
             <div className="loader"></div>
         </div>
@@ -208,7 +199,6 @@ render() {
                                         <li onClick={()=>this.setCatogories("Women", "Mini Dresses")}>Mini Dresses</li>
                                         <li onClick={()=>this.setCatogories("Women", "Coats")}>Coats</li>
                                         <li onClick={()=>this.setCatogories("Women", "Jeans")}>Jeans</li>
-
                                     </ul>
                                 </li>
                                 <li id="c2" onMouseOver={()=>this.setActive("c2")} onMouseOut={()=>this.removeActive("c2")} ><Link to="/allProducts/Men" >Man</Link>
@@ -228,9 +218,7 @@ render() {
                                         <li  onClick={()=>this.setCatogories("Jewelry", "Vintage & Antique Jewelry")}>Vintage & Antique Jewelry </li>
                                         <li  onClick={()=>this.setCatogories("Jewelry", "Handcrafted & Artisan Jewelry")}>Handcrafted & Artisan Jewelry </li>
                                         <li  onClick={()=>this.setCatogories("Jewelry", "Loose Diamonds & Gemstones")}>Loose Diamonds & Gemstones </li>
-
                                     </ul>
-
                                 </li>
                                 <li id="c6" onMouseOver={()=>this.setActive("c6")} onMouseOut={()=>this.removeActive("c6")}><Link to="/allProducts/Footwear">Footwear</Link>
                                     <ul className="sub-menu">
@@ -240,7 +228,6 @@ render() {
                                         <li  onClick={()=>this.setCatogories("Footwear", "Boots")}>Boots </li>
                                         <li  onClick={()=>this.setCatogories("Footwear", "Flip Flops")}>Flip Flops </li>
                                     </ul>
-
                                 </li>
                             </ul>
                         </div>
@@ -256,29 +243,19 @@ render() {
                                     style={{width:"250px"}}
                                     max={1000}
                                     onClick={this.getDataByPrice}
-
-
-
                                 />
                                     <div className="priceinput">
                                         <div >
                                             <label htmlFor="">{this.state.price[0]}</label>
                                             <label style={{width:'70px'}} htmlFor="">min Price</label>
-
                                         </div>
                                         <div style={{'margin-left':'120px'}} >
                                             <label htmlFor="">{this.state.price[1]}</label>
                                             <label style={{width:'70px'}}htmlFor="">max Price</label>
-
                                         </div>
-
-
                                     </div>
-
-
                             </div>
                         </div>
-
                         <div className="filter-widget mb-0">
                             <h2 className="fw-title">Size</h2>
                             <div className="fw-size-choose">
@@ -319,7 +296,6 @@ render() {
                             </ul>
                         </div>
                     </div>
-
 
                     <div className="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0" id="products">
                         <div className="row" id="productBox">

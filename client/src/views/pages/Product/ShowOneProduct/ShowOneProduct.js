@@ -416,16 +416,6 @@ console.log("componentDidMount()");
                                         </button>
                                     </DialogActions>
                                 </Dialog>
-
-
-
-
-
-
-
-
-
-
                                 <h2 className="p-title">{product.proName}</h2>
                                 <h5 style={{'color':'gray'}} className="p-title"><span className="tag">CATEGORY </span>{product.catogory+" "+product.subCatogory}</h5>
                                 <h2 style={{'color':'gray'}} className="p-title"><span className="tag">BRAND </span>{product.brand}</h2>
@@ -442,12 +432,6 @@ console.log("componentDidMount()");
                                 </div>
                                 <div className="fw-size-choose" id="sizeContainor">
                                     <p>Size</p>
-
-
-
-
-
-
                                 </div>
                                 <div className="quantity">
                                     <p>Quantity</p>
