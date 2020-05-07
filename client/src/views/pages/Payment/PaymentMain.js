@@ -55,7 +55,9 @@ class PaymentMain extends Component {
                                     <CardTitle className="text-info font-weight-bold">Refund payment</CardTitle>
                                     <CardSubtitle>Raise request for refund</CardSubtitle>
                                     <CardText>Only credit/debit card payments can be refunded. If you need to refund a bank payment, please send a request to below email. <br /> Email: support@adminpayment.com</CardText>
-                                    <Button color="primary">Next</Button>
+                                    <Link to="/refundPayment">
+                                        <Button color="primary">Next</Button>
+                                    </Link>
                                 </CardBody>
                                 <CardFooter>
                                     <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>
