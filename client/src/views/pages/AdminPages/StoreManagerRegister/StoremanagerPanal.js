@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import StoreManagerForm from './storemanagerform';
-import StoreManagerTable from './storemanagertable';
-
+import StoreManagerTable from './storemanagertable'
 export default class StoremanagerPanal extends Component {
     render() {
         return (

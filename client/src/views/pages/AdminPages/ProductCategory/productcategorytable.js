@@ -4,13 +4,14 @@ import { Container, Table,Badge, Input } from 'reactstrap'
 
 
 
-const ProductCatergory=props=>(
+const ProductCatergory=props=>
+(
     <tr>
         <td>{props.productCatergory.categoryName}</td>
         <td>{props.productCatergory.categoryDiscription}</td>
         <td>{props.productCatergory.categoryNote}</td>
         <td>{props.productCatergory.subCategory.map(element=>{
-            return <h3>  <Badge color="secondary">{element}</Badge></h3>
+            return <h3>  <Badge color="primary">{element}</Badge></h3>
         })}
         </td>
         
@@ -31,9 +32,10 @@ export default class productcategorytable extends Component {
         this.categoryList=this.categoryList.bind(this);
         this.deleteProductCategory=this.deleteProductCategory.bind(this);
         this.handleSearch=this.handleSearch.bind(this);
+        this.categoryList=this.categoryList.bind(this);
 
         this.state={
-            productcategorylist:[]
+            productcategorylist:[],
         };
     
     }
@@ -60,22 +62,31 @@ export default class productcategorytable extends Component {
         axios.delete('http://localhost:3001/productCategory/'+id)
         .then(res=>console.log(res.data));
         this.setState({
-            storemanagerlist:this.state.productcategorylist.filter(el=>el._id!==id)
+            productcategorylist:this.state.productcategorylist.filter(el=>el._id!==id)
         })
         
     }
 
+    categoryList(){
+        return this.state.productcategorylist.map(currentproductcategory=>{
+            return <  ProductCatergory productCatergory={currentproductcategory} deleteProductCategory={this.deleteProductCategory}  key={currentproductcategory._id}/>;
+        })
+   }
+
+
     handleSearch(event){
-        let storemng= event.target.value.trim().toLowerCase();
+        console.log("onchange appply");
+        
+        let productcat= event.target.value.trim().toLowerCase();
  
-        if(storemng.length>0){
+        if(productcat.length>0){
         this.setState({
             productcategorylist: this.state.productcategorylist.filter(item=>{
              return (
                         item.categoryName.toLowerCase().match(event.target.value)||
                         item.categoryDiscription.toLowerCase().match(event.target.value)||
-                        item.categoryNote.toLowerCase().match(event.target.value)||
-                        item.subCategory.filter(sub=>sub.toLowerCase().match(event.target.value))
+                        item.categoryNote.toLowerCase().match(event.target.value)
+                        // item.subCategory.map( sub=> {return sub.toLowerCase().match(event.target.value)})
                     
                      )
              })
@@ -86,18 +97,13 @@ export default class productcategorytable extends Component {
     
     }
 
-    categoryList(){
-        return this.state.productcategorylist.map(currentproductcategory=>{
-            return <  ProductCatergory productCatergory={currentproductcategory} deleteProductCategory={this.deleteProductCategory}  key={currentproductcategory._id}/>;
-        })
-   }
-
+  
     render() {
         return (
             <Container style={Styles.regTablePlanal}>
             <h4 style={Styles.regHeadertext}>Product Catergory</h4>
-                <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
-                <Table  responsive >
+            <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
+                <Table   size="sm" >
                     <thead>
                           <tr>
                             <th>Name</th>

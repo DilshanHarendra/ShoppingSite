@@ -15,9 +15,6 @@ import PaymentMain from "./views/pages/Payment/PaymentMain"
 import cardPayment from "./views/pages/Payment/cardPayment"
 import receiptPayment from "./views/pages/Payment/receiptPayment"
 import payConfirm from "./views/pages/Payment/payConfirm"
-import payAdmin from "./views/pages/Payment/payAdmin"
-import payLogin from "./views/pages/Payment/payDummyLogin"
-
 import UpdateProduct from "./views/pages/Product/UpdateProduct/UpdateProduct";
 import MyShop from "./views/pages/Product/MyShop/MyShop";
 import AdminDashbord from "./views/pages/AdminPages/admindashbord";
