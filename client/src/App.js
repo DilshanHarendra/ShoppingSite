@@ -23,6 +23,8 @@ import fakeAuth from "../src/views/pages/fakeAuth"
 import Login from "../../client/src/views/pages/Login"
 import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcategoryPanal";
 import refundPayment from "./views/pages/Payment/refundPayment";
+import emailConfirm from "./views/pages/Payment/emailConfirm"
+import refundConfirm from "./views/pages/Payment/refundConfirm"
 
 
 
@@ -74,6 +76,8 @@ class App extends Component {
                     <Route path="/adminDashbord/productcategory" component={ProductCategory}/>
                     <Route path="/payAdmin" component={payAdmin} />
                     <Route path="/refundPayment" component={refundPayment} />
+                    <Route path="/emailConfirm" component={emailConfirm} />
+                    <Route path="/refundConfirm" component={refundConfirm} />
                 </Switch>
                 <DefaultFooter/>
                 

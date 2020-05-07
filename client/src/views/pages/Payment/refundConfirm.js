@@ -8,13 +8,13 @@ import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import FormText from "reactstrap/es/FormText";
 
-class payConfirm extends Component {
+class refundConfirm extends Component {
     state = {  }
     render() {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">VERIFICATION - FOR CARD PAYMENT</h1>
+                    <h1 className="my-5 mx-auto text-center text-dark">VERIFICATION - FOR REFUND</h1>
                     <Row className="my-2 justify-content-center">
                         <Col className="mx-auto mb-5" xl="6">
                             <Card>
@@ -51,4 +51,4 @@ class payConfirm extends Component {
     }
 }
 
-export default payConfirm;
+export default refundConfirm;
