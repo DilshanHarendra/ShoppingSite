@@ -14,6 +14,8 @@ import {
   Row,
 } from "reactstrap";
 import axios from "axios";
+import alertify from "alertifyjs";
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -23,41 +25,62 @@ class Register extends Component {
       email: "",
       newPassword: "",
       newPasswordck: "",
-      valid: [false,false,false,false,false],
-      Invalid: [false,false,false,false,false]
+      Valid: [false, false, false, false, false],
+      Invalid: [false, false, false, false, false],
+      malidi: false,
+      vidula: false,
     };
   }
 
   onChangeHandler = (e) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    });
+    this.setState(
+      {
+        [e.target.name]: e.target.value,
+      },
+      () => console.log(this.state.newPassword)
+    );
 
-    if(this.state.newPassword===this.state.newPasswordck)
-    {
-      
-    }else{
-      
+    // console.log(this.state.newPassword);
+  };
+
+  handlePasswordConfirm = (e) => {
+    if (e.target.value === this.state.newPassword) {
+      this.setState(
+        {
+          vidula: true,
+          malidi: false,
+        },
+        () => console.log(this.state.malidi)
+      );
+    } else {
+      this.setState(
+        {
+          malidi: true,
+          vidula: false,
+        },
+        () => console.log(this.state.malidi)
+      );
     }
+    // console.log(this.state.malidi);
   };
 
   submitHandler = (e) => {
     e.preventDefault();
-
+    alertify.notify("sample", "success", 5, function () {
+      console.log("dismissed");
+    });
     const data = this.state;
 
     delete data.newPasswordck;
-    delete data.valid;
+    delete data.Valid;
     delete data.Invalid;
 
-    
-
-    try {
-      axios.post("http://localhost:3001/User/addUser", data).then((res) => {
-        console.log(res);
-        console.log(res.data);
-      });
-    } catch (e) {}
+    // try {
+    //   axios.post("http://localhost:3001/User/addUser", data).then((res) => {
+    //     console.log(res);
+    //     console.log(res.data);
+    //   });
+    // } catch (e) {}
   };
   render() {
     return (
@@ -82,7 +105,7 @@ class Register extends Component {
                         placeholder="Full Name"
                         name="Fullname"
                         autoComplete="Fullname"
-                        valid={this.state.valid[0]}
+                        valid={this.state.Valid[0]}
                         invalid={this.state.Invalid[0]}
                         value={this.state.Fullname}
                         onChange={this.onChangeHandler}
@@ -99,7 +122,7 @@ class Register extends Component {
                         placeholder="Username"
                         name="Username"
                         autoComplete="Username"
-                        valid={this.state.valid[1]}
+                        valid={this.state.Valid[1]}
                         invalid={this.state.Invalid[1]}
                         value={this.state.Username}
                         onChange={this.onChangeHandler}
@@ -115,9 +138,10 @@ class Register extends Component {
                         placeholder="Email"
                         name="email"
                         className="form-control-warning"
-                        valid={this.state.valid[2]}
+                        valid={this.state.Valid[2]}
                         invalid={this.state.Invalid[2]}
                         autoComplete="email"
+                        value={this.state.email}
                         onChange={this.onChangeHandler}
                       />
                     </InputGroup>
@@ -132,11 +156,11 @@ class Register extends Component {
                         placeholder="Password"
                         className="form-control-success"
                         name="newPassword"
-                        valid={this.state.valid[3]}
+                        valid={this.state.Valid[3]}
                         invalid={this.state.Invalid[3]}
                         autoComplete="new-password"
+                        value={this.state.newPassword}
                         onChange={this.onChangeHandler}
-                        
                       />
                     </InputGroup>
                     <InputGroup className="mb-4">
@@ -145,9 +169,17 @@ class Register extends Component {
                           <i className="flaticon-unlock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Repeat password" name="newPasswordck" autoComplete="new-password" valid={this.state.valid[4]}
-                        invalid={this.state.Invalid[4]} value={this.state.newPasswordck} onChange={this.onChangeHandler}/>
+                      <Input
+                        type="password"
+                        placeholder="Repeat password"
+                        name="newPasswordck"
+                        autoComplete="new-password"
+                        valid={this.state.vidula}
+                        invalid={this.state.malidi}
+                        onChange={this.handlePasswordConfirm}
+                      />
                     </InputGroup>
+
                     <Button type="submit" color="success" block>
                       Create Account
                     </Button>
