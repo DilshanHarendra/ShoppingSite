@@ -6,11 +6,19 @@ const core = require("cors");
 const productRoute = require("./routes/Product");
 const userRoute = require("./routes/User");
 const userLogin = require("./routes/Login");
-app.use("/product", productRoute);
-app.use("/User", userRoute);
 app.use("/Login", userLogin);
 const storeManagerRoute = require("./routes/StoreManager");
-app.use("/storeManager", storeManagerRoute);
+
+const paymentRoute=require('./routes/Payment');
+
+app.use('/product',productRoute);
+app.use('/User',userRoute);
+app.use('/Payment',paymentRoute);
+
+
+app.use('/storeManager',storeManagerRoute);
+const productCategory=require('./routes/ProductCategory');
+app.use('/productCategory',productCategory);
 
 app.use(core());
 app.use(express.static("public"));

@@ -14,7 +14,7 @@ class payConfirm extends Component {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">VERIFICATION</h1>
+                    <h1 className="my-5 mx-auto text-center text-dark">VERIFICATION - FOR CARD PAYMENT</h1>
                     <Row className="my-2 justify-content-center">
                         <Col className="mx-auto mb-5" xl="6">
                             <Card>
@@ -24,12 +24,6 @@ class payConfirm extends Component {
                                     <br />
                                     <Form>
                                         <Row form>
-                                            <Col md={6}>
-                                                <FormGroup>
-                                                    <Label>Email</Label>
-                                                    <Input type="tel" name="email" id="exampleEmail" placeholder="Card holder email" required />
-                                                </FormGroup>
-                                            </Col>
                                             <Col md={8}>
                                                 <FormGroup>
                                                     <Label>Serial number</Label>
