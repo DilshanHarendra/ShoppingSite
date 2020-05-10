@@ -149,7 +149,7 @@ export default class Productcategoryform extends Component {
             <Col md={6}>
                 <FormGroup>
                     <Label for="exampleEmail">Product Category Name</Label>
-                    <Input type="text" name="categoryName"  placeholder="Name" value={this.state.productCategoryName} onChange={this.handeleproductCategoryName} required/>
+                    <Input type="text" name="categoryNames"  placeholder="Name" value={this.state.productCategoryName} onChange={this.handeleproductCategoryName} required/>
                  </FormGroup>
           
              </Col>

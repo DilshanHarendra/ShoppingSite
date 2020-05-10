@@ -14,6 +14,8 @@ export default class Createcategory extends Component {
                     </Row>
                     <Row xs="2">
                         <Col ><ProductCategoryForm></ProductCategoryForm></Col>
+                    </Row>
+                    <Row xs="2">    
                         <Col><ProductCategoryTable></ProductCategoryTable></Col>
                         
                     </Row>

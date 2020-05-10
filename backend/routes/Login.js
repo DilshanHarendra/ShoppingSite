@@ -34,7 +34,7 @@ passport.use(strategy);
 router.use(passport.initialize());
 router.use(bodyParser);
 
-app.post('/getToken', (req, res) => {
+router.post('/getToken', (req, res) => {
   if (!req.body.email || !req.body.password) {
     return res.status(401).send('no fields');
   }
@@ -54,11 +54,11 @@ app.post('/getToken', (req, res) => {
 }
 );
 
-app.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
 res.send('i\'m protected');
 });
 
-app.get('/getUser', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/getUser', passport.authenticate('jwt', { session: false }), (req, res) => {
 console.log(req.headers);
 res.send(req.user);
 });3
