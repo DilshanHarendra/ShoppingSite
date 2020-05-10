@@ -9,7 +9,7 @@ import '../../../css/font-awesome.min.css';
 import fakeAuth from "../fakeAuth"
 import axios from 'axios';
 
-const jwtToken = this.getToken();
+
 class Login extends Component {
     constructor(props) {
 		super(props);
@@ -64,9 +64,12 @@ class Login extends Component {
            axios.post("http://localhost:3001/Login/login", {data}).then((res) => {
              console.log(res);
              console.log(res.data);
-            localStorage.setItem('cool-jwt',res.data)
+            
            });
-         } catch (e) {}
+         } catch (e) {
+
+          console.log(e);
+         }
     }
     render() { 
 

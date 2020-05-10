@@ -6,13 +6,14 @@ const core = require("cors");
 const productRoute = require("./routes/Product");
 const userRoute = require("./routes/User");
 const userLogin = require("./routes/Login");
-app.use("/Login", userLogin);
+
 const storeManagerRoute = require("./routes/StoreManager");
 
 const paymentRoute=require('./routes/Payment');
 
 app.use('/product',productRoute);
-app.use('/User',userRoute);
+app.use('/user',userRoute);
+app.use("/login", userLogin);
 app.use('/Payment',paymentRoute);
 
 

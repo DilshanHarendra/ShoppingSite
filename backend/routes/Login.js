@@ -1,4 +1,4 @@
-
+require ('dotenv').config();
 const express = require("express");
 const router = express.Router();
 const bodyParser = require("body-parser");
@@ -18,10 +18,24 @@ const User ={
   password: '1234',
 }
 
+const posts = [
+  {
+    username: 'Kyle',
+    title: 'Post 1'
+  },
+  {
+    username: 'Jim',
+    title: 'Post 2'
+  }
+]
+
+router.get('/posts', authenticateToken, (req, res) => {
+  res.json(posts.filter(post => post.username === req.user.name))
+})
 
 const opts = {
   jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'process.env.SECRET_OR_KEY'
+  secretOrKey: 'process.env.ACCESS_TOKEN_SECRET'
 };
 
 const strategy = new JwtStrategy(opts, (payload, next) => {
@@ -32,36 +46,54 @@ const strategy = new JwtStrategy(opts, (payload, next) => {
 
 passport.use(strategy);
 router.use(passport.initialize());
-router.use(bodyParser);
+//router.use(bodyParser);
+const payload = { id: User.id};
+router.post('/getToken', (req, res) => {
 
-app.post('/getToken', (req, res) => {
-  if (!req.body.email || !req.body.password) {
-    return res.status(401).send('no fields');
-  }
-  User.forge({ email: req.body.email }).fetch().then(result => {
-    if (!result) {
-      return res.status(400).send('user not found');
-    }
-
-    result.authenticate(req.body.password).then(user => {
-      const payload = { id: user.id };
-      const token = jwt.sign(payload, process.env.SECRET_OR_KEY);
-      res.send(token);
-    }).catch(err => {
-      return res.status(401).send({ err });
-    });
-  });
+  
+  // if (!req.body.email || !req.body.password) {
+  //   return res.status(401).send('no fields');
+  // }
+ 
+const username=req.body.username
+const user={name:username}
+   // authenticate(req.body.password).then(user => {
+     
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+      //res.send(token);
+      res.json({accessToken:token})
+    //}).catch(err => {
+      //return res.status(401).send({ err });
+    //});
+  
 }
 );
 
-app.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
 res.send('i\'m protected');
 });
 
-app.get('/getUser', passport.authenticate('jwt', { session: false }), (req, res) => {
+router.get('/getUser', passport.authenticate('jwt', { session: false }), (req, res) => {
 console.log(req.headers);
 res.send(req.user);
-});3
+});
+
+
+function authenticateToken(req,res,next){
+const authHeader=req.headers['authorization']
+const token=authHeader && authHeader.split(' ')[1]
+if(token==null) return res.sendStatus(401)
+
+jwt.verify(token, process.env.ACCESS_TOKEN_SECRET,(err,user)=>{
+
+  if(err) return res.sendStatus(403)
+  req.user=user;
+  next();
+
+});
+
+
+}
 // const appUsers = {
 //   "vidula@gmail.com": {
 //     email: "vidula@gmail.com",
@@ -118,5 +150,7 @@ res.send(req.user);
 //     });
 //   }
 // });
-
+router.get("/",authenticateToken, function (req, res) {
+  res.send("hello");
+});
 module.exports = router;

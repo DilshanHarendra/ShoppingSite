@@ -4,7 +4,8 @@ const uniqid=require('uniqid');
 const bodyParser=require('body-parser');
 const core = require('cors');
 const UserSchema=require('../schemas/UserSchema');
-
+const bycrpt=require('bcrypt');
+const nodemailer=require('nodemailer');
 router.use(bodyParser());
 router.use(core());
 var UID;
@@ -20,13 +21,52 @@ try{
     newQuery['uid']=UID;
     newQuery['regDate']=new Date();
 
+    token=await bycrpt.hash(UID+new Date(),10);
+
     const newUser=new UserSchema(newQuery);
-    await newUser.save(function(err,product){
+    await newUser.save(async function(err,product){
 
         if (err) {
             console.error(err);
             res.status(500).send( "Eroor"+err);
+        }else{
+
+
+            let testAccount = await nodemailer.createTestAccount();
+
+            // create reusable transporter object using the default SMTP transport
+            let transporter = nodemailer.createTransport({
+              host: "smtp.gmail.com",
+              port: 465,
+              secure: true, // true for 465, false for other ports
+              auth: {
+                user: "codefoursliit@gmail.com", // generated ethereal user
+                pass: "codefour@123", // generated ethereal password
+              },
+            });
+          
+            // send mail with defined transport object
+            let info = await transporter.sendMail({
+              from: '"Code4 Fire sensor system ??" <codefoursliit@gmail.com>', // sender address
+              to: product.email, // list of receivers
+              subject: "Alert Important", // Subject line
+              text:
+                "The co2 levels and smoke levels have risen above 75. Hurry!! leave the room.", // plain text body
+              html: '<a href="http://localhost:3000/Register">Click to register</a>', // html body
+             
+          
+            });
+          
+            console.log("Message sent: %s", info.messageId);
+            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+          
+            // Preview only available when sending through an Ethereal account
+            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+          
         }
+
+
 
     });
 
@@ -41,4 +81,9 @@ router.get('/checkEmail',async function(req,res){
 
 
 });
+
+router.get("/", function (req, res) {
+    res.send("hello");
+  });
+
 module.exports = router;

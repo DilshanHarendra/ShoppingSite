@@ -15,11 +15,20 @@ const UserSchema=new mongoose.Schema({
         type:String,
         required:true
 
+    },type:{
+        type:String,
+        required:true
+
     },
     newPassword:{
         type:String,
-        required:true
-    },
+        
+
+    },   token:{
+        type:String,
+        
+
+    }, 
 
 });
 module.exports=mongoose.model('Users',UserSchema,'User')

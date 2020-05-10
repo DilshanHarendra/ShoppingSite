@@ -23,12 +23,10 @@ class Register extends Component {
       Fullname: "",
       Username: "",
       email: "",
-      newPassword: "",
-      newPasswordck: "",
+      type:"user",
       Valid: [false, false, false, false, false],
       Invalid: [false, false, false, false, false],
-      malidi: false,
-      vidula: false,
+     
     };
   }
 
@@ -66,21 +64,23 @@ class Register extends Component {
 
   submitHandler = (e) => {
     e.preventDefault();
-    alertify.notify("sample", "success", 5, function () {
-      console.log("dismissed");
-    });
+    // alertify.notify("sample", "success", 5, function () {
+    //   console.log("dismissed");
+    // });
     const data = this.state;
 
-    delete data.newPasswordck;
+    
     delete data.Valid;
     delete data.Invalid;
 
-    // try {
-    //   axios.post("http://localhost:3001/User/addUser", data).then((res) => {
-    //     console.log(res);
-    //     console.log(res.data);
-    //   });
-    // } catch (e) {}
+    try {
+      axios.post("http://localhost:3001/user/addUser", data).then((res) => {
+        console.log(res);
+        console.log(res.data);
+      });
+    } catch (e) {
+      console.log(e)
+    }
   };
   render() {
     return (
@@ -145,7 +145,7 @@ class Register extends Component {
                         onChange={this.onChangeHandler}
                       />
                     </InputGroup>
-                    <InputGroup className="mb-3">
+                    {/* <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="flaticon-unlock"></i>
@@ -178,7 +178,7 @@ class Register extends Component {
                         invalid={this.state.malidi}
                         onChange={this.handlePasswordConfirm}
                       />
-                    </InputGroup>
+                    </InputGroup> */}
 
                     <Button type="submit" color="success" block>
                       Create Account

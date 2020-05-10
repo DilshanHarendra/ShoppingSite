@@ -25,6 +25,7 @@ import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcate
 import refundPayment from "./views/pages/Payment/refundPayment";
 import emailConfirm from "./views/pages/Payment/emailConfirm"
 import refundConfirm from "./views/pages/Payment/refundConfirm"
+import registerVerify from "./views/pages/registerVerify/registerVerify";
 
 
 
@@ -78,6 +79,7 @@ class App extends Component {
                     <Route path="/refundPayment" component={refundPayment} />
                     <Route path="/emailConfirm" component={emailConfirm} />
                     <Route path="/refundConfirm" component={refundConfirm} />
+                    <Route path="/registerconfirm" component={registerVerify} />
                 </Switch>
                 <DefaultFooter/>
                 
