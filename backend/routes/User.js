@@ -5,6 +5,7 @@ const bodyParser=require('body-parser');
 const core = require('cors');
 const UserSchema=require('../schemas/UserSchema');
 //const bycrpt=require('bcrypt');
+const crypto=require('crypto');
 const nodemailer=require('nodemailer');
 router.use(bodyParser());
 router.use(core());
@@ -22,8 +23,8 @@ try{
     newQuery['regDate']=new Date();
 
    // token=await bycrpt.hash(UID+new Date(),10);
-
-   token=UID+new Date();
+   
+   token=crypto.createHash('md5').update(UID+new Date()).digest('hex');
 
     const newUser=new UserSchema(newQuery);
     await newUser.save(async function(err,product){
@@ -53,8 +54,8 @@ try{
               to: product.email, // list of receivers
               subject: "Alert Important", // Subject line
               text:
-                "The co2 levels and smoke levels have risen above 75. Hurry!! leave the room.", // plain text body
-              html: '<a href="http://localhost:3000/Register">Click to register</a>', // html body
+                "http://localhost:3000/RegisterConfirm?token="+token+"&user_id="+product._id+"", // plain text body
+              html: '<a href="http://localhost:3000/RegisterConfirm?token='+token+'&user_id='+product._id+'">Click to register</a>',
              
           
             });
@@ -79,10 +80,7 @@ try{
 }
 });
 
-router.get('/checkEmail',async function(req,res){
 
-
-});
 
 router.get("/", function (req, res) {
     res.send("hello");
