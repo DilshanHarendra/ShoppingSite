@@ -7,41 +7,78 @@ import Register from "../Register"
 import '../../../css/flaticon.css';
 import '../../../css/font-awesome.min.css';
 import fakeAuth from "../fakeAuth"
+import axios from 'axios';
+
+
 class Login extends Component {
     constructor(props) {
 		super(props);
 		this.state = {
 		  large: false,
-      redirectToReferrer:false
+      redirectToReferrer:false,
+    email:"",
+    password:""
+
       
     };
 	
 	
-		this.toggleLarge = this.toggleLarge.bind(this);
+    this.toggleLarge = this.toggleLarge.bind(this);
+    
 		
     }
     
-    login = () => {
-      fakeAuth.authenticate(() => {
-        this.setState(() => ({
-          redirectToReferrer: true
-        }))
-      })
-    }
+
+
+    //loggedIn: BehaviorSubject<boolean>
+
+  
+
+  //   login = () => {
+  //     fakeAuth.authenticate(() => {
+  //       this.setState(() => ({
+  //         redirectToReferrer: true
+  //       }))
+  //     })
+  //   }
 
 	toggleLarge() {
 		this.setState({
 		  large: !this.state.large,
 		});
-	  }
+    }
+    
+    onchangeHandler=(e)=>{
+      this.setState({
+        [e.target.name]:e.target.value
+      })
+    }
+
+    submithandler=()=>{
+
+      const data={
+        email:this.state.email,
+        password:this.state.password
+      }
+      try {
+           axios.post("http://localhost:3001/Login/login", {data}).then((res) => {
+             console.log(res);
+             console.log(res.data);
+            
+           });
+         } catch (e) {
+
+          console.log(e);
+         }
+    }
     render() { 
 
       //const { from } = this.props.location.state || { from: { pathname: '/' } }
-    const { redirectToReferrer } = this.state
+    // const { redirectToReferrer } = this.state
 
-    if (redirectToReferrer === true) {
-      return <Redirect to="/" />
-    }
+    // if (redirectToReferrer === true) {
+    //   return <Redirect to="/" />
+    // }
         return (<div className="app flex-row align-items-center">
         <Container>
           <Row className="justify-content-center">
@@ -49,7 +86,7 @@ class Login extends Component {
               <CardGroup>
                 <Card className="p-4">
                   <CardBody>
-                    <Form>
+                    <Form onSubmit={this.submithandler}>
                       <h3>Login to proceed</h3>
                       <p className="text-muted">Sign In to your account</p>
                       <InputGroup className="mb-3">
@@ -58,7 +95,7 @@ class Login extends Component {
                             <i className="flaticon-profile"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" />
+                        <Input type="text" placeholder="Username" autoComplete="username" name="email" value={this.state.email} onChange={this.onchangeHandler} />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -66,7 +103,7 @@ class Login extends Component {
                             <i className="flaticon-unlock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="current-password" />
+                        <Input type="password" placeholder="Password" autoComplete="current-password" name="password" value={this.state.password} onchange={this.onchangeHandler}/>
                       </InputGroup>
                       <Row>
                         <Col xs="6">

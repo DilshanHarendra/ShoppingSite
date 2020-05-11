@@ -9,16 +9,22 @@ export default class Createcategory extends Component {
     render() {
         return (
             <Container style={divStyle}>
-                    <Row xs="2">
-                        <Col><h1>Product Category</h1></Col>
+                    <Row  >
+                        <Col  style={colStyleheder}>
+                            <h1>Product Category</h1>
+                        </Col>
                     </Row>
-                    <Row xs="2">
-                        <Col ><ProductCategoryForm></ProductCategoryForm></Col>
-                        <Col><ProductCategoryTable></ProductCategoryTable></Col>
-                        
+                    <Row  >
+                        <Col  style={colStyle}>
+                             <ProductCategoryForm/>
+                        </Col>
+                        <Col xs="auto" style={colStyle}>
+                             <ProductCategoryTable/>
+                        </Col>
+                       
+                                               
                     </Row>
-           
-                
+                                    
             </Container>
         )
     }

@@ -14,22 +14,53 @@ import {
   Row,
 } from "reactstrap";
 import axios from "axios";
-import alertify from "alertifyjs";
+import queryString from 'query-string';
 
-class Register extends Component {
+import alertify from "alertifyjs/build/alertify";
+import "alertifyjs/build/css/alertify.min.css";
+import "alertifyjs/build/css/alertify.css";
+import "alertifyjs/build/css/themes/default.min.css";
+
+class registerVerify extends Component {
   constructor(props) {
     super(props);
     this.state = {
       Fullname: "",
       Username: "",
       email: "",
-      type:"user",
+      newPassword: "",
+      newPasswordck: "",
       Valid: [false, false, false, false, false],
       Invalid: [false, false, false, false, false],
-     
+      malidi: false,
+      vidula: false,
+      token:"",
+      userId:"",
     };
   }
 
+
+  componentDidMount=()=>{
+    
+    const values = queryString.parse(this.props.location.search)
+console.log(values)
+console.log(this.props.location.search)
+    if(values.token===undefined||values.user_id===undefined)
+    {
+      alertify.alert("Unable to register. Please contact system administrator or check your email inbox for registration link");
+      window.location.href="/login";
+    }else{
+
+      this.setState({
+        token:values.token,
+        userId:values.user_id
+      })
+
+      console.log("value of token"+values.token)
+console.log("value of userID"+values.user_id)
+    }
+
+    }
   onChangeHandler = (e) => {
     this.setState(
       {
@@ -69,7 +100,7 @@ class Register extends Component {
     // });
     const data = this.state;
 
-    
+    delete data.newPasswordck;
     delete data.Valid;
     delete data.Invalid;
 
@@ -94,58 +125,8 @@ class Register extends Component {
                     <h3>Register</h3>
                     <p className="text-muted">Create your account</p>
 
+                   
                     <InputGroup className="mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="flaticon-profile"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        type="text"
-                        placeholder="Full Name"
-                        name="Fullname"
-                        autoComplete="Fullname"
-                        valid={this.state.Valid[0]}
-                        invalid={this.state.Invalid[0]}
-                        value={this.state.Fullname}
-                        onChange={this.onChangeHandler}
-                      />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>
-                          <i className="flaticon-profile"></i>
-                        </InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        type="text"
-                        placeholder="Username"
-                        name="Username"
-                        autoComplete="Username"
-                        valid={this.state.Valid[1]}
-                        invalid={this.state.Invalid[1]}
-                        value={this.state.Username}
-                        onChange={this.onChangeHandler}
-                      />
-                    </InputGroup>
-
-                    <InputGroup className="mb-3">
-                      <InputGroupAddon addonType="prepend">
-                        <InputGroupText>@</InputGroupText>
-                      </InputGroupAddon>
-                      <Input
-                        type="text"
-                        placeholder="Email"
-                        name="email"
-                        className="form-control-warning"
-                        valid={this.state.Valid[2]}
-                        invalid={this.state.Invalid[2]}
-                        autoComplete="email"
-                        value={this.state.email}
-                        onChange={this.onChangeHandler}
-                      />
-                    </InputGroup>
-                    {/* <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
                           <i className="flaticon-unlock"></i>
@@ -178,27 +159,14 @@ class Register extends Component {
                         invalid={this.state.malidi}
                         onChange={this.handlePasswordConfirm}
                       />
-                    </InputGroup> */}
+                    </InputGroup>
 
                     <Button type="submit" color="success" block>
                       Create Account
                     </Button>
                   </Form>
                 </CardBody>
-                <CardFooter className="p-4">
-                  <Row>
-                    <Col xs="12" sm="6">
-                      <Button className="btn-facebook mb-1" block>
-                        <span>facebook</span>
-                      </Button>
-                    </Col>
-                    <Col xs="12" sm="6">
-                      <Button className="btn-twitter mb-1" block>
-                        <span>twitter</span>
-                      </Button>
-                    </Col>
-                  </Row>
-                </CardFooter>
+               
               </Card>
             </Col>
           </Row>
@@ -208,4 +176,4 @@ class Register extends Component {
   }
 }
 
-export default Register;
+export default registerVerify;

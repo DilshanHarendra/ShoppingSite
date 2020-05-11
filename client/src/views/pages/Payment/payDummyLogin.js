@@ -7,16 +7,48 @@ import FormGroup from "reactstrap/es/FormGroup";
 import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import axios from "axios";
+import {Link,NavLink} from 'react-router-dom';
 
 class payDummyLogin extends Component {
-    state = {  };
+    constructor(props) {
+        super(props);
 
-    paymentLogin = () =>{
-        axios({
-            method: 'POST',
-            url:'http://localhost:3001/payment/login'
+        this.state = {
+            username:"",
+            password:"",
+            auth:false
+        }
+    }
+
+    onChangeHandler = (e) => {
+        this.setState({
+            [e.target.name]: e.target.value
         });
     };
+
+    makeGetRequest = () => {
+        if(this.state.auth === true){
+            return  <Link to="/payAdmin" />
+        }
+        else {
+            return <Link to="/payDummyLogin" />
+        }
+    };
+
+    paymentLogin = (e) =>{
+        e.preventDefault();
+        const data = this.state;
+        try {
+            axios.post("http://localhost:3001/Payment/login", data).then(res=>{
+                this.setState({
+                    auth:res.data
+                });
+            });
+        } catch (e) {}
+
+        this.makeGetRequest();
+    };
+
 
     render() {
         return (
@@ -32,24 +64,16 @@ class payDummyLogin extends Component {
                                     <CardSubtitle className="font-weight-bold">Admin or Client</CardSubtitle>
                                     <br />
 
-                                    <Form onSubmit={this.paymentLogin()} method="post">
-                                        <Row form>
-                                            <Col md={6}>
+                                    <Form onSubmit={this.paymentLogin}>
                                                 <FormGroup>
                                                     <Label>Username</Label>
-                                                    <Input type="text" name="username" id="username" placeholder="Username" required />
+                                                    <Input type="text" name="username" id="username" placeholder="Username" onChange={this.onChangeHandler} required />
                                                 </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Row form>
-                                            <Col md={6}>
                                                 <FormGroup>
                                                     <Label>Password</Label>
-                                                    <Input type="text" name="password" id="password" placeholder="Password" required />
+                                                    <Input type="text" name="password" id="password" placeholder="Password" onChange={this.onChangeHandler} required />
                                                 </FormGroup>
-                                            </Col>
-                                        </Row>
-                                        <Button type="submit" color="danger" className="ml-auto">LOGIN</Button>
+                                        <Button type="submit" color="danger" className="ml-auto" block>LOGIN</Button>
                                     </Form>
                                 </CardBody>
                                 <CardFooter>

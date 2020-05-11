@@ -1,106 +1,89 @@
 const express=require('express');
-require('dotenv').config();
 const router=express.Router();
 const uniqid=require('uniqid');
 const bodyParser=require('body-parser');
 const core = require('cors');
 const UserSchema=require('../schemas/UserSchema');
-
-const jwt=require('jsonwebtoken');
-
+//const bycrpt=require('bcrypt');
+const crypto=require('crypto');
+const nodemailer=require('nodemailer');
 router.use(bodyParser());
 router.use(core());
 var UID;
 
-
-router.post('/login',async function (req,res) {
-
-    var pass=req.body.newPassword.trim();
-     var data=await  UserSchema.findOne({Username:req.body.Username});
-
-     if (data==null){
-            res.status(403).send("Username Incorrect");
-        }else {
-            if (data.newPassword.trim()==pass){
-                const accTocken=data['accTocken'].trim();
-                jwt.verify(accTocken,process.env.ACCESS_TOKEN_SECRET,(err,response)=>{
-                    if (err){
-                        res.status(403).send("invalid Tocken "+err);
-                    }else {
-                        res.send(response);
-                    }
-                });
-            }else{
-                res.status(403).send("Password Incorrect");
-            }
-        }
-
-});
-
-router.post('/register',async  function (req, res) {
-
-     var accToken= await generateAccTocken(req.body.Username);
-    req.body['accTocken']=accToken;
-    const query = new UserSchema(req.body);
-    await query.save(function (err,user) {
-        if (err){
-            res.status(500).send(err);
-        }else{
-            res.send(user);
-        }
-
-    })
-
-});
-
-function  generateAccTocken(username){
-    const user={name:username};
-    const accessToken=jwt.sign(user,process.env.ACCESS_TOKEN_SECRET);
-    console.log(accessToken);
-    return accessToken;
-}
-
-
-
-
-
-
-
-
-
 router.post('/addUser',async function(req,res){
 
-    try{
+try{
 
-        var newQuery=[];
-        UID=uniqid();
+    var newQuery=[];
+    UID=uniqid();
 
-        newQuery=req.body;
-        newQuery['uid']=UID;
-        newQuery['regDate']=new Date();
+    newQuery=req.body;
+    newQuery['uid']=UID;
+    newQuery['regDate']=new Date();
 
-        const newUser=new UserSchema(newQuery);
-        await newUser.save(function(err,product){
+   // token=await bycrpt.hash(UID+new Date(),10);
+   
+   token=crypto.createHash('md5').update(UID+new Date()).digest('hex');
 
-            if (err) {
-                console.error(err);
-                res.status(500).send( "Eroor"+err);
-            }
+    const newUser=new UserSchema(newQuery);
+    await newUser.save(async function(err,product){
 
-        });
+        if (err) {
+            console.error(err);
+            res.status(500).send( "Eroor"+err);
+        }else{
 
 
-    }catch(e){
+            let testAccount = await nodemailer.createTestAccount();
 
-    }
+            // create reusable transporter object using the default SMTP transport
+            let transporter = nodemailer.createTransport({
+              host: "smtp.gmail.com",
+              port: 465,
+              secure: true, // true for 465, false for other ports
+              auth: {
+                user: "codefoursliit@gmail.com", // generated ethereal user
+                pass: "codefour@123", // generated ethereal password
+              },
+            });
+          
+            // send mail with defined transport object
+            let info = await transporter.sendMail({
+              from: '"Code4 Fire sensor system ??" <codefoursliit@gmail.com>', // sender address
+              to: product.email, // list of receivers
+              subject: "Alert Important", // Subject line
+              text:
+                "http://localhost:3000/RegisterConfirm?token="+token+"&user_id="+product._id+"", // plain text body
+              html: '<a href="http://localhost:3000/RegisterConfirm?token='+token+'&user_id='+product._id+'">Click to register</a>',
+             
+          
+            });
+          
+            console.log("Message sent: %s", info.messageId);
+            // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+          
+            // Preview only available when sending through an Ethereal account
+            console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+            // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+          
+        }
+
+
+
+    });
+
+
+}catch(e)
+{
+
+}
 });
 
 
 
+router.get("/", function (req, res) {
+    res.send("hello");
+  });
 
-
-router.get('/checkEmail',async function(req,res){
-
-
-});
 module.exports = router;

@@ -11,6 +11,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.4.1",
     "@testing-library/user-event": "^7.2.1",
+    "alertifyjs": "^1.13.1",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "chart.js": "^2.9.3",
@@ -27,7 +28,7 @@
     "flag-icon-css": "^3.4.6",
     "font-awesome": "^4.7.0",
     "jquery": "^3.4.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^4.13.1",
     "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-app-polyfill": "^1.0.6",
@@ -36,8 +37,8 @@
     "react-dom": "^16.13.0",
     "react-filepond": "^7.0.1",
     "react-hook-form": "^5.1.1",
-    "react-icons": "^3.10.0",
     "react-password-strength-bar": "^0.3.2",
+    "react-password-strength-meter": "^1.0.5",
     "react-rating": "^2.0.5",
     "react-responsive-carousel": "^3.1.56",
     "react-router-config": "^5.1.1",
@@ -45,8 +46,7 @@
     "react-scripts": "3.4.0",
     "react-test-renderer": "^16.13.0",
     "reactstrap": "^8.4.1",
-    "simple-line-icons": "^2.4.1",
-    "socket.io-client": "^2.3.0"
+    "simple-line-icons": "^2.4.1"
   },
   "scripts": {
     "start": "react-scripts start",

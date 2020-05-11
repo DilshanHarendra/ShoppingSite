@@ -114,8 +114,7 @@ export default class Productcategoryform extends Component {
 
     }
     
-    
-    
+     
     
     
     
@@ -166,19 +165,19 @@ export default class Productcategoryform extends Component {
             <Col md={5}>
                     
                  <FormGroup>
-                     <Label for="examplePassword">Product Category Discription</Label>
+                     {/* <Label for="examplePassword">Product Category Discription</Label> */}
                     <Input type="text" name="categoryDiscription"   placeholder=" Discription"  value={this.state.productCategoryDiscription} onChange={this.handeleproductCategoryDiscription}  required/>
                 </FormGroup>
             </Col>
             <Col md={3}>
                  <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                 <Label for="examplePassword">Sub-Category </Label>
+                 {/* <Label for="examplePassword">Sub-Category </Label> */}
                     <Input type="text" name="categoryNote"   placeholder="Sub Category" value={this.state.subCategory} onChange={this.handeleproductSubCategory} />
                 </FormGroup>
             </Col>
             <Col Col md={3} >
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                <Label for="examplePassword">SubCategory  </Label>
+                {/* <Label for="examplePassword">SubCategory  </Label> */}
                     <Button color="primary" onClick={this.handeleproductAddCategory} >+</Button>
                 </FormGroup> 
             </Col>
@@ -197,7 +196,7 @@ export default class Productcategoryform extends Component {
         <Row >
         <Col md={6}>
           <FormGroup>
-                <Button type="submit" value="Submit" color="success">Create Product Category</Button>                  
+                <Button type="submit" value="Submit" color="success">Create</Button>                  
           </FormGroup>
         </Col>
        </Row>

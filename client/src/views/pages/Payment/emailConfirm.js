@@ -8,13 +8,13 @@ import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import FormText from "reactstrap/es/FormText";
 
-class payConfirm extends Component {
+class emailConfirm extends Component {
     state = {  }
     render() {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">VERIFICATION - FOR CARD PAYMENT</h1>
+                    <h1 className="my-5 mx-auto text-center text-dark">EMAIL VERIFICATION</h1>
                     <Row className="my-2 justify-content-center">
                         <Col className="mx-auto mb-5" xl="6">
                             <Card>
@@ -24,14 +24,14 @@ class payConfirm extends Component {
                                     <br />
                                     <Form>
                                         <Row form>
-                                            <Col md={8}>
+                                            <Col md={6}>
                                                 <FormGroup>
-                                                    <Label>Serial number</Label>
-                                                    <Input type="text" name="serialNumber" id="exampleEmail" placeholder="Enter secret code in email" />
+                                                    <Label>Email</Label>
+                                                    <Input type="tel" name="email" id="exampleEmail" placeholder="Confirm your email address" required />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Button color="secondary">VERIFY</Button>
+                                        <Button color="secondary">SEND</Button>
                                         <br />
                                         <Label>Did not get the code? <a href="#">Send again</a></Label>
                                     </Form>
@@ -51,4 +51,4 @@ class payConfirm extends Component {
     }
 }
 
-export default payConfirm;
+export default emailConfirm;
