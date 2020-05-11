@@ -27,7 +27,7 @@ router.route('/add').post((req,res)=>{
         birthDay,
         address,
         telephoneNumber
-    })
+    });
 
     newStoreManager.save()
         .then(newStoremanager=>res.json('new store manager added'))

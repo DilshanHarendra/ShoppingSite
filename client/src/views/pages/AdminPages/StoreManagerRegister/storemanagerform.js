@@ -73,7 +73,7 @@ export default class Storemanagerform extends Component {
        axios.post('http://localhost:3001/storeManager/add',storeManager)
        .then(res=>console.log('new StpreManager create :'+res.data))
        .catch(err=>console.log('error in sendig storemanager :'+err.data));
-       window.location='http://localhost:3000/adminDashbord';
+       window.location='http://localhost:3000/storeManager';
        
         
     }

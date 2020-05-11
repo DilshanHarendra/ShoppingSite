@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import StoreManagerForm from './storemanagerform';
-import StoreManagerTable from './storemanagertable';
-
+import StoreManagerTable from './storemanagertable'
 export default class StoremanagerPanal extends Component {
     render() {
         return (
-            <Container style={divStyle}>
+    <Container style={divStyle}>
             <Row>
                 <Col style={colStyleheder}>
                     <h2>Admin Dashboard</h2>

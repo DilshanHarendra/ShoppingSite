@@ -9,6 +9,7 @@ const io = require('socket.io')(4000);
 const Suggsions= require('../Functions/Suggesions');
 
 const productSchema = require('../schemas/ProductSchema');
+const productcategory= require('../schemas/ProductCategorySchema');
 const reviewSchema = require('../schemas/Review');
 const users = {};
 io.on('connection', socket => {
@@ -19,14 +20,6 @@ io.on('connection', socket => {
     });
 
 });
-
-var suggsions=new Suggsions();
-setInterval(()=>{
-    suggsions.ProductSuggesions();
-
-},10000);
-
-
 
 var pId;
 router.get('/',function (req,res) {
@@ -42,17 +35,24 @@ router.get('/getProducts',async function (req,res) {
 
         if (req.query.s){
             delete req.query.s;
-            console.log("getProducts");
-            if (req.query.maxprice!=""){
-                req.query['price']={$gte: parseInt(req.query.minprice),$lte: parseInt(req.query.maxprice)};
-                delete req.query.maxprice;
-                delete req.query.minprice;
-                delete req.query.minprice;
-            }
 
+            var set=parseInt(req.query.sets);
+            if (req.query.maxprice!=""){
+
+
+                req.query['price']={$gte: parseInt(req.query.minprice),$lte: parseInt(req.query.maxprice)};
+
+            }
+            delete req.query.sets;
+            delete req.query.maxprice;
+            delete req.query.minprice;
+
+            let limit =parseInt(req.query.limit);
+            delete req.query.limit;
             console.log(req.query);
-            var data=await productSchema.find(req.query).sort( { totClicks: -1 } );
-            res.send( data);
+            var data=await productSchema.find(req.query).sort( { totClicks: -1 } ).skip(set).limit(limit).sort({_id:-1});
+            console.log(data.length)
+            res.send(data);
         }else {
             res.status(500).send("query err");
         }
@@ -62,6 +62,9 @@ router.get('/getProducts',async function (req,res) {
     }
 
 });
+
+
+
 
 router.get('/getProduct',async function (req,res) {
 
@@ -69,15 +72,44 @@ router.get('/getProduct',async function (req,res) {
 
         if (req.query.s){
             delete req.query.s;
+             var data=await productSchema.find(req.query);
+            console.log(data.catogory)
+          res.send( data);
+        }else {
+            res.status(500).send("query err");
+        }
+    }catch (e) {
+        console.log(e);
+        res.status(500).send("err " + e);
+    }
+});
+
+
+
+
+router.get('/getSingelProduct',async function (req,res) {
+
+    try {
+
+        if (req.query.s){
+            delete req.query.s;
 
             if (req.query.tclick==='true'){
-             var result=  await productSchema.updateOne({id:req.query.id},{ $inc:{totClicks:0.5}});
+                var result=  await productSchema.updateOne({id:req.query.id},{ $inc:{totClicks:0.5}});
                 delete req.query.tclick;
                 console.log(req.query);
             }
+            delete req.query.tclick;
 
 
             var data=await productSchema.find(req.query);
+            var catogoryData= await productcategory.find({_id:data[0].catogory});
+            data[0]['catogory']=catogoryData[0].categoryName;
+
+
+
+
+
             res.send( data);
         }else {
             res.status(500).send("query err");
@@ -88,16 +120,34 @@ router.get('/getProduct',async function (req,res) {
     }
 });
 
+
+
+
+
 router.get('/getSearchProduct',async function (req,res) {
 
     try {
         if (req.query.s){
             delete req.query.s;
 
-            var searchOptions;
-            searchOptions=new RegExp(req.query.key,'i')
+            var set=parseInt(req.query.sets);
 
-            var data=await productSchema.find({proName:searchOptions});
+
+                req.query['price']={$gte: parseInt(req.query.minprice),$lte: parseInt(req.query.maxprice)};
+
+                delete req.query.sets;
+                delete req.query.maxprice;
+                delete req.query.minprice;
+            let limit =parseInt(req.query.limit);
+            delete req.query.limit;
+
+            var searchOptions;
+            searchOptions=new RegExp(req.query.key,'i');
+            delete req.query.key;
+            req.query['proName']=searchOptions;
+            console.log(req.query)
+            var data=await productSchema.find(req.query).skip(set).limit(limit).sort( { totClicks: -1 } );
+            console.log(data.length,set);
             res.send( data);
         }else {
             res.status(500).send("query err");

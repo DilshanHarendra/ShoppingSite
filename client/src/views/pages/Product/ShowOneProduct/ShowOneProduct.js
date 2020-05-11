@@ -54,9 +54,18 @@ class ShowOneProduct extends Component{
 
     }
     componentDidMount(){
-console.log("componentDidMount()");
+    //console.log("componentDidMount()");
 
+        socketIOClient('http://localhost:4000').on('newReview', data => {
+          //  console.log("response",data);
+            if(data.pid==this.state.id){
+              //  console.log(data)
+                this.setState({
+                    reviews:[data,...this.state.reviews]
+                },()=>this.calAverageRating());
+            }
 
+        });
 
 
         this.getData();
@@ -72,7 +81,7 @@ console.log("componentDidMount()");
     getData(){
         axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getProduct',
+            url:'http://localhost:3001/product/getSingelProduct',
             params:{s:true,id:this.state.id,tclick:true}
         }).then(res=>{
             this.setState({
@@ -120,7 +129,7 @@ console.log("componentDidMount()");
 
         this.setState({
             averageRating:x
-        },()=>console.log(this.state.averageRating));
+        });
 
     }
 
@@ -211,24 +220,18 @@ console.log("componentDidMount()");
                 };
                 axios.post('http://localhost:3001/product/addReview',query)
                     .then(async function (res){
-                        console.log("send to soket")
+                     //   console.log("send to soket")
                             socketIOClient('http://localhost:4000').emit('addReview',query)
 
                     })
                     .catch(err=>{
                         console.log(err)
                     });
-                socketIOClient('http://localhost:4000').on('newReview', data => {
-                    console.log("response",data);
-                    if(data.pid==this.state.id){
-                        console.log(data)
-                        this.setState({
-                            reviews:[data,...this.state.reviews]
-                        },()=>this.calAverageRating());
-                    }
 
+                this.setState({
+                    reviewText:'',
+                    rating:-1,
                 });
-
 
             }
 
@@ -247,7 +250,7 @@ console.log("componentDidMount()");
         this.setState({
             rating:x
         });
-        console.log(x);
+      //  console.log(x);
         if (this.state.rating<0){
             this.setState({
                 mess:""
@@ -320,7 +323,7 @@ console.log("componentDidMount()");
                      'isDelete':true,
                      'id':this.state.id
                  }
-                 console.log(query);
+             //    console.log(query);
                  axios.post('http://localhost:3001/product/deleteProduct',query)
                  .then(res=>{
                      this.setState({
@@ -413,16 +416,6 @@ console.log("componentDidMount()");
                                         </button>
                                     </DialogActions>
                                 </Dialog>
-
-
-
-
-
-
-
-
-
-
                                 <h2 className="p-title">{product.proName}</h2>
                                 <h5 style={{'color':'gray'}} className="p-title"><span className="tag">CATEGORY </span>{product.catogory+" "+product.subCatogory}</h5>
                                 <h2 style={{'color':'gray'}} className="p-title"><span className="tag">BRAND </span>{product.brand}</h2>
@@ -439,12 +432,6 @@ console.log("componentDidMount()");
                                 </div>
                                 <div className="fw-size-choose" id="sizeContainor">
                                     <p>Size</p>
-
-
-
-
-
-
                                 </div>
                                 <div className="quantity">
                                     <p>Quantity</p>
