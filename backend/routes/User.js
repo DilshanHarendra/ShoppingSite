@@ -4,7 +4,7 @@ const uniqid=require('uniqid');
 const bodyParser=require('body-parser');
 const core = require('cors');
 const UserSchema=require('../schemas/UserSchema');
-const bycrpt=require('bcrypt');
+//const bycrpt=require('bcrypt');
 const nodemailer=require('nodemailer');
 router.use(bodyParser());
 router.use(core());
@@ -21,7 +21,9 @@ try{
     newQuery['uid']=UID;
     newQuery['regDate']=new Date();
 
-    token=await bycrpt.hash(UID+new Date(),10);
+   // token=await bycrpt.hash(UID+new Date(),10);
+
+   token=UID+new Date();
 
     const newUser=new UserSchema(newQuery);
     await newUser.save(async function(err,product){
