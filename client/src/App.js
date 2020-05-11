@@ -22,6 +22,7 @@ import AdminDashbord from "./views/pages/AdminPages/admindashbord";
 import fakeAuth from "../src/views/pages/fakeAuth"
 import Login from "../../client/src/views/pages/Login"
 import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcategoryPanal";
+import storeManager from "./views/pages/AdminPages/StoreManagerRegister/StoremanagerPanal"
 import refundPayment from "./views/pages/Payment/refundPayment";
 import emailConfirm from "./views/pages/Payment/emailConfirm"
 import refundConfirm from "./views/pages/Payment/refundConfirm"
@@ -74,12 +75,13 @@ class App extends Component {
                     <Route path="/receiptPayment" component={receiptPayment} />
                     <Route path="/payConfirm" component={payConfirm} />
                     <Route path="/adminDashbord" component={AdminDashbord}/>
-                    <Route path="/adminDashbord/productcategory" component={ProductCategory}/>
+                    <Route path="/productcategory" component={ProductCategory}/>
                     <Route path="/payAdmin" component={payAdmin} />
                     <Route path="/refundPayment" component={refundPayment} />
                     <Route path="/emailConfirm" component={emailConfirm} />
                     <Route path="/refundConfirm" component={refundConfirm} />
                     <Route path="/registerconfirm" component={registerVerify} />
+                    <Route path="/storeManager" component={storeManager} />
                 </Switch>
                 <DefaultFooter/>
                 
