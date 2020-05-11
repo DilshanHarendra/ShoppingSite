@@ -14,7 +14,12 @@ import {
   Row,
 } from "reactstrap";
 import axios from "axios";
-import alertify from "alertifyjs";
+import queryString from 'query-string';
+
+import alertify from "alertifyjs/build/alertify";
+import "alertifyjs/build/css/alertify.min.css";
+import "alertifyjs/build/css/alertify.css";
+import "alertifyjs/build/css/themes/default.min.css";
 
 class registerVerify extends Component {
   constructor(props) {
@@ -29,9 +34,33 @@ class registerVerify extends Component {
       Invalid: [false, false, false, false, false],
       malidi: false,
       vidula: false,
+      token:"",
+      userId:"",
     };
   }
 
+
+  componentDidMount=()=>{
+    
+    const values = queryString.parse(this.props.location.search)
+console.log(values)
+console.log(this.props.location.search)
+    if(values.token===undefined||values.user_id===undefined)
+    {
+      alertify.alert("Unable to register. Please contact system administrator or check your email inbox for registration link");
+      window.location.href="/login";
+    }else{
+
+      this.setState({
+        token:values.token,
+        userId:values.user_id
+      })
+
+      console.log("value of token"+values.token)
+console.log("value of userID"+values.user_id)
+    }
+
+    }
   onChangeHandler = (e) => {
     this.setState(
       {
