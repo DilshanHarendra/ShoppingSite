@@ -56,15 +56,18 @@ router.route('/').get((req,res)=>{
 
 
 
-router.route('/update/:id').post((req,res)=>{
+router.route('/update/:id').put((req,res)=>{
+    console.log("update method");
+    console.log(req.body.firstName);
+    
     StoreManager.findById(req.params.id)
         .then(storemaager=>{
             storemaager.firstName=req.body.firstName;
             storemaager.lastName=req.body.lastName;
             storemaager.birthDay=req.body.birthDay;
-            storemaager.password =req.body.password;
-            storemaager.emailAddress=req.body.email;
-            storemaager.telephoneNumber=req.body.telephonenumber;
+             storemaager.emailAddress=req.body.email;
+            storemaager.address=req.body.address;
+         storemaager.telephoneNumber=req.body.telephonenumber;
             storemaager.save()
             .then(user=>res.json('storemanager updated'))
             .catch(err=>res.status(400).json('Error: '+err));

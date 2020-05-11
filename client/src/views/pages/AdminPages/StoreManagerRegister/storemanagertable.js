@@ -1,29 +1,90 @@
 import React, { Component } from 'react'
-import { Table, Container, Input } from 'reactstrap';
+import { Table, Container, Input, Button } from 'reactstrap';
 
 import axios from 'axios';
+import Axios from 'axios';
 
 
-const StoreManager=props=>(
+// const StoreManager=props=>(
+class StoreManager extends Component{
+    render(){
+        return(
     <tr >
         <td>
-            {props.storemanager.firstName}
-                   
+            {this.props.storemanager.firstName} 
+             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
+                                   
+                                   placeholder={this.props.storemanager.firstName}
+                                   defaultValue ={this.props.storemanager.firstName}
+                                   onChange={(e)=>this.props.handeleEditFirstname(e.target.value)}
+                                   value={this.props.editedfirstame}
+                                   name="firstName"
+                                  
+                                   
+             />            
         </td>
-        <td>{props.storemanager.lastName}</td>
-        <td>{props.storemanager.birthDay}</td>
-        <td>{props.storemanager.emailAddress}</td>
-        <td>{props.storemanager.address}</td>
-        <td>{props.storemanager.telephoneNumber}</td>
         <td>
-        <button className="btn btn-danger" onClick={()=>{props.deleteStoreManager(props.storemanager._id)}}>Delete</button>
+            {this.props.storemanager.lastName}
+            <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
+                                   placeholder={this.props.storemanager.lastName}
+                                   onChange={(e)=>this.props.handeleEditLastname(e.target.value)}
+                                   value={this.props.editedlastname}
+                                   name="lastName"
+             />    
+            
         </td>
         <td>
-        <button className="btn btn-warning" onClick={()=>{props.editStoreManager(props.storemanager)}}  >Edit </button>
-        </td>
-    </tr>
+            {this.props.storemanager.birthDay}
+            <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
+                                   placeholder={this.props.storemanager.birthDay}
+                                   onChange={(e)=>this.props.handeleEditBirthday(e.target.value)}
+                                   value={this.props.editBirthday}
+                                   name="birthDay"
 
-)
+             />   
+        </td>
+        <td>
+            {this.props.storemanager.emailAddress}
+            <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
+                                   placeholder= {this.props.storemanager.emailAddress}
+                                   onChange={(e)=>this.props.handeleEmailAddress(e.target.value)}
+                                   value={this.props.editEmailAddress}
+                                   name="email"
+             /> 
+            
+        </td>
+        <td>
+            {this.props.storemanager.address}
+            <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
+                                   placeholder={this.props.storemanager.address}
+                                   onChange={(e)=>this.props.handeleEmailAddress(e.target.value)}
+                                   value={this.props.editAddress}
+                                   name="address"
+             /> 
+        
+        </td>
+        <td>
+            {this.props.storemanager.telephoneNumber}
+            <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
+                                   placeholder={this.props.storemanager.telephoneNumber}
+                                   onChange={(e)=>this.props.handeleTelephoneNumber(e.target.value)}
+                                   value={this.props.editTelephoneNumber}
+                                   name="telephonenumber"
+             /> 
+        
+        </td>
+        <td>
+        <button className="btn btn-danger" onClick={()=>{this.props.deleteStoreManager(this.props.storemanager._id)}}>Delete</button>
+        </td>
+        <td>
+        <button className="btn btn-warning" style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} } onClick={()=>{this.props.editemodeToggle(this.props.storemanager._id)}}  >Edit </button>
+        <Button style={this.props.editdatastatas?{display:"inherit"}:{display:"none"}  } onClick={()=>{this.props.updateStoremanager()}} color="primary">Update</Button>
+        </td> 
+    </tr>
+        )
+    }
+}
+// )
 
 
 
@@ -38,15 +99,27 @@ export default class storemanagerview extends Component {
           this.loadStoreManagerData=this.loadStoreManagerData.bind(this);
           this.handleSearch=this.handleSearch.bind(this);
           this.handleEditdata=this.handleEditdata.bind(this);
+          this.editmodeToggle=this.editmodeToggle.bind(this);  
+          this.enableEditeMode=this.enableEditeMode.bind(this);
+
+          this.handeleEditFirstname=this.handeleEditFirstname.bind(this);
+          this.handeleEditLastname=this.handeleEditLastname.bind(this);
+          this.handeleEditBirthday=this.handeleEditBirthday.bind(this);
+          this.handeleAddress=this.handeleAddress.bind(this);
+          this.handeleEmailAddress=this.handeleEmailAddress.bind(this);
+          this.handeleTelephoneNumber=this.handeleTelephoneNumber.bind(this);
+          this.onSubmitUpdateForm=this.onSubmitUpdateForm.bind(this);  
+
           this.state={storemanagerlist:[],
                       searchkeyword:'' ,
                       editdata:false ,
                       editFirstname:'',
                       editLastname:'',
-                      editBirthda:'',
+                      editBirthday:'',
                       editEmailAddress:'',
                       editAddress:'',
-                      editTelephoneNumber:''
+                      editTelephoneNumber:'',
+                      edite_Id:''
         };
   
  
@@ -56,6 +129,20 @@ export default class storemanagerview extends Component {
         this.loadStoreManagerData();
         
        }
+
+    enableEditeMode(edite_id){
+        this.setState({
+            edite_Id:edite_id
+        })
+
+        this.editmodeToggle()
+    }   
+
+    editmodeToggle(){
+        this.setState({
+            editdata:!this.state.editdata,
+        })
+    }   
 
 
     loadStoreManagerData(){
@@ -71,28 +158,28 @@ export default class storemanagerview extends Component {
         })
     }   
  
-    handeleEditFirstname(event){
-        this.setState({editFirstname:event.target.value})
+    handeleEditFirstname=(event)=>{       
+        this.setState({editFirstname: event})
     }
 
     handeleEditLastname(event){
-        this.setState({editLastname:event.target.value})
+        this.setState({editLastname:event})
     }
 
     handeleEditBirthday(event){
-        this.setState({editBirthda:event.target.value})
+        this.setState({editBirthda:event})
     }
 
     handeleAddress(event){
-        this.setState({editAddress:event.target.value})
+        this.setState({editAddress:event})
     }
 
     handeleEmailAddress(event){
-        this.setState({editEmailAddress:event.target.value})
+        this.setState({editEmailAddress:event})
     }
 
     handeleTelephoneNumber(event){
-        this.setState({editTelephoneNumber:event.target.value})
+        this.setState({editTelephoneNumber:event})
     }
 
 
@@ -104,10 +191,53 @@ export default class storemanagerview extends Component {
         })
         
     }
+
+    onSubmitUpdateForm(){
+        // event.preventDefault()
+
+        console.log("call update form method");
+        
+        const storeManagerUpdated={
+            firstName:this.state.editFirstname,
+            lastName:this.state.editLastname,
+            birthDay:this.state.editBirthday,
+            email:this.state.editEmailAddress,
+            address:this.state.editAddress,
+            telephonenumber:this.state.editTelephoneNumber
+        }
+
+        Axios.put('http://localhost:3001/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
+        .then(res=>console.log("store manager update"+res.data))
+        .catch(err=>console.log('error in update'+err.data))
+        this.editmodeToggle();
+
+    }
     
     storemanagrList(){
         return this.state.storemanagerlist.map(currentstoremanager=>{
-            return <  StoreManager storemanager={currentstoremanager} editStoreManager={this.handleEditdata} deleteStoreManager={this.deleteStoreManager} key={currentstoremanager._id}/>;
+            return <  StoreManager 
+                        storemanager={currentstoremanager}
+                        editemodeToggle={this.enableEditeMode}
+                        editdatastatas={this.state.editdata}
+                        selectedite_id={this.state.edite_Id}
+                        deleteStoreManager={this.deleteStoreManager}
+
+                        handeleEditFirstname={this.handeleEditFirstname}
+                        handeleEditLastname={this.handeleEditLastname}
+                        handeleEditBirthday={this.handeleEditBirthday}
+                        handeleAddress={this.handeleAddress}
+                        handeleEmailAddress={this.handeleEmailAddress}
+                        handeleTelephoneNumber={this.handeleTelephoneNumber}
+                        
+                        editedfirstame={this.state.editFirstname}
+                        editedlastname={this.state.editLastname}
+                        editedBirthday={this.state.editBirthda}
+                        editedEmailAddress={this.state.editEmailAddress}
+                        editedAddress={this.state.editAddress}
+                        editedTelephone={this.state.editTelephoneNumber}
+                        
+                        updateStoremanager={this.onSubmitUpdateForm}
+                        key={currentstoremanager._id}/>;
         })
    }
    

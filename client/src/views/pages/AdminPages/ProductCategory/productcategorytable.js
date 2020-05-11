@@ -36,7 +36,7 @@ export default class productcategorytable extends Component {
 
         this.state={
             productcategorylist:[],
-            editdata:false,
+           
 
         };
     
@@ -99,10 +99,7 @@ export default class productcategorytable extends Component {
     
     }
 
-    onhandleEditeData(){
-        this.setState({editdata:true});
-    }
-
+   
   
     render() {
         return (
