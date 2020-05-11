@@ -84,10 +84,12 @@ class ShowOneProduct extends Component{
             url:'http://localhost:3001/product/getSingelProduct',
             params:{s:true,id:this.state.id,tclick:true}
         }).then(res=>{
+
             this.setState({
                 data:res.data,
                 pcatgory:res.data.catogory
             },()=>{
+
                 this.setElemets();
                 axios({
                     methode: 'GET',
@@ -520,7 +522,7 @@ class ShowOneProduct extends Component{
 
                     </div>
                 </section>
-                    <Suggestions catogory={product.catogory} subCatogory={product.subCatogory} id={product.id}/>
+                    <Suggestions catogory={product._id} subCatogory={product.subCatogory} id={product.id}/>
                 </>
             ))}
 

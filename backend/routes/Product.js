@@ -103,8 +103,14 @@ router.get('/getSingelProduct',async function (req,res) {
 
 
             var data=await productSchema.find(req.query);
-            var catogoryData= await productcategory.find({_id:data[0].catogory});
+            var pCaID=data[0].catogory;
+
+
+
+            var catogoryData= await productcategory.find({_id:pCaID});
             data[0]['catogory']=catogoryData[0].categoryName;
+            data[0]['_id']=pCaID;
+
 
 
 

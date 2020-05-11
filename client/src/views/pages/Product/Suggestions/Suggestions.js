@@ -20,19 +20,22 @@ class Suggestions extends Component{
 
 
     componentDidMount() {
-
+    console.log(this.state);
         axios({
             methode: 'GET',
             url:'http://localhost:3001/product/getProduct',
-            params:{s:true,catogory:this.state.catogory,subCatogory: this.state.subCatogory,tclick:false},
+            params:{s:true,catogory:this.state.catogory,subCatogory: this.state.subCatogory},
 
         }).then(res=>{
+
             this.filter(res.data);
 
         }).catch(err=>{
             console.log(err);
         });
     }
+
+
 
 
 
@@ -57,22 +60,27 @@ class Suggestions extends Component{
 
     render() {
 
-
         return <>
             <section className="related-product-section">
                 <div className="container">
                     <div className="section-title">
-                        <h2>RELATED PRODUCTS</h2>
+                        {this.state.products.length==0?(
+                            <></>
+                        ):(
+                            <h2>RELATED PRODUCTS</h2>
+                        )
+                        }
+
                     </div>
                 </div>
                 <div className="container">
                     <div className="row">
                         {this.state.products.length==0?(
-                            <div className="section-title">
-                            <h4  >No Related Products</h4>
-                            </div>
+                            <></>
                         ):(
                             this.state.products.map(product => (
+                                <>
+
 
 
                                     <div key={product.id}  className="product-item col-md-3">
@@ -92,13 +100,14 @@ class Suggestions extends Component{
                                         </Link>
                                     </div>
 
+                                </>
                                 ))
                         )}
 
-
-
                     </div>
                 </div>
+
+
             </section>
         </>;
 
