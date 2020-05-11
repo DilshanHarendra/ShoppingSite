@@ -36,6 +36,8 @@ export default class productcategorytable extends Component {
 
         this.state={
             productcategorylist:[],
+            editdata:false,
+
         };
     
     }
@@ -95,6 +97,10 @@ export default class productcategorytable extends Component {
              this.loadProductCategoryData()
          }
     
+    }
+
+    onhandleEditeData(){
+        this.setState({editdata:true});
     }
 
   

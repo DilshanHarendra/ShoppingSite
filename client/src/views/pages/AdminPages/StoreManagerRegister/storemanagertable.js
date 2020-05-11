@@ -1,11 +1,15 @@
 import React, { Component } from 'react'
 import { Table, Container, Input } from 'reactstrap';
+
 import axios from 'axios';
 
 
 const StoreManager=props=>(
-    <tr>
-        <td>{props.storemanager.firstName}</td>
+    <tr >
+        <td>
+            {props.storemanager.firstName}
+                   
+        </td>
         <td>{props.storemanager.lastName}</td>
         <td>{props.storemanager.birthDay}</td>
         <td>{props.storemanager.emailAddress}</td>
@@ -15,7 +19,7 @@ const StoreManager=props=>(
         <button className="btn btn-danger" onClick={()=>{props.deleteStoreManager(props.storemanager._id)}}>Delete</button>
         </td>
         <td>
-        <button className="btn btn-warning"  >Edit </button>
+        <button className="btn btn-warning" onClick={()=>{props.editStoreManager(props.storemanager)}}  >Edit </button>
         </td>
     </tr>
 
@@ -33,8 +37,16 @@ export default class storemanagerview extends Component {
           this.deleteStoreManager=this.deleteStoreManager.bind(this);
           this.loadStoreManagerData=this.loadStoreManagerData.bind(this);
           this.handleSearch=this.handleSearch.bind(this);
+          this.handleEditdata=this.handleEditdata.bind(this);
           this.state={storemanagerlist:[],
-                      searchkeyword:''  
+                      searchkeyword:'' ,
+                      editdata:false ,
+                      editFirstname:'',
+                      editLastname:'',
+                      editBirthda:'',
+                      editEmailAddress:'',
+                      editAddress:'',
+                      editTelephoneNumber:''
         };
   
  
@@ -59,6 +71,29 @@ export default class storemanagerview extends Component {
         })
     }   
  
+    handeleEditFirstname(event){
+        this.setState({editFirstname:event.target.value})
+    }
+
+    handeleEditLastname(event){
+        this.setState({editLastname:event.target.value})
+    }
+
+    handeleEditBirthday(event){
+        this.setState({editBirthda:event.target.value})
+    }
+
+    handeleAddress(event){
+        this.setState({editAddress:event.target.value})
+    }
+
+    handeleEmailAddress(event){
+        this.setState({editEmailAddress:event.target.value})
+    }
+
+    handeleTelephoneNumber(event){
+        this.setState({editTelephoneNumber:event.target.value})
+    }
 
 
     deleteStoreManager(id){
@@ -72,7 +107,7 @@ export default class storemanagerview extends Component {
     
     storemanagrList(){
         return this.state.storemanagerlist.map(currentstoremanager=>{
-            return <  StoreManager storemanager={currentstoremanager} deleteStoreManager={this.deleteStoreManager} key={currentstoremanager._id}/>;
+            return <  StoreManager storemanager={currentstoremanager} editStoreManager={this.handleEditdata} deleteStoreManager={this.deleteStoreManager} key={currentstoremanager._id}/>;
         })
    }
    
@@ -97,6 +132,23 @@ export default class storemanagerview extends Component {
    
    }
     
+   handleEditdata(editdata){
+       console.log("edited");
+       console.log(editdata._id);
+       
+       this.setState({
+           editdata:true,
+           editFirstname:editdata.firstName,
+           editLastname:editdata.lastName,
+           editAddress:editdata.address,
+           editEmailAddress:editdata.editAddress,
+           editBirthda:editdata.birthDay,
+           editTelephoneNumber:editdata.telephoneNumber
+
+       })
+
+
+   }
     
     
     render() {
