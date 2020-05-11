@@ -47,6 +47,8 @@ hr{
 .Pimage{
     width:100%;
     height:450px;
+    min-width: 250px;
+
 
 }
 @media only screen and (max-width: 600px) {

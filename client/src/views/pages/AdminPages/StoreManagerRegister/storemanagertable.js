@@ -321,7 +321,5 @@ const Styles={
         padding: '10px',
         borderRadius:'10px'
     },
-    regHeadertext:{
-        padding: '10px',
-    }
+
 }

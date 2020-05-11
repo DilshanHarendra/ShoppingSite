@@ -12,6 +12,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import '../../css/slicknav.min.css';
 import '../../css/style.css';
+import axios from "axios";
 
 
 
@@ -35,6 +36,8 @@ class DefaultHeader extends Component {
 		  warning: false,
 		  danger: false,
 		  info: false,
+          skeyWord:'',
+          getCatogorys:[]
 		};
 	
 	
@@ -48,8 +51,28 @@ class DefaultHeader extends Component {
 		});
 	  }
     componentDidMount(){
-       
+       axios.get("http://localhost:3001/productCategory")
+            .then(result=> {
+
+                this.setState({
+                    getCatogorys:result.data,
+                });
+
+            }).catch(err=>console.log(err));
     }
+    getKeyWord=e=>{
+
+	    this.setState({
+            skeyWord:e.target.value
+        })
+    }
+    search=e=>{
+        e.preventDefault();
+        window.location.replace('/search/'+this.state.skeyWord);
+
+    }
+
+
     state = {  }
     render() { 
         return ( <React.Fragment>
@@ -65,8 +88,8 @@ class DefaultHeader extends Component {
                                 </Link>
                             </div>
                             <div className="col-xl-6 col-lg-5">
-                                <form className="header-search-form">
-                                    <input type="text" placeholder="Search on divisima ...."/>
+                                <form className="header-search-form" onSubmit={this.search}>
+                                    <input type="text" onChange={this.getKeyWord} value={this.skeyWord} placeholder="Search on divisima ...."/>
                                     <button><i className="flaticon-search"></i></button>
                                 </form>
                             </div>
@@ -106,22 +129,28 @@ class DefaultHeader extends Component {
                 <nav className="main-navbar">
                     <div className="container">
                         <ul className="main-menu">
-                            <li><Link to="/" >Home</Link></li>
-                            <li><Link to="/allProducts/Women">Women</Link></li>
-                            <li><Link to="/allProducts/Men">Men</Link></li>
-                            <li><Link to="/allProducts/BP">Bags & Purses</Link></li>
-                            <li><Link to="/allProducts/Jewelry">Jewelry
-                                <span className="new">New</span>
-                            </Link></li>
-                            <li><Link to="/allProducts/Footwear">Footwear</Link>
-                                <ul className="sub-menu">
-                                    <li><Link to="/">Sneakers</Link></li>
-                                    <li><Link to="/">Sandals</Link></li>
-                                    <li><Link to="/">Formal Shoes</Link></li>
-                                    <li><Link to="/">Boots</Link></li>
-                                    <li><Link to="/">Flip Flops</Link></li>
-                                </ul>
-                            </li>
+                            <li><Link to="/" >Home   <span className="new">New</span></Link></li>
+
+
+                                {this.state.getCatogorys.map(catogory=>(
+                                    <li><Link to={"/allProducts/"+catogory.categoryName}  >{catogory.categoryName}</Link>
+                                        {(catogory.subCategory.length>0)?(
+                                            <ul className="sub-menu">
+                                                {(catogory.subCategory.map(subCategory=>(
+                                                    <li><Link to={"/allProducts/"+catogory.categoryName+"~"+subCategory}>{subCategory}</Link></li>
+                                                )))}
+
+
+                                            </ul>
+                                        ):(
+                                            <></>
+                                        )}
+
+
+
+
+                                    </li>
+                                ))}
                             <li><Link to="/">Pages</Link>
                                 <ul className="sub-menu">
                                     <li><Link to="/">Product Page</Link></li>
@@ -139,7 +168,7 @@ class DefaultHeader extends Component {
                                 </ul>
                             </li>
                             <li>
-                                <NavLink to="/dashboard" className="nav-link" >Dashboard</NavLink>
+                                <NavLink to="/adminDashboard" className="nav-link" >Dashboard</NavLink>
                             </li>
 
                             <li>

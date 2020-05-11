@@ -13,15 +13,23 @@ class ShowAllProducts extends Component{
 
     constructor(props) {
         super();
+        let keys= this.seperatePara(props.history.location.pathname.split("/")[2]);
         this.state={
-            subCatogory:null,
-            mCatogory:props.history.location.pathname.split("/")[2],
+            subCatogory:keys[1],
+            mCatogory:keys[0],
             size:null,
             data:[],
-            price:[0,1000]
-
-        }
-
+            products:[],
+            length:0,
+            price:[0,1000],
+            pageloading:'block',
+            next:0,
+            getCatogorys:[],
+            catogory:'',
+            isLoadmore:true,
+            limit:3
+        };
+        this.loadCatogories();
 
 
     }
@@ -41,49 +49,168 @@ class ShowAllProducts extends Component{
             }
 *
 * */
-    componentWillMount() {
-
-    }
 
 
 
     componentDidMount(){
-        console.log("componentDidMount")
+
+
         const script = document.createElement("script");
         script.src = "../../../../js/main.js";
         script.async = true;
         document.body.appendChild(script);
 
+        this.props.history.listen((location, action) => {
+            document.getElementById('preloder').style.display="block";
+            this.clearSize();
 
-        this.getData();
-            this.props.history.listen((location, action) => {
-                this.clearSize();
+            let key= this.seperatePara(location.pathname.split("/")[2]);
+
+            this.state.next=0;
+            this.state.mCatogory=key[0];
+            this.state.minPrice=0;
+            this.state.maxPrice=10000;
+            this.state.size=null;
+            this.state.subCatogory=key[1];
+
+                let curretcatogory=  this.state.getCatogorys.filter(catogory=>(catogory.categoryName.toString()==this.state.mCatogory.toString()));
+              try {
+                  this.setState({
+                      catogory:curretcatogory[0]._id
+
+                  },()=>{
+
+                      this.getData();
+                  });
+              }catch (e) {
+
+              }
+        });
+
+
+
+
+
+
+
+
+        var scrollPos = 0;
+        window.onscroll = ()=>{
+
+            try {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                var ditection= window.pageYOffset|| document.documentElement.scrollTop;
+
+                var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+
+                var productBox=document.getElementById('productBox').scrollHeight*(0.5); //  box height 80%
+                //  var scrolled = (winScroll / height) * 100-productBox;
+                var scrolled =winScroll;
+                //console.log(scrolled+" "+productBox);
+                if(scrolled>productBox &&((document.body.getBoundingClientRect()).top < scrollPos)){
+                    this.state.next+=3;
+                   // console.log(scrolled+" "+productBox);
+                    if (this.state.isLoadmore){
+                        this.loadmore();
+                    }
+
+                }
+
+                scrollPos = (document.body.getBoundingClientRect()).top;
+            }catch (e) {
+
+            }
+
+        };
+
+    }
+
+
+    seperatePara=para=> {
+
+        let mCatogory,subCatogory;
+
+        try {
+
+            let keys=para.split("~");
+            if (keys.length==1){
+                subCatogory=null;
+                mCatogory=keys;
+            }else{
+                subCatogory=keys[1];
+                mCatogory=keys[0];
+            }
+        }catch (e) {
+
+        }
+        return [mCatogory,subCatogory];
+    }
+
+    loadCatogories=async ()=>{
+
+        await axios.get("http://localhost:3001/productCategory")
+            .then(result=> {
+                let curretcatogory=  result.data.filter(catogory=>(catogory.categoryName.toString()==this.state.mCatogory.toString()));
                 this.setState({
-                    mCatogory:this.props.history.location.pathname.split("/")[2],
-                    minPrice:0,
-                    maxPrice:10000,
-                    size:null,
-                },()=>this.getData());
-                window.location.reload();
-            });
+                    getCatogorys:result.data,
+                    catogory:curretcatogory[0]._id
+                },()=>{
+                    this.getData();
+                });
+
+            }).catch(err=>console.log(err));
 
 
     }
 
-    getData =()=>{
-        let cancel;
-        axios({
+
+
+    loadmore=async ()=>{
+        await axios({
             methode: 'GET',
             url:'http://localhost:3001/product/getProducts',
-            params:{s:true,catogory:this.state.mCatogory,minprice:this.state.price[0],maxprice:this.state.price[1],size:this.state.size ,subCatogory:this.state.subCatogory },
+            params:{s:true,catogory:this.state.catogory,minprice:this.state.price[0],maxprice:this.state.price[1],size:this.state.size ,subCatogory:this.state.subCatogory,sets:this.state.next,limit:this.state.limit },
+
+        }).then(res=>{
+           // console.log(res.data.length);
+            if (res.data.length!=0){
+                this.setState({
+                    data:[...this.state.data,...res.data]
+                },()=>{
+
+                    setTimeout(()=>{
+                        document.getElementById('preloder').style.display="none";
+                    },200);
+                });
+            }else {
+                this.state.isLoadmore=false;
+            }
+
+        }).catch(err=>{
+            console.log(err);
+        });
+    }
+
+
+
+    getData  =async ()=>{
+
+       await axios({
+            methode: 'GET',
+            url:'http://localhost:3001/product/getProducts',
+            params:{s:true,catogory:this.state.catogory,minprice:this.state.price[0],maxprice:this.state.price[1],size:this.state.size ,subCatogory:this.state.subCatogory,sets:this.state.next,limit:this.state.limit },
 
         }).then(res=>{
             this.setState({
-                data:res.data
-            },()=>console.log(this.state.data))
+                data:[...res.data]
+            },()=>{
+                setTimeout(()=>{
+                    document.getElementById('preloder').style.display="none";
+                },200);
+            });
         }).catch(err=>{
 
-            console.log(err)
+            console.log(err);
         });
 
 
@@ -101,52 +228,57 @@ clearSize(){
 
 }
 
-    setCatogories(mc,s){
-        this.setState({
-            subCatogory:s,
-            mCatogory:mc
-        },()=>this.getData())
-
+    setCatogories=(mc,s)=>{
+        document.getElementById('preloder').style.display="block";
+        this.state.next=0;
+        this.state.isLoadmore=true;
+        this.state.subCatogory=s.toString().trim();
+        this.state.catogory=mc.toString().trim();
+        this.getData();
     }
     setSize =e=>{
-
-       var clicked=document.getElementById(e);
+        this.state.next=0;
+        this.state.isLoadmore=true;
+        var clicked=document.getElementById(e);
        clicked.checked=true;
         this.setState({
             size:clicked.id
-        },()=>this.getData())
+        },()=>this.getData());
     }
 
     setPrice=(e,values)=>{
-        console.log("price change")
+        this.state.next=0;
+        this.state.isLoadmore=true;
+       // console.log("price change")
        this.setState({
             price:values
-        })
-
+        });
     }
 
     getDataByPrice=()=>{
-        this.getData()
+        this.getData();
     }
 
-
-
-
     imgHover(id,image){
-
         document.getElementById(id).src='http://localhost:3001'+image;
     }
 
+    setActive(x){
+        document.getElementById(x).setAttribute("class","active");
+    }
+    removeActive(x){
+        document.getElementById(x).setAttribute("class","");
+    }
 
-
-render() {
-
-
-    return <>
-
+    render() {
+        return <>
+            <div id="preloder">
+                <div className="loader"></div>
+            </div>
         <div className="page-top-info" style={{height: '50px'}}>
             <div className="container">
-                <h4>CAtegory PAge</h4>
+                <h4>{(this.state.subCatogory==null)?(this.state.mCatogory):(this.state.mCatogory+" / "+this.state.subCatogory)}
+                    </h4>
                 <div className="site-pagination">
                     <Link to="/">Home</Link> /
                     <Link >Shop</Link> /
@@ -160,47 +292,31 @@ render() {
                         <div className="filter-widget">
                             <h2 className="fw-title">Categories</h2>
                             <ul className="category-menu">
-                                <li><Link to="/allProducts/Women" >Women</Link>
-                                    <ul className="sub-menu">
-                                        <li  onClick={()=>this.setCatogories("Women","Midi Dresses")} >Midi Dresses </li>
-                                        <li onClick={()=>this.setCatogories("Women", "Maxi Dresses")}>Maxi Dresses</li>
-                                        <li onClick={()=>this.setCatogories("Women", "Prom Dresses")}>Prom Dresses</li>
-                                        <li onClick={()=>this.setCatogories("Women", "Little Black Dresses")}>Little Black Dresses</li>
-                                        <li onClick={()=>this.setCatogories("Women", "Mini Dresses")}>Mini Dresses</li>
-                                    </ul>
-                                </li>
-                                <li><Link to="/allProducts/Men" >Man</Link>
-                                    <ul className="sub-menu">
-                                        <li  onClick={()=>this.setCatogories("Men","Shorts & Pants")}>Shorts & Pants  </li>
-                                        <li  onClick={()=>this.setCatogories("Men", "T-Shirt")}>T-Shirt </li>
-                                        <li  onClick={()=>this.setCatogories("Men", "Shirts")}>Shirts </li>
-                                        <li  onClick={()=>this.setCatogories("Men", "Ties")}>Ties </li>
-                                        <li  onClick={()=>this.setCatogories("Men", "Belts")}>Belts </li>
-                                    </ul>
-                                </li>
-                                <li><Link to="/allProducts/Children">Children</Link></li>
-                                <li><Link to="/allProducts/BP">Bags & Purses</Link></li>
-                                <li><Link to="/allProducts/Jewelry">Jewelry</Link>
-                                    <ul className="sub-menu">
-                                        <li  onClick={()=>this.setCatogories("Jewelry","Engagement & Wedding Jewelry")}>Engagement & Wedding Jewelry  </li>
-                                        <li  onClick={()=>this.setCatogories("Jewelry", "Vintage & Antique Jewelry")}>Vintage & Antique Jewelry </li>
-                                        <li  onClick={()=>this.setCatogories("Jewelry", "Handcrafted & Artisan Jewelry")}>Handcrafted & Artisan Jewelry </li>
-                                        <li  onClick={()=>this.setCatogories("Jewelry", "Loose Diamonds & Gemstones")}>Loose Diamonds & Gemstones </li>
+                                {this.state.getCatogorys.map(catogory=>(
+                                    <li key={catogory._id} id={catogory._id} onMouseOver={()=>this.setActive(catogory._id)} onMouseOut={()=>this.removeActive(catogory._id)}><Link to={"/allProducts/"+catogory.categoryName}  >{catogory.categoryName}</Link>
+                                        {(catogory.subCategory.length>0)?(
+                                            <ul className="sub-menu">
+                                                {(catogory.subCategory.map(subCategory=>(
+                                                    <li key={subCategory} onClick={()=>this.setCatogories(catogory._id,subCategory)} >{subCategory}</li>
+                                                )))}
 
-                                    </ul>
 
-                                </li>
-                                <li><Link to="/allProducts/Footwear">Footwear</Link>
-                                    <ul className="sub-menu">
-                                        <li  onClick={()=>this.setCatogories("Footwear","Sneakers")}>Sneakers  </li>
-                                        <li  onClick={()=>this.setCatogories("Footwear", "Sandals")}>Sandals </li>
-                                        <li  onClick={()=>this.setCatogories("Footwear", "Formal Shoes")}>Formal Shoes </li>
-                                        <li  onClick={()=>this.setCatogories("Footwear", "Boots")}>Boots </li>
-                                        <li  onClick={()=>this.setCatogories("Footwear", "Flip Flops")}>Flip Flops </li>
-                                    </ul>
+                                            </ul>
+                                            ):(
+                                            <></>
+                                            )}
 
-                                </li>
+
+
+
+                                    </li>
+                                ))}
+
+
+
                             </ul>
+
+
                         </div>
                         <div className="filter-widget mb-0">
                             <h2 className="fw-title">refine by</h2>
@@ -214,29 +330,19 @@ render() {
                                     style={{width:"250px"}}
                                     max={1000}
                                     onClick={this.getDataByPrice}
-
-
-
                                 />
                                     <div className="priceinput">
                                         <div >
                                             <label htmlFor="">{this.state.price[0]}</label>
                                             <label style={{width:'70px'}} htmlFor="">min Price</label>
-
                                         </div>
                                         <div style={{'margin-left':'120px'}} >
                                             <label htmlFor="">{this.state.price[1]}</label>
                                             <label style={{width:'70px'}}htmlFor="">max Price</label>
-
                                         </div>
-
-
                                     </div>
-
-
                             </div>
                         </div>
-
                         <div className="filter-widget mb-0">
                             <h2 className="fw-title">Size</h2>
                             <div className="fw-size-choose">
@@ -278,9 +384,8 @@ render() {
                         </div>
                     </div>
 
-
-                    <div className="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
-                        <div className="row">
+                    <div className="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0" id="products">
+                        <div className="row" id="productBox">
                             {this.state.data.length==0?(
                                 <h1>No Results Found</h1>
                             ):(this.state.data.map(oneRow=>(
@@ -325,9 +430,7 @@ render() {
                             {this.state.data.length==0?(
                                 <></>
                             ):(
-                                <div className="text-center w-100 pt-3">
-                                    <button className="site-btn sb-line sb-dark">LOAD MORE</button>
-                                </div>
+                                <></>
                                 )}
 
 
