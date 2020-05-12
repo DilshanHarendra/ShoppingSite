@@ -6,7 +6,7 @@ const fileUpload = require('express-fileupload');
 const core = require('cors');
 const fs= require('fs');
 const io = require('socket.io')(4000);
-const Suggsions= require('../Functions/Suggesions');
+// const Suggsions= require('../Functions/Suggesions');
 
 const productSchema = require('../schemas/ProductSchema');
 const productcategory= require('../schemas/ProductCategorySchema');

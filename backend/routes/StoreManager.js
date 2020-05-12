@@ -57,22 +57,24 @@ router.route('/').get((req,res)=>{
 
 
 router.route('/update/:id').put((req,res)=>{
-    console.log("update method");
-    console.log(req.body.firstName);
-    
+      
     StoreManager.findById(req.params.id)
-        .then(storemaager=>{
-            storemaager.firstName=req.body.firstName;
-            storemaager.lastName=req.body.lastName;
-            storemaager.birthDay=req.body.birthDay;
-             storemaager.emailAddress=req.body.email;
-            storemaager.address=req.body.address;
-         storemaager.telephoneNumber=req.body.telephonenumber;
-            storemaager.save()
-            .then(user=>res.json('storemanager updated'))
-            .catch(err=>res.status(400).json('Error: '+err));
+        .then(storemanager=>{
+            storemanager.firstName=req.body.firstName;
+            storemanager.lastName=req.body.lastName;
+            storemanager.birthDay=req.body.birthDay;
+            storemanager.emailAddress=req.body.email;
+            storemanager.address=req.body.address;
+            storemanager.telephoneNumber=req.body.telephonenumber;
+            storemanager.save()
+                .then(success=>res.json('storemanager updated'))
+                .catch(err=>res.status(400).json('Error: '+err));
         })
         .catch(err=>res.status(400).json('Error: '+err));
+
+   
+
+
 });
 
 
