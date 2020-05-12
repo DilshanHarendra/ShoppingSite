@@ -73,8 +73,9 @@ class ShowAllProducts extends Component{
             this.state.size=null;
             this.state.subCatogory=key[1];
 
-                let curretcatogory=  this.state.getCatogorys.filter(catogory=>(catogory.categoryName.toString()==this.state.mCatogory.toString()));
+
               try {
+                  let curretcatogory=  this.state.getCatogorys.filter(catogory=>(catogory.categoryName.toString()==this.state.mCatogory.toString()));
                   this.setState({
                       catogory:curretcatogory[0]._id
 
@@ -86,7 +87,15 @@ class ShowAllProducts extends Component{
 
               }
         });
-
+        if (window.performance) {
+            if (performance.navigation.type == 1) {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop=0;
+                    this.state.next=0;
+                    this.state.isLoadmore=true;
+                    this.state.limit=3;
+            }
+        }
 
 
 
@@ -275,13 +284,21 @@ clearSize(){
             <div id="preloder">
                 <div className="loader"></div>
             </div>
-        <div className="page-top-info" style={{height: '50px'}}>
+        <div className="page-top-info" id="main" style={{height: '50px'}}>
             <div className="container">
-                <h4>{(this.state.subCatogory==null)?(this.state.mCatogory):(this.state.mCatogory+" / "+this.state.subCatogory)}
+                <h4>{(this.state.subCatogory==null)?(this.state.mCatogory):(this.state.mCatogory+" /"+this.state.subCatogory)}
                     </h4>
                 <div className="site-pagination">
                     <Link to="/">Home</Link> /
-                    <Link >Shop</Link> /
+                    {(this.state.subCatogory==null)?(
+                       <Link to={this.state.mCatogory}>{this.state.mCatogory}</Link>
+                    ):(
+                        <>
+                         <Link to={this.state.mCatogory}>{this.state.mCatogory}</Link>/
+
+                        <Link to={this.state.mCatogory+"~"+this.state.subCatogory}>{this.state.subCatogory}</Link>
+                        </>
+                         )}
                 </div>
             </div>
         </div>

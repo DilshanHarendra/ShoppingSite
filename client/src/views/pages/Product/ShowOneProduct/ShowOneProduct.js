@@ -67,10 +67,22 @@ class ShowOneProduct extends Component{
 
         });
 
+        this.props.history.listen((location, action) => {
+           document.getElementById('preloder').style.display="block";
+            let key= location.pathname.split("/")[2];
+
+                this.state.id=key;
+
+                this.getData();
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop=0;
+
+        });
+
 
         this.getData();
 
-
+        
 
 
 

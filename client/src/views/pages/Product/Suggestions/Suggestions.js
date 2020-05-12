@@ -2,7 +2,7 @@ import React,{Component} from "react";
 import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
-
+import '../../../../css/suggestions.css'
 
 class Suggestions extends Component{
 
@@ -17,45 +17,64 @@ class Suggestions extends Component{
         }
     }
 
+    componentWillReceiveProps(nextProps, nextContext) {
+
+        if (this.state.id!=nextProps.id){
+            this.state.id=nextProps.id;
+            this.state.products=[];
+            this.filter();
+        }
+
+    }
+
+
 
 
     componentDidMount() {
     console.log(this.state);
+    this.filter();
+
+
+
+    }
+
+
+
+
+
+    filter=()=> {
+
         axios({
             methode: 'GET',
             url:'http://localhost:3001/product/getProduct',
             params:{s:true,catogory:this.state.catogory,subCatogory: this.state.subCatogory},
 
         }).then(res=>{
+            let data=res.data;
+            var length=4;
+            if(data.length<4){
+                length=data.length;
+            }
+            for (var c=0;c<length;c++){
+                if (data[c].id!=this.state.id){
+                    this.setState({
+                        products:[data[c],...this.state.products]
+                    });
 
-            this.filter(res.data);
+                }
+            }
 
         }).catch(err=>{
             console.log(err);
         });
-    }
 
 
-
-
-
-    filter(data) {
-        var length=4;
-        if(data.length<4){
-            length=data.length;
-        }
-        for (var c=0;c<length;c++){
-            if (data[c].id!=this.state.id){
-                this.setState({
-                    products:[data[c],...this.state.products]
-                });
-
-            }
-        }
 
     }
 
-
+    imgHover(id,image){
+        document.getElementById(id).src='http://localhost:3001'+image;
+    }
 
 
     render() {
@@ -83,10 +102,15 @@ class Suggestions extends Component{
 
 
 
-                                    <div key={product.id}  className="product-item col-md-3">
+                                    <div key={product.id}   className="product-item col-md-3">
                                         <Link to={"/oneProduct/"+product.id} >
                                             <div className="pi-pic">
-                                                <img src="/images/product/1.jpg" alt=""/>
+                                                <img style={{height:'350px',width:'100%'}}
+                                                     id={product.id}
+                                                     src={'http://localhost:3001'+product.images[0]}
+                                                     onMouseOut={()=>this.imgHover(product.id,product.images[0])}
+                                                     onMouseMove={()=>this.imgHover(product.id,product.images[1])}
+                                                     alt=""/>
                                                 <div className="pi-links">
                                                     <a href="#" className="add-card"><i
                                                         className="flaticon-bag"></i><span>ADD TO CART</span></a>
