@@ -21,6 +21,7 @@ import AdminDashbord from "./views/pages/AdminPages/admindashbord";
 import fakeAuth from "../src/views/pages/fakeAuth"
 import Login from "../../client/src/views/pages/Login"
 import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcategoryPanal";
+import StoreManagerPanal from "./views/pages/AdminPages/StoreManagerRegister/StoremanagerPanal";
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
 // Containers
@@ -66,7 +67,9 @@ class App extends Component {
                     <Route path="/receiptPayment" component={receiptPayment} />
                     <Route path="/payConfirm" component={payConfirm} />
                     <Route path="/adminDashbord" component={AdminDashbord}/>
-                    <Route path="/adminDashbord/productcategory" component={ProductCategory}/>
+                    <Route path="/productcategory" component={ProductCategory}/>
+                    <Route path="/storeManager" component={StoreManagerPanal}/>
+
                 </Switch>
                 <DefaultFooter/>
                 

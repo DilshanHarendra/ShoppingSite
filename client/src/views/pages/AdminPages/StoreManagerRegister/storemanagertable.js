@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Table, Container, Input, Button } from 'reactstrap';
+import { RiDeleteBinLine ,RiCheckboxCircleLine,RiEditLine } from 'react-icons/ri';
+
 
 import axios from 'axios';
 import Axios from 'axios';
@@ -11,7 +13,7 @@ class StoreManager extends Component{
         return(
     <tr >
         <td>
-            {this.props.storemanager.firstName} 
+            <p style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} }>{this.props.storemanager.firstName} </p>
              <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
                                    
                                    placeholder={this.props.storemanager.firstName}
@@ -24,7 +26,7 @@ class StoreManager extends Component{
              />            
         </td>
         <td>
-            {this.props.storemanager.lastName}
+            <p style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} }>{this.props.storemanager.lastName}</p>
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.storemanager.lastName}
                                    onChange={(e)=>this.props.handeleEditLastname(e.target.value)}
@@ -34,7 +36,7 @@ class StoreManager extends Component{
             
         </td>
         <td>
-            {this.props.storemanager.birthDay}
+           <p style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} }> {this.props.storemanager.birthDay}</p>
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.storemanager.birthDay}
                                    onChange={(e)=>this.props.handeleEditBirthday(e.target.value)}
@@ -44,7 +46,7 @@ class StoreManager extends Component{
              />   
         </td>
         <td>
-            {this.props.storemanager.emailAddress}
+           <p style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} }>{this.props.storemanager.emailAddress}</p> 
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder= {this.props.storemanager.emailAddress}
                                    onChange={(e)=>this.props.handeleEmailAddress(e.target.value)}
@@ -54,7 +56,7 @@ class StoreManager extends Component{
             
         </td>
         <td>
-            {this.props.storemanager.address}
+            <p style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} }>{this.props.storemanager.address}</p>
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.storemanager.address}
                                    onChange={(e)=>this.props.handeleEmailAddress(e.target.value)}
@@ -64,7 +66,7 @@ class StoreManager extends Component{
         
         </td>
         <td>
-            {this.props.storemanager.telephoneNumber}
+            <p style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} }>{this.props.storemanager.telephoneNumber}</p>
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.storemanager.telephoneNumber}
                                    onChange={(e)=>this.props.handeleTelephoneNumber(e.target.value)}
@@ -74,11 +76,11 @@ class StoreManager extends Component{
         
         </td>
         <td>
-        <button className="btn btn-danger" onClick={()=>{this.props.deleteStoreManager(this.props.storemanager._id)}}>Delete</button>
+        <RiDeleteBinLine size="2em" color="#FF9592"  onClick={()=>{this.props.deleteStoreManager(this.props.storemanager._id)}}>Delete</RiDeleteBinLine>
         </td>
         <td>
-        <button className="btn btn-warning" style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} } onClick={()=>{this.props.editemodeToggle(this.props.storemanager._id)}}  >Edit </button>
-        <Button style={this.props.editdatastatas?{display:"inherit"}:{display:"none"}  } onClick={()=>{this.props.updateStoremanager()}} color="primary">Update</Button>
+        <RiEditLine  size="2em" color="#FFD478" style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} } onClick={()=>{this.props.editemodeToggle(this.props.storemanager._id)}}  > </RiEditLine>
+        <RiCheckboxCircleLine  size="2em" color="green " style={this.props.editdatastatas?{display:"inherit"}:{display:"none"}  } onClick={()=>{this.props.updateStoremanager()}} ></RiCheckboxCircleLine>
         </td> 
     </tr>
         )
@@ -196,6 +198,9 @@ export default class storemanagerview extends Component {
         // event.preventDefault()
 
         console.log("call update form method");
+        console.log(this.state.editFirstname);
+        console.log(this.state.editLastname);
+        console.log(this.state.editAddress);
         
         const storeManagerUpdated={
             firstName:this.state.editFirstname,
@@ -207,8 +212,8 @@ export default class storemanagerview extends Component {
         }
 
         Axios.put('http://localhost:3001/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
-        .then(res=>console.log("store manager update"+res.data))
-        .catch(err=>console.log('error in update'+err.data))
+        .then(res=>console.log("store manager update sucessful"+res.data))
+        .catch(err=>console.log('error in update :'+err.data))
         this.editmodeToggle();
 
     }

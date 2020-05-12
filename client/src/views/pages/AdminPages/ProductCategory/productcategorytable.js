@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import { Container, Table,Badge, Input } from 'reactstrap'
+import { RiDeleteBinLine } from 'react-icons/ri';
+
 
 
 
@@ -16,7 +18,7 @@ const ProductCatergory=props=>
         </td>
         
         <td>
-        <button className="btn btn-danger" onClick={()=>{props.deleteProductCategory(props.productCatergory._id)}}>Delete</button>
+        <RiDeleteBinLine size="2em" color=""  onClick={()=>{props.deleteProductCategory(props.productCatergory._id)}}>Delete</RiDeleteBinLine>
         </td>
         
     </tr>
@@ -106,7 +108,7 @@ export default class productcategorytable extends Component {
             <Container style={Styles.regTablePlanal}>
             <h4 style={Styles.regHeadertext}>Product Catergory</h4>
             <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
-                <Table   size="sm" >
+                <Table  responsive size="sm" >
                     <thead>
                           <tr>
                             <th>Name</th>
