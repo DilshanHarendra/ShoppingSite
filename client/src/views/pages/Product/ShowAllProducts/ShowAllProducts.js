@@ -35,24 +35,8 @@ class ShowAllProducts extends Component{
     }
 
 
-
-/*
-*  if (Object.keys(temp ).length!=0){
-                    Object.keys(temp).forEach(key=>{
-                        if (key=="price"||key=="shipping"||key=="discount"){
-                            searchkeys[key]= { $lt:  parseInt(temp[key]) }
-                        }else {
-                            console.log("typeof temp[key] "+typeof temp[key]+temp[key]);
-                            searchkeys[key] = new RegExp(temp[key],'i');
-                        }
-                    });
-            }
-*
-* */
-
-
-
     componentDidMount(){
+    console.log("componentDidMount()")
 
 
         const script = document.createElement("script");
@@ -61,20 +45,25 @@ class ShowAllProducts extends Component{
         document.body.appendChild(script);
 
         this.props.history.listen((location, action) => {
-            document.getElementById('preloder').style.display="block";
-            this.clearSize();
 
-            let key= this.seperatePara(location.pathname.split("/")[2]);
-
-            this.state.next=0;
-            this.state.mCatogory=key[0];
-            this.state.minPrice=0;
-            this.state.maxPrice=10000;
-            this.state.size=null;
-            this.state.subCatogory=key[1];
+        if (action=="POP"){
+            window.location.reload();
+        }
 
 
               try {
+                  document.getElementById('preloder').style.display="block";
+                  this.clearSize();
+
+                  let key= this.seperatePara(location.pathname.split("/")[2]);
+
+                  this.state.next=0;
+                  this.state.isLoadmore=true;
+                  this.state.mCatogory=key[0];
+                  this.state.minPrice=0;
+                  this.state.maxPrice=10000;
+                  this.state.size=null;
+                  this.state.subCatogory=key[1];
                   let curretcatogory=  this.state.getCatogorys.filter(catogory=>(catogory.categoryName.toString()==this.state.mCatogory.toString()));
                   this.setState({
                       catogory:curretcatogory[0]._id
@@ -93,7 +82,7 @@ class ShowAllProducts extends Component{
                 document.documentElement.scrollTop=0;
                     this.state.next=0;
                     this.state.isLoadmore=true;
-                    this.state.limit=3;
+
             }
         }
 
@@ -117,9 +106,10 @@ class ShowAllProducts extends Component{
                 var scrolled =winScroll;
                 //console.log(scrolled+" "+productBox);
                 if(scrolled>productBox &&((document.body.getBoundingClientRect()).top < scrollPos)){
-                    this.state.next+=3;
+
                    // console.log(scrolled+" "+productBox);
                     if (this.state.isLoadmore){
+                        this.state.next+=this.state.limit;
                         this.loadmore();
                     }
 
@@ -133,6 +123,7 @@ class ShowAllProducts extends Component{
         };
 
     }
+
 
 
     seperatePara=para=> {
@@ -215,6 +206,8 @@ class ShowAllProducts extends Component{
             },()=>{
                 setTimeout(()=>{
                     document.getElementById('preloder').style.display="none";
+                    document.body.scrollTop = 0;
+                    document.documentElement.scrollTop=0;
                 },200);
             });
         }).catch(err=>{
@@ -280,6 +273,7 @@ clearSize(){
     }
 
     render() {
+
         return <>
             <div id="preloder">
                 <div className="loader"></div>

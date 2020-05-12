@@ -54,8 +54,9 @@ class ShowOneProduct extends Component{
 
     }
     componentDidMount(){
-    //console.log("componentDidMount()");
 
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop=0;
         socketIOClient('http://localhost:4000').on('newReview', data => {
           //  console.log("response",data);
             if(data.pid==this.state.id){
@@ -82,7 +83,7 @@ class ShowOneProduct extends Component{
 
         this.getData();
 
-        
+
 
 
 

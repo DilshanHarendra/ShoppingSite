@@ -31,11 +31,7 @@ class Suggestions extends Component{
 
 
     componentDidMount() {
-    console.log(this.state);
-    this.filter();
-
-
-
+        this.filter();
     }
 
 
