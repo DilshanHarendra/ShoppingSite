@@ -27,19 +27,19 @@ export default function Admindashbord() {
       <Row style={iconpanalStyle}>
         <Col style={storeManagerColor} onClick={handleStoreManager}>
           <h2>Store Manager</h2>
-          <GrUserManager size="3em" color="balck" />
+          <GrUserManager size="3em" color="black" />
         </Col>
         <Col style={productCategoryanagerColor} onClick={handleProductCategory}>
           <h2>Product Category </h2>
           <GiTShirt size="3em" color="black"/>
-
-
-
-         
-          </Col>
-        <Col style={col3}> </Col>
-        <Col  style={col4}>.col</Col>
+        </Col>
+        {/* <Col style={col3}> </Col>
+        <Col  style={col4}>.col</Col> */}
       </Row>
+       <Row>
+         
+      </Row> 
+
       </Container>
      
     )
