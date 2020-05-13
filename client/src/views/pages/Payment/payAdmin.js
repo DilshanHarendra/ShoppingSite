@@ -118,18 +118,19 @@ class payAdmin extends Component {
         return (
             <div>
                 <Container>
-                    <h3 className="my-5 mx-auto text-center text-danger">PAYMENT-ADMIN</h3>
+                    <h3 className="my-5 mx-auto text-center text-danger font-weight-bold">PAYMENT - ADMIN</h3>
                     <Row className="my-2">
                         <Col className="mx-auto mb-5 -align-right" xl="4">
                             <CanvasJSChart options = {options}/>
-
+                            <Button color="primary">View</Button>
                         </Col>
                         <Col className="mx-auto mb-5" xl="4">
                             <CanvasJSChart options = {options2}/>
+                            <Button color="primary">View</Button>
                         </Col>
                         <Col className="mx-auto mb-5" xl="4">
-                            <CanvasJSChart options = {options3}
-                            />
+                            <CanvasJSChart options = {options3}/>
+                            <Button color="primary">View</Button>
                         </Col>
                     </Row>
                     <CFooter><h6 className="text-right">By <span className="text-danger">PaymentAdmin</span></h6></CFooter>
