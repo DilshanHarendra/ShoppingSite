@@ -80,6 +80,18 @@ try{
 }
 });
 
+router.route('/addtoken').post((req,res)=>{
+  UserSchema.findById(req.params.id)
+      .then(usercatergory=>{
+       
+         
+          console.log(usercatergory.Fullname)
+          res.send( usercatergory.Fullname)
+      })
+      .catch(err=>res.status(400).json('Error: '+err));
+});
+
+
 
 
 router.get("/", function (req, res) {

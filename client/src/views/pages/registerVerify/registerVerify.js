@@ -105,7 +105,7 @@ console.log("value of userID"+values.user_id)
     delete data.Invalid;
 
     try {
-      axios.post("http://localhost:3001/user/addUser", data).then((res) => {
+      axios.post("http://localhost:3001/user/addtoken", data).then((res) => {
         console.log(res);
         console.log(res.data);
       });
