@@ -12,7 +12,6 @@ import ShowOneProduct from "./views/pages/Product/ShowOneProduct/ShowOneProduct"
 import Home from "./views/pages/HomePage";
 import Register from "./views/pages/Register"
 import PaymentMain from "./views/pages/Payment/PaymentMain"
-import payAdmin from "./views/pages/Payment/payAdmin";
 import cardPayment from "./views/pages/Payment/cardPayment"
 import receiptPayment from "./views/pages/Payment/receiptPayment"
 import payConfirm from "./views/pages/Payment/payConfirm"
@@ -22,12 +21,7 @@ import AdminDashbord from "./views/pages/AdminPages/admindashbord";
 import fakeAuth from "../src/views/pages/fakeAuth"
 import Login from "../../client/src/views/pages/Login"
 import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcategoryPanal";
-import refundPayment from "./views/pages/Payment/refundPayment";
-import emailConfirm from "./views/pages/Payment/emailConfirm"
-import refundConfirm from "./views/pages/Payment/refundConfirm"
-
-
-
+import StoreManagerPanal from "./views/pages/AdminPages/StoreManagerRegister/StoremanagerPanal";
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
 // Containers
@@ -73,11 +67,9 @@ class App extends Component {
                     <Route path="/receiptPayment" component={receiptPayment} />
                     <Route path="/payConfirm" component={payConfirm} />
                     <Route path="/adminDashbord" component={AdminDashbord}/>
-                    <Route path="/adminDashbord/productcategory" component={ProductCategory}/>
-                    <Route path="/payAdmin" component={payAdmin} />
-                    <Route path="/refundPayment" component={refundPayment} />
-                    <Route path="/emailConfirm" component={emailConfirm} />
-                    <Route path="/refundConfirm" component={refundConfirm} />
+                    <Route path="/productcategory" component={ProductCategory}/>
+                    <Route path="/storeManager" component={StoreManagerPanal}/>
+
                 </Switch>
                 <DefaultFooter/>
                 

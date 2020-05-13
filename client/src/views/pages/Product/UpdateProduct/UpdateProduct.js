@@ -52,7 +52,9 @@ constructor(props) {
         cImages:[],
         sSize:'',
         id:this.props.match.params.id,
-        maxImages:6
+        maxImages:6,
+        getCatogorys:[],
+        getSubCatogorys:[]
     }
 
 
@@ -67,6 +69,22 @@ constructor(props) {
             this.setState({
                 data:res.data
             },()=>{this.setElemets()})
+
+        axios.get("http://localhost:3001/productCategory")
+            .then(result=>{
+                this.setState({
+                    getCatogorys:result.data
+                },()=>{
+
+                    setTimeout(()=>{
+                        document.getElementById('preloder').style.display="none";
+                    },200);
+                });
+                console.log(result.data);
+            }).catch(err=>console.log(err));
+
+
+
         }).catch(err=>console.log(err));
     }
 
@@ -239,74 +257,42 @@ axios.post("http://localhost:3001/product/deleteImage",sendData)
 
 
 showSubCatogory() {
-    if (this.state.catogory === "Women") {
+    let getSubCatogorys=[];
 
-        return<div className="subctogory" >
+
+
+    getSubCatogorys=this.state.getCatogorys.find(getCatogory=>getCatogory._id===this.state.catogory)
+    //console.log(this.state.subCatogory,getSubCatogorys)
+
+
+    if (getSubCatogorys==null){
+        return <div className="subctogory" >
             <label htmlFor="validationCustom05">Sub Catagory<span>*</span></label>
             <select name="subCatogory" value={this.state.subCatogory} onChange={this.changeHandler} className="form-control" required>
-                <option value="">Choose</option>
-                <option value="Midi Dresses">Midi Dresses</option>
-                <option value="Maxi Dresses">Maxi Dresses</option>
-                <option value="Prom Dresses">Prom Dresses</option>
-                <option value="Mini Dresses">Mini Dresses</option>
-                <option value="Shorts & Pants">Shorts & Pants</option>
-                <option value="T-Shirt">T-Shirt</option>
+                <option value={this.state.subCatogory} >{this.state.subCatogory}</option>
+            </select>
+            <br/>
+        </div>;
+    }else{
+        return <div className="subctogory" >
+            <label htmlFor="validationCustom05">Sub Catagory<span>*</span></label>
+            <select name="subCatogory" value={this.state.subCatogory} onChange={this.changeHandler} className="form-control" required>
+                <option value="" key="0">Choose</option>
+
+                {getSubCatogorys.subCategory.map(catogory=>(
+                    <option key={catogory} value={catogory}>{catogory}</option>
+
+                ))}
 
             </select>
             <ShowError isShow={this.state.check} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
             <br/>
         </div>;
 
-    }else if (this.state.catogory === "Men") {
 
-        return<div>
-            <label htmlFor="validationCustom05">Sub Catagory<span>*</span></label>
-            <select name="subCatogory" value={this.state.subCatogory} onChange={this.changeHandler} className="form-control" required>
-                <option value="">Choose</option>
-                <option value="Shorts & Pants">Shorts & Pants</option>
-                <option value="T-Shirt">T-Shirt</option>
-                <option value="Shirts">Shirts</option>
-                <option value="Ties">Ties</option>
-                <option value="Belts">Belts</option>
-
-            </select>
-            <ShowError isShow={this.state.check} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
-            <br/>
-        </div>;
-
-    }else if (this.state.catogory === "Jewelry") {
-
-        return<div>
-            <label htmlFor="validationCustom05">Sub Catagory<span>*</span></label>
-            <select name="subCatogory" value={this.state.subCatogory} onChange={this.changeHandler} className="form-control" required>
-                <option value="" >Choose</option>
-                <option value="Engagement & Wedding Jewelry">Engagement & Wedding Jewelry</option>
-                <option value="Vintage & Antique Jewelry">Vintage & Antique Jewelry</option>
-                <option value="Handcrafted & Artisan Jewelry">Handcrafted & Artisan Jewelry</option>
-                <option value="Loose Diamonds & Gemstones">Loose Diamonds & Gemstones</option>
-
-            </select>
-            <ShowError isShow={this.state.check} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
-            <br/>
-        </div>;
-
-    }else if (this.state.catogory === "Footwear") {
-
-        return<div>
-            <label htmlFor="validationCustom05">Sub Catagory<span>*</span></label>
-            <select name="subCatogory" value={this.state.subCatogory} onChange={this.changeHandler} className="form-control" required>
-                <option value="">Choose</option>
-                <option value="Sneakers">Sneakers</option>
-                <option value="Sandals">Sandals</option>
-                <option value="Formal Shoes">Formal Shoes</option>
-                <option value="Boots">Boots</option>
-                <option value="Flip Flops">Flip Flops</option>
-            </select>
-            <ShowError isShow={this.state.check} value={this.state.subCatogory} name={"Select Sub Cataogory"} />
-            <br/>
-        </div>;
 
     }
+
 
 }
 
@@ -358,16 +344,16 @@ showSubCatogory() {
             delete  values.data;
 
             values.proimages = imgs;
-            console.log("form data",len)
+           // console.log("form data",len)
 
             axios.post('http://localhost:3001/product/updateProduct',values)
                 .then(response1=>{
-                    console.log(response1.statusText);
+                  //  console.log(response1.statusText);
                     if(len!=0){
                         axios.post('http://localhost:3001/product/uploadProduct',formData)
                             .then(response2=>{
 
-                                console.log(response2.statusText);
+                           //     console.log(response2.statusText);
                                 this.setState({
                                     error:response2.statusText
                                 });
@@ -425,7 +411,9 @@ showSubCatogory() {
     render() {
 
         return<div className="mainBox" >
-
+            <div id="preloder">
+                <div className="loader"></div>
+            </div>
                     <div className="page-top-info">
                         <div className="container">
                             <h2>Update Product {this.state.proName}</h2>
@@ -449,12 +437,9 @@ showSubCatogory() {
                                         <label htmlFor="validationCustom05">Catagory<span>*</span></label>
                                         <select name="catogory" value={this.state.catogory} onChange={this.changeHandler} className="form-control" required>
                                             <option value="" >Choose</option>
-                                            <option value="Women">Women</option>
-                                            <option value="Men">Men</option>
-                                            <option value="Childern">Childern</option>
-                                            <option value="Bags & Purses">Bags & Purses</option>
-                                            <option value="Footwear">Footwear</option>
-                                            <option value="Jewelry">Jewelry</option>
+                                            {this.state.getCatogorys.map(getCatogory=>(
+                                                <option value={getCatogory._id}>{getCatogory.categoryName}</option>
+                                            ))}
 
                                         </select>
 
@@ -595,7 +580,7 @@ showSubCatogory() {
                                         <br/><br/>
 
 
-                                        <button className="submit" type="submit">Add Product</button>
+                                        <button className="submit" type="submit">Update Product</button>
                                         <br/><br/><br/><br/>
                                     </div>
                                     <div className="col-md-6">
@@ -639,10 +624,10 @@ showSubCatogory() {
                                                 if (this.state.files!=null||this.state.files.length!=0) {
                                                     this.setState({
                                                         sucss3: false
-                                                    })
+                                                    });
                                                 }
 
-console.log(fileItems)
+
 
 
                                             }}
