@@ -125,7 +125,9 @@ console.log("value of userID"+values.user_id)
     // delete data.invalid1;
 
     const data={
-      id:this.state.userId
+      id:this.state.userId,
+      newPassword:this.state.password,
+      token:this.state.token
 
     }
 

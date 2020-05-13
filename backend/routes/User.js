@@ -81,14 +81,13 @@ try{
 });
 
 router.route('/addtoken').post((req,res)=>{
-  //UserSchema.findById(req.params.id)
-    //  .then(usercatergory=>{
-       
-         
-          //console.log(usercatergory.Fullname)
-          res.send( "hello");
-      //})
-      //.catch(err=>res.status(400).json('Error: '+err));
+ 
+
+      UserSchema.findByIdAndUpdate(req.body.id,{
+ 
+        "newPassword":req.body.newPassword,
+        "token":req.body.token
+    },(err,user)=>res.send("updated"))
 });
 
 
