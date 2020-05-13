@@ -12,6 +12,14 @@ app.use('/storeManager',storeManagerRoute);
 const productCategory=require('./routes/ProductCategory');
 app.use('/productCategory',productCategory);
 
+
+//===============PAYMENT==================================
+const paymentRoute=require('./routes/Payment');
+app.use('/Payment',paymentRoute);
+
+
+
+/*************************************************************************************************************************/
 app.use(core());
 app.use(express.static('public'));
 app.use('/uploads',express.static('./uploads'));
