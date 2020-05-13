@@ -81,14 +81,14 @@ try{
 });
 
 router.route('/addtoken').post((req,res)=>{
-  UserSchema.findById(req.params.id)
-      .then(usercatergory=>{
+  //UserSchema.findById(req.params.id)
+    //  .then(usercatergory=>{
        
          
-          console.log(usercatergory.Fullname)
-          res.send( usercatergory.Fullname)
-      })
-      .catch(err=>res.status(400).json('Error: '+err));
+          //console.log(usercatergory.Fullname)
+          res.send( "hello");
+      //})
+      //.catch(err=>res.status(400).json('Error: '+err));
 });
 
 
