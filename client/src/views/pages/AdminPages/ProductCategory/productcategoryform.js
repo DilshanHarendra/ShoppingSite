@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, Row, Col,FormGroup ,Label, Input, Button,Alert,Fade ,Badge, ListGroup, ListGroupItem } from 'reactstrap';
+import { MdAddCircle } from 'react-icons/md';
 import axios from 'axios';
 
 export default class Productcategoryform extends Component {
@@ -114,8 +115,7 @@ export default class Productcategoryform extends Component {
 
     }
     
-    
-    
+     
     
     
     
@@ -148,15 +148,15 @@ export default class Productcategoryform extends Component {
          <Row form>
             <Col md={6}>
                 <FormGroup>
-                    <Label for="exampleEmail">Product Category Name</Label>
-                    <Input type="text" name="categoryName"  placeholder="Name" value={this.state.productCategoryName} onChange={this.handeleproductCategoryName} required/>
+                    {/* <Label for="exampleEmail">Product Category Name</Label> */}
+                    <Input type="text" name="categoryName"  placeholder="Category Name" value={this.state.productCategoryName} onChange={this.handeleproductCategoryName} required/>
                  </FormGroup>
           
              </Col>
            
             <Col md={6}>
                  <FormGroup>
-                     <Label for="examplePassword">Product Category Note</Label>
+                     {/* <Label for="examplePassword">Product Category Note</Label> */}
                     <Input type="text" name="categoryNote"   placeholder="Note" value={this.state.productCategoryNote}  onChange={this.handeleproductCategoryNote} required/>
                 </FormGroup>
             </Col>
@@ -166,20 +166,20 @@ export default class Productcategoryform extends Component {
             <Col md={5}>
                     
                  <FormGroup>
-                     <Label for="examplePassword">Product Category Discription</Label>
-                    <Input type="text" name="categoryDiscription"   placeholder=" Discription"  value={this.state.productCategoryDiscription} onChange={this.handeleproductCategoryDiscription}  required/>
+                     {/* <Label for="examplePassword">Product Category Discription</Label> */}
+                    <Input type="text" name="categoryDiscription"   placeholder="Category Discription"  value={this.state.productCategoryDiscription} onChange={this.handeleproductCategoryDiscription}  required/>
                 </FormGroup>
             </Col>
             <Col md={3}>
                  <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                 <Label for="examplePassword">Sub-Category </Label>
+                 {/* <Label for="examplePassword">Sub-Category </Label> */}
                     <Input type="text" name="categoryNote"   placeholder="Sub Category" value={this.state.subCategory} onChange={this.handeleproductSubCategory} />
                 </FormGroup>
             </Col>
             <Col Col md={3} >
                 <FormGroup className="mb-2 mr-sm-2 mb-sm-0">
-                <Label for="examplePassword">SubCategory  </Label>
-                    <Button color="primary" onClick={this.handeleproductAddCategory} >+</Button>
+                {/* <Label for="examplePassword">SubCategory  </Label> */}
+                    <MdAddCircle size="2em" color="#1BBFFD " onClick={this.handeleproductAddCategory} >+</MdAddCircle>
                 </FormGroup> 
             </Col>
         </Row>
@@ -197,7 +197,7 @@ export default class Productcategoryform extends Component {
         <Row >
         <Col md={6}>
           <FormGroup>
-                <Button type="submit" value="Submit" color="success">Create Product Category</Button>                  
+                <Button type="submit" value="Submit" color="success">Create</Button>                  
           </FormGroup>
         </Col>
        </Row>

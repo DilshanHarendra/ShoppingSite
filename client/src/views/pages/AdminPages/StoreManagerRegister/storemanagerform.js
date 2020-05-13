@@ -70,9 +70,26 @@ export default class Storemanagerform extends Component {
             telephonenumber:this.state.telephonenumber
        }
 
+       const storemanager_user={
+        Fullname:this.state.firstName+" "+this.state.lastName,
+        Username:this.state.firstName+"_stmanager",
+        email:this.state.email,
+        type:"store_manager",
+        newPassword:this.state.password
+       }
+
        axios.post('http://localhost:3001/storeManager/add',storeManager)
-       .then(res=>console.log('new StpreManager create :'+res.data))
+       .then(res=>{
+           console.log('new StpreManager create :'+res.data)
+            axios.post("http://localhost:3001/User/addUser",storemanager_user)
+            .then(res_user=>console.log("new user create as storemanager "+res_user))
+            .catch(err_useer=>console.log("error in creating store manager as user"+err_useer))        
+        
+        })
        .catch(err=>console.log('error in sendig storemanager :'+err.data));
+
+
+
        window.location='http://localhost:3000/storeManager';
        
         

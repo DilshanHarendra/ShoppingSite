@@ -68,6 +68,7 @@ componentDidMount() {
                 <tr>
                     <th style={{'max-width':'450px'}} >Product</th>
                     <th>Orders</th>
+                    <th style={{'width':'110px'}}>Total Clicks</th>
                     <th>price ($)</th>
                     <th>Shipping ($)</th>
                     <th>Discount (%)</th>
@@ -82,6 +83,7 @@ componentDidMount() {
                     <h4>{item.proName}</h4>
                     </td>
                     <td></td>
+                        <td>{item.totClicks}</td>
                      <td>{item.price}</td>
                      <td>{item.shipping==null?(
                          0
