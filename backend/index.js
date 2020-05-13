@@ -14,8 +14,8 @@ app.use('/productCategory',productCategory);
 
 
 //===============PAYMENT==================================
-const paymentRoute=require('./routes/Payment');
-app.use('/Payment',paymentRoute);
+const paymentRoute = require('./routes/Payment');
+app.use('/payment',paymentRoute);
 
 
 

@@ -1,55 +1,51 @@
 //payment controller
 const express = require('express');
 const router = express.Router();
+const uniqid = require('uniqid');
 const bodyParser =require('body-parser');
 const core = require('cors');
 const sessions = require('express-session');
-//const PaymentSchema=require('../schemas/PaymentSchema');
-
-var session;
-
-router.use(bodyParser.json());
+const PaymentSchema=require('../schemas/PaymentSchema');
+const nodemailer=require('nodemailer');
+router.use(bodyParser());
 router.use(core());
-router.use(bodyParser.urlencoded({extended:true}));
+var payUID;
 
-router.use(sessions({
-    secret: '#%#%#%#$%$#&%#@#$#@@',
-    resave: false,
-    saveUninitialized: true
-}));
+router.route('/addCardPayment').post((req,res)=>{
+    payUID=uniqid();
+    const payID=payUID;
+    const userID=req.body.userID;
+    const orderID=req.body.orderID;
+    const payAmount=req.body.payAmount;
+    const payDate =req.body.payDate;
+    const payType="Card";
+    const cardNumber=req.body.cardNumber;
+    const cardCSV=req.body.cardCSV;
+    const cardHolderName=req.body.cardHolderName;
+    const expireDate=req.body.expireDate;
+    const cardType=req.body.cardType;
+    const payReceipt=req.body.payReceipt;
 
+    const NewPayment=new PaymentSchema({
+        payID,
+        userID,
+        orderID,
+        payAmount,
+        payDate,
+        payType,
+        payReceipt,
+        cardNumber,
+        cardCSV,
+        cardType,
+        cardHolderName,
+        expireDate
+    });
 
-router.get('/login',async function (req,res) {
-     session = req.session;
-     if(session.uniqueId)
-     {
-         res.redirect('/Payment/login')
-     }
-     res.send(false);
+    NewPayment.save()
+        .then(NewPayment=>res.json('Payment successful'))
+        .catch(err=>res.status(400).json('Error!!! Payment unsuccessful!!!'+err));
+
 });
 
-router.post('/login',async function (req,res) {
-    //res.end(JSON.stringify(req.body));
-    session = req.session;
-    if(session.uniqueId)
-    {
-        res.send(true);
-    }
-    if(req.body.username === 'admin' && req.body.password === 'admin'){
-        session.uniqueId=req.body.username;
-    }
-    res.redirect('/Payment/redirects');
-});
-
-router.get('/redirects', function(req, res) {
-    session = req.session;
-    if(session.uniqueId)
-    {
-        res.send(true)
-    }else
-    {
-        res.send(false)
-    }
-});
 
 module.exports = router;

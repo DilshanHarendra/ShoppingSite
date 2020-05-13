@@ -28,7 +28,7 @@ import payConfirm from "./views/pages/Payment/payConfirm";
 import payAdmin from "./views/pages/Payment/payAdmin";
 import refundPayment from "./views/pages/Payment/refundPayment";
 
-
+//========================================================================
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
 
