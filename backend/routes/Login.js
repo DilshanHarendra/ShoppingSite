@@ -8,7 +8,7 @@ const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const JwtStrategy = passportJWT.Strategy;
 const ExtractJwt = passportJWT.ExtractJwt;
-
+const UserSchema=require('../schemas/UserSchema');
 router.use(bodyParser());
 router.use(core());
 
@@ -48,26 +48,48 @@ passport.use(strategy);
 router.use(passport.initialize());
 //router.use(bodyParser);
 const payload = { id: User.id};
-router.post('/getToken', (req, res) => {
 
-  
-  // if (!req.body.email || !req.body.password) {
-  //   return res.status(401).send('no fields');
-  // }
- 
-const username=req.body.username
-const user={name:username}
-   // authenticate(req.body.password).then(user => {
-     
-      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
-      //res.send(token);
-      res.json({accessToken:token})
-    //}).catch(err => {
-      //return res.status(401).send({ err });
-    //});
-  
-}
-);
+
+
+
+
+
+router.post('/login',async function (req,res) {
+
+  try{
+  var pass=req.body.newPassword.trim();
+   var data=await  UserSchema.findOne({Username:req.body.Username});
+
+   if (data==null){
+          res.status(403).send("Username Incorrect");
+      }else {
+          if (data.newPassword.trim()===pass){
+              const accTocken=data['token'].trim();
+              const token=jwt.sign(accTocken,process.env.ACCESS_TOKEN_SECRET);
+              res.json({accessToken:token,type:data['type'],id:data['id']})
+             
+          }else{
+              res.status(403).send("Password Incorrect");
+          }
+      }
+    }catch(e){console.log(e)}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 router.get('/protected', passport.authenticate('jwt', { session: false }), (req, res) => {
 res.send('i\'m protected');

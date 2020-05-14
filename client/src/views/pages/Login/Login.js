@@ -16,8 +16,8 @@ class Login extends Component {
 		this.state = {
 		  large: false,
       redirectToReferrer:false,
-    email:"",
-    password:""
+      Username:"",
+    newPassword:"",
 
       
     };
@@ -54,14 +54,15 @@ class Login extends Component {
       })
     }
 
-    submithandler=()=>{
-
+    submithandler=(e)=>{
+e.preventDefault();
       const data={
-        email:this.state.email,
-        password:this.state.password
+        newPassword:this.state.newPassword,
+        Username:this.state.Username,
+       
       }
       try {
-           axios.post("http://localhost:3001/Login/login", {data}).then((res) => {
+           axios.post("http://localhost:3001/login/login", data).then((res) => {
              console.log(res);
              console.log(res.data);
             
@@ -95,7 +96,7 @@ class Login extends Component {
                             <i className="flaticon-profile"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="text" placeholder="Username" autoComplete="username" name="email" value={this.state.email} onChange={this.onchangeHandler} />
+                        <Input type="text" placeholder="Username" autoComplete="username" name="Username" value={this.state.Username} onChange={this.onchangeHandler} />
                       </InputGroup>
                       <InputGroup className="mb-4">
                         <InputGroupAddon addonType="prepend">
@@ -103,11 +104,11 @@ class Login extends Component {
                             <i className="flaticon-unlock"></i>
                           </InputGroupText>
                         </InputGroupAddon>
-                        <Input type="password" placeholder="Password" autoComplete="current-password" name="password" value={this.state.password} onchange={this.onchangeHandler}/>
+                        <Input type="password" placeholder="Password" autoComplete="newPassword" name="newPassword" value={this.state.newPassword} onChange={this.onchangeHandler}/>
                       </InputGroup>
                       <Row>
                         <Col xs="6">
-                          <Button onClick={this.login} color="primary" className="px-4">Login</Button>
+                          <Button type="submit" color="primary" className="px-4">Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
                           <Button color="link" className="px-0">Forgot password?</Button>
