@@ -3,7 +3,7 @@ const mongoose=require('mongoose');
 const PaymentSchema=new mongoose.Schema({
 
     payID:{
-        type:Number,
+        type:String,
         required:true
     },
     userID:{
@@ -19,7 +19,7 @@ const PaymentSchema=new mongoose.Schema({
         required:true
     },
     payDate:{
-        type:Date,
+        type:String,
         required:true
     },
     payType:{
@@ -30,26 +30,37 @@ const PaymentSchema=new mongoose.Schema({
         type:Boolean,
         required:true
     },
-    cardNumber:{
-        type:Number,
+    paymentStatus:{
+        type:String,
         required:true
+    },
+    cardNumber:{
+        type:Number
     },
     cardCSV:{
-        type:Number,
-        required:true
+        type:Number
     },
     cardType:{
-        type:String,
-        required:true
+        type:String
     },
     cardHolderName:{
-        type:String,
-        required:true
+        type:String
     },
     cardExpireDate:{
-        type:Date,
-        required:true
-    }
+        type:String
+    },
+    bankName:{
+        type:String
+    },
+    bankBranch:{
+        type:String
+    },
+    depositedAmount:{
+        type:Number
+    },
+    depositedDate:{
+        type:String
+    },
 
 });
 module.exports=mongoose.model('Payments',PaymentSchema,'Payment');

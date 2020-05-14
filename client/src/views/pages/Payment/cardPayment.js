@@ -51,19 +51,19 @@ class cardPayment extends Component {
             payAmount: 5000,
             userID:10,
             orderID: 500,
-            payDate:13/5/2020,
+            payDate:'13/5/2020',
             cardNumber: this.state.cardNumber,
             cardCSV: this.state.cardCSV,
             cardHolderName: this.state.cardHolderName,
             expireDate: this.state.expireDate,
-            cardType: this.state.cardType,
+            cardType: 'VISA',
             payReceipt:false
         }
 
         axios.post('http://localhost:3001/payment/addCardPayment',newCardPayment)
             .then(res=>console.log('Add new payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
-        window.location='http://localhost:3000/paymentMain';
+        window.location='http://localhost:3000/emailConfirm';
     }
 
     render() {
@@ -111,8 +111,8 @@ class cardPayment extends Component {
                                             <Label for="exampleSelect" sm={2}>Card</Label>
                                             <Col sm={5}>
                                                 <Input type="select" name="cardType" id="cardType" onChange={this.handeleCardType}>
-                                                    <option>VISA</option>
-                                                    <option>MASTER</option>
+                                                    <option onChange={this.handeleCardType}>VISA</option>
+                                                    <option onChange={this.handeleCardType}>MASTER</option>
                                                 </Input>
                                             </Col>
                                         </FormGroup>

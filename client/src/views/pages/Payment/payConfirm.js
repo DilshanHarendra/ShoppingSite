@@ -7,9 +7,46 @@ import FormGroup from "reactstrap/es/FormGroup";
 import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import FormText from "reactstrap/es/FormText";
+import axios from "axios";
 
 class payConfirm extends Component {
-    state = {  }
+    constructor(props) {
+        super(props)
+        this.state = {
+            getCode:'',
+            code:''
+        };
+
+        this.handleCode = this.handleCode.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+
+    }
+
+    // componentDidMount() {
+    //     axios.get("http://localhost:3001/getVerifyCode")
+    //         .then(result=>{
+    //             this.setState({
+    //                 getCode:result
+    //             })
+    //         }).catch(err=>console.log(err));
+    // }
+
+    handleCode(event){
+        this.setState({code: event.target.value})
+    }
+
+    onSubmit(event){
+        event.preventDefault();
+        if(this.state.code === this.state.getCode)
+        {
+            console.log("Correct");
+        }
+        else
+        {
+            console.log("Wrong");
+        }
+    }
+
     render() {
         return (
             <div>
@@ -22,16 +59,16 @@ class payConfirm extends Component {
                                     <CardTitle ><h3 className="text-info font-weight-bold">Two-step verification</h3></CardTitle>
                                     <CardSubtitle className="font-weight-bold">Check your email inbox </CardSubtitle>
                                     <br />
-                                    <Form>
+                                    <Form method="POST" onSubmit={this.onSubmit}>
                                         <Row form>
                                             <Col md={8}>
                                                 <FormGroup>
                                                     <Label>Serial number</Label>
-                                                    <Input type="text" name="serialNumber" id="exampleEmail" placeholder="Enter secret code in email" />
+                                                    <Input type="text" name="code" id="code" placeholder="Enter secret code in email" onChange={this.handleCode} />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Button color="secondary">VERIFY</Button>
+                                        <Button color="secondary" type="submit">VERIFY</Button>
                                         <br />
                                         <Label>Did not get the code? <a href="#">Send again</a></Label>
                                     </Form>
