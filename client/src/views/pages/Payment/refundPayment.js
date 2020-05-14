@@ -8,12 +8,14 @@ import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import FormText from "reactstrap/es/FormText";
 import axios from "axios";
+import {Link} from 'react-router-dom';
 
 class refundPayment extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data:[]
+            data:[],
+            status:false,
         };
 
         this.handleRefundOption = this.handleRefundOption.bind(this);
@@ -26,16 +28,24 @@ class refundPayment extends Component {
             this.setState({
                 data: res.data
             });
-            console.log(this.state.data);
         }).catch(err=>{
             console.log(err);
         })
     }
 
     handleRefundOption(id){
-
+        this.setState({
+            status:true
+        })
+        const sendId ={id};
+        axios.post('http://localhost:3001/payment/refundRequest',sendId)
+            .then(res=>console.log('Request sent :'+res.data))
+            .catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }
 
+    redirectFunction=()=>{
+
+    }
     render() {
         return (
             <div>
@@ -67,7 +77,17 @@ class refundPayment extends Component {
                                         <td>{payments.payDate}</td>
                                         <td>{payments.payAmount}</td>
                                         <td>{payments.paymentStatus}</td>
-                                        <td><Button onClick={()=>this.handleRefundOption(payments.payID)}>Refund</Button></td>
+                                        <Link to={{pathname:'/refundRequest',state:{
+                                                payID:payments.payID,
+                                                orderID:payments.orderID,
+                                                payDate:payments.payDate,
+                                                payAmount:payments.payAmount,
+                                                paymentStatus:payments.paymentStatus
+                                        }
+                                        }}>
+                                            <td><Button onClick={()=>{this.handleRefundOption(payments.payID)}}>Refund</Button></td>
+                                        </Link>
+
                                     </tr>
                                     </tbody>
                                 ))}

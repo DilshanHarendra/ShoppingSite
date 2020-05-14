@@ -5,6 +5,7 @@ const uniqid = require('uniqid');
 const bodyParser =require('body-parser');
 const core = require('cors');
 const PaymentSchema=require('../schemas/PaymentSchema');
+const SecretCode=require('../schemas/PaymentSecretCodeSchema');
 const nodemailer=require('nodemailer');
 router.use(bodyParser());
 router.use(core());
@@ -21,6 +22,7 @@ router.post('/addCardPayment',async function(req,res){
         const payDate = req.body.payDate;
         const payType = 'Card';
         const paymentStatus = 'Processing';
+        const refundRequest = false;
         const cardNumber = req.body.cardNumber;
         const cardCSV = req.body.cardCSV;
         const cardHolderName = req.body.cardHolderName;
@@ -36,6 +38,7 @@ router.post('/addCardPayment',async function(req,res){
             payDate: payDate,
             payType: payType,
             paymentStatus: paymentStatus,
+            refundRequest: refundRequest,
             payReceipt: payReceipt,
             cardNumber: cardNumber,
             cardCSV: cardCSV,
@@ -69,6 +72,22 @@ router.post('/emailVerification',async function(req,res){
     try{
         const code = 123456;
         const getEmail = req.body.email;
+
+        const data =({
+            secretID: code
+        });
+
+        const NewSecret=new SecretCode(data);
+
+        await NewSecret.save(async function(err,payment) {
+            if (err){
+                console.log(err + "This is the error");
+            }
+            else
+            {
+                console.log(payment.payID + " added successfuly");
+            }
+        });
 
         let testAccount = await nodemailer.createTestAccount();
 
@@ -123,6 +142,7 @@ router.post('/addBankPayment',async function(req,res){
         const payDate = req.body.payDate;
         const payType = 'Bank';
         const paymentStatus = 'Processing';
+        const refundRequest = false;
         const cardNumber = req.body.cardNumber;
         const cardCSV = req.body.cardCSV;
         const cardHolderName = req.body.cardHolderName;
@@ -143,6 +163,7 @@ router.post('/addBankPayment',async function(req,res){
             payDate: payDate,
             payType: payType,
             paymentStatus: paymentStatus,
+            refundRequest: refundRequest,
             payReceipt: payReceipt,
             cardNumber: cardNumber,
             cardCSV: cardCSV,
@@ -181,11 +202,59 @@ router.get('/getUserCardPayments',async function(req,res){
         var data=await PaymentSchema.find(query);
         res.send(data);
     }catch (e) {
-        res.send(e.status(500));
+        res.status(404).send("parameter error");
     }
 
 });
 
+router.post('/refundRequest',async function(req,res){
 
+    try{
+        const searchID = req.body.id;
+        console.log(searchID);
+        var updateRefundStatus = {
+            refundRequest   : true
+        };
+        var query = {payID: searchID};
+        var data=await PaymentSchema.find(query);
+        var result =await PaymentSchema.updateOne({payID:searchID},updateRefundStatus);
+        if(result.ok == 1){
+            console.log("Status update is successful");
+            res.send(data);
+        }else{
+            console.log("Eroor!!!! Status update is unsuccessful");
+            res.status(404).send("parameter error");
+        }
+
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
+router.get('/getSecretCode',async function(req,res){
+    try{
+        var data=await SecretCode.findOne();
+        res.send(data);
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }finally {
+        console.log("This is finally");
+        // let dropall =await SecretCode.deleteOne();
+        console.log("This is drop all "+dropall);
+
+    }
+
+});
+
+router.post('/removeSecretCode',async function(req,res){
+    try{
+        let dropall =await SecretCode.deleteOne();
+        console.log("Secret codes are deleted!!!");
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
 
 module.exports = router;

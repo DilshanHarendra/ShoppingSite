@@ -34,6 +34,10 @@ const PaymentSchema=new mongoose.Schema({
         type:String,
         required:true
     },
+    refundRequest:{
+        type:Boolean,
+        required:true
+    },
     cardNumber:{
         type:Number
     },

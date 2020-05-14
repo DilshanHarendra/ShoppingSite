@@ -19,17 +19,16 @@ class payConfirm extends Component {
 
         this.handleCode = this.handleCode.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-
     }
 
-    // componentDidMount() {
-    //     axios.get("http://localhost:3001/getVerifyCode")
-    //         .then(result=>{
-    //             this.setState({
-    //                 getCode:result
-    //             })
-    //         }).catch(err=>console.log(err));
-    // }
+    componentDidMount() {
+        axios.get("http://localhost:3001/payment/getSecretCode")
+            .then(result=>{
+                this.setState({
+                    getCode:result.data.secretID
+                });
+            }).catch(err=>console.log(err));
+    }
 
     handleCode(event){
         this.setState({code: event.target.value})
@@ -37,9 +36,13 @@ class payConfirm extends Component {
 
     onSubmit(event){
         event.preventDefault();
-        if(this.state.code === this.state.getCode)
+
+        axios.post("http://localhost:3001/payment/removeSecretCode")
+            .then().catch(err=>console.log(err));
+
+        if(this.state.code == this.state.getCode)
         {
-            console.log("Correct");
+            window.location='http://localhost:3000/paymentSuccess';
         }
         else
         {
