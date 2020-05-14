@@ -1,5 +1,17 @@
-import React, { Component } from 'react';
-import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col, Table} from 'reactstrap';
+import React, { Component } from "react";
+import {
+  Card,
+  CardImg,
+  CardText,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  Button,
+  Container,
+  Row,
+  Col,
+  Table,
+} from "reactstrap";
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import Form from "reactstrap/es/Form";

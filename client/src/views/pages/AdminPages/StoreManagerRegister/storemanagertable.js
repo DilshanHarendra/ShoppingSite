@@ -4,7 +4,6 @@ import { RiDeleteBinLine ,RiCheckboxCircleLine,RiEditLine } from 'react-icons/ri
 
 
 import axios from 'axios';
-import Axios from 'axios';
 
 
 // const StoreManager=props=>(
@@ -249,7 +248,7 @@ export default class storemanagerview extends Component {
             telephonenumber:this.state.editTelephoneNumber
         }
 
-        Axios.post('http://localhost:3001/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
+        axios.post('http://localhost:3001/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
         .then(res=>console.log("store manager update sucessful"+res.data))
         .catch(err=>console.log('error in update :'+err.data))
         this.editmodeToggle();

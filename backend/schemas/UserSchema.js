@@ -28,6 +28,11 @@ const UserSchema=new mongoose.Schema({
         type:String,
         
 
+    }, isdeleted:{
+        type:String,
+        required:true
+        
+
     }, 
 
 });

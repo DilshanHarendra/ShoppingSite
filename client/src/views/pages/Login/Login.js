@@ -9,7 +9,10 @@ import '../../../css/font-awesome.min.css';
 import fakeAuth from "../fakeAuth"
 import axios from 'axios';
 
-
+import alertify from "alertifyjs/build/alertify";
+import "alertifyjs/build/css/alertify.min.css";
+import "alertifyjs/build/css/alertify.css";
+import "alertifyjs/build/css/themes/default.min.css";
 class Login extends Component {
     constructor(props) {
 		super(props);
@@ -63,8 +66,13 @@ e.preventDefault();
       }
       try {
            axios.post("http://localhost:3001/login/login", data).then((res) => {
-             console.log(res);
-             console.log(res.data);
+localStorage.setItem("AccessToken",res.data.accessToken);
+localStorage.setItem("type",res.data.type);
+localStorage.setItem("id",res.data.id);
+this.setState({
+  large:false
+})
+alertify.success("Successfully logged in");
             
            });
          } catch (e) {
