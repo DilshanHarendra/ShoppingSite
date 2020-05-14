@@ -80,7 +80,8 @@ class App extends Component {
                     <Route path="/Myshop" exact component={MyShop} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
                     <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
-
+                    
+                    {/* StoreManager */} 
                     <Route path="/adminDashboard" component={AdminDashbord}/>
                     <Route path="/productcategory" component={ProductCategory}/>
                     <Route path="/storeManager" component={StoreManagerPanal}/>
