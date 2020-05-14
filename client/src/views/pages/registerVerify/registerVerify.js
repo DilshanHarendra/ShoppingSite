@@ -12,6 +12,7 @@ import {
   InputGroupAddon,
   InputGroupText,
   Row,
+  FormFeedback 
 } from "reactstrap";
 import axios from "axios";
 import queryString from 'query-string';
@@ -25,17 +26,14 @@ class registerVerify extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      Fullname: "",
-      Username: "",
-      email: "",
-      newPassword: "",
-      newPasswordck: "",
-      Valid: [false, false, false, false, false],
-      Invalid: [false, false, false, false, false],
-      malidi: false,
-      vidula: false,
       token:"",
       userId:"",
+      password:"",
+      confirmPass:"",
+      valid:false,
+      invalid:false,
+      valid1:false,
+      invalid1:false,
     };
   }
 
@@ -61,51 +59,80 @@ console.log("value of userID"+values.user_id)
     }
 
     }
-  onChangeHandler = (e) => {
-    this.setState(
-      {
-        [e.target.name]: e.target.value,
-      },
-      () => console.log(this.state.newPassword)
-    );
 
-    // console.log(this.state.newPassword);
-  };
 
-  handlePasswordConfirm = (e) => {
-    if (e.target.value === this.state.newPassword) {
+  onChangeHandler=(e)=>{
+
+    this.setState({
+      [e.target.name]:e.target.value
+    })
+
+    if(e.target.value.length<7)
+    {
+      console.log("visited")
       this.setState(
         {
-          vidula: true,
-          malidi: false,
-        },
-        () => console.log(this.state.malidi)
+          valid1: false,
+          invalid1: true,
+        }
+      );
+
+    }else{
+      console.log("visited 2")
+      this.setState(
+        {
+          invalid1: false,
+          valid1: true,
+        }
+      );
+
+    }
+   
+  }
+
+  HandlepasswordConfirm=(e)=>{
+
+    if (e.target.value === this.state.password) {
+      this.setState(
+        {
+          valid: true,
+          invalid: false,
+        }
       );
     } else {
       this.setState(
         {
-          malidi: true,
-          vidula: false,
-        },
-        () => console.log(this.state.malidi)
+          invalid: true,
+          valid: false,
+        }
       );
     }
     // console.log(this.state.malidi);
-  };
+  
+  }
 
   submitHandler = (e) => {
     e.preventDefault();
     // alertify.notify("sample", "success", 5, function () {
     //   console.log("dismissed");
     // });
-    const data = this.state;
+    // const data = this.state;
 
-    delete data.newPasswordck;
-    delete data.Valid;
-    delete data.Invalid;
+    // delete data.confirmPass;
+    // delete data.valid;
+    // delete data.invalid;
+    // delete data.valid1;
+    // delete data.invalid1;
+
+    const data={
+      id:this.state.userId,
+      newPassword:this.state.password,
+      token:this.state.token
+
+    }
 
     try {
-      axios.post("http://localhost:3001/user/addUser", data).then((res) => {
+      axios.post("http://localhost:3001/user/addtoken", data).then((res) => {
         console.log(res);
         console.log(res.data);
       });
@@ -120,53 +147,35 @@ console.log("value of userID"+values.user_id)
           <Row className="justify-content-center">
             <Col md="9" lg="7" xl="6">
               <Card className="mx-4">
-                <CardBody className="p-4">
+              <CardBody className="p-4">
                   <Form onSubmit={this.submitHandler}>
-                    <h3>Register</h3>
+                    <h1>Register</h1>
                     <p className="text-muted">Create your account</p>
-
-                   
+                    
+                 
                     <InputGroup className="mb-3">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
-                          <i className="flaticon-unlock"></i>
+                        <i className="flaticon-unlock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input
-                        type="password"
-                        placeholder="Password"
-                        className="form-control-success"
-                        name="newPassword"
-                        valid={this.state.Valid[3]}
-                        invalid={this.state.Invalid[3]}
-                        autoComplete="new-password"
-                        value={this.state.newPassword}
-                        onChange={this.onChangeHandler}
-                      />
+                      <Input type="password" placeholder="Password" name="password" value={this.state.password} autoComplete="new-password" valid={this.state.valid1} invalid={this.state.invalid1} onChange={this.onChangeHandler}/>
+                      <FormFeedback>Password length should be more than 7</FormFeedback>
                     </InputGroup>
+                    
+                    
                     <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
                         <InputGroupText>
-                          <i className="flaticon-unlock"></i>
+                        <i className="flaticon-unlock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input
-                        type="password"
-                        placeholder="Repeat password"
-                        name="newPasswordck"
-                        autoComplete="new-password"
-                        valid={this.state.vidula}
-                        invalid={this.state.malidi}
-                        onChange={this.handlePasswordConfirm}
-                      />
+                      <Input type="password" placeholder="Repeat password" name="confirmPass" autoComplete="new-password" valid={this.state.valid} invalid={this.state.invalid} onChange={this.HandlepasswordConfirm}/>
+                      <FormFeedback>Passwords doesn't match</FormFeedback>
                     </InputGroup>
-
-                    <Button type="submit" color="success" block>
-                      Create Account
-                    </Button>
+                    <Button color="success" block>Create Account</Button>
                   </Form>
                 </CardBody>
-               
               </Card>
             </Col>
           </Row>

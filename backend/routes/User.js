@@ -80,6 +80,17 @@ try{
 }
 });
 
+router.route('/addtoken').post((req,res)=>{
+ 
+
+      UserSchema.findByIdAndUpdate(req.body.id,{
+ 
+        "newPassword":req.body.newPassword,
+        "token":req.body.token
+    },(err,user)=>res.send("updated"))
+});
+
+
 
 
 router.get("/", function (req, res) {

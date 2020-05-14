@@ -197,7 +197,13 @@ export default class storemanagerview extends Component {
 
     deleteStoreManager(id){
         axios.delete('http://localhost:3001/storeManager/'+id)
-        .then(res=>console.log(res.data));
+        .then(res=>{
+            // axios.delete('http://localhost:3001/storeManager/'+id)
+
+
+            console.log(res.data)
+        
+        });
         this.setState({
             storemanagerlist:this.state.storemanagerlist.filter(el=>el._id!==id)
         })

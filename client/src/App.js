@@ -18,7 +18,7 @@ import fakeAuth from "../src/views/pages/fakeAuth"
 import Login from "../../client/src/views/pages/Login"
 import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcategoryPanal";
 import StoreManagerPanal from "./views/pages/AdminPages/StoreManagerRegister/StoremanagerPanal";
-
+import registerVerify from "./views/pages/registerVerify";
 
 //=========================PAYMENT PAGES==================================
 import PaymentMain from "./views/pages/Payment/PaymentMain";
@@ -73,20 +73,25 @@ class App extends Component {
                 <DefaultHeader/>
                 <Switch>
                     <Route  path="/" exact   component={Home} />
-                    <Route path="/login" exact component={Login}/>
+                    
                     {/* <Route path="/login1" exact component={Login}/> */}
-                    <Route exact path="/Register" component={Register} />
+                    
                     <Route path="/allProducts/:id" exact component={ShowAllProducts} />
                     <Route path="/oneProduct/:id" exact component={ShowOneProduct} />
                     <Route path="/Myshop" exact component={MyShop} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
                     <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
-
-                    <Route path="/adminDashbord" component={AdminDashbord}/>
+                    
+                    {/* StoreManager */} 
+                    <Route path="/adminDashboard" component={AdminDashbord}/>
                     <Route path="/productcategory" component={ProductCategory}/>
                     <Route path="/storeManager" component={StoreManagerPanal}/>
 
 
+                    {/* User */}
+                    <Route path="/login" exact component={Login}/>
+                    <Route exact path="/Register" component={Register} />
+                    <Route exact path="/RegisterConfirm" component={registerVerify}/>
 
                     {/* PAYMENT */}
                     <Route path="/paymentMain" component={PaymentMain} />

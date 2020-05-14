@@ -9,7 +9,7 @@ router.use(core());
 
 let StoreManager = require('../schemas/StoreManagerSchema');
 
-
+//Add new storemanager
 router.route('/add').post((req,res)=>{
     const firstName=req.body.firstName;
     const lastName=req.body.lastName;
@@ -36,18 +36,20 @@ router.route('/add').post((req,res)=>{
 
 });
 
+//Delete selected product
 router.route('/:id').delete((req,res)=>{
     StoreManager.findByIdAndDelete(req.params.id)
         .then(storemanager=>res.json('storemanager delete'))
         .catch(err=>res.status(400).json('Error: '+err));
 });
 
+//get selected storemanager
 router.route('/:id').get((req,res)=>{
     StoreManager.findById(req.params.id)
         .then(exercise=>res.json(exercise))
         .catch(err=>res.status(400).json('Error: '+err));
 });
-
+//Get all storemanager
 router.route('/').get((req,res)=>{
     StoreManager.find()
         .then(exercise=>res.json(exercise))
@@ -55,6 +57,7 @@ router.route('/').get((req,res)=>{
 });
 
 
+//update selected product storemanager
 
 router.route('/update/:id').post((req,res)=>{
 
