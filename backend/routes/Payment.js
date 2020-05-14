@@ -238,11 +238,6 @@ router.get('/getSecretCode',async function(req,res){
         res.send(data);
     }catch (e) {
         res.status(404).send("parameter error");
-    }finally {
-        console.log("This is finally");
-        // let dropall =await SecretCode.deleteOne();
-        console.log("This is drop all "+dropall);
-
     }
 
 });
@@ -251,6 +246,16 @@ router.post('/removeSecretCode',async function(req,res){
     try{
         let dropall =await SecretCode.deleteOne();
         console.log("Secret codes are deleted!!!");
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
+router.get('/getAllPaymentDetails',async function(req,res){
+    try{
+        var data=await PaymentSchema.find({});
+        res.send(data);
     }catch (e) {
         res.status(404).send("parameter error");
     }

@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col} from 'reactstrap';
+import {
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    CardSubtitle,
+    Button,
+    Container,
+    Row,
+    Col,
+    Alert
+} from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import Form from "reactstrap/es/Form";
@@ -46,7 +58,7 @@ class payConfirm extends Component {
         }
         else
         {
-            console.log("Wrong");
+            alert("Secret code does not match!");
         }
     }
 
@@ -54,7 +66,10 @@ class payConfirm extends Component {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">VERIFICATION - FOR CARD PAYMENT</h1>
+                    <Alert color="secondary">
+                        <h1 className="my-3 mx-auto text-center text-dark">VERIFICATION - FOR CARD PAYMENT</h1>
+                    </Alert>
+
                     <Row className="my-2 justify-content-center">
                         <Col className="mx-auto mb-5" xl="6">
                             <Card>

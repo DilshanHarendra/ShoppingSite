@@ -1,16 +1,16 @@
 import React, { Component } from "react";
 import {
-  Card,
-  CardImg,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  Button,
-  Container,
-  Row,
-  Col,
-  Table,
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    CardSubtitle,
+    Button,
+    Container,
+    Row,
+    Col,
+    Table, Alert,
 } from "reactstrap";
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
@@ -62,9 +62,11 @@ class refundPayment extends Component {
         return (
             <div>
                 <Container>
-                    <h1 className="my-auto mx-auto text-center text-dark">PAYMENT-REFUND</h1>
-                    <h6 className="my-3 mx-auto text-center text-dark">Make sure, only for card payments can be raised a refund request</h6>
+                    <Alert color="info">
+                        <h1 className="my-auto mx-auto text-center text-dark">PAYMENT-REFUND</h1>
+                    </Alert>
 
+                    <h6 className="my-3 mx-auto text-center text-dark">Make sure, only for card payments can be raised a refund request</h6>
 
                             <Table responsive="md">
                                 <thead>
@@ -89,7 +91,7 @@ class refundPayment extends Component {
                                         <td>{payments.payDate}</td>
                                         <td>{payments.payAmount}</td>
                                         <td>{payments.paymentStatus}</td>
-                                        <Link to={{pathname:'/refundRequest',state:{
+                                        <td><Link to={{pathname:'/refundRequest',state:{
                                                 payID:payments.payID,
                                                 orderID:payments.orderID,
                                                 payDate:payments.payDate,
@@ -97,8 +99,8 @@ class refundPayment extends Component {
                                                 paymentStatus:payments.paymentStatus
                                         }
                                         }}>
-                                            <td><Button onClick={()=>{this.handleRefundOption(payments.payID)}}>Refund</Button></td>
-                                        </Link>
+                                            <Button onClick={()=>{this.handleRefundOption(payments.payID)}}>Refund</Button>
+                                        </Link></td>
 
                                     </tr>
                                     </tbody>

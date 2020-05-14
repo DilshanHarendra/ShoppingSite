@@ -16,7 +16,7 @@ import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import {Link,NavLink} from 'react-router-dom';
 
-class PaymentMain extends Component {
+class Payment extends Component {
     state = {}
 
     render() {
@@ -24,17 +24,17 @@ class PaymentMain extends Component {
             <div>
                 <Container>
                     <Alert color="info">
-                        <h1 className="my-3 mx-auto text-center text-dark">PAYMENT FOR ORDER</h1>
+                        <h1 className="my-3 mx-auto text-center text-dark">PAYMENT DETAILS</h1>
                     </Alert>
                     <Row className="my-2">
                         <Col className="mx-auto mb-5" xl="5">
                             <Card>
-                                <CardImg top width="100%" src="./images/Payment/1.jpg" alt="Card image cap" />
+                                <CardImg top width="100%" src="./images/Payment/4.jpg" alt="Card image cap" />
                                 <CardBody>
-                                    <CardTitle className="text-info font-weight-bold">Credit/Debit</CardTitle>
-                                    <CardSubtitle>Pay by Credit/Debit card</CardSubtitle>
-                                    <CardText>Clients will be able to make online payments through Credit/Debit card. We assure that this method is 100% secure. <br /> <br /></CardText>
-                                    <Link to="/cardPayment">
+                                    <CardTitle className="text-info font-weight-bold">View all payment</CardTitle>
+                                    <CardSubtitle>All your card/bank payments</CardSubtitle>
+                                    <CardText>Clients will be able to view all the past payments details for card/bank payments. We assure that this will be 100% accurate. <br /> <br /></CardText>
+                                    <Link to="/allPayments">
                                         <Button color="primary">Next</Button>
                                     </Link>
                                 </CardBody>
@@ -44,15 +44,15 @@ class PaymentMain extends Component {
                             </Card>
                         </Col>
 
+
                         <Col className="mx-auto mb-5" xl="5">
                             <Card>
-                                <CardImg top width="100%" src="./images/Payment/2.jpg" alt="Card image cap" />
+                                <CardImg top width="100%" src="./images/Payment/3.jpg" alt="Card image cap" />
                                 <CardBody>
-
-                                    <CardTitle className="text-info font-weight-bold">Bank receipt</CardTitle>
-                                    <CardSubtitle>Pay through bank receipt</CardSubtitle>
-                                    <CardText>Make payment to our bank account and submit the receipt here. <br /> Bank account: 11223345678  <br /> Bank: Commercial Bank PLC</CardText>
-                                    <Link to="/receiptPayment">
+                                    <CardTitle className="text-info font-weight-bold">Refund payment</CardTitle>
+                                    <CardSubtitle>Raise request for refund</CardSubtitle>
+                                    <CardText>Only credit/debit card payments can be refunded and payment status must be processing. If you need to refund a bank payment, please send a request to below email. <br /> Email: support@adminpayment.com</CardText>
+                                    <Link to="/refundPayment">
                                         <Button color="primary">Next</Button>
                                     </Link>
                                 </CardBody>
@@ -71,4 +71,4 @@ class PaymentMain extends Component {
     }
 }
 
-export default PaymentMain;
+export default Payment;

@@ -30,6 +30,10 @@ import refundPayment from "./views/pages/Payment/refundPayment";
 import emailConfirm from "./views/pages/Payment/emailConfirm";
 import refundRequest from "./views/pages/Payment/refundRequest";
 import paymentSuccess from "./views/pages/Payment/PaymentSuccess";
+import payment from "./views/pages/Payment/Payment";
+import viewAllPayments from "./views/pages/Payment/viewAllPayments";
+
+
 //========================================================================
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
@@ -104,6 +108,8 @@ class App extends Component {
                     <Route path="/emailConfirm" component={emailConfirm} />
                     <Route path="/refundRequest" component={refundRequest} />
                     <Route path="/paymentSuccess" component={paymentSuccess} />
+                    <Route path="/payment" component={payment} />
+                    <Route path="/allPayments" component={viewAllPayments} />
                 </Switch>
                 <DefaultFooter/>
                 
