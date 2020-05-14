@@ -14,8 +14,10 @@ import {
   Row,
 } from "reactstrap";
 import axios from "axios";
-import alertify from "alertifyjs";
-
+import alertify from "alertifyjs/build/alertify";
+import "alertifyjs/build/css/alertify.min.css";
+import "alertifyjs/build/css/alertify.css";
+import "alertifyjs/build/css/themes/default.min.css";
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -77,6 +79,9 @@ class Register extends Component {
       axios.post("http://localhost:3001/user/addUser", data).then((res) => {
         console.log(res);
         console.log(res.data);
+        alertify.success("Successfully registered");
+        alertify.alert("Email sent..please click on link for registration complete")
+
       });
     } catch (e) {
       console.log(e)

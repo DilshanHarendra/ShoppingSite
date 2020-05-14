@@ -1,5 +1,4 @@
-import React, { Component } from "react";
-
+import React, { Component, Suspense } from "react";
 
 
 class Home extends Component{
@@ -65,8 +64,6 @@ class Home extends Component{
                         <div className="slide-num-holder" id="snh-1"></div>
                     </div>
                 </section>
-
-
 
 
 
@@ -181,7 +178,7 @@ class Home extends Component{
                 </section>
 
 
-
+            
 
                 <section className="product-filter-section">
                     <div className="container">

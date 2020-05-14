@@ -94,10 +94,31 @@ class DefaultHeader extends Component {
                                 </form>
                             </div>
                             <div className="col-xl-4 col-lg-5">
-                                <div className="user-panel">
+
+                            <div className="user-panel">
+                        
                                     <div className="up-item">
-                                       <a onClick={this.toggleLarge}> <i className="flaticon-profile"></i>
-                                        <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link></a>
+                                        <div className="shopping-card">
+                                            <i className="flaticon-bag"></i>
+											
+                                            <span>0</span>
+                                        </div>
+										
+                                        <Link to="/">Shopping Cart</Link>
+                                    </div>
+
+
+                                    <div className="up-item">
+                              {localStorage.getItem("AccessToken")===null?
+                              
+                              <a onClick={this.toggleLarge}> <i className="flaticon-profile"></i>
+                              <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link></a>:
+                            <button onClick={()=>{localStorage.clear(); window.location.href="/"}}>Logout</button>
+                            
+                            }  
+                               
+                            
+                                       
 										<Modal isOpen={this.state.large} toggle={this.toggleLarge}
                        className={'modal-lg ' + this.props.className}>
                   
@@ -111,15 +132,6 @@ class DefaultHeader extends Component {
                     <Button color="secondary" onClick={this.toggleLarge}>Cancel</Button>
                   </ModalFooter> */}
                 </Modal>
-                                    </div>
-                                    <div className="up-item">
-                                        <div className="shopping-card">
-                                            <i className="flaticon-bag"></i>
-											
-                                            <span>0</span>
-                                        </div>
-										
-                                        <Link to="/">Shopping Cart</Link>
                                     </div>
                                 </div>
                             </div>
