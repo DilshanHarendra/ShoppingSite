@@ -33,13 +33,11 @@ import paymentSuccess from "./views/pages/Payment/PaymentSuccess";
 import payment from "./views/pages/Payment/Payment";
 import viewAllPayments from "./views/pages/Payment/viewAllPayments";
 
+//=========================CART===========================================
+import Cart from "./views/pages/Cart/Cart"
 
 //========================================================================
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
-
-
-
-
 
 
 
@@ -110,6 +108,10 @@ class App extends Component {
                     <Route path="/paymentSuccess" component={paymentSuccess} />
                     <Route path="/payment" component={payment} />
                     <Route path="/allPayments" component={viewAllPayments} />
+                    
+                    {/*CART*/}
+                    <Route path="/cart" component={Cart}/>
+
                 </Switch>
                 <DefaultFooter/>
                 

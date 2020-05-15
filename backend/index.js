@@ -12,6 +12,10 @@ app.use('/storeManager',storeManagerRoute);
 const productCategory=require('./routes/ProductCategory');
 app.use('/productCategory',productCategory);
 
+//==================Cart=============================
+const cartRouter=require('./routes/Cart');
+app.use('/cart',cartRouter);
+
 
 //==================USER================================
 const userRoute=require('./routes/User')
