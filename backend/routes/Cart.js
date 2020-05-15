@@ -15,7 +15,14 @@ router.route('/add').post((req,res)=>{
     const user_id=req.body.user;
     const products=req.body.products;
 
-    Cart.update({user:user_id},{ user: user_id,products:products },{upsert: true})
+    const newCart=new Cart({
+        user_id,
+        products,
+       
+           
+        });
+
+    Cart.update({user:user_id},newCart,{upsert: true})
         .then(newStoremanager=>res.json('new cart added'))
         .catch(err=>res.status(400).json('Error in Create new cart create '+err));
 

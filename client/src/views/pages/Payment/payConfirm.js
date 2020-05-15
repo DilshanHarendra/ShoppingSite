@@ -20,6 +20,7 @@ import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import FormText from "reactstrap/es/FormText";
 import axios from "axios";
+import alertify from "alertifyjs";
 
 class payConfirm extends Component {
     constructor(props) {
@@ -58,7 +59,8 @@ class payConfirm extends Component {
         }
         else
         {
-            alert("Secret code does not match!");
+            alert("Wrong secret code, provide the email again!!!");
+            window.location.href= `http://localhost:3000/emailConfirm?protection=Confirm`;
         }
     }
 

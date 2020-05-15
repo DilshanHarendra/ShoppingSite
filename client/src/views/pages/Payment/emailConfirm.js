@@ -20,6 +20,7 @@ import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import FormText from "reactstrap/es/FormText";
 import axios from "axios";
+import alertify from "alertifyjs";
 
 class emailConfirm extends Component {
     constructor(props) {
@@ -31,6 +32,15 @@ class emailConfirm extends Component {
         this.handleEmail = this.handleEmail.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
+    }
+    componentDidMount() {
+        const search = this.props.location.search; // returns the URL query String
+        const params = new URLSearchParams(search);
+        const IdFromURL = params.get('protection');
+        if(IdFromURL !== 'Confirm'){
+            alertify.alert("Access denied to this page!!");
+            window.location.href="/paymentMain";
+        }
     }
 
     handleEmail(event){

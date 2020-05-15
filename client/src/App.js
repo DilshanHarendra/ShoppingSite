@@ -32,14 +32,15 @@ import refundRequest from "./views/pages/Payment/refundRequest";
 import paymentSuccess from "./views/pages/Payment/PaymentSuccess";
 import payment from "./views/pages/Payment/Payment";
 import viewAllPayments from "./views/pages/Payment/viewAllPayments";
+import payAdminCard from "./views/pages/Payment/payAdminCard";
+import payAdminReceipt from "./views/pages/Payment/payAdminReceipt";
+import payAdminRefund from "./views/pages/Payment/payAdminRefund";
 
+//=========================CART===========================================
+import Cart from "./views/pages/Cart/Cart"
 
 //========================================================================
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
-
-
-
-
 
 
 
@@ -70,54 +71,60 @@ const loading = () => <div className="animated fadeIn pt-3 text-center">Loading.
 
 class App extends Component {
 
-    render() {
-        return (
-            <Router>
+  render() {
+    return (
+        <Router>
 
-                <div className="App">
+            <div className="App">
+                <DefaultHeader/>
+                <Switch>
+                    <Route  path="/" exact   component={Home} />
+                    
+                    {/* <Route path="/login1" exact component={Login}/> */}
+                    
+                    <Route path="/allProducts/:id" exact component={ShowAllProducts} />
+                    <Route path="/oneProduct/:id" exact component={ShowOneProduct} />
+                    <Route path="/Myshop" exact component={MyShop} />
+                    <Route path="/Myshop/addProduct" component={AddProduct} />
+                    <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
+                    
+                    {/* StoreManager */} 
+                    <Route path="/adminDashboard" component={AdminDashbord}/>
+                    <Route path="/productcategory" component={ProductCategory}/>
+                    <Route path="/storeManager" component={StoreManagerPanal}/>
 
-                    <DefaultHeader/>
-                    <Switch>
-                        <Route  path="/" exact   component={Home} />
 
-                        {/* <Route path="/login1" exact component={Login}/> */}
+                    {/* User */}
+                    <Route path="/login" exact component={Login}/>
+                    <Route exact path="/Register" component={Register} />
+                    <Route exact path="/RegisterConfirm" component={registerVerify}/>
 
-                        <Route path="/allProducts/:id" exact component={ShowAllProducts} />
-                        <Route path="/oneProduct/:id" exact component={ShowOneProduct} />
-                        <Route path="/Myshop" exact component={MyShop} />
-                        <Route path="/Myshop/addProduct" component={AddProduct} />
-                        <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
+                    {/* PAYMENT */}
+                    <Route path="/paymentMain" component={PaymentMain} />
+                    <Route path="/cardPayment" component={cardPayment} />
+                    <Route path="/receiptPayment" component={receiptPayment} />
+                    <Route path="/payConfirm" component={payConfirm} />
+                    <Route path="/payAdmin" component={payAdmin} />
+                    <Route path="/refundPayment" component={refundPayment} />
+                    <Route path="/emailConfirm" component={emailConfirm} />
+                    <Route path="/refundRequest" component={refundRequest} />
+                    <Route path="/paymentSuccess" component={paymentSuccess} />
+                    <Route path="/payment" component={payment} />
+                    <Route path="/allPayments" component={viewAllPayments} />
+                    <Route path="/payAdminCard" component={payAdminCard} />
+                    <Route path="/payAdminReceipt" component={payAdminReceipt} />
+                    <Route path="/payAdminRefund" component={payAdminRefund} />
+                    
+                    {/*CART*/}
+                    <Route path="/cart" component={Cart}/>
 
-                        {/* StoreManager */}
-                        <Route path="/adminDashboard" component={AdminDashbord}/>
-                        <Route path="/productcategory" component={ProductCategory}/>
-                        <Route path="/storeManager" component={StoreManagerPanal}/>
-
-
-                        {/* User */}
-                        <Route path="/login" exact component={Login}/>
-                        <Route exact path="/Register" component={Register} />
-                        <Route exact path="/RegisterConfirm" component={registerVerify}/>
-
-                        {/* PAYMENT */}
-                        <Route path="/paymentMain" component={PaymentMain} />
-                        <Route path="/cardPayment" component={cardPayment} />
-                        <Route path="/receiptPayment" component={receiptPayment} />
-                        <Route path="/payConfirm" component={payConfirm} />
-                        <Route path="/payAdmin" component={payAdmin} />
-                        <Route path="/refundPayment" component={refundPayment} />
-                        <Route path="/emailConfirm" component={emailConfirm} />
-                        <Route path="/refundRequest" component={refundRequest} />
-                        <Route path="/paymentSuccess" component={paymentSuccess} />
-                        <Route path="/payment" component={payment} />
-                        <Route path="/allPayments" component={viewAllPayments} />
-                    </Switch>
-                    <DefaultFooter/>
-
-                </div>
-            </Router>
-        );
-    }
+                </Switch>
+                <DefaultFooter/>
+                
+            </div>
+        </Router>
+    );
+  }
 
 }
 

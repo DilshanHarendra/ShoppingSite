@@ -80,7 +80,7 @@ export default class productcategorytable extends Component {
         super(props)
        
         this.loadProductCategoryData=this.loadProductCategoryData.bind(this);
-        this.categoryList=this.categoryList.bind(this);
+        // this.categoryList=this.categoryList.bind(this);
         this.deleteProductCategory=this.deleteProductCategory.bind(this);
         this.handleSearch=this.handleSearch.bind(this);
         this.categoryList=this.categoryList.bind(this);
