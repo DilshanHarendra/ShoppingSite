@@ -7,52 +7,59 @@ const fs= require('fs');
 router.use(bodyParser());
 router.use(core());
 
-let StoreManager = require('../schemas/StoreManagerSchema');
+let Cart = require('../schemas/CartSchema');
 
 //Add new storemanager
 router.route('/add').post((req,res)=>{
-    const firstName=req.body.firstName;
-    const lastName=req.body.lastName;
-    const birthDay=req.body.birthDay;
-    const password =req.body.password;
-    const emailAddress=req.body.email;
-    const address=req.body.address;
-    const telephoneNumber=req.body.telephonenumber;
 
-    const newStoreManager=new StoreManager({
-        firstName,
-        lastName,
-        password,
-        emailAddress,
-        birthDay,
-        address,
-        telephoneNumber
-    });
+    const user_id=req.body.user;
+    const products=req.body.products;
 
-    newStoreManager.save()
-        .then(newStoremanager=>res.json('new store manager added'))
-        .catch(err=>res.status(400).json('Error in Create new Store manager '+err));
+    Cart.update({user:user_id},{ user: user_id,products:products },{upsert: true})
+        .then(newStoremanager=>res.json('new cart added'))
+        .catch(err=>res.status(400).json('Error in Create new cart create '+err));
+
+
+    // const quntity=req.body.qunitity;
+    // const newCart=new Cart({
+    //     user,
+    //     products,
+    //     // quntity
+       
+    // });
+
+    // newCart.save()
+    //     .then(newStoremanager=>res.json('new cart added'))
+    //     .catch(err=>res.status(400).json('Error in Create new cart create '+err));
 
 
 });
 
 //Delete selected product
 router.route('/:id').delete((req,res)=>{
-    StoreManager.findByIdAndDelete(req.params.id)
-        .then(storemanager=>res.json('storemanager delete'))
+    Cart.findByIdAndDelete(req.params.id)
+        .then(cart=>res.json('cart delete'))
         .catch(err=>res.status(400).json('Error: '+err));
 });
 
-//get selected storemanager
+//get selected cart
+// router.route('/:id').get((req,res)=>{
+//     Cart.findById(req.params.id)
+//         .then(cart=>res.json(cart))
+//         .catch(err=>res.status(400).json('Error: '+err));
+// });
+
 router.route('/:id').get((req,res)=>{
-    StoreManager.findById(req.params.id)
-        .then(exercise=>res.json(exercise))
+    Cart.find({user:req.params.id})
+        .then(cart=>res.json(cart))
         .catch(err=>res.status(400).json('Error: '+err));
 });
-//Get all storemanager
+
+
+//Get all cart
 router.route('/').get((req,res)=>{
-    StoreManager.find()
-        .then(exercise=>res.json(exercise))
+    Cart.find()
+        .then(cart=>res.json(cart))
         .catch(err=>res.status(400).json('Error: '+err));
 });
 
@@ -63,30 +70,26 @@ router.route('/update/:id').post((req,res)=>{
 
     let selected_id=req.params.id;
 
-    let updatedfirstName=req.body.firstName;
-    let updatedlastName=req.body.lastName;
-    let updatedbirthDay=req.body.birthDay;
-    let updatedpassword =req.body.password;
-    let updatedemailAddress=req.body.email;
-    let updatedaddress=req.body.address;
-    let updatedtelephoneNumber=req.body.telephonenumber;
-    console.log("recive_data: "+updatedfirstName+updatedlastName+updatedbirthDay+updatedpassword+updatedemailAddress+updatedaddress+updatedtelephoneNumber);
+    let user=req.body.user;
+    let products=req.body.products;
+    // let qunitity=req.body.qunitity;
     
-    StoreManager.findByIdAndUpdate(
+    
+    console.log("recive_data: "+user+products+qunitity);
+    
+    Cart.findByIdAndUpdate(
          selected_id,
         { 
             
-                "firstName": updatedfirstName,
-                "lastName":updatedlastName,
-                "emailAddress":updatedemailAddress,
-                "birthDay":updatedbirthDay,
-                "address":updatedaddress,
-                "telephoneNumber":updatedtelephoneNumber
+                "user": user,
+                "products":products,
+                "qunitity":qunitity
+                
                 
         
-        },(err,storemanager)=>{
+        },(err,cart)=>{
            
-            res.send(storemanager);
+            res.send(cart);
            
         }
      )

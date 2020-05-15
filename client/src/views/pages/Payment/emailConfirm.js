@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col} from 'reactstrap';
+import {
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    CardSubtitle,
+    Button,
+    Container,
+    Row,
+    Col,
+    Alert
+} from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import Form from "reactstrap/es/Form";
@@ -7,14 +19,45 @@ import FormGroup from "reactstrap/es/FormGroup";
 import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import FormText from "reactstrap/es/FormText";
+import axios from "axios";
 
 class emailConfirm extends Component {
-    state = {  }
+    constructor(props) {
+        super(props)
+        this.state = {
+            email:''
+        };
+
+        this.handleEmail = this.handleEmail.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
+
+    }
+
+    handleEmail(event){
+        this.setState({email: event.target.value})
+    }
+
+    onSubmit(event){
+        event.preventDefault();
+
+        const SendEmail={
+            email:this.state.email
+        };
+
+        axios.post('http://localhost:3001/payment/emailVerification',SendEmail)
+            .then(res=>console.log('Add new payment :'+res.data))
+            .catch(err=>console.log('Error!! unsuccessful :'+err.data));
+        window.location='http://localhost:3000/payConfirm';
+    }
+
     render() {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">EMAIL VERIFICATION</h1>
+                    <Alert color="secondary">
+                        <h1 className="my-3 mx-auto text-center text-dark">EMAIL VERIFICATION</h1>
+                    </Alert>
+
                     <Row className="my-2 justify-content-center">
                         <Col className="mx-auto mb-5" xl="6">
                             <Card>
@@ -22,16 +65,16 @@ class emailConfirm extends Component {
                                     <CardTitle ><h3 className="text-info font-weight-bold">Two-step verification</h3></CardTitle>
                                     <CardSubtitle className="font-weight-bold">Check your email inbox </CardSubtitle>
                                     <br />
-                                    <Form>
+                                    <Form method="POST" onSubmit={this.onSubmit}>
                                         <Row form>
                                             <Col md={6}>
                                                 <FormGroup>
                                                     <Label>Email</Label>
-                                                    <Input type="tel" name="email" id="exampleEmail" placeholder="Confirm your email address" required />
+                                                    <Input type="tel" name="email" id="email" placeholder="Confirm your email address" onChange={this.handleEmail} required />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
-                                        <Button color="secondary">SEND</Button>
+                                        <Button type="submit" color="secondary">SEND</Button>
                                         <br />
                                         <Label>Did not get the code? <a href="#">Send again</a></Label>
                                     </Form>

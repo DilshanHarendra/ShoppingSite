@@ -22,9 +22,6 @@ import fakeAuth from "../src/views/pages/fakeAuth"
 import Login from "../../client/src/views/pages/Login"
 import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcategoryPanal";
 import StoreManagerPanal from "./views/pages/AdminPages/StoreManagerRegister/StoremanagerPanal";
-import SearchResults from "./views/pages/Product/SearchResults/SearchResults";
-import axios from "axios";
-
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
 
 // Containers
@@ -49,17 +46,6 @@ const loading = () => <div className="animated fadeIn pt-3 text-center">Loading.
 
 class App extends Component {
 
-constructor() {
-    super();
-    global.backend="http://localhost:3001";
-}
-
-
-    async componentWillMount()  {
-
-}
-
-
   render() {
     return (
         <Router>
@@ -67,7 +53,7 @@ constructor() {
             <div className="App">
                 <DefaultHeader/>
                 <Switch>
-                    <Route  path="/" exact  component={Home}  />
+                    <Route  path="/" exact   component={Home} />
                     <Route path="/login" exact component={Login}/>
                     {/* <Route path="/login1" exact component={Login}/> */}
                     <Route exact path="/Register" component={Register} />
@@ -83,7 +69,6 @@ constructor() {
                     <Route path="/adminDashbord" component={AdminDashbord}/>
                     <Route path="/productcategory" component={ProductCategory}/>
                     <Route path="/storeManager" component={StoreManagerPanal}/>
-                    <Route path="/search/:key" component={SearchResults}/>
 
                 </Switch>
                 <DefaultFooter/>

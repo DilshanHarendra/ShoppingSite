@@ -21,10 +21,10 @@ try{
     newQuery=req.body;
     newQuery['uid']=UID;
     newQuery['regDate']=new Date();
-
+    newQuery['isdeleted']=false;
    // token=await bycrpt.hash(UID+new Date(),10);
    
-   token=crypto.createHash('md5').update(UID+new Date()).digest('hex');
+   token=await crypto.createHash('md5').update(UID+new Date()).digest('hex');
 
     const newUser=new UserSchema(newQuery);
     await newUser.save(async function(err,product){
@@ -66,6 +66,8 @@ try{
             // Preview only available when sending through an Ethereal account
             console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
             // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+
+            res.send(200);
           
         }
 
@@ -79,6 +81,17 @@ try{
 
 }
 });
+
+router.route('/addtoken').post((req,res)=>{
+ 
+
+      UserSchema.findByIdAndUpdate(req.body.id,{
+ 
+        "newPassword":req.body.newPassword,
+        "token":req.body.token
+    },(err,user)=>res.send("updated"))
+});
+
 
 
 

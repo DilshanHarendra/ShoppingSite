@@ -9,6 +9,7 @@ router.use(core());
 
 let ProductCategory = require('../schemas/ProductCategorySchema');
 
+//Add product category
 router.route('/add').post((req,res)=>{
     const categoryName=req.body.productCategoryName;
     const categoryDiscription=req.body.productCategoryDiscription;
@@ -29,19 +30,19 @@ router.route('/add').post((req,res)=>{
 
 });
 
-
+//get selected product category
 router.route('/:id').get((req,res)=>{
     ProductCategory.findById(req.params.id)
         .then(exercise=>res.json(exercise))
         .catch(err=>res.status(400).json('Error: '+err));
 });
-
+//Get all product category
 router.route('/').get((req,res)=>{
     ProductCategory.find()
         .then(exercise=>res.json(exercise))
         .catch(err=>res.status(400).json('Error: '+err));
 });
-
+//delete selected product category
 router.route('/:id').delete((req,res)=>{
     ProductCategory.findByIdAndDelete(req.params.id)
         .then(storemanager=>res.json('product category delete'))
@@ -49,19 +50,23 @@ router.route('/:id').delete((req,res)=>{
 });
 
 
+//update selected product category
 
 router.route('/update/:id').post((req,res)=>{
-    ProductCategory.findById(req.params.id)
-        .then(productcategory=>{
-            productcategory.categoryName=req.body.categoryName;
-            productcategory.categoryDiscription=req.body.categoryDiscription;
-            productcategory.categoryNote=req.body.categoryNote;
-            
-            productcategory.save()
-            .then(productcategory=>res.json('productcategory updated'))
-            .catch(err=>res.status(400).json('Error: '+err));
-        })
-        .catch(err=>res.status(400).json('Error: '+err));
+    seletectd_category_id=req.params.id;
+
+    let updatedcategoryName=req.body.categoryName;
+    let updatedcategoryDiscription=req.body.categoryDiscription;
+    let updatedcategoryNote=req.body.categoryNote;  
+    let updatedsubCategory=req.body.subCategory;  
+
+    ProductCategory.findByIdAndUpdate(seletectd_category_id,{
+        "categoryName":updatedcategoryName,
+        "categoryDiscription":updatedcategoryDiscription,
+        "categoryNote":updatedcategoryNote,
+        "subCategory":updatedsubCategory
+    },(err,product_category)=>res.send("updated"))
+    
 });
 
 

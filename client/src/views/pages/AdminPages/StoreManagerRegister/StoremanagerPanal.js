@@ -7,15 +7,15 @@ export default class StoremanagerPanal extends Component {
         return (
     <Container style={divStyle}>
             <Row>
-                <Col style={colStyleheder}>
+                <Col  style={colStyleheder}>
                     <h2>Admin Dashboard</h2>
                 </Col>
             </Row>
-            <Row>
-                <Col style={colStyle}>
+            <Row xs="auto">
+                <Col  style={colStyle}>
                     <StoreManagerForm/>
                 </Col>
-                <Col xs="auto" style={colStyle}>
+                <Col  style={colStyle}>
                     <StoreManagerTable/>
                 </Col>
             </Row>

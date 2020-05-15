@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import{ TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Container } from 'reactstrap';
 import StoreManagerPanal from './StoreManagerRegister/StoremanagerPanal';
 import ProductCategoryPanal from './ProductCategory/createcategoryPanal';
+import StoremanagerChart from './admincart/stormanagerchart'
 import classnames from 'classnames';
 import { GiTShirt } from "react-icons/gi";
 import {GrUserManager} from "react-icons/gr";
@@ -27,19 +28,20 @@ export default function Admindashbord() {
       <Row style={iconpanalStyle}>
         <Col style={storeManagerColor} onClick={handleStoreManager}>
           <h2>Store Manager</h2>
-          <GrUserManager size="3em" color="balck" />
+          <GrUserManager size="3em" color="black" />
         </Col>
         <Col style={productCategoryanagerColor} onClick={handleProductCategory}>
           <h2>Product Category </h2>
           <GiTShirt size="3em" color="black"/>
-
-
-
-         
-          </Col>
-        <Col style={col3}> </Col>
-        <Col  style={col4}>.col</Col>
+        </Col>
+        {/* <Col style={col3}> </Col>
+        <Col  style={col4}>.col</Col> */}
       </Row>
+       <Row>
+          <Col><StoremanagerChart></StoremanagerChart></Col>
+          <Col>etet</Col>         
+      </Row> 
+
       </Container>
      
     )
@@ -58,14 +60,17 @@ const storeManagerColor={
   backgroundImage: 'linear-gradient(to right top, #ee35ee, #cf2ff3, #aa2ff7, #7c32fa, #2d36fd)',
   borderRadius: '8px',
   margin: '4px',
-  padding: '10px'
+  padding: '10px',
+  boxShadow: '-1px 0px 5px black'
+
 }
 
 const productCategoryanagerColor={
   backgroundImage: 'linear-gradient(to right top, #ee3535, #ff1158, #ff0080, #ff00ab, #fd2dd9)',
   borderRadius: '8px',
   margin: '4px',
-  padding: '10px'
+  padding: '10px',
+  boxShadow: '-1px 0px 5px black'
 }
 
 const col3={
