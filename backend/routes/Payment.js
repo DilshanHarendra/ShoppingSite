@@ -6,10 +6,12 @@ const bodyParser =require('body-parser');
 const core = require('cors');
 const PaymentSchema=require('../schemas/PaymentSchema');
 const SecretCode=require('../schemas/PaymentSecretCodeSchema');
+const RefundPayment=require('../schemas/PaymentRefundSchema');
 const nodemailer=require('nodemailer');
 router.use(bodyParser());
 router.use(core());
 var payUID;
+var rn = require('random-number');
 
 router.post('/addCardPayment',async function(req,res){
     
@@ -29,6 +31,7 @@ router.post('/addCardPayment',async function(req,res){
         const expireDate = req.body.expireDate;
         const cardType = req.body.cardType;
         const payReceipt = req.body.payReceipt;
+        const receiptNumber = req.body.receiptNumber;
 
         const data =({
             payID: payID,
@@ -44,7 +47,8 @@ router.post('/addCardPayment',async function(req,res){
             cardCSV: cardCSV,
             cardType: cardType,
             cardHolderName: cardHolderName,
-            cardExpireDate: expireDate
+            cardExpireDate: expireDate,
+            receiptNumber: receiptNumber
         });
 
 
@@ -70,7 +74,12 @@ router.post('/addCardPayment',async function(req,res){
 router.post('/emailVerification',async function(req,res){
 
     try{
-        const code = 123456;
+        var options = {
+            min:  123456
+            , max:  999999
+            , integer: true
+        };
+        let code = rn(options);
         const getEmail = req.body.email;
 
         const data =({
@@ -85,7 +94,7 @@ router.post('/emailVerification',async function(req,res){
             }
             else
             {
-                console.log(payment.payID + " added successfuly");
+                console.log("Secret code added successfuly");
             }
         });
 
@@ -109,11 +118,11 @@ router.post('/emailVerification',async function(req,res){
             subject: "Two step verification", // Subject line
             text:
                 "Please find the below secret code:",
-            html: '<label class="text-dark">Your code is <span class="text-danger font-weight-bold">'+code+'</span></label>'
+            html: '<label class="text-dark">Your code is <span class="text-danger font-weight-bold">=='+code+'==</span></label>'
 
         });
 
-        // res.sendFile('/getVerifyCode', code);
+        res.sendFile('/getVerifyCode', code);
     }catch (e) {
 
     }
@@ -153,6 +162,7 @@ router.post('/addBankPayment',async function(req,res){
         const bankBranch = req.body.bankBranch;
         const depositedAmount = req.body.depositedAmount;
         const depositedDate = req.body.depositedDate;
+        const receiptNumber = req.body.receiptNumber;
 
 
         const data =({
@@ -173,7 +183,8 @@ router.post('/addBankPayment',async function(req,res){
             bankName: bankName,
             bankBranch: bankBranch,
             depositedAmount: depositedAmount,
-            depositedDate: depositedDate
+            depositedDate: depositedDate,
+            receiptNumber:receiptNumber
         });
 
 
@@ -256,6 +267,108 @@ router.get('/getAllPaymentDetails',async function(req,res){
     try{
         var data=await PaymentSchema.find({});
         res.send(data);
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
+router.get('/getCardPaymentDetails',async function(req,res){
+    try{
+        var query = {payType: 'Card'};
+        var data=await PaymentSchema.find(query);
+        res.send(data);
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
+router.get('/getBankPaymentDetails',async function(req,res){
+    try{
+        var query = {payType: 'Bank'};
+        var data=await PaymentSchema.find(query);
+        res.send(data);
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
+router.post('/changeCardStatus',async function(req,res){
+    try{
+        const gotID = req.body.id;
+        var updatePaymentStatus = {
+            paymentStatus :'Completed'
+        };
+        var result =await PaymentSchema.updateOne({payID:gotID},updatePaymentStatus);
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
+router.get('/getRefundPaymentDetails',async function(req,res){
+    try{
+        var query = {refundRequest: true, paymentStatus: 'Processing'};
+        var data=await PaymentSchema.find(query);
+        res.send(data);
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
+router.post('/acceptRefund',async function(req,res){
+    try{
+        const gotID = req.body.id;
+        var updatePaymentStatus = {
+            paymentStatus :'Refunded'
+        };
+        var result =await PaymentSchema.updateOne({payID:gotID},updatePaymentStatus);
+
+        var query = {payID: gotID};
+        const data=await PaymentSchema.find(query);
+
+        let addRefund = [];
+        data.forEach((details) => {
+            addRefund = ({
+                payID: details.payID,
+                userID: details.userID,
+                orderID: details.orderID,
+                payAmount: details.payAmount,
+                payDate: details.payDate,
+                payType: details.payType,
+                paymentStatus: details.paymentStatus,
+                refundRequest: details.refundRequest,
+                payReceipt: details.payReceipt,
+                cardNumber: details.cardNumber,
+                cardCSV: details.cardCSV,
+                cardType: details.cardType,
+                cardHolderName: details.cardHolderName,
+                cardExpireDate: details.cardExpireDate,
+                bankName: null,
+                bankBranch: null,
+                depositedAmount: null,
+                depositedDate:null,
+                receiptNumber:null
+            })
+
+        });
+
+        const newRefunded = new RefundPayment(addRefund);
+
+        await newRefunded.save(async function(err,payment) {
+            if (err){
+                console.log(err + "This is the error");
+            }
+            else
+            {
+                console.log(payment.payID + " refund added successfuly");
+            }
+        })
+
+        var removeRefund = await PaymentSchema.deleteOne(query);
     }catch (e) {
         res.status(404).send("parameter error");
     }

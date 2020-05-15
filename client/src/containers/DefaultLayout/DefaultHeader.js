@@ -184,7 +184,7 @@ class DefaultHeader extends Component {
                             </li>
 
                             <li>
-                                <Link to="/payConfirm" className="nav-link">Payment</Link>
+                                <Link to="/payment" className="nav-link">Payment</Link>
                             </li>
                         </ul>
                     </div>

@@ -1,6 +1,6 @@
 const mongoose=require('mongoose');
 
-const PaymentSchema=new mongoose.Schema({
+const PaymentRefundSchema=new mongoose.Schema({
 
     payID:{
         type:String,
@@ -70,4 +70,4 @@ const PaymentSchema=new mongoose.Schema({
     },
 
 });
-module.exports=mongoose.model('Payments',PaymentSchema,'Payment');
+module.exports=mongoose.model('Refunds',PaymentRefundSchema,'PayRefunds');

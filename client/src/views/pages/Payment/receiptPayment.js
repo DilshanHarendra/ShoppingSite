@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col} from 'reactstrap';
+import {
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    CardSubtitle,
+    Button,
+    Container,
+    Row,
+    Col,
+    Alert
+} from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import Form from "reactstrap/es/Form";
@@ -16,13 +28,15 @@ class cardPayment extends Component {
             bankName: '',
             bankBranch: '',
             depositedAmount: '',
-            depositedDate: ''
+            depositedDate: '',
+            receiptNumber:''
         };
 
         this.handleBankName = this.handleBankName.bind(this);
         this.handleBankBranch = this.handleBankBranch.bind(this);
         this.handleDepositedAmount = this.handleDepositedAmount.bind(this);
         this.handleDepositedDate = this.handleDepositedDate.bind(this);
+        this.handleReceiptNumber = this.handleReceiptNumber.bind(this);
         this.onSubmit=this.onSubmit.bind(this);
     }
 
@@ -42,6 +56,9 @@ class cardPayment extends Component {
         this.setState({depositedDate: event.target.value})
     }
 
+    handleReceiptNumber(event){
+        this.setState({receiptNumber: event.target.value})
+    }
     onSubmit(event){
         event.preventDefault();
 
@@ -54,6 +71,7 @@ class cardPayment extends Component {
             bankBranch:this.state.bankBranch,
             depositedAmount:this.state.depositedAmount,
             depositedDate:this.state.depositedDate,
+            receiptNumber:this.state.receiptNumber,
             cardNumber: null,
             cardCSV: null,
             cardHolderName: null,
@@ -72,7 +90,9 @@ class cardPayment extends Component {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">PAYMENT-RECEIPT</h1>
+                    <Alert color="info">
+                        <h1 className="my-3 mx-auto text-center text-dark">PAYMENT-RECEIPT</h1>
+                    </Alert>
                     <Row className="my-2">
                         <Col className="mx-auto mb-5" xl="6">
                             <Card>
@@ -109,9 +129,8 @@ class cardPayment extends Component {
                                             </Col>
                                             <Col md={6}>
                                                 <FormGroup>
-                                                    <Label>Attach the slip here</Label>
-                                                    <br />
-                                                    <Input type="file" required />
+                                                    <Label>Receipt Number</Label>
+                                                    <Input type="text" name="receiptNumber" id="receiptNumber" placeholder="Enter receipt number" onChange={this.handleReceiptNumber} required />
                                                 </FormGroup>
                                             </Col>
                                         </Row>
