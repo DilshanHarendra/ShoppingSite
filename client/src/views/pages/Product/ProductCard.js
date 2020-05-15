@@ -6,12 +6,17 @@ class ProductCard extends Component{
    constructor(props) {
        super(props);
        this.state={
-           product:props.data
+           product:props.data,
+
+
        }
    }
     imgHover(id,image){
         document.getElementById(id).src=global.backend+image;
     }
+
+
+
    render() {
        return <>
 

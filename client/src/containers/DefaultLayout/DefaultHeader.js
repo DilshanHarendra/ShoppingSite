@@ -51,7 +51,7 @@ class DefaultHeader extends Component {
 		});
 	  }
     componentDidMount(){
-       axios.get("http://localhost:3001/productCategory")
+       axios.get(global.backend+"/productCategory")
             .then(result=> {
 
                 this.setState({
