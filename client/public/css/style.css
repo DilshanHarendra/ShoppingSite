@@ -259,7 +259,7 @@ ol {
 }
 
 .accordion-area .panel-link {
-	background-image: url("../img/arrow-down.png");
+	background-image: url("../images/arrow-down.png");
 	background-repeat: no-repeat;
 	background-position: right 10px top 30px;
 }
@@ -274,11 +274,11 @@ ol {
 }
 
 .accordion-area .panel-header .panel-link.collapsed {
-	background-image: url("../img/arrow-down.png");
+	background-image: url("../images/arrow-down.png");
 }
 
 .accordion-area .panel-link.active {
-	background-image: url("../img/arrow-up.png");
+	background-image: url("../images/arrow-up.png");
 }
 
 .accordion-area .panel-link.active {

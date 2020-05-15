@@ -24,12 +24,13 @@ class Home extends Component{
     }
 
     componentDidMount(){
-        const script = document.createElement("script");
+       const script = document.createElement("script");
         script.src = "../../../js/main.js";
         script.async = true;
         document.body.appendChild(script);
 
 
+      console.log(localStorage.getItem('id'))
         this.getData();
 
 
@@ -376,7 +377,7 @@ class Home extends Component{
 
                             {this.state.product.map(product=>(
                                 <div key={product.id} className="col-lg-3 col-sm-6">
-                                    <ProductCard data={product} />
+                                    <Link to={"/oneProduct/"+product.id}><ProductCard data={product} /></Link>
                                 </div>
 
                             ))}

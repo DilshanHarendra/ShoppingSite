@@ -1,13 +1,16 @@
 import React,{Component} from 'react';
 import {Link} from "react-router-dom";
-
+import axios from 'axios';
+import '../../../css/prosuctCard.css'
 class ProductCard extends Component{
 
    constructor(props) {
        super(props);
        this.state={
            product:props.data,
-
+           uid:localStorage.getItem('id'),
+           qty:1,
+           pid:props.data.id
 
        }
    }
@@ -15,7 +18,24 @@ class ProductCard extends Component{
         document.getElementById(id).src=global.backend+image;
     }
 
+    addToCart=()=>{
+       if (this.state.uid==null){
 
+       }else {
+           console.log("add to cart")
+           let data={user:this.state.uid,products:this.state.pid,qty:this.state.qty}
+           axios.post(global.backend+'/cart/add',data)
+               .then(res=>{
+                   window.location.replace('/cart');
+                       console.log(res.data)
+               }
+
+               ).catch(err=>
+               console.log(err)
+           );
+       }
+
+    }
 
    render() {
        return <>
@@ -40,7 +60,7 @@ class ProductCard extends Component{
 
 
                    <div className="pi-links">
-                       <Link to="#" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></Link>
+                       <div onClick={()=>this.addToCart()} className="addToCart"><i className="flaticon-bag"></i><span>ADD TO CART</span></div>
                        <Link to="#"  className="wishlist-btn"><i className="flaticon-heart"></i></Link>
                    </div>
                </div>
