@@ -1,4 +1,4 @@
-import React,{Component} from "react";
+/*import React,{Component} from "react";
 
 class RelatedProduct  extends Component{
 
@@ -83,3 +83,5 @@ class RelatedProduct  extends Component{
         }
         }
         export default RelatedProduct;
+
+        */

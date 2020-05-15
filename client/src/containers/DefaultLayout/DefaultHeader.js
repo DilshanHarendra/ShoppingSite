@@ -39,7 +39,7 @@ class DefaultHeader extends Component {
           skeyWord:'',
           getCatogorys:[]
 		};
-	
+
 	
 		this.toggleLarge = this.toggleLarge.bind(this);
 		
@@ -71,6 +71,7 @@ class DefaultHeader extends Component {
         window.location.replace('/search/'+this.state.skeyWord);
 
     }
+
 
 
     state = {  }
@@ -129,7 +130,7 @@ class DefaultHeader extends Component {
                 <nav className="main-navbar">
                     <div className="container">
                         <ul className="main-menu">
-                            <li><Link to="/" >Home   <span className="new">New</span></Link></li>
+                            <li><Link to="/">Home   <span className="new">New</span></Link></li>
 
 
                                 {this.state.getCatogorys.map(catogory=>(

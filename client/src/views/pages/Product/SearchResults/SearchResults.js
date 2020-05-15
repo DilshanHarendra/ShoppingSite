@@ -8,6 +8,7 @@ import Slider from '@material-ui/core/Slider';
 import axios from 'axios';
 import {Link} from "react-router-dom";
 import $ from 'jquery'
+import ProductCard from "../ProductCard";
 
 class SearchResults extends Component{
 
@@ -80,9 +81,9 @@ class SearchResults extends Component{
                 var productBox=document.getElementById('productBox').scrollHeight*(0.5); //  box height 80%
                 //  var scrolled = (winScroll / height) * 100-productBox;
                 var scrolled =winScroll;
-                //console.log(scrolled+" "+productBox);
+                console.log(scrolled+" "+productBox);
                 if(scrolled>productBox &&((document.body.getBoundingClientRect()).top < scrollPos)){
-                    this.state.next+=3;
+                    this.state.next+=this.state.limit;
                    // console.log(scrolled+" "+productBox);
                     if (this.state.isLoadmore){
                         this.loadmore();
@@ -104,7 +105,7 @@ class SearchResults extends Component{
 
     loadCatogories=async ()=>{
 
-        await axios.get("http://localhost:3001/productCategory")
+        await axios.get(global.backend +"/productCategory")
             .then(result=> {
                 this.setState({
                     getCatogorys:result.data,
@@ -120,9 +121,10 @@ class SearchResults extends Component{
 
 
     loadmore=async ()=>{
+        console.log("call load more")
         await axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getProducts',
+            url:global.backend +'/product/getSearchProduct',
             params:{s:true,key:this.state.skey,minprice:this.state.price[0],maxprice:this.state.price[1],size:this.state.size ,sets:this.state.next,limit:this.state.limit },
 
         }).then(res=>{
@@ -150,7 +152,7 @@ class SearchResults extends Component{
 
         await axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getSearchProduct',
+            url: global.backend +'/product/getSearchProduct',
             params:{s:true,key:this.state.skey,minprice:this.state.price[0],maxprice:this.state.price[1],size:this.state.size ,sets:this.state.next,limit:this.state.limit },
 
 
@@ -207,9 +209,6 @@ class SearchResults extends Component{
         this.getData();
     }
 
-    imgHover(id,image){
-        document.getElementById(id).src='http://localhost:3001'+image;
-    }
 
     setActive(x){
         document.getElementById(x).setAttribute("class","active");
@@ -335,36 +334,8 @@ class SearchResults extends Component{
                                 ):(this.state.data.map(oneRow=>(
                                         <div className="col-lg-4 col-sm-6" key={oneRow.id}>
                                             <Link to={"/oneProduct/"+oneRow.id} >
-                                                <div className="product-item">
-                                                    <div className="pi-pic">
 
-                                                        { oneRow.discount!=null?(
-                                                            <div className="tag-sale" style={{'font-size':12}}>{oneRow.discount}% off</div>
-                                                        ):(<></>)}
-                                                        {oneRow.images[1]!=null?(
-                                                            <img src={'http://localhost:3001'+oneRow.images[0]} id={oneRow.id} alt={oneRow.images[0]}
-                                                                 onMouseOut={()=>this.imgHover(oneRow.id,oneRow.images[0])}
-                                                                 onMouseMove={()=>this.imgHover(oneRow.id,oneRow.images[1])}
-                                                                 className="Pimage"  />
-                                                        ):(
-                                                            <img src={'http://localhost:3001'+oneRow.images[0]} id={oneRow.id} alt={oneRow.images[0]} className="Pimage"  />
-                                                        )
-
-                                                        }
-
-
-
-                                                        <div className="pi-links">
-                                                            <Link to="#" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></Link>
-                                                            <Link to="#"  className="wishlist-btn"><i className="flaticon-heart"></i></Link>
-                                                        </div>
-                                                    </div>
-                                                    <div className="pi-text">
-                                                        <h6>{oneRow.price}$  </h6>
-                                                        <p>{oneRow.proName}</p>
-                                                    </div>
-
-                                                </div>
+                                                    <ProductCard data={oneRow} />
                                             </Link>
                                         </div>
 

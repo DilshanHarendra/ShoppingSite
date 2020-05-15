@@ -1,23 +1,170 @@
 import React, { Component } from "react";
+import axios from "axios";
+import {Link} from "react-router-dom";
+import ProductCard from "../Product/ProductCard";
 
-
+import Swiper from 'react-id-swiper';
+import 'swiper/css/swiper.css';
 
 class Home extends Component{
 
 
+    constructor(props) {
+
+        super(props);
+        this.state={
+            latestProduct:[],
+            product:[],
+            popularProduct:[],
+            catogory:[],
+            isLoadmore:true,
+            next:0,
+            limit:4
+
+        }
+    }
 
     componentDidMount(){
+
         const script = document.createElement("script");
         script.src = "../../../js/main.js";
         script.async = true;
         document.body.appendChild(script);
 
+
+        this.getData();
+
+        if (window.performance) {
+            if (window.performance.navigation.type == 1) {
+                console.log("refresh")
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop=0;
+                this.setState({
+                    next:0,
+                isLoadmore:true
+                })
+
+
+            }
+        }
+        var scrollPos = 0;
+        window.onscroll = ()=>{
+
+            try {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                var productBoxEle=document.getElementById('productBox');
+                var productBox=productBoxEle.scrollHeight*(80/100); //  box height 80%
+                if(winScroll>(productBoxEle.offsetTop+productBox-400) &&((document.body.getBoundingClientRect()).top < scrollPos)){
+
+
+                    if (this.state.isLoadmore){
+                        this.state.next+=this.state.limit;
+                        this.loadmore();
+                    }
+
+                }
+
+                scrollPos = (document.body.getBoundingClientRect()).top;
+            }catch (e) {
+
+            }
+
+        };
+            }
+
+            /*
+            *  {this.state.product.slice(0, 6).map(product=>(
+                                <div className="product-item">
+                                    <div className="pi-pic">
+                                        <img style={{height:"350px",width:'100%'}} src={'http://localhost:3001'+product.images[0]} alt=""/>
+                                        <div className="pi-links">
+                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
+                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
+                                        </div>
+                                    </div>
+                                    <div className="pi-text">
+                                        <h6>${product.price}</h6>
+                                        <p>{product.proName} </p>
+                                    </div>
+                                </div>
+                            ))}
+            * */
+
+
+    loadmore=async ()=>{
+        await axios({
+            methode: 'GET',
+            url:global.backend+'/product/getAllProduct',
+            params:{s:true,sets:this.state.next,limit:this.state.limit}
+
+        }).then(res=>{
+            // console.log(res.data.length);
+            if (res.data.length!=0){
+                this.setState({
+                    product:[...this.state.product,...res.data]
+                },()=>{
+
+                    setTimeout(()=>{
+                        document.getElementById('preloder').style.display="none";
+                    },200);
+                });
+            }else {
+                this.state.isLoadmore=false;
+            }
+
+        }).catch(err=>{
+            console.log(err);
+        });
     }
 
 
 
+            getData=async () =>{
+               try {
+                    await axios({
+                        methode: 'GET',
+                        url:global.backend+'/product/letestProduct',
+                        params:{s:true}
+                    }).then(res=>{
+                           // this.state.product=res.data.sort((a,b)=>( a.addDate>b.addDate?-1:1) );
+                            this.state.popularProduct=res.data.sort((a,b)=>a.totClicks>b.totClicks?-1:1);
+                            axios({
+                                methode: 'GET',
+                                url:global.backend+"/productCategory",
+
+                            }).then(res=>{
+                               this.state.catogory=res.data;
+                                   axios({
+                                       methode: 'GET',
+                                       url:global.backend+"/product/getAllProduct",
+                                       params:{s:true,sets:this.state.next,limit:this.state.limit}
+                                   }).then(res=>{
+                                       this.setState({
+                                           product:res.data
+                                       },()=>{
+
+                                           document.getElementById('preloder').style.display="none";
+                                       })
+                                   }).catch(err=>{
+                                       console.log(err);
+                                   });
+                            }).catch(err=>{
+                                console.log(err);
+                            });
+                    }).catch(err=>{
+                        console.log(err);
+                    });
+                }catch (e) {
+
+                }
+            }
+
+
     render() {
         return (<>
+                <div id="preloder">
+                    <div className="loader"></div>
+                </div>
                 <section className="hero-section">
                     <div className="hero-slider owl-carousel">
                         <div className="hs-item set-bg" data-setbg="images/bg.jpg">
@@ -109,226 +256,43 @@ class Home extends Component{
                         <div className="section-title" >
                             <h2>LATEST PRODUCTS</h2>
                         </div>
-                        <div className="product-slider owl-carousel">
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <img src="./images/product/1.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
+                        <div className="product-slider">
+
+                                <Swiper>
+                                    <div className="swiper-slide">
+                                        <img src="/product/1.jpg" alt=""/>
                                     </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Flamboyant Pink Top </p>
-                                </div>
-                            </div>
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <div className="tag-new">New</div>
-                                    <img src="./images/product/2.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
+                                    <div className="swiper-slide">
+                                        <img src="https://swiperjs.com/demos/images/nature-2.jpg" alt=""/>
                                     </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Black and White Stripes Dress</p>
-                                </div>
-                            </div>
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <img src="./images/product/3.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
+                                    <div className="swiper-slide">
+                                        <img src="https://swiperjs.com/demos/images/nature-3.jpg" alt=""/>
                                     </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Flamboyant Pink Top </p>
-                                </div>
-                            </div>
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <img src="./images/product/4.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
+                                    <div className="swiper-slide">
+                                        <img src="https://swiperjs.com/demos/images/nature-4.jpg" alt=""/>
                                     </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Flamboyant Pink Top </p>
-                                </div>
-                            </div>
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <img src="./images/product/6.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
+                                    <div className="swiper-slide">
+                                        <img src="https://swiperjs.com/demos/images/nature-5.jpg" alt=""/>
                                     </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Flamboyant Pink Top </p>
-                                </div>
+                                    <div className="swiper-slide">
+                                        <img src="https://swiperjs.com/demos/images/nature-6.jpg" alt=""/>
+                                    </div>
+                                    <div className="swiper-slide">
+                                        <img src="https://swiperjs.com/demos/images/nature-7.jpg" alt=""/>
+                                    </div>
+                                    <div className="swiper-slide">
+                                        <img src="https://swiperjs.com/demos/images/nature-8.jpg" alt=""/>
+                                    </div>
+                                    <div className="swiper-slide">
+                                        <img src="https://swiperjs.com/demos/images/nature-9.jpg" alt=""/>
+                                    </div>
+
+                                    </Swiper>
+
                             </div>
-                        </div>
+
                     </div>
                 </section>
-
-
-
-
-                <section className="product-filter-section">
-                    <div className="container">
-                        <div className="section-title" >
-                            <h2>BROWSE TOP SELLING PRODUCTS</h2>
-                        </div>
-                        <ul className="product-filter-menu">
-                            <li><a href="/">TOPS</a></li>
-                            <li><a href="/">JUMPSUITS</a></li>
-                            <li><a href="/">LINGERIE</a></li>
-                            <li><a href="/">JEANS</a></li>
-                            <li><a href="/">DRESSES</a></li>
-                            <li><a href="/">COATS</a></li>
-                            <li><a href="/">JUMPERS</a></li>
-                            <li><a href="/">LEGGINGS</a></li>
-                        </ul>
-                        <div className="row">
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/5.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <div className="tag-sale">ON SALE</div>
-                                        <img src="./images/product/6.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Black and White Stripes Dress</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/7.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/8.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/9.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/10.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Black and White Stripes Dress</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/11.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/12.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center pt-5" >
-                            <button className="site-btn sb-line sb-dark">LOAD MORE</button>
-                        </div>
-                    </div>
-                </section>
-
-
-
 
                 <section className="banner-section" >
                     <div className="container">
@@ -340,6 +304,56 @@ class Home extends Component{
                         </div>
                     </div>
                 </section>
+
+
+                <section className="product-filter-section">
+                    <div className="container">
+                        <div className="section-title" >
+                            <h2>BROWSE TOP SELLING PRODUCTS</h2>
+                        </div>
+                        <ul className="product-filter-menu" >
+
+                            {this.state.catogory.map(catogory=>(
+                                <>
+                                    {(catogory.subCategory.length>0)?(
+                                    <>
+                                            {(catogory.subCategory.slice(0,5).map(subCategory=>(
+                                                <li><Link to={"/allProducts/"+catogory.categoryName+"~"+subCategory}>{subCategory}</Link></li>
+                                            )))}
+
+                                    </>
+
+                                    ):(
+                                        <></>
+                                    )}
+
+
+
+
+                                </>
+                            ))}
+
+
+                        </ul>
+                        <div className="row" id="productBox">
+
+                            {this.state.product.map(product=>(
+                                <div key={product.id} className="col-lg-3 col-sm-6">
+                                    <ProductCard data={product} />
+                                </div>
+
+                            ))}
+                        </div>
+
+
+
+                    </div>
+                </section>
+
+
+
+
+
             </>
         );
     }

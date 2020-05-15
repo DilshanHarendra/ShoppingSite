@@ -51,7 +51,7 @@ router.get('/getProducts',async function (req,res) {
             delete req.query.limit;
             console.log(req.query);
             var data=await productSchema.find(req.query).sort( { totClicks: -1 } ).skip(set).limit(limit).sort({_id:-1});
-            console.log(data.length)
+            console.log(data.length);
             res.send(data);
         }else {
             res.status(500).send("query err");
@@ -164,6 +164,32 @@ router.get('/getSearchProduct',async function (req,res) {
     }
 });
 
+router.get('/getAllProduct',async function (req,res) {
+    console.log(req.query);
+    try {
+        if (req.query.s){
+
+            let set=parseInt(req.query.sets);
+            let limit=parseInt(req.query.limit);
+
+
+
+            var data=await productSchema.find({}).skip(set).limit(limit).sort( { totClicks: -1 } );
+            console.log(data.length,set);
+            res.send( data);
+        }else {
+            res.status(500).send("query err");
+        }
+    }catch (e) {
+        console.log(e);
+        res.status(500).send("err " + e);
+    }
+});
+
+
+
+
+
 
 
 router.get('/letestProduct',async function (req,res) {
@@ -173,7 +199,7 @@ router.get('/letestProduct',async function (req,res) {
         if (req.query.s){
             delete req.query.s;
             console.log(req.query);
-            var data=await productSchema.find({}).sort({addDate:-1});
+            var data=await productSchema.find({}).sort({addDate:-1}).limit(6);
             res.send( data);
         }else {
             res.status(500).send("query err");

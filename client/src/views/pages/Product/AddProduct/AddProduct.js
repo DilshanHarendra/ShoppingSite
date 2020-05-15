@@ -67,7 +67,7 @@ class AddProduct extends  Component{
 
 
 
-        axios.get("http://localhost:3001/productCategory")
+        axios.get(global.backend +"/productCategory")
             .then(result=>{
                 this.setState({
                     getCatogorys:result.data
@@ -274,10 +274,10 @@ class AddProduct extends  Component{
                 delete  values.files;
                 values.proimages = imgs;
 
-                axios.post('http://localhost:3001/product/addProduct',values)
+                axios.post(global.backend +'/product/addProduct',values)
                     .then(response1=>{
                         console.log(response1.statusText);
-                        axios.post('http://localhost:3001/product/uploadProduct',formData)
+                        axios.post(global.backend +'/product/uploadProduct',formData)
                             .then(response2=>{
 
                                 console.log(response2.statusText);

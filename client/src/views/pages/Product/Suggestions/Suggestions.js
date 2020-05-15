@@ -3,6 +3,7 @@ import axios from "axios";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Link} from "react-router-dom";
 import '../../../../css/suggestions.css'
+import ProductCard from "../ProductCard";
 
 class Suggestions extends Component{
 
@@ -42,7 +43,7 @@ class Suggestions extends Component{
 
         axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getProduct',
+            url:global.backend+'/product/getProduct',
             params:{s:true,catogory:this.state.catogory,subCatogory: this.state.subCatogory},
 
         }).then(res=>{
@@ -69,7 +70,7 @@ class Suggestions extends Component{
     }
 
     imgHover(id,image){
-        document.getElementById(id).src='http://localhost:3001'+image;
+        document.getElementById(id).src=global.backend+image;
     }
 
 
@@ -100,23 +101,7 @@ class Suggestions extends Component{
 
                                     <div key={product.id}   className="product-item col-md-3">
                                         <Link to={"/oneProduct/"+product.id} >
-                                            <div className="pi-pic">
-                                                <img style={{height:'350px',width:'100%'}}
-                                                     id={product.id}
-                                                     src={'http://localhost:3001'+product.images[0]}
-                                                     onMouseOut={()=>this.imgHover(product.id,product.images[0])}
-                                                     onMouseMove={()=>this.imgHover(product.id,product.images[1])}
-                                                     alt=""/>
-                                                <div className="pi-links">
-                                                    <a href="#" className="add-card"><i
-                                                        className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                                    <a href="#" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                                </div>
-                                            </div>
-                                            <div className="pi-text">
-                                                <h6>{product.price}$</h6>
-                                                <p>{product.proName}</p>
-                                            </div>
+                                           <ProductCard data={product}/>
                                         </Link>
                                     </div>
 

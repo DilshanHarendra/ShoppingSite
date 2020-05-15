@@ -1,3 +1,4 @@
+
 import React,{Component} from "react";
 import '../../../../css/showOneProduct.css'
 
@@ -54,7 +55,7 @@ class ShowOneProduct extends Component{
 
     }
     componentDidMount(){
-
+    console.log(process.env.BACKEND_URL);
         document.body.scrollTop = 0;
         document.documentElement.scrollTop=0;
         socketIOClient('http://localhost:4000').on('newReview', data => {
@@ -69,15 +70,18 @@ class ShowOneProduct extends Component{
         });
 
         this.props.history.listen((location, action) => {
-           document.getElementById('preloder').style.display="block";
-            let key= location.pathname.split("/")[2];
+            try {
+                document.getElementById('preloder').style.display="block";
+                let key= location.pathname.split("/")[2];
 
                 this.state.id=key;
 
                 this.getData();
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop=0;
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop=0;
+            }catch (e) {
 
+            }
         });
 
 
@@ -94,7 +98,7 @@ class ShowOneProduct extends Component{
     getData(){
         axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getSingelProduct',
+            url:global.backend+'/product/getSingelProduct',
             params:{s:true,id:this.state.id,tclick:true}
         }).then(res=>{
 
@@ -106,7 +110,7 @@ class ShowOneProduct extends Component{
                 this.setElemets();
                 axios({
                     methode: 'GET',
-                    url:'http://localhost:3001/product/getReviews',
+                    url:global.backend+'/product/getReviews',
                     params:{s:true,pid:this.state.id},
 
                 }).then(res=>{
@@ -233,7 +237,7 @@ class ShowOneProduct extends Component{
                     review:this.state.reviewText,
                     rating:this.state.rating,
                 };
-                axios.post('http://localhost:3001/product/addReview',query)
+                axios.post(global.backend+'/product/addReview',query)
                     .then(async function (res){
                      //   console.log("send to soket")
                             socketIOClient('http://localhost:4000').emit('addReview',query)
@@ -292,7 +296,7 @@ class ShowOneProduct extends Component{
         >
             { this.state.data[0].images.map(image=>(
                 <div key={c} >
-                    <img className="productImage"  src={'http://localhost:3001'+image} alt=""/>
+                    <img className="productImage"  src={global.backend+image} alt=""/>
                     {c++}
                 </div>
 
@@ -304,6 +308,7 @@ class ShowOneProduct extends Component{
     setElemets(){
             var sizearr=this.state.data[0].size;
             var labels  =["XS","S","M","L","XL","XXL"];
+
             for (var j=0;j<sizearr.length;j++){
                     var iDiv = document.createElement("div");
                     var ilabel = document.createElement("label");
@@ -339,7 +344,7 @@ class ShowOneProduct extends Component{
                      'id':this.state.id
                  }
              //    console.log(query);
-                 axios.post('http://localhost:3001/product/deleteProduct',query)
+                 axios.post(global.backend+'/product/deleteProduct',query)
                  .then(res=>{
                      this.setState({
                          isDelete:false
