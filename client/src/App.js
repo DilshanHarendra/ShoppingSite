@@ -32,6 +32,9 @@ import refundRequest from "./views/pages/Payment/refundRequest";
 import paymentSuccess from "./views/pages/Payment/PaymentSuccess";
 import payment from "./views/pages/Payment/Payment";
 import viewAllPayments from "./views/pages/Payment/viewAllPayments";
+import payAdminCard from "./views/pages/Payment/payAdminCard";
+import payAdminReceipt from "./views/pages/Payment/payAdminReceipt";
+import payAdminRefund from "./views/pages/Payment/payAdminRefund";
 
 //=========================CART===========================================
 import Cart from "./views/pages/Cart/Cart"
@@ -108,6 +111,9 @@ class App extends Component {
                     <Route path="/paymentSuccess" component={paymentSuccess} />
                     <Route path="/payment" component={payment} />
                     <Route path="/allPayments" component={viewAllPayments} />
+                    <Route path="/payAdminCard" component={payAdminCard} />
+                    <Route path="/payAdminReceipt" component={payAdminReceipt} />
+                    <Route path="/payAdminRefund" component={payAdminRefund} />
                     
                     {/*CART*/}
                     <Route path="/cart" component={Cart}/>
