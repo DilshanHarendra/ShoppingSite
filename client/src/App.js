@@ -11,10 +11,6 @@ import ShowAllProducts from "./views/pages/Product/ShowAllProducts/ShowAllProduc
 import ShowOneProduct from "./views/pages/Product/ShowOneProduct/ShowOneProduct";
 import Home from "./views/pages/HomePage";
 import Register from "./views/pages/Register"
-import PaymentMain from "./views/pages/Payment/PaymentMain"
-import cardPayment from "./views/pages/Payment/cardPayment"
-import receiptPayment from "./views/pages/Payment/receiptPayment"
-import payConfirm from "./views/pages/Payment/payConfirm"
 import UpdateProduct from "./views/pages/Product/UpdateProduct/UpdateProduct";
 import MyShop from "./views/pages/Product/MyShop/MyShop";
 import AdminDashbord from "./views/pages/AdminPages/admindashbord";
@@ -22,7 +18,35 @@ import fakeAuth from "../src/views/pages/fakeAuth"
 import Login from "../../client/src/views/pages/Login"
 import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcategoryPanal";
 import StoreManagerPanal from "./views/pages/AdminPages/StoreManagerRegister/StoremanagerPanal";
+import registerVerify from "./views/pages/registerVerify";
+
+//=========================PAYMENT PAGES==================================
+import PaymentMain from "./views/pages/Payment/PaymentMain";
+import cardPayment from "./views/pages/Payment/cardPayment";
+import receiptPayment from "./views/pages/Payment/receiptPayment";
+import payConfirm from "./views/pages/Payment/payConfirm";
+import payAdmin from "./views/pages/Payment/payAdmin";
+import refundPayment from "./views/pages/Payment/refundPayment";
+import emailConfirm from "./views/pages/Payment/emailConfirm";
+import refundRequest from "./views/pages/Payment/refundRequest";
+import paymentSuccess from "./views/pages/Payment/PaymentSuccess";
+import payment from "./views/pages/Payment/Payment";
+import viewAllPayments from "./views/pages/Payment/viewAllPayments";
+
+
+//========================================================================
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
+
+
+
+
+
+
+
+
+
+
+
 
 // Containers
 //const DefaultLayout = React.lazy(() => import('./containers/DefaultLayout'));
@@ -46,37 +70,54 @@ const loading = () => <div className="animated fadeIn pt-3 text-center">Loading.
 
 class App extends Component {
 
-  render() {
-    return (
-        <Router>
+    render() {
+        return (
+            <Router>
 
-            <div className="App">
-                <DefaultHeader/>
-                <Switch>
-                    <Route  path="/" exact   component={Home} />
-                    <Route path="/login" exact component={Login}/>
-                    {/* <Route path="/login1" exact component={Login}/> */}
-                    <Route exact path="/Register" component={Register} />
-                    <Route path="/allProducts/:id" exact component={ShowAllProducts} />
-                    <Route path="/oneProduct/:id" exact component={ShowOneProduct} />
-                    <Route path="/Myshop" exact component={MyShop} />
-                    <Route path="/Myshop/addProduct" component={AddProduct} />
-                    <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
-                    <Route path="/paymentMain" component={PaymentMain} />
-                    <Route path="/cardPayment" component={cardPayment} />
-                    <Route path="/receiptPayment" component={receiptPayment} />
-                    <Route path="/payConfirm" component={payConfirm} />
-                    <Route path="/adminDashbord" component={AdminDashbord}/>
-                    <Route path="/productcategory" component={ProductCategory}/>
-                    <Route path="/storeManager" component={StoreManagerPanal}/>
+                <div className="App">
 
-                </Switch>
-                <DefaultFooter/>
-                
-            </div>
-        </Router>
-    );
-  }
+                    <DefaultHeader/>
+                    <Switch>
+                        <Route  path="/" exact   component={Home} />
+
+                        {/* <Route path="/login1" exact component={Login}/> */}
+
+                        <Route path="/allProducts/:id" exact component={ShowAllProducts} />
+                        <Route path="/oneProduct/:id" exact component={ShowOneProduct} />
+                        <Route path="/Myshop" exact component={MyShop} />
+                        <Route path="/Myshop/addProduct" component={AddProduct} />
+                        <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
+
+                        {/* StoreManager */}
+                        <Route path="/adminDashboard" component={AdminDashbord}/>
+                        <Route path="/productcategory" component={ProductCategory}/>
+                        <Route path="/storeManager" component={StoreManagerPanal}/>
+
+
+                        {/* User */}
+                        <Route path="/login" exact component={Login}/>
+                        <Route exact path="/Register" component={Register} />
+                        <Route exact path="/RegisterConfirm" component={registerVerify}/>
+
+                        {/* PAYMENT */}
+                        <Route path="/paymentMain" component={PaymentMain} />
+                        <Route path="/cardPayment" component={cardPayment} />
+                        <Route path="/receiptPayment" component={receiptPayment} />
+                        <Route path="/payConfirm" component={payConfirm} />
+                        <Route path="/payAdmin" component={payAdmin} />
+                        <Route path="/refundPayment" component={refundPayment} />
+                        <Route path="/emailConfirm" component={emailConfirm} />
+                        <Route path="/refundRequest" component={refundRequest} />
+                        <Route path="/paymentSuccess" component={paymentSuccess} />
+                        <Route path="/payment" component={payment} />
+                        <Route path="/allPayments" component={viewAllPayments} />
+                    </Switch>
+                    <DefaultFooter/>
+
+                </div>
+            </Router>
+        );
+    }
 
 }
 
