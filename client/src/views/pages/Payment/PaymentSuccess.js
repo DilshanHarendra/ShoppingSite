@@ -14,7 +14,6 @@ import {
 } from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
-
 import { CircularProgressbar,buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
@@ -25,8 +24,13 @@ class PaymentSuccess extends Component {
             getCode:'',
             code:''
         };
+
+        this.getPaymentReceipt = this.getPaymentReceipt.bind(this);
     }
 
+    getPaymentReceipt(){
+
+    }
     render() {
         const percentage = 100;
         return (
@@ -71,7 +75,7 @@ class PaymentSuccess extends Component {
                                     />
                                 </CardBody>
                                 <CardFooter>
-                                    <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>
+                                    <h6 className="text-muted text-right">Handled by <span className="text-info">C4FASHIONSPayAdmin</span></h6>
                                 </CardFooter>
                             </Card>
                         </Col>

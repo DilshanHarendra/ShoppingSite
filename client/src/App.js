@@ -35,9 +35,10 @@ import viewAllPayments from "./views/pages/Payment/viewAllPayments";
 import payAdminCard from "./views/pages/Payment/payAdminCard";
 import payAdminReceipt from "./views/pages/Payment/payAdminReceipt";
 import payAdminRefund from "./views/pages/Payment/payAdminRefund";
+import payInvoice from "./views/pages/Payment/PaymentInvoice";
 
 //=========================CART===========================================
-import Cart from "./views/pages/Cart/Cart"
+// import Cart from "./views/pages/Cart/Cart"
 
 //========================================================================
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
@@ -114,9 +115,10 @@ class App extends Component {
                     <Route path="/payAdminCard" component={payAdminCard} />
                     <Route path="/payAdminReceipt" component={payAdminReceipt} />
                     <Route path="/payAdminRefund" component={payAdminRefund} />
+                    <Route path="/payInvoice" component={payInvoice} />
                     
                     {/*CART*/}
-                    <Route path="/cart" component={Cart}/>
+                    {/*<Route path="/cart" component={Cart}/>*/}
 
                 </Switch>
                 <DefaultFooter/>
