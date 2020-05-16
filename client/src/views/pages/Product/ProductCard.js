@@ -22,7 +22,7 @@ class ProductCard extends Component{
        if (this.state.uid==null){
 
        }else {
-           console.log("add to cart")
+           console.log("add to cart");
            let data={user:this.state.uid,products:this.state.product,qty:this.state.qty}
            axios.post(global.backend+'/cart/add',data)
                .then(res=>{
@@ -47,12 +47,12 @@ class ProductCard extends Component{
                        <div className="tag-sale" style={{'font-size':12}}>{this.state.product.discount}% off</div>
                    ):(<></>)}
                    {this.state.product.images[1]!=null?(
-                       <img  src={global.backend+this.state.product.images[0]} id={this.state.product.id} alt={this.state.product.images[0]}
+                     <Link to={"/oneProduct/"+this.state.product.id}> <img  src={global.backend+this.state.product.images[0]} id={this.state.product.id} alt={this.state.product.images[0]}
                             onMouseOut={()=>this.imgHover(this.state.product.id,this.state.product.images[0])}
                             onMouseMove={()=>this.imgHover(this.state.product.id,this.state.product.images[1])}
-                            className="Pimage img"  />
+                            className="Pimage img"  /></Link>
                    ):(
-                       <img src={global.backend+this.state.product.images[0]} id={this.state.product.id} alt={this.state.product.images[0]} className="Pimage"  />
+                       <Link to={"/oneProduct/"+this.state.product.id}> <img src={global.backend+this.state.product.images[0]} id={this.state.product.id} alt={this.state.product.images[0]} className="Pimage"  /></Link>
                    )
 
                    }
@@ -64,10 +64,10 @@ class ProductCard extends Component{
                        <Link to="#"  className="wishlist-btn"><i className="flaticon-heart"></i></Link>
                    </div>
                </div>
-               <div className="pi-text">
+               <Link to={"/oneProduct/"+this.state.product.id}> <div className="pi-text">
                    <h6>{this.state.product.price}$  </h6>
                    <p>{this.state.product.proName}</p>
-               </div>
+               </div></Link>
 
            </div>
 
