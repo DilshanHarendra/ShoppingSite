@@ -90,7 +90,7 @@ class emailConfirm extends Component {
                                     </Form>
                                 </CardBody>
                                 <CardFooter>
-                                    <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>
+                                    <h6 className="text-muted text-right">Handled by <span className="text-info">C4FASHIONSPayAdmin</span></h6>
                                 </CardFooter>
                             </Card>
                         </Col>

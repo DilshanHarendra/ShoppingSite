@@ -122,7 +122,6 @@ router.post('/emailVerification',async function(req,res){
 
         });
 
-        res.sendFile('/getVerifyCode', code);
     }catch (e) {
 
     }
@@ -295,13 +294,56 @@ router.get('/getBankPaymentDetails',async function(req,res){
 
 });
 
+router.post('/getDataForInvoice',async function(req,res){
+    try{
+        let gotData = req.body.payID;
+        console.log(gotData);
+        let query = {payID: gotData};
+        let data=await PaymentSchema.find(query);
+
+        res.send(data);
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
 router.post('/changeCardStatus',async function(req,res){
     try{
+        //get user email
+        const userEmail = "kevingomez890@gmail.com";
         const gotID = req.body.id;
         var updatePaymentStatus = {
             paymentStatus :'Completed'
         };
         var result =await PaymentSchema.updateOne({payID:gotID},updatePaymentStatus);
+
+        let testAccount = await nodemailer.createTestAccount();
+
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+                user: "codefoursliit@gmail.com", // generated ethereal user
+                pass: "codefour@123", // generated ethereal password
+            },
+        });
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
+            to: userEmail, // list of receivers
+            subject: "Payment completion", // Subject line
+            text:
+                "Your below payment is completed:",
+            html: '<label class="text-dark">Your payment: <span class="text-danger font-weight-bold">=='+gotID+'==</span> has been completed</label><br>'
+                +
+                '<a href="http://localhost:3000/payInvoice?getInvoice='+gotID+'">Click to get the receipt</a>'
+
+
+        });
     }catch (e) {
         res.status(404).send("parameter error");
     }
@@ -321,6 +363,8 @@ router.get('/getRefundPaymentDetails',async function(req,res){
 
 router.post('/acceptRefund',async function(req,res){
     try{
+        //get user email
+        const userEmail = "kevingomez890@gmail.com";
         const gotID = req.body.id;
         var updatePaymentStatus = {
             paymentStatus :'Refunded'
@@ -369,6 +413,30 @@ router.post('/acceptRefund',async function(req,res){
         })
 
         var removeRefund = await PaymentSchema.deleteOne(query);
+
+        let testAccount = await nodemailer.createTestAccount();
+
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+                user: "codefoursliit@gmail.com", // generated ethereal user
+                pass: "codefour@123", // generated ethereal password
+            },
+        });
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
+            to: userEmail, // list of receivers
+            subject: "Refund request acceptance", // Subject line
+            text:
+                "Your below refund payment is completed:",
+            html: '<label class="text-dark">Your refund request: <span class="text-danger font-weight-bold">=='+gotID+'==</span> has been completed</label>'
+
+        });
     }catch (e) {
         res.status(404).send("parameter error");
     }
