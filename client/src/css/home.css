@@ -1,0 +1,33 @@
+.marquee {
+    position: relative;
+    width: 100%;
+    height: auto;
+    overflow-x: hidden;
+}
+.track {
+    display: flex;
+    will-change: transform;
+    animation: marquee 10s linear infinite;
+}
+
+@keyframes marquee {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+
+.marquee .track  .product-item{
+    border: 1px solid gray;
+    margin: 10px;
+}
+
+.loading{
+    width: 75px;
+    height: 75px;
+    margin-left: calc(50% - 50px);
+
+
+}

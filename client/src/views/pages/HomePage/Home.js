@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
 import ProductCard from "../Product/ProductCard";
-import InfiniteCarousel from 'react-leaf-carousel';
 
+import '../../../css/home.css'
 
 class Home extends Component{
 
@@ -16,9 +16,10 @@ class Home extends Component{
             product:[],
             popularProduct:[],
             catogory:[],
-            isLoadmore:true,
+            isLoadmore:false,
             next:0,
-            limit:4
+            limit:4,
+            loading:false
 
         }
     }
@@ -30,21 +31,15 @@ class Home extends Component{
         document.body.appendChild(script);
 
 
-      console.log(localStorage.getItem('id'))
+
         this.getData();
+
+
 
 
         if (window.performance) {
             if (window.performance.navigation.type == 1) {
-                console.log("refresh")
-                document.body.scrollTop = 0;
-                document.documentElement.scrollTop=0;
-                this.setState({
-                    next:0,
-                    isLoadmore:true
-                })
-
-
+                window.location.replace('/');
             }
         }
         var scrollPos = 0;
@@ -53,13 +48,20 @@ class Home extends Component{
             try {
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
                 var productBoxEle=document.getElementById('productBox');
-                var productBox=productBoxEle.scrollHeight*(80/100); //  box height 80%
+                var productBox=productBoxEle.scrollHeight*(75/100); //  box height 80%
                 if(winScroll>(productBoxEle.offsetTop+productBox-400) &&((document.body.getBoundingClientRect()).top < scrollPos)){
-
 
                     if (this.state.isLoadmore){
                         this.state.next+=this.state.limit;
                         this.loadmore();
+                        this.setState({
+                            loading:true
+                        })
+                        this.state.isLoadmore=false;
+                    }else {
+                        this.setState({
+                            loading:false
+                        })
                     }
 
                 }
@@ -101,9 +103,10 @@ class Home extends Component{
             // console.log(res.data.length);
             if (res.data.length!=0){
                 this.setState({
-                    product:[...this.state.product,...res.data]
+                    product:[...this.state.product,...res.data],
+                    loading:false
                 },()=>{
-
+                    this.state.isLoadmore=true;
                     setTimeout(()=>{
                         document.getElementById('preloder').style.display="none";
                     },200);
@@ -130,15 +133,17 @@ class Home extends Component{
                //this.state.latestProduct=res.data.sort((a,b)=>a.totClicks>b.totClicks?-1:1);
                 this.setState({
                     latestProduct:res.data
-                })
-                ;
+                });
                 console.log(this.state.latestProduct);
                 axios({
                     methode: 'GET',
                     url:global.backend+"/productCategory",
 
                 }).then(res=>{
-                    this.state.catogory=res.data;
+                    this.setState({
+                        catogory:res.data
+                    })
+
                     axios({
                         methode: 'GET',
                         url:global.backend+"/product/getAllProduct",
@@ -147,7 +152,8 @@ class Home extends Component{
                         this.setState({
                             product:res.data
                         },()=>{
-
+                            this.state.next=+this.state.limit;
+                            this.state.isLoadmore=true;
                             document.getElementById('preloder').style.display="none";
                         })
                     }).catch(err=>{
@@ -163,18 +169,7 @@ class Home extends Component{
 
         }
     }
-    getimages=()=>{
-      return   this.state.latestProduct.map(product=>(
-            <div>
-                <img
 
-                    alt=''
-                    src={global.backend+product.images[0]}
-                />
-            </div>
-
-        ))
-    }
 
 
     render() {
@@ -182,7 +177,7 @@ class Home extends Component{
                 <div id="preloder">
                     <div className="loader"></div>
                 </div>
-                <section className="hero-section">
+                <section className="hero-section" id="home">
                     <div className="hero-slider owl-carousel">
                         <div className="hs-item set-bg" data-setbg="images/bg.jpg">
                             <div className="container">
@@ -274,56 +269,21 @@ class Home extends Component{
                             <h2>LATEST PRODUCTS</h2>
                         </div>
 
+                        <div className="marquee">
+                            <div className="track">
+                                {this.state.latestProduct.map(product=>(
+                             <ProductCard data={product} />
 
-                        <InfiniteCarousel
-                            breakpoints={[
-                                {
-                                    breakpoint: 500,
-                                    settings: {
-                                        slidesToShow: 2,
-                                        slidesToScroll: 2,
-                                    },
-                                },
-                                {
-                                    breakpoint: 768,
-                                    settings: {
-                                        slidesToShow: 3,
-                                        slidesToScroll: 3,
-                                    },
-                                },
-                                {
-                                    breakpoint: 500,
-                                    settings: {
-                                        slidesToShow: 2,
-                                        slidesToScroll: 2,
-                                    },
-                                },
-                                {
-                                    breakpoint: 768,
-                                    settings: {
-                                        slidesToShow: 3,
-                                        slidesToScroll: 3,
-                                    },
-                                },
-                            ]}
-                            dots={true}
-                            showSides={true}
-                            sidesOpacity={.5}
-                            sideSize={.1}
-                            slidesToScroll={4}
-                            slidesToShow={4}
-                            scrollOnDevice={true}
-                            lazyLoad={true}
-                            animationDuration={200}
-                            animationDuration={true}
-                            incrementalSides={true}
+                                ))}
 
-                        >
-                            {this.getimages()}
+                            </div>
+                        </div>
 
 
 
-                        </InfiniteCarousel>
+
+
+
 
 
 
@@ -381,7 +341,15 @@ class Home extends Component{
                                 </div>
 
                             ))}
+
+                            
+                            
                         </div>
+                        {this.state.loading?(
+                            <img className="loading" src="/images/loading.gif" alt=""/>
+                        ):(
+                            <></>
+                        )}
 
 
 

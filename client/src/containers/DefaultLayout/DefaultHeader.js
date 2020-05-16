@@ -111,12 +111,21 @@ class DefaultHeader extends Component {
 
                                     <div className="up-item">
                               {localStorage.getItem("AccessToken")===null?
-                              
-                              <a onClick={this.toggleLarge}> <i className="flaticon-profile"></i>
-                              <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link></a>:
-                            <button onClick={()=>{localStorage.clear(); window.location.href="/"}}>Logout</button>
-                            
-                            }  
+
+                              <div className="loginRegister" onClick={this.toggleLarge}> <i className="flaticon-profile"></i>
+                              Sign In or Create Account</div>:(
+                                  <>
+                                  <div className="dropdown">
+                                      <button className="dropbtn" style={{"backgroundImage":"url('/images/product/1.jpg')"}}></button>
+                                      <div className="dropdown-content">
+                                          <div >Profile</div>
+                                          <div >Link 2</div>
+                                          <div onClick={()=>{localStorage.clear(); window.location.href="/"}}>Logout</div>
+                                      </div>
+                                  </div>
+
+                            </>
+                                  )}
                                
                             
                                        

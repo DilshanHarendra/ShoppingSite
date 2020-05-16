@@ -29,7 +29,9 @@ class ShowAllProducts extends Component{
             getCatogorys:[],
             catogory:'',
             isLoadmore:true,
-            limit:3
+            limit:3,
+            loading:false
+
         };
         this.loadCatogories();
 
@@ -113,6 +115,16 @@ class ShowAllProducts extends Component{
                     if (this.state.isLoadmore){
                         this.state.next+=this.state.limit;
                         this.loadmore();
+                        this.setState({
+                            loading:true
+                        });
+
+                        this.state.isLoadmore=false;
+
+                    }else {
+                        this.setState({
+                            loading:false
+                        });
                     }
 
                 }
@@ -184,12 +196,13 @@ class ShowAllProducts extends Component{
            // console.log(res.data.length);
             if (res.data.length!=0){
                 this.setState({
-                    data:[...this.state.data,...res.data]
+                    data:[...this.state.data,...res.data],
+                    loading:false
                 },()=>{
-
-                    setTimeout(()=>{
-                        document.getElementById('preloder').style.display="none";
-                    },200);
+                    this.state.isLoadmore=true;
+                    this.setState({
+                        loading:false
+                    })
                 });
             }else {
                 this.state.isLoadmore=false;
@@ -430,6 +443,11 @@ clearSize(){
 
 
                         </div>
+                        {this.state.loading?(
+                            <img className="loading" src="/images/loading.gif" alt=""/>
+                        ):(
+                            <></>
+                        )}
                     </div>
                 </div>
             </div>

@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {Link} from "react-router-dom";
 import axios from 'axios';
-import '../../../css/prosuctCard.css'
+import '../../../css/productCard.css'
 class ProductCard extends Component{
 
    constructor(props) {
@@ -23,7 +23,7 @@ class ProductCard extends Component{
 
        }else {
            console.log("add to cart")
-           let data={user:this.state.uid,products:this.state.pid,qty:this.state.qty}
+           let data={user:this.state.uid,products:this.state.product,qty:this.state.qty}
            axios.post(global.backend+'/cart/add',data)
                .then(res=>{
                    window.location.replace('/cart');
@@ -47,10 +47,10 @@ class ProductCard extends Component{
                        <div className="tag-sale" style={{'font-size':12}}>{this.state.product.discount}% off</div>
                    ):(<></>)}
                    {this.state.product.images[1]!=null?(
-                       <img src={global.backend+this.state.product.images[0]} id={this.state.product.id} alt={this.state.product.images[0]}
+                       <img  src={global.backend+this.state.product.images[0]} id={this.state.product.id} alt={this.state.product.images[0]}
                             onMouseOut={()=>this.imgHover(this.state.product.id,this.state.product.images[0])}
                             onMouseMove={()=>this.imgHover(this.state.product.id,this.state.product.images[1])}
-                            className="Pimage"  />
+                            className="Pimage img"  />
                    ):(
                        <img src={global.backend+this.state.product.images[0]} id={this.state.product.id} alt={this.state.product.images[0]} className="Pimage"  />
                    )
