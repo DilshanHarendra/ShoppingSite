@@ -155,11 +155,11 @@ class DefaultHeader extends Component {
 
 
                                 {this.state.getCatogorys.map(catogory=>(
-                                    <li><Link to={"/allProducts/"+catogory.categoryName}  >{catogory.categoryName}</Link>
+                                    <li key={catogory._id} ><Link to={"/allProducts/"+catogory.categoryName}  >{catogory.categoryName}</Link>
                                         {(catogory.subCategory.length>0)?(
                                             <ul className="sub-menu">
                                                 {(catogory.subCategory.map(subCategory=>(
-                                                    <li><Link to={"/allProducts/"+catogory.categoryName+"~"+subCategory}>{subCategory}</Link></li>
+                                                    <li key={subCategory} ><Link to={"/allProducts/"+catogory.categoryName+"~"+subCategory}>{subCategory}</Link></li>
                                                 )))}
 
 

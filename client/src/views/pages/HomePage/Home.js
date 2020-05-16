@@ -24,6 +24,9 @@ class Home extends Component{
         }
     }
 
+
+
+
     componentDidMount(){
        const script = document.createElement("script");
         script.src = "../../../js/main.js";
@@ -40,6 +43,7 @@ class Home extends Component{
         if (window.performance) {
             if (window.performance.navigation.type == 1) {
                 window.location.replace('/');
+                console.log("refresh");
             }
         }
         var scrollPos = 0;
@@ -74,23 +78,7 @@ class Home extends Component{
         };
     }
 
-    /*
-    *  {this.state.product.slice(0, 6).map(product=>(
-                        <div className="product-item">
-                            <div className="pi-pic">
-                                <img style={{height:"350px",width:'100%'}} src={'http://localhost:3001'+product.images[0]} alt=""/>
-                                <div className="pi-links">
-                                    <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div className="pi-text">
-                                <h6>${product.price}</h6>
-                                <p>{product.proName} </p>
-                            </div>
-                        </div>
-                    ))}
-    * */
+
 
 
     loadmore=async ()=>{
@@ -272,14 +260,13 @@ class Home extends Component{
                         <div className="marquee">
                             <div className="track">
                                 {this.state.latestProduct.map(product=>(
-                             <ProductCard data={product} />
+                             <ProductCard key={product.id} data={product} />
 
                                 ))}
 
                             </div>
                         </div>
-
-
+                       
 
 
 
@@ -337,7 +324,7 @@ class Home extends Component{
 
                             {this.state.product.map(product=>(
                                 <div key={product.id} className="col-lg-3 col-sm-6">
-                                    <Link to={"/oneProduct/"+product.id}><ProductCard data={product} /></Link>
+                                    <ProductCard data={product} />
                                 </div>
 
                             ))}
