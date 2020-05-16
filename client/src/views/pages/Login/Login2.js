@@ -13,7 +13,7 @@ import alertify from "alertifyjs/build/alertify";
 import "alertifyjs/build/css/alertify.min.css";
 import "alertifyjs/build/css/alertify.css";
 import "alertifyjs/build/css/themes/default.min.css";
-class Login extends Component {
+class Login2 extends Component {
     constructor(props) {
 		super(props);
 		this.state = {
@@ -31,18 +31,6 @@ class Login extends Component {
 		
     }
     
-   componentDidMount=()=>{
-     if(this.props.location.state===undefined)
-     {
-      this.props.history.push('/login', { from: '/',msg:"Welcome"});
-     }
-     alertify.error(this.props.location.state.msg);
-
-    localStorage.clear();
-    
-   }
-
-   
 
 
     //loggedIn: BehaviorSubject<boolean>
@@ -78,40 +66,25 @@ e.preventDefault();
       }
       try {
            axios.post("http://localhost:3001/login/login", data).then((res) => {
-             if(res.data.success===true)
-             {
-              localStorage.setItem("AccessToken",res.data.accessToken);
-              localStorage.setItem("type",res.data.type);
-              localStorage.setItem("id",res.data.id);
-              this.setState({
-                large:false
-              });
-              window.location.reload();
-              alertify.success("Successfully logged in");
-
-             }else{
-              alertify.error(res.data.err);
-
-             }
+localStorage.setItem("AccessToken",res.data.accessToken);
+localStorage.setItem("type",res.data.type);
+localStorage.setItem("id",res.data.id);
+this.setState({
+  large:false
+})
+window.location.reload();
+alertify.success("Successfully logged in");
 
             
            });
          } catch (e) {
 
-          console.log(e.response.status);
+          console.log(e);
          }
     }
     render() { 
 
      
-        const { from } = this.props.location.state || { from: { pathname: '/' } }
-        // const { redirectToReferrer } = this.state
-    
-        if (localStorage.getItem("AccessToken")!==null) {
-          return <Redirect to={from.pathname} />
-        }
-
-      console.log(this.props.location.state)
     
         return (<div className="app flex-row align-items-center">
         <Container>
@@ -172,4 +145,4 @@ e.preventDefault();
     }
 }
  
-export default Login;
+export default Login2;

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Card, CardBody, CardHeader, Col, Modal, ModalBody, ModalFooter, ModalHeader, Row } from 'reactstrap';
 import PropTypes from 'prop-types';
 import { Link, NavLink } from 'react-router-dom';
-import Login from "../../views/pages/Login"
+import Login2 from "../../views/pages/Login/Login2"
 import Register from "../../views/pages/Register"
 import '../../css/animate.css';
 import '../../css/bootstrap.min.css';
@@ -133,7 +133,7 @@ class DefaultHeader extends Component {
                        className={'modal-lg ' + this.props.className}>
                   
                   <ModalBody>
-                   <Login toggle={this.toggleLarge}/>
+                   <Login2 toggle={this.toggleLarge}/>
                   </ModalBody>
                   {/* <ModalFooter>
 					  <Link to="/Register">
