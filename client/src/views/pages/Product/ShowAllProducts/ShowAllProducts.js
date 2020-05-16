@@ -8,12 +8,14 @@ import Slider from '@material-ui/core/Slider';
 import axios from 'axios';
 import {Link} from "react-router-dom";
 import $ from 'jquery'
+import ProductCard from "../ProductCard";
 
 class ShowAllProducts extends Component{
 
     constructor(props) {
         super();
         let keys= this.seperatePara(props.history.location.pathname.split("/")[2]);
+
         this.state={
             subCatogory:keys[1],
             mCatogory:keys[0],
@@ -36,7 +38,7 @@ class ShowAllProducts extends Component{
 
 
     componentDidMount(){
-    console.log("componentDidMount()")
+
 
 
         const script = document.createElement("script");
@@ -132,14 +134,16 @@ class ShowAllProducts extends Component{
 
         try {
 
-            let keys=para.split("~");
-            if (keys.length==1){
-                subCatogory=null;
-                mCatogory=keys;
-            }else{
-                subCatogory=keys[1];
-                mCatogory=keys[0];
-            }
+                let keys=para.split("~");
+                if (keys.length==1){
+                    subCatogory=null;
+                    mCatogory=keys;
+                }else{
+                    subCatogory=keys[1];
+                    mCatogory=keys[0];
+                }
+
+
         }catch (e) {
 
         }
@@ -148,15 +152,20 @@ class ShowAllProducts extends Component{
 
     loadCatogories=async ()=>{
 
-        await axios.get("http://localhost:3001/productCategory")
+        await axios.get(global.backend+"/productCategory")
             .then(result=> {
-                let curretcatogory=  result.data.filter(catogory=>(catogory.categoryName.toString()==this.state.mCatogory.toString()));
-                this.setState({
-                    getCatogorys:result.data,
-                    catogory:curretcatogory[0]._id
-                },()=>{
-                    this.getData();
-                });
+                try {
+                    let curretcatogory=  result.data.filter(catogory=>(catogory.categoryName.toString()==this.state.mCatogory.toString()));
+                    this.setState({
+                        getCatogorys:result.data,
+                        catogory:curretcatogory[0]._id
+                    },()=>{
+                        this.getData();
+                    });
+                }catch (e) {
+
+                }
+
 
             }).catch(err=>console.log(err));
 
@@ -168,7 +177,7 @@ class ShowAllProducts extends Component{
     loadmore=async ()=>{
         await axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getProducts',
+            url:global.backend+'/product/getProducts',
             params:{s:true,catogory:this.state.catogory,minprice:this.state.price[0],maxprice:this.state.price[1],size:this.state.size ,subCatogory:this.state.subCatogory,sets:this.state.next,limit:this.state.limit },
 
         }).then(res=>{
@@ -197,7 +206,7 @@ class ShowAllProducts extends Component{
 
        await axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getProducts',
+            url:global.backend+'/product/getProducts',
             params:{s:true,catogory:this.state.catogory,minprice:this.state.price[0],maxprice:this.state.price[1],size:this.state.size ,subCatogory:this.state.subCatogory,sets:this.state.next,limit:this.state.limit },
 
         }).then(res=>{
@@ -261,9 +270,7 @@ clearSize(){
         this.getData();
     }
 
-    imgHover(id,image){
-        document.getElementById(id).src='http://localhost:3001'+image;
-    }
+
 
     setActive(x){
         document.getElementById(x).setAttribute("class","active");
@@ -402,36 +409,8 @@ clearSize(){
                             ):(this.state.data.map(oneRow=>(
                                 <div className="col-lg-4 col-sm-6" key={oneRow.id}>
                                     <Link to={"/oneProduct/"+oneRow.id} >
-                                    <div className="product-item">
-                                        <div className="pi-pic">
 
-                                                { oneRow.discount!=null?(
-                                                    <div className="tag-sale" style={{'font-size':12}}>{oneRow.discount}% off</div>
-                                                ):(<></>)}
-                                            {oneRow.images[1]!=null?(
-                                                <img src={'http://localhost:3001'+oneRow.images[0]} id={oneRow.id} alt={oneRow.images[0]}
-                                                     onMouseOut={()=>this.imgHover(oneRow.id,oneRow.images[0])}
-                                                     onMouseMove={()=>this.imgHover(oneRow.id,oneRow.images[1])}
-                                                     className="Pimage"  />
-                                            ):(
-                                                <img src={'http://localhost:3001'+oneRow.images[0]} id={oneRow.id} alt={oneRow.images[0]} className="Pimage"  />
-                                            )
-
-                                            }
-
-
-
-                                            <div className="pi-links">
-                                                <Link to="#" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></Link>
-                                                <Link to="#"  className="wishlist-btn"><i className="flaticon-heart"></i></Link>
-                                            </div>
-                                        </div>
-                                        <div className="pi-text">
-                                            <h6>{oneRow.price}$  </h6>
-                                            <p>{oneRow.proName}</p>
-                                        </div>
-
-                                    </div>
+                                        <ProductCard data={oneRow} />
                                     </Link>
                                 </div>
 

@@ -1,3 +1,4 @@
+
 import React,{Component} from "react";
 import '../../../../css/showOneProduct.css'
 
@@ -33,6 +34,8 @@ class ShowOneProduct extends Component{
     constructor(props) {
         super(props);
 
+
+
         this.state={
             id:this.props.match.params.id,
             pcatgory:'',
@@ -45,16 +48,19 @@ class ShowOneProduct extends Component{
             reviewText:'',
             rating:-1,
             mess:'',
-            uid:"001",
             reviews:[],
-            averageRating:0
+            averageRating:0,
+            uid:localStorage.getItem('id'),
+            selectqty:0,
+            selectSize:'',
+            availabelQty:0
 
 
         };
 
     }
     componentDidMount(){
-
+    console.log(process.env.BACKEND_URL);
         document.body.scrollTop = 0;
         document.documentElement.scrollTop=0;
         socketIOClient('http://localhost:4000').on('newReview', data => {
@@ -69,15 +75,18 @@ class ShowOneProduct extends Component{
         });
 
         this.props.history.listen((location, action) => {
-           document.getElementById('preloder').style.display="block";
-            let key= location.pathname.split("/")[2];
+            try {
+                document.getElementById('preloder').style.display="block";
+                let key= location.pathname.split("/")[2];
 
                 this.state.id=key;
 
                 this.getData();
-            document.body.scrollTop = 0;
-            document.documentElement.scrollTop=0;
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop=0;
+            }catch (e) {
 
+            }
         });
 
 
@@ -88,25 +97,31 @@ class ShowOneProduct extends Component{
 
 
 
+    }
+
+    selectSize=x=>{
+
+        this.state.selectSize=x.target.value;
 
     }
 
     getData(){
         axios({
             methode: 'GET',
-            url:'http://localhost:3001/product/getSingelProduct',
+            url:global.backend+'/product/getSingelProduct',
             params:{s:true,id:this.state.id,tclick:true}
         }).then(res=>{
 
             this.setState({
                 data:res.data,
-                pcatgory:res.data.catogory
+                pcatgory:res.data.catogory,
+                availabelQty:res.data[0].quantity
             },()=>{
 
-                this.setElemets();
+
                 axios({
                     methode: 'GET',
-                    url:'http://localhost:3001/product/getReviews',
+                    url:global.backend+'/product/getReviews',
                     params:{s:true,pid:this.state.id},
 
                 }).then(res=>{
@@ -207,7 +222,24 @@ class ShowOneProduct extends Component{
 
     }
 
+    buy=()=>{
+        if (this.state.uid==""||this.state.uid==null){
 
+        }else if (this.state.selectSize==''){
+            alert('Please select Size');
+        }else if (this.state.selectqty==0){
+            alert('Please Enter Quantity');
+        }else if(this.state.selectqty>this.state.availabelQty){
+            alert('Sorry Now availabel Quantity '+this.state.availabelQty);
+        } else{
+            let details={uid:this.state.uid,pid:this.state.id,qty:this.state.qty,size:this.state.selectSize}
+            alert(details)
+        }
+
+
+
+
+    }
 
 
 
@@ -233,7 +265,7 @@ class ShowOneProduct extends Component{
                     review:this.state.reviewText,
                     rating:this.state.rating,
                 };
-                axios.post('http://localhost:3001/product/addReview',query)
+                axios.post(global.backend+'/product/addReview',query)
                     .then(async function (res){
                      //   console.log("send to soket")
                             socketIOClient('http://localhost:4000').emit('addReview',query)
@@ -272,6 +304,21 @@ class ShowOneProduct extends Component{
             });
         }
     }
+    addToCart=()=>{
+        let data={user:this.state.uid,products:this.state.pid,qty:this.state.qty}
+        axios.post(global.backend+'/cart/add',data)
+            .then(res=>
+                console.log(res.data)
+            ).catch(err=>
+            console.log(err)
+        );
+    }
+
+    setQty=e=>{
+        this.setState({
+            selectqty:e.target.value
+            })
+    }
 
     setImages(){
         let c=1;
@@ -292,7 +339,7 @@ class ShowOneProduct extends Component{
         >
             { this.state.data[0].images.map(image=>(
                 <div key={c} >
-                    <img className="productImage"  src={'http://localhost:3001'+image} alt=""/>
+                    <img className="productImage"  src={global.backend+image} alt=""/>
                     {c++}
                 </div>
 
@@ -301,34 +348,7 @@ class ShowOneProduct extends Component{
         </Carousel>
     }
 
-    setElemets(){
-            var sizearr=this.state.data[0].size;
-            var labels  =["XS","S","M","L","XL","XXL"];
-            for (var j=0;j<sizearr.length;j++){
-                    var iDiv = document.createElement("div");
-                    var ilabel = document.createElement("label");
-                    ilabel.innerHTML=labels[j];
-                    ilabel.setAttribute("for",labels[j]+'-size');
 
-                    var iInput = document.createElement("input");
-                    iInput.setAttribute("type",'radio');
-                    iInput.setAttribute("name",'size');
-                    iInput.setAttribute("value",labels[j]);
-                    iInput.setAttribute("id",labels[j]+'-size');
-
-                   if (sizearr[j]!="false"){
-                       iDiv.setAttribute("class",'sc-item');
-                   }else{
-
-                       iDiv.setAttribute("class",'sc-item disable');
-                       iInput.setAttribute("disable",false);
-                       iInput.setAttribute("disabled",true);
-                   }
-                   iDiv.appendChild(iInput);
-                   iDiv.appendChild(ilabel);
-                   document.getElementById("sizeContainor").appendChild(iDiv);
-            }
-    }
 
 
     handleDialogue=(x)=>{
@@ -339,7 +359,7 @@ class ShowOneProduct extends Component{
                      'id':this.state.id
                  }
              //    console.log(query);
-                 axios.post('http://localhost:3001/product/deleteProduct',query)
+                 axios.post(global.backend+'/product/deleteProduct',query)
                  .then(res=>{
                      this.setState({
                          isDelete:false
@@ -435,24 +455,67 @@ class ShowOneProduct extends Component{
                                 <h5 style={{'color':'gray'}} className="p-title"><span className="tag">CATEGORY </span>{product.catogory+" "+product.subCatogory}</h5>
                                 <h2 style={{'color':'gray'}} className="p-title"><span className="tag">BRAND </span>{product.brand}</h2>
                                 {(product.discount!=0)?(
-                                    <h3 className="p-price"><strike style={{color:'gray'}} >{product.price}$ </strike><br/>{product.price-((product.price*product.discount)/100)}$</h3>
+                                    <h3 className="p-price"><strike style={{color:'gray'}} >{product.price}$ </strike> {" "+product.price-((product.price*product.discount)/100)}$</h3>
                                 ):(
                                     <h3 className="p-price">{product.price} $</h3>
                                 )}
 
-                                <h4 className="p-stock">Available: <span>In Stock</span></h4>
+                                <h4 className="p-stock">
+                                    {product.quantity==0?(
+                                        <>Unavailable:0</>
+                                    ):(
+                                        <>Available: <span>In Stock ({product.quantity}) </span></>
+                                    )}
+
+
+
+                                </h4>
                                 {this.setStars(this.state.averageRating)}
                                 <div className="p-review">
                                     {this.state.reviews.length} reviews |
                                 </div>
                                 <div className="fw-size-choose" id="sizeContainor">
                                     <p>Size</p>
+
+                                    {product.size.map(size=>(
+                                        size!="false"?(
+                                            <div className="sc-item">
+                                                <input type="radio" onClick={this.selectSize} value={size} name="size" id={size+"-size"}/>
+                                                    <label htmlFor={size+"-size"}>{size}</label>
+                                            </div>
+                                        ):(<></>)
+
+
+                                    ))}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                                 </div>
                                 <div className="quantity">
                                     <p>Quantity</p>
-                                    <div className="pro-qty"><input type="text" value="1"/></div>
+                                    <div className="pro-qty popup">
+                                        <input type="number"   onChange={this.setQty} value={this.state.selectqty} />
+                                        {this.state.selectqty>product.quantity?(
+                                            <div className="popuptext show" id="myPopup">Sorry Currently availabel {product.quantity}</div>
+                                        ):(
+                                            <></>
+                                        )}
+
+                                    </div>
                                 </div>
-                                <a href="#" className="site-btn">SHOP NOW</a>
+                                <div className="site-btn" onClick={this.buy}>Buy Now</div>
 
 
                                 <div id="accordion" className="accordion-area">
