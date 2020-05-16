@@ -2,20 +2,19 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { Container, Table,Badge, Input } from 'reactstrap'
 import { RiDeleteBinLine ,RiCheckboxCircleLine,RiEditLine } from 'react-icons/ri';
-import Axios from 'axios';
 
 
 
 
 class ProductCatergory extends Component{
-render(){
-return(
+    render(){
+        return(
     <tr>
         <td>
             <p style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.productCatergory._id))?{display:"none"}:{display:"inherit"} }>{this.props.productCatergory.categoryName}</p>
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.productCatergory._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.productCatergory.categoryName}
-                                   onChange={(e)=>this.props.handeleeditcategoryName(e.target.value)}
+                                   onChange={(e)=>this.props.handeleeditcategoryNameprop(e.target.value)}
                                    value={this.props.editcategoryName}
                                    name="productname"
              /> 
@@ -24,7 +23,7 @@ return(
             <p style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.productCatergory._id))?{display:"none"}:{display:"inherit"} }>{this.props.productCatergory.categoryDiscription}</p>
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.productCatergory._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.productCatergory.categoryDiscription}
-                                   onChange={(e)=>this.props.handeleeditecategoryDiscription(e.target.value)}
+                                   onChange={(e)=>this.props.handeleeditecategoryDiscriptionprop(e.target.value)}
                                    value={this.props.categoryDiscription}
                                    name="productdiscription"
              /> 
@@ -34,23 +33,32 @@ return(
             <p style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.productCatergory._id))?{display:"none"}:{display:"inherit"} }>{this.props.productCatergory.categoryNote}</p>
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.productCatergory._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.productCatergory.categoryNote}
-                                   onChange={(e)=>this.props.handeleediteeditecategoryNote(e.target.value)}
+                                   onChange={(e)=>this.props.handeleediteeditecategoryNoteprop(e.target.value)}
                                    value={this.props.categoryNote}
                                    name="productname"
              /> 
             
             </td>
-        <td><h6> {this.props.productCatergory.subCategory.map(element=>{
-            return  <Badge color="primary">{element}</Badge>
-        })}
-        </h6></td>
+        <td>
+        <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.productCatergory._id))?{display:"inherit"}:{display:"none"}  }
+                                   placeholder={this.props.productCatergory.subCategory}
+                                   onChange={(e)=>this.props.handeleediteeditecategorysubCategory(e.target.value)}
+                                   value={this.props.subCategory}
+                                   name="productname"
+             /> 
+
+            <h6> {this.props.productCatergory.subCategory.map(element=>{
+                     return  <Badge color="primary">{element}</Badge>
+                })}
+            </h6>
+        </td>
         
         <td>
         <RiDeleteBinLine size="2em" color=""  onClick={()=>{this.props.deleteProductCategory(this.props.productCatergory._id)}}>Delete</RiDeleteBinLine>
         </td>
         <td>
         <RiEditLine  size="2em" color="#FFD478" style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} } onClick={()=>{this.props.editemodeToggle(this.props.productCatergory._id)}}  > </RiEditLine>
-        <RiCheckboxCircleLine  size="2em" color="#4EB6E6 " style={this.props.editdatastatas?{display:"inherit"}:{display:"none"}  } onClick={()=>{this.props.updateProductCatogory(
+        <RiCheckboxCircleLine  size="2em" color="#4EB6E6 "style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.productCatergory._id))?{display:"inherit"}:{display:"none"}  } onClick={()=>{this.props.updateProductCatogory(
             this.props.productCatergory.categoryName,
             this.props.productCatergory.categoryNote,
             this.props.productCatergory.categoryDiscription,
@@ -72,7 +80,7 @@ export default class productcategorytable extends Component {
         super(props)
        
         this.loadProductCategoryData=this.loadProductCategoryData.bind(this);
-        this.categoryList=this.categoryList.bind(this);
+        // this.categoryList=this.categoryList.bind(this);
         this.deleteProductCategory=this.deleteProductCategory.bind(this);
         this.handleSearch=this.handleSearch.bind(this);
         this.categoryList=this.categoryList.bind(this);
@@ -83,6 +91,9 @@ export default class productcategorytable extends Component {
         this.handeleeditcategoryName=this.handeleeditcategoryName.bind(this);
         this.handeleeditecategoryDiscription=this.handeleeditecategoryDiscription.bind(this);
         this.handeleediteeditecategoryNote=this.handeleediteeditecategoryNote.bind(this);
+        this.handeleediteeditecategorysubCategory=this.handeleediteeditecategorysubCategory.bind(this);
+
+        this.clearState=this.clearState.bind(this);
 
 
         this.state={
@@ -92,7 +103,7 @@ export default class productcategorytable extends Component {
             editcategoryName:'',
             editecategoryDiscription:'',
             editecategoryNote:'',
-            editesubCategory:'',
+            editesubCategory:[],
             edite_Id:''
            
 
@@ -140,31 +151,49 @@ export default class productcategorytable extends Component {
         
     }
 
+    clearState(){
+        this.setState({
+            editcategoryName:"",
+            editecategoryDiscription:"",
+            editecategoryNote:"",
+            editesubCategory:[]
+        })
+    }
+
     onSubmiteUpdateForm(previousname,previousnote,previousdiscription,privioussubcat){
         console.log("call update method");
-
-        if(this.state.editcategoryName=""){
+        console.log("note prevalue"+previousnote);
+        console.log("note state"+this.state.editecategoryNote);
+        
+        
+        if(this.state.editcategoryName==""){
             this.state.editcategoryName=previousname
         }
-        if(this.state.editecategoryDiscription=""){
+        if(this.state.editecategoryDiscription==""){
             this.state.editecategoryDiscription=previousdiscription
         }
-        if(this.state.editecategoryNote=""){
+        if(this.state.editecategoryNote==""){
             this.state.editecategoryNote=previousnote
         }
+        if(this.state.editesubCategory.length==0){
+            this.state.editesubCategory=privioussubcat
+        }
 
-        const productcatCategoryUpdated={
+        let productcatCategoryUpdated={
             categoryName:this.state.editcategoryName,
             categoryDiscription:this.state.editecategoryDiscription,
             categoryNote: this.state.editecategoryNote,
-            subCategory:privioussubcat
+            subCategory:this.state.editesubCategory
         }
 
-        Axios.post('http://localhost:3001/productCategory/update/'+this.state.edite_Id,productcatCategoryUpdated)
+       
+
+        axios.post('http://localhost:3001/productCategory/update/'+this.state.edite_Id,productcatCategoryUpdated)
         .then(res=>console.log("store manager update sucessful"+res.data))
         .catch(err=>console.log('error in update :'+err.data))
-        this.editmodeToggle();
-        this.loadProductCategoryData();
+        this.clearState(); //clear states
+        this.editmodeToggle();//change edite mode
+        this.loadProductCategoryData(); //load new data
          
 
 
@@ -179,7 +208,12 @@ export default class productcategorytable extends Component {
     }
 
     handeleediteeditecategoryNote(event){
-        this.setState({editeeditecategoryNote:event})
+        this.setState({editecategoryNote:event})
+    }
+
+    handeleediteeditecategorysubCategory(event){
+        let newcatarry=event.split(',');
+        this.setState({editesubCategory:newcatarry})
     }
    
 
@@ -187,9 +221,11 @@ export default class productcategorytable extends Component {
         return this.state.productcategorylist.map(currentproductcategory=>{
             return <  ProductCatergory productCatergory={currentproductcategory}
                                        deleteProductCategory={this.deleteProductCategory}  
-                                       handeleediteeditecategoryNote={this.handeleediteeditecategoryNote}
-                                       handeleeditecategoryDiscription={this.handeleeditecategoryDiscription}
-                                       handeleeditcategoryName={this.handeleeditcategoryName}
+
+                                       handeleediteeditecategoryNoteprop={this.handeleediteeditecategoryNote}
+                                       handeleeditecategoryDiscriptionprop={this.handeleeditecategoryDiscription}
+                                       handeleeditcategoryNameprop={this.handeleeditcategoryName}
+                                       handeleediteeditecategorysubCategory={this.handeleediteeditecategorysubCategory}
                                         
                                        editemodeToggle={this.enableEditeMode}
 
@@ -199,6 +235,7 @@ export default class productcategorytable extends Component {
                                        editcategoryName={this.state.editcategoryName}
                                        editecategoryDiscription={this.state.editecategoryDiscription}
                                        editeeditecategoryNote={this.state.editecategoryNote}
+                                       editesubCategory={this.state.editesubCategory}
 
                                        updateProductCatogory={this.onSubmiteUpdateForm}
 
@@ -239,7 +276,7 @@ export default class productcategorytable extends Component {
             <Container style={Styles.regTablePlanal}>
             <h4 style={Styles.regHeadertext}>Product Catergory</h4>
             <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
-                <Table  size="sm" >
+                <Table  responsive size="sm" >
                     <thead>
                           <tr>
                             <th>Name</th>

@@ -28,13 +28,23 @@ import payConfirm from "./views/pages/Payment/payConfirm";
 import payAdmin from "./views/pages/Payment/payAdmin";
 import refundPayment from "./views/pages/Payment/refundPayment";
 import emailConfirm from "./views/pages/Payment/emailConfirm";
+import refundRequest from "./views/pages/Payment/refundRequest";
+import paymentSuccess from "./views/pages/Payment/PaymentSuccess";
+import payment from "./views/pages/Payment/Payment";
+import viewAllPayments from "./views/pages/Payment/viewAllPayments";
+import payAdminCard from "./views/pages/Payment/payAdminCard";
+import payAdminReceipt from "./views/pages/Payment/payAdminReceipt";
+import payAdminRefund from "./views/pages/Payment/payAdminRefund";
+import payInvoice from "./views/pages/Payment/PaymentInvoice";
+
+//=========================CART===========================================
+// import Cart from "./views/pages/Cart/CartItems"
+import Cart2 from "./views/pages/Cart/Cart"
+
+// import Cart from "./views/pages/Cart/Cart"
 
 //========================================================================
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
-
-
-
-
 
 
 
@@ -101,6 +111,18 @@ class App extends Component {
                     <Route path="/payAdmin" component={payAdmin} />
                     <Route path="/refundPayment" component={refundPayment} />
                     <Route path="/emailConfirm" component={emailConfirm} />
+                    <Route path="/refundRequest" component={refundRequest} />
+                    <Route path="/paymentSuccess" component={paymentSuccess} />
+                    <Route path="/payment" component={payment} />
+                    <Route path="/allPayments" component={viewAllPayments} />
+                    <Route path="/payAdminCard" component={payAdminCard} />
+                    <Route path="/payAdminReceipt" component={payAdminReceipt} />
+                    <Route path="/payAdminRefund" component={payAdminRefund} />
+                    
+                    {/*CART*/}
+                    {/*<Route path="/cart" component={Cart}/>*/}
+                    <Route path="/cart" component={Cart2}/>
+
                 </Switch>
                 <DefaultFooter/>
                 

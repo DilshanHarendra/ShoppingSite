@@ -39,7 +39,7 @@ class DefaultHeader extends Component {
           skeyWord:'',
           getCatogorys:[]
 		};
-	
+
 	
 		this.toggleLarge = this.toggleLarge.bind(this);
 		
@@ -51,7 +51,7 @@ class DefaultHeader extends Component {
 		});
 	  }
     componentDidMount(){
-       axios.get("http://localhost:3001/productCategory")
+       axios.get(global.backend+"/productCategory")
             .then(result=> {
 
                 this.setState({
@@ -71,6 +71,7 @@ class DefaultHeader extends Component {
         window.location.replace('/search/'+this.state.skeyWord);
 
     }
+
 
 
     state = {  }
@@ -110,12 +111,21 @@ class DefaultHeader extends Component {
 
                                     <div className="up-item">
                               {localStorage.getItem("AccessToken")===null?
-                              
-                              <a onClick={this.toggleLarge}> <i className="flaticon-profile"></i>
-                              <Link to="/">Sign</Link> In or <Link to="/">Create Account</Link></a>:
-                            <button onClick={()=>{localStorage.clear(); window.location.href="/"}}>Logout</button>
-                            
-                            }  
+
+                              <div className="loginRegister" onClick={this.toggleLarge}> <i className="flaticon-profile"></i>
+                              Sign In or Create Account</div>:(
+                                  <>
+                                  <div className="dropdown">
+                                      <button className="dropbtn" style={{"backgroundImage":"url('/images/product/1.jpg')"}}></button>
+                                      <div className="dropdown-content">
+                                          <div >Profile</div>
+                                          <div >Link 2</div>
+                                          <div onClick={()=>{localStorage.clear(); window.location.href="/"}}>Logout</div>
+                                      </div>
+                                  </div>
+
+                            </>
+                                  )}
                                
                             
                                        
@@ -141,15 +151,15 @@ class DefaultHeader extends Component {
                 <nav className="main-navbar">
                     <div className="container">
                         <ul className="main-menu">
-                            <li><Link to="/" >Home   <span className="new">New</span></Link></li>
+                            <li><Link to="/">Home   <span className="new">New</span></Link></li>
 
 
                                 {this.state.getCatogorys.map(catogory=>(
-                                    <li><Link to={"/allProducts/"+catogory.categoryName}  >{catogory.categoryName}</Link>
+                                    <li key={catogory._id} ><Link to={"/allProducts/"+catogory.categoryName}  >{catogory.categoryName}</Link>
                                         {(catogory.subCategory.length>0)?(
                                             <ul className="sub-menu">
                                                 {(catogory.subCategory.map(subCategory=>(
-                                                    <li><Link to={"/allProducts/"+catogory.categoryName+"~"+subCategory}>{subCategory}</Link></li>
+                                                    <li key={subCategory} ><Link to={"/allProducts/"+catogory.categoryName+"~"+subCategory}>{subCategory}</Link></li>
                                                 )))}
 
 
@@ -184,7 +194,7 @@ class DefaultHeader extends Component {
                             </li>
 
                             <li>
-                                <Link to="/payConfirm" className="nav-link">Payment</Link>
+                                <Link to="/payment" className="nav-link">Payment</Link>
                             </li>
                         </ul>
                     </div>

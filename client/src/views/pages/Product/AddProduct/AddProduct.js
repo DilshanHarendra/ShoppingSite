@@ -67,7 +67,7 @@ class AddProduct extends  Component{
 
 
 
-        axios.get("http://localhost:3001/productCategory")
+        axios.get(global.backend +"/productCategory")
             .then(result=>{
                 this.setState({
                     getCatogorys:result.data
@@ -127,7 +127,7 @@ class AddProduct extends  Component{
         if (!this.state.freeShipping){
             return <div> <br/><br/>
                 <label htmlFor="validationCustom02">Shipping Price<span>*</span></label>
-                <TextField type="number" name="shipping" value={this.state.shipping} onChange={this.changeHandler} className="form-control"
+                <TextField type="number" min="0" name="shipping" value={this.state.shipping} onChange={this.changeHandler} className="form-control"
                            placeholder="5$" required/>
                 <ShowError isShow={this.state.check} value={this.state.shipping} name={"Enter Shipping Price"} />
                 <br/>
@@ -139,7 +139,7 @@ class AddProduct extends  Component{
         if (this.state.addDiscount){
             return <div>
                 <label htmlFor="validationCustom04">Discount<span>*</span>  (%)</label>
-                <TextField type="number" className="form-control" name="discount" value={this.state.discount}   onChange={this.changeHandler}
+                <TextField type="number" min="0" className="form-control" name="discount" value={this.state.discount}   onChange={this.changeHandler}
                            id="validationCustom06"    placeholder="10%"/>
                 <ShowError isShow={this.state.check} value={this.state.discount} name={"Enter Discount Price"} />
                 <br/>
@@ -274,10 +274,10 @@ class AddProduct extends  Component{
                 delete  values.files;
                 values.proimages = imgs;
 
-                axios.post('http://localhost:3001/product/addProduct',values)
+                axios.post(global.backend +'/product/addProduct',values)
                     .then(response1=>{
                         console.log(response1.statusText);
-                        axios.post('http://localhost:3001/product/uploadProduct',formData)
+                        axios.post(global.backend +'/product/uploadProduct',formData)
                             .then(response2=>{
 
                                 console.log(response2.statusText);
@@ -320,6 +320,17 @@ class AddProduct extends  Component{
         const target = e.target;
         const value = target.value;
         const name = target.name;
+
+        try {
+            if (name=="quantity"||name=="price"||name=="shipping"||name=="discount"){
+                if (value<0) {
+                        return;
+                }
+            }
+        }catch (e) {
+            return
+        }
+
 
         this.setState({
             [name]: value
@@ -441,7 +452,7 @@ class AddProduct extends  Component{
                             <br/>
 
                             <label htmlFor="validationCustom01">Quantity<span>*</span></label>
-                            <TextField type="number" name="quantity" value={this.state.quantity}  onChange={this.changeHandler} className="form-control"
+                            <TextField type="number" min="0" name="quantity" value={this.state.quantity}  onChange={this.changeHandler} className="form-control"
                                        placeholder="quantity" required/>
                             <ShowError isShow={this.state.check} value={this.state.quantity} name={"Enter Quantity"} />
                             <br/>
@@ -463,7 +474,7 @@ class AddProduct extends  Component{
                             <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
                             <label htmlFor="validationCustom02">Price<span>*</span></label>
-                            <TextField  type="number" className="form-control" placeholder="10$" name="price" value={this.state.price}
+                            <TextField  type="number" min="0" className="form-control" placeholder="10$" name="price" value={this.state.price}
                                         onChange={this.changeHandler} required/>
                             <ShowError isShow={this.state.check} value={this.state.price} name={"Enter Price"} />
                             <br/><br/>

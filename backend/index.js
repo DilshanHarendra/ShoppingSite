@@ -6,11 +6,15 @@ const core = require('cors');
 const productRoute = require('./routes/Product');
 
 app.use('/product',productRoute);
-
+//==================STOREMANAGER======================
 const storeManagerRoute =require('./routes/StoreManager');
 app.use('/storeManager',storeManagerRoute);
 const productCategory=require('./routes/ProductCategory');
 app.use('/productCategory',productCategory);
+
+//==================Cart=============================
+const cartRouter=require('./routes/Cart');
+app.use('/cart',cartRouter);
 
 
 //==================USER================================
@@ -24,7 +28,9 @@ app.use('/login',loginRoute);
 //===============PAYMENT==================================
 const paymentRoute = require('./routes/Payment');
 app.use('/payment',paymentRoute);
-
+//===============ORDER====================================
+const orderRoute=require('./routes/Order');
+app.use('/order',orderRoute);
 
 
 /*************************************************************************************************************************/

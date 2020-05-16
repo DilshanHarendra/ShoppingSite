@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
-import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col} from 'reactstrap';
+import {
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    CardSubtitle,
+    Button,
+    Container,
+    Row,
+    Col,
+    Alert
+} from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import CanvasJSReact from "./Assets/canvasjs.react";
+import {Link} from "react-router-dom";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var dataPoints =[];
@@ -118,19 +131,31 @@ class payAdmin extends Component {
         return (
             <div>
                 <Container>
-                    <h3 className="my-5 mx-auto text-center text-danger font-weight-bold">PAYMENT - ADMIN</h3>
+                    <Alert color="danger">
+                        <h1 className="my-3 mx-auto text-center text-danger">PAYMENT - ADMIN</h1>
+                    </Alert>
                     <Row className="my-2">
                         <Col className="mx-auto mb-5 -align-right" xl="4">
                             <CanvasJSChart options = {options}/>
-                            <Button color="primary">View</Button>
+                            <Link to={{
+                                pathname: '/payAdminCard', state: {
+                                    protection:"Confirm"
+                                }
+                            }}>
+                            <Button color="primary">Next</Button>
+                        </Link>
                         </Col>
                         <Col className="mx-auto mb-5" xl="4">
                             <CanvasJSChart options = {options2}/>
-                            <Button color="primary">View</Button>
+                            <Link to="/payAdminReceipt">
+                                <Button color="primary">Next</Button>
+                            </Link>
                         </Col>
                         <Col className="mx-auto mb-5" xl="4">
                             <CanvasJSChart options = {options3}/>
-                            <Button color="primary">View</Button>
+                            <Link to="/payAdminRefund">
+                                <Button color="primary">Next</Button>
+                            </Link>
                         </Col>
                     </Row>
                     <CFooter><h6 className="text-right">By <span className="text-danger">PaymentAdmin</span></h6></CFooter>

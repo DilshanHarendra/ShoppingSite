@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col} from 'reactstrap';
+import {
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    CardSubtitle,
+    Button,
+    Container,
+    Row,
+    Col,
+    Alert
+} from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import Form from "reactstrap/es/Form";
@@ -8,6 +20,7 @@ import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import FormText from "reactstrap/es/FormText";
 import axios from "axios";
+import {Link,Redirect} from 'react-router-dom';
 
 class cardPayment extends Component {
     constructor(props) {
@@ -57,20 +70,24 @@ class cardPayment extends Component {
             cardHolderName: this.state.cardHolderName,
             expireDate: this.state.expireDate,
             cardType: 'VISA',
-            payReceipt:false
+            payReceipt:false,
+            receiptNumber:null
         }
 
         axios.post('http://localhost:3001/payment/addCardPayment',newCardPayment)
             .then(res=>console.log('Add new payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
-        window.location='http://localhost:3000/emailConfirm';
+        var protection="Confirm";
+        window.location.href= `http://localhost:3000/emailConfirm?protection=${protection}`;
     }
 
     render() {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">PAYMENT-CARD</h1>
+                    <Alert color="info">
+                        <h1 className="my-3 mx-auto text-center text-dark">PAYMENT-CARD</h1>
+                    </Alert>
                     <Row className="my-2">
                         <Col className="mx-auto mb-5" xl="6">
                             <Card>
@@ -148,7 +165,7 @@ class cardPayment extends Component {
                                     </CardText>
                                 </CardBody>
                                 <CardFooter>
-                                    <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>
+                                    <h6 className="text-muted text-right">Handled by <span className="text-info">C4FASHIONSPayAdmin</span></h6>
                                 </CardFooter>
                             </Card>
                         </Col>

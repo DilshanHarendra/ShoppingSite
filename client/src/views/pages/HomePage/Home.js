@@ -1,23 +1,171 @@
-import React, { Component, Suspense } from "react";
+import React, { Component } from "react";
+import axios from "axios";
+import {Link} from "react-router-dom";
+import ProductCard from "../Product/ProductCard";
 
+import '../../../css/home.css'
 
 class Home extends Component{
 
 
+    constructor(props) {
+
+        super(props);
+        this.state={
+            latestProduct:[],
+            product:[],
+            popularProduct:[],
+            catogory:[],
+            isLoadmore:false,
+            next:0,
+            limit:4,
+            loading:false
+
+        }
+    }
+
+
+
 
     componentDidMount(){
-        const script = document.createElement("script");
+       const script = document.createElement("script");
         script.src = "../../../js/main.js";
         script.async = true;
         document.body.appendChild(script);
 
+
+
+        this.getData();
+
+
+
+
+        if (window.performance) {
+            if (window.performance.navigation.type == 1) {
+                window.location.replace('/');
+                console.log("refresh");
+            }
+        }
+        var scrollPos = 0;
+        window.onscroll = ()=>{
+
+            try {
+                const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+                var productBoxEle=document.getElementById('productBox');
+                var productBox=productBoxEle.scrollHeight*(75/100); //  box height 80%
+                if(winScroll>(productBoxEle.offsetTop+productBox-400) &&((document.body.getBoundingClientRect()).top < scrollPos)){
+
+                    if (this.state.isLoadmore){
+                        this.state.next+=this.state.limit;
+                        this.loadmore();
+                        this.setState({
+                            loading:true
+                        })
+                        this.state.isLoadmore=false;
+                    }else {
+                        this.setState({
+                            loading:false
+                        })
+                    }
+
+                }
+
+                scrollPos = (document.body.getBoundingClientRect()).top;
+            }catch (e) {
+
+            }
+
+        };
+    }
+
+
+
+
+    loadmore=async ()=>{
+        await axios({
+            methode: 'GET',
+            url:global.backend+'/product/getAllProduct',
+            params:{s:true,sets:this.state.next,limit:this.state.limit}
+
+        }).then(res=>{
+            // console.log(res.data.length);
+            if (res.data.length!=0){
+                this.setState({
+                    product:[...this.state.product,...res.data],
+                    loading:false
+                },()=>{
+                    this.state.isLoadmore=true;
+                    setTimeout(()=>{
+                        document.getElementById('preloder').style.display="none";
+                    },200);
+                });
+            }else {
+                this.state.isLoadmore=false;
+            }
+
+        }).catch(err=>{
+            console.log(err);
+        });
+    }
+
+    changeActiveItem = (activeItemIndex) => this.setState({ activeItemIndex });
+
+    getData=async () =>{
+        try {
+            await axios({
+                methode: 'GET',
+                url:global.backend+'/product/letestProduct',
+                params:{s:true}
+            }).then(res=>{
+                // this.state.product=res.data.sort((a,b)=>( a.addDate>b.addDate?-1:1) );
+               //this.state.latestProduct=res.data.sort((a,b)=>a.totClicks>b.totClicks?-1:1);
+                this.setState({
+                    latestProduct:res.data
+                });
+                console.log(this.state.latestProduct);
+                axios({
+                    methode: 'GET',
+                    url:global.backend+"/productCategory",
+
+                }).then(res=>{
+                    this.setState({
+                        catogory:res.data
+                    })
+
+                    axios({
+                        methode: 'GET',
+                        url:global.backend+"/product/getAllProduct",
+                        params:{s:true,sets:this.state.next,limit:this.state.limit}
+                    }).then(res=>{
+                        this.setState({
+                            product:res.data
+                        },()=>{
+                            this.state.next=+this.state.limit;
+                            this.state.isLoadmore=true;
+                            document.getElementById('preloder').style.display="none";
+                        })
+                    }).catch(err=>{
+                        console.log(err);
+                    });
+                }).catch(err=>{
+                    console.log(err);
+                });
+            }).catch(err=>{
+                console.log(err);
+            });
+        }catch (e) {
+
+        }
     }
 
 
 
     render() {
         return (<>
-                <section className="hero-section">
+                <div id="preloder">
+                    <div className="loader"></div>
+                </div>
+                <section className="hero-section" id="home">
                     <div className="hero-slider owl-carousel">
                         <div className="hs-item set-bg" data-setbg="images/bg.jpg">
                             <div className="container">
@@ -67,6 +215,8 @@ class Home extends Component{
 
 
 
+
+
                 <section className="features-section">
                     <div className="container-fluid">
                         <div className="row">
@@ -106,226 +256,28 @@ class Home extends Component{
                         <div className="section-title" >
                             <h2>LATEST PRODUCTS</h2>
                         </div>
-                        <div className="product-slider owl-carousel">
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <img src="./images/product/1.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                    </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Flamboyant Pink Top </p>
-                                </div>
-                            </div>
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <div className="tag-new">New</div>
-                                    <img src="./images/product/2.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                    </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Black and White Stripes Dress</p>
-                                </div>
-                            </div>
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <img src="./images/product/3.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                    </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Flamboyant Pink Top </p>
-                                </div>
-                            </div>
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <img src="./images/product/4.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                    </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Flamboyant Pink Top </p>
-                                </div>
-                            </div>
-                            <div className="product-item">
-                                <div className="pi-pic">
-                                    <img src="./images/product/6.jpg" alt=""/>
-                                    <div className="pi-links">
-                                        <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                    </div>
-                                </div>
-                                <div className="pi-text">
-                                    <h6>$35,00</h6>
-                                    <p>Flamboyant Pink Top </p>
-                                </div>
+
+                        <div className="marquee">
+                            <div className="track">
+                                {this.state.latestProduct.map(product=>(
+                             <ProductCard key={product.id} data={product} />
+
+                                ))}
+
                             </div>
                         </div>
+                       
+
+
+
+
+
+
+
+
+
                     </div>
                 </section>
-
-
-            
-
-                <section className="product-filter-section">
-                    <div className="container">
-                        <div className="section-title" >
-                            <h2>BROWSE TOP SELLING PRODUCTS</h2>
-                        </div>
-                        <ul className="product-filter-menu">
-                            <li><a href="/">TOPS</a></li>
-                            <li><a href="/">JUMPSUITS</a></li>
-                            <li><a href="/">LINGERIE</a></li>
-                            <li><a href="/">JEANS</a></li>
-                            <li><a href="/">DRESSES</a></li>
-                            <li><a href="/">COATS</a></li>
-                            <li><a href="/">JUMPERS</a></li>
-                            <li><a href="/">LEGGINGS</a></li>
-                        </ul>
-                        <div className="row">
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/5.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <div className="tag-sale">ON SALE</div>
-                                        <img src="./images/product/6.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Black and White Stripes Dress</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/7.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/8.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/9.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/10.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Black and White Stripes Dress</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/11.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-lg-3 col-sm-6">
-                                <div className="product-item">
-                                    <div className="pi-pic">
-                                        <img src="./images/product/12.jpg" alt=""/>
-                                        <div className="pi-links">
-                                            <a href="/" className="add-card"><i className="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                            <a href="/" className="wishlist-btn"><i className="flaticon-heart"></i></a>
-                                        </div>
-                                    </div>
-                                    <div className="pi-text">
-                                        <h6>$35,00</h6>
-                                        <p>Flamboyant Pink Top </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="text-center pt-5" >
-                            <button className="site-btn sb-line sb-dark">LOAD MORE</button>
-                        </div>
-                    </div>
-                </section>
-
-
-
 
                 <section className="banner-section" >
                     <div className="container">
@@ -337,6 +289,64 @@ class Home extends Component{
                         </div>
                     </div>
                 </section>
+
+
+                <section className="product-filter-section">
+                    <div className="container">
+                        <div className="section-title" >
+                            <h2>BROWSE TOP SELLING PRODUCTS</h2>
+                        </div>
+                        <ul className="product-filter-menu" >
+
+                            {this.state.catogory.map(catogory=>(
+                                <>
+                                    {(catogory.subCategory.length>0)?(
+                                        <>
+                                            {(catogory.subCategory.slice(0,5).map(subCategory=>(
+                                                <li><Link to={"/allProducts/"+catogory.categoryName+"~"+subCategory}>{subCategory}</Link></li>
+                                            )))}
+
+                                        </>
+
+                                    ):(
+                                        <></>
+                                    )}
+
+
+
+
+                                </>
+                            ))}
+
+
+                        </ul>
+                        <div className="row" id="productBox">
+
+                            {this.state.product.map(product=>(
+                                <div key={product.id} className="col-lg-3 col-sm-6">
+                                    <ProductCard data={product} />
+                                </div>
+
+                            ))}
+
+                            
+                            
+                        </div>
+                        {this.state.loading?(
+                            <img className="loading" src="/images/loading.gif" alt=""/>
+                        ):(
+                            <></>
+                        )}
+
+
+
+                    </div>
+                </section>
+
+
+
+
+
             </>
         );
     }

@@ -1,5 +1,17 @@
 import React, { Component } from 'react';
-import {Card, CardImg, CardText, CardBody, CardTitle, CardSubtitle, Button, Container, Row, Col} from 'reactstrap';
+import {
+    Card,
+    CardImg,
+    CardText,
+    CardBody,
+    CardTitle,
+    CardSubtitle,
+    Button,
+    Container,
+    Row,
+    Col,
+    Alert
+} from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import Form from "reactstrap/es/Form";
@@ -8,6 +20,7 @@ import Label from "reactstrap/es/Label";
 import Input from "reactstrap/es/Input";
 import FormText from "reactstrap/es/FormText";
 import axios from "axios";
+import alertify from "alertifyjs";
 
 class emailConfirm extends Component {
     constructor(props) {
@@ -19,6 +32,15 @@ class emailConfirm extends Component {
         this.handleEmail = this.handleEmail.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
+    }
+    componentDidMount() {
+        const search = this.props.location.search; // returns the URL query String
+        const params = new URLSearchParams(search);
+        const IdFromURL = params.get('protection');
+        if(IdFromURL !== 'Confirm'){
+            alertify.alert("Access denied to this page!!");
+            window.location.href="/paymentMain";
+        }
     }
 
     handleEmail(event){
@@ -42,7 +64,10 @@ class emailConfirm extends Component {
         return (
             <div>
                 <Container>
-                    <h1 className="my-5 mx-auto text-center text-dark">EMAIL VERIFICATION</h1>
+                    <Alert color="secondary">
+                        <h1 className="my-3 mx-auto text-center text-dark">EMAIL VERIFICATION</h1>
+                    </Alert>
+
                     <Row className="my-2 justify-content-center">
                         <Col className="mx-auto mb-5" xl="6">
                             <Card>
@@ -65,7 +90,7 @@ class emailConfirm extends Component {
                                     </Form>
                                 </CardBody>
                                 <CardFooter>
-                                    <h6 className="text-muted text-right">Handled by <span className="text-info">DivisimaPayAdmin</span></h6>
+                                    <h6 className="text-muted text-right">Handled by <span className="text-info">C4FASHIONSPayAdmin</span></h6>
                                 </CardFooter>
                             </Card>
                         </Col>
