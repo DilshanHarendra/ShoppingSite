@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
 import { Container, Row, Col, Table, Input, Form, Button, FormGroup, Label, ButtonGroup } from 'reactstrap'
 import axios from 'axios'
-import { element } from 'prop-types'
+import Axios from 'axios'
+
+import OrderPlaced from './OrderPlaced';
+
 
 class CartList extends Component{
     render(){
@@ -24,26 +27,25 @@ class CartList extends Component{
 export default class Cart extends Component {
 
     constructor(props){
-        super(props)
-
-        this.loadProductListData=this.loadProductListData.bind(this);
-        this.categoryList=this.categoryList.bind(this);
-        this.notloaddata=this.notloaddata.bind(this);
-        this.countTotalPrice=this.countTotalPrice(this);
-       
+        super(props)      
 
         this.state={
             PrdouctList:[],
             temproductlist:[],
             ItemList:[],
-            TotalPrice:'',
+            TotalPrice:0,
             TotalNumberOfProduct:'',
             Order_id:'',
             dataload:false,
-            user_id:'6326565444555'
+            user_id:'55224455552244'
            
         };
 
+        this.loadProductListData=this.loadProductListData.bind(this);
+        this.categoryList=this.categoryList.bind(this);
+        this.notloaddata=this.notloaddata.bind(this);
+        // this.countTotalPrice=this.countTotalPrice(this);
+        this.onCretateOrder=this.onCretateOrder(this);
        
         
 
@@ -67,12 +69,15 @@ export default class Cart extends Component {
             let i;
             let Total=0;
             let itemlist= this.state.PrdouctList[0].products
+
+            this.setState({TotalNumberOfProduct:itemlist.length})
+            this.setState({ItemList:itemlist})
+
             for(i=0;i<itemlist.length;i++){
                 Total+=itemlist[i].product.price*itemlist[i].qunitity
              }
             this.setState({TotalPrice:Total}) 
-            this.setState({TotalNumberOfProduct:itemlist.length})
-            this.setState({ItemList:itemlist})
+         
             //  let j;
             //  let TotalQuntity=0;
 
@@ -89,10 +94,28 @@ export default class Cart extends Component {
         })
        
     }
-    countTotalPrice(){
-       
-       
-       
+    
+
+    onCretateOrder(totalAmaount,user_id,products,numberOfItem){
+
+       if(this.state.dataload==true){
+        const newOrder={
+            totalAmaount:totalAmaount,
+            user_id: user_id,
+            products:products,
+            numberOfItem:numberOfItem
+
+        }
+        Axios.post('http://localhost:3001/order/add',newOrder)
+        .then(res=>{
+            console.log("new order create");
+        })
+        .catch(err=>console.log('error in create order'+err)
+        )
+
+
+
+       }
     }
 
     categoryList(){    
@@ -134,51 +157,13 @@ export default class Cart extends Component {
                         </Table>
                     
                     </Col>
-                    <Col>
-                        <h3>Product Total</h3>
-                        <Container fluid>
-                            {/* <h3>Total Price :<span>5224.00</span> </h3>
-                            <h3>Total Number Of Item :<span>25</span> </h3>
-                            <h3>Total Number Of Item :<span>25</span> </h3>
-                            <Button color="danger">Cancel</Button>
-                            <Button color="primary">Checkout</Button> */}
-
-
-                        <Row form>
-                        <Col md={6}>
-                            <FormGroup>
-                                <h4 for="exampleEmail">Total Price</h4>
-                             </FormGroup>
-                         </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <h4 for="examplePassword">{this.state.TotalPrice}   </h4> 
-                            </FormGroup>
-                        </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <h4 for="exampleEmail">Number of Item</h4>
-                             </FormGroup>
-                         </Col>
-                        <Col md={6}>
-                            <FormGroup>
-                                <h4 for="examplePassword">{this.state.TotalNumberOfProduct} </h4> 
-                            </FormGroup>
-                        </Col>                     
-                                     
-                        </Row>
-                        <Row>
-                            <Col>
-                                <Button color="primary">Checkout</Button>
-                            </Col>
-                            <Col>
-                                <Button color="danger">Cancel</Button>
-                            </Col>
-                        </Row>
-
-
-                        </Container>
-                    
+                    <Col  xs="3">
+                    <h3>  Order Summery  </h3>
+                        <OrderPlaced
+                            totalPrice={this.state.TotalPrice}
+                            totalNumberOfProduct={this.state.TotalNumberOfProduct}
+                            productsList={this.state.ItemList} 
+                            userId={this.state.user_id}/>                        
                     </Col>
                 </Row>
             </Container>
@@ -186,3 +171,10 @@ export default class Cart extends Component {
     }
 }
 
+
+const cartsumeryStyle={
+    background: 'lavender',
+    borderRadius: '10px',
+    padding: '10px',
+    margin: '10px'
+}

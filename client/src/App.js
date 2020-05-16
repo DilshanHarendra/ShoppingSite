@@ -37,7 +37,9 @@ import payAdminReceipt from "./views/pages/Payment/payAdminReceipt";
 import payAdminRefund from "./views/pages/Payment/payAdminRefund";
 
 //=========================CART===========================================
-import Cart from "./views/pages/Cart/Cart"
+// import Cart from "./views/pages/Cart/CartItems"
+import Cart2 from "./views/pages/Cart/Cart"
+
 
 //========================================================================
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
@@ -116,7 +118,7 @@ class App extends Component {
                     <Route path="/payAdminRefund" component={payAdminRefund} />
                     
                     {/*CART*/}
-                    <Route path="/cart" component={Cart}/>
+                    <Route path="/cart2" component={Cart2}/>
 
                 </Switch>
                 <DefaultFooter/>

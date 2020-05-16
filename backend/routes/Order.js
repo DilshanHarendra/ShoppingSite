@@ -24,7 +24,7 @@ router.route('/add').post((req,res)=>{
     });
 
     newOrder.save()
-        .then(newOrder=>res.json('new order added'))
+        .then(newOrder=>{res.json(newOrder)})
         .catch(err=>res.status(400).json('Error in Create new Store manager '+err));
 
 
