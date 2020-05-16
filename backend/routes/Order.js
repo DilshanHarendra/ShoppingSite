@@ -15,12 +15,14 @@ router.route('/add').post((req,res)=>{
     const user_id=req.body.user_id;
     const products=req.body.products;
     const numberOfItem =req.body.numberOfItem;
+    const orderCreateDate=req.body.orderCreateDate;
     
     const newOrder=new Order({
         totalAmaount,
         user_id,
         products,
-        numberOfItem
+        numberOfItem,
+        orderCreateDate
     });
 
     newOrder.save()
@@ -30,7 +32,7 @@ router.route('/add').post((req,res)=>{
         })
         .catch(err=>{
             res.status(400).json('Error in Create new Store manager '+err)
-            alert(err);
+            
             }          
             );
 

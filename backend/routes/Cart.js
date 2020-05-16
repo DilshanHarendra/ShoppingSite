@@ -11,35 +11,50 @@ let Cart = require('../schemas/CartSchema');
 
 //Add new storemanager
 router.route('/add').post((req,res)=>{
-    console.log(req.body)
+    console.log("product filed")
+    console.log(req.body.products);
+    console.log("======================")
+    
+
     const user_id=req.body.user;
     const products=req.body.products;
+    const qnty=req.body.qty;
 
-    const newCart=new Cart({
-        user_id,
-        products,
-       
-           
-        });
+    const newCart={
+        "user":user_id,
+        "products":{
+            "product":products,
+            "quntity":qnty
+        }
+    }
 
-    Cart.update({user:user_id},newCart,{upsert: true})
-        .then(newStoremanager=>res.json('new cart added'))
-        .catch(err=>res.status(400).json('Error in Create new cart create '+err));
+    Cart.count({user:user_id},(err,count)=>{
+        if(count>0){
+            console.log("push");
+            
+            Cart.update({user:user_id},{
+                $push:{
+                    products: {
+                        "product":products,
+                        "quntity":qnty
+
+                    }
+                }
+            })
+
+        }else{
+
+            Cart.update({user:user_id},newCart,{upsert: true})
+            .then(newStoremanager=>res.json('new cart added'))
+            .catch(err=>res.status(400).json('Error in Create new cart create '+err));
+    
+    
+        }
+    })
 
 
-    // const quntity=req.body.qunitity;
-    // const newCart=new Cart({
-    //     user,
-    //     products,
-    //     // quntity
-       
-    // });
-
-    // newCart.save()
-    //     .then(newStoremanager=>res.json('new cart added'))
-    //     .catch(err=>res.status(400).json('Error in Create new cart create '+err));
-
-
+   
+  
 });
 
 //Delete selected product
