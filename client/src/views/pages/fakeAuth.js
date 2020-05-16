@@ -7,7 +7,7 @@ const fakeAuth = {
     },
     signout(cb) {
       this.isAuthenticated = false
-      setTimeout(cb, 100) // fake async
+      setTimeout(cb, 100) 
     }
     
   }
