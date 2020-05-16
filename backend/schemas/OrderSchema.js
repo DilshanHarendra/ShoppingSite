@@ -17,7 +17,12 @@ const OrderSchema = new mongoose.Schema({
         type: String,
         required: true
         
+    },
+    orderCreateDate:{
+        type:String,
+        required:false
     }
+    
    
 
 

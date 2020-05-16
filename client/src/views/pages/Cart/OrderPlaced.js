@@ -27,10 +27,14 @@ export default class OrderPlaced extends Component {
             totalAmaount:TotalPrice,
             user_id:userID,
             products:productList,
-            numberOfItem:numberOfItem
+            numberOfItem:numberOfItem,
+            orderCreateDate:new Date()
 
 
         }
+
+        console.log(newOrder);
+        
         Axios.post('http://localhost:3001/order/add',newOrder)
             .then(res=>{
                 console.log("Order create");
