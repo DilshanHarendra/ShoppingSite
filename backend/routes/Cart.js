@@ -12,6 +12,8 @@ let Cart = require('../schemas/CartSchema');
 //Add new storemanager
 router.route('/add').post((req,res)=>{
 
+    console.log(req.body);
+    
     const user_id=req.body.user;
     const products=req.body.products;
 

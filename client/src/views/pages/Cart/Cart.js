@@ -53,6 +53,9 @@ export default class Cart extends Component {
 
      componentDidMount(){
       this.loadProductListData()
+
+      console.log("user id"+localStorage.getItem('id'));
+      
       
     }
 
