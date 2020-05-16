@@ -6,12 +6,16 @@ export default class OrderPlaced extends Component {
 
     constructor(props){
         super(props)
+        this.state={
+          order_id:''
+        }
         
 
     }
 
 
     onCreateOrder(){
+
         let TotalPrice= this.props.totalPrice;
         let numberOfItem =this.props.totalNumberOfProduct;
         let userID= this.props.userId;
@@ -30,13 +34,28 @@ export default class OrderPlaced extends Component {
         Axios.post('http://localhost:3001/order/add',newOrder)
             .then(res=>{
                 console.log("Order create");
+                  console.log(res.data);
+                  this.setState({order_id:res.data})
+                  let order_idsend=res.data
+                  window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
                 
-                console.log(res);
-                //navigate to payment
                 
             })
             .catch(err=>console.log('Error in create order'+err)
             )
+            
+                            //navigate to payment
+                            // this.props.history.push({
+                            //   pathname: '/adminDashboard',
+                            //   state: {
+                            //     order_id: this.state.order_id,
+                            //     total_amount: TotalPrice,
+                            //     numberof_items:numberOfItem,
+                            //     products_list:productList
+            
+                            //   }
+                            // })
+
     }
 
 

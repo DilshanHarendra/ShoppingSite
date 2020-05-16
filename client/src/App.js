@@ -121,7 +121,7 @@ class App extends Component {
                     
                     {/*CART*/}
                     {/*<Route path="/cart" component={Cart}/>*/}
-                    <Route path="/cart2" component={Cart2}/>
+                    <Route path="/cart" component={Cart2}/>
 
                 </Switch>
                 <DefaultFooter/>

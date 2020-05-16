@@ -24,8 +24,15 @@ router.route('/add').post((req,res)=>{
     });
 
     newOrder.save()
-        .then(newOrder=>{res.json(newOrder)})
-        .catch(err=>res.status(400).json('Error in Create new Store manager '+err));
+        .then(newOrder=>{
+            newOrder.messege="order creat successful"
+            res.json(newOrder._id)
+        })
+        .catch(err=>{
+            res.status(400).json('Error in Create new Store manager '+err)
+            alert(err);
+            }          
+            );
 
 
 });
