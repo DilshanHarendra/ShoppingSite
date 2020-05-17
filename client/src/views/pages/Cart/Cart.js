@@ -72,7 +72,8 @@ export default class Cart extends Component {
             console.log(this.state.PrdouctList[0]._id);
             
          this.setState({dataload:true})
-        // this.setState({cart_id:this.state.PrdouctList[0]._id})
+         this.setState({cart_id:this.state.PrdouctList[0]._id})
+         
          this.state.PrdouctList[0].products.map(el=>console.log(el.product.proName)) 
             console.log(this.state.PrdouctList[0].products[0]);
             console.log(this.state.PrdouctList[0].products);

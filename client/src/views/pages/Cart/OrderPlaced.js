@@ -71,7 +71,8 @@ export default class OrderPlaced extends Component {
                   console.log(res.data);
                   this.setState({order_id:res.data})
                   let order_idsend=res.data
-
+                      console.log(card_id);
+                      
                   Axios.delete('http://localhost:3001/cart/'+card_id)
                   .then(res=>{
                        console.log(res.data)
