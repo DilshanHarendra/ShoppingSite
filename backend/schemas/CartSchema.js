@@ -8,11 +8,11 @@ const CartSchema = new mongoose.Schema({
     products:{
         type: Array,
         required: true
+    },
+    isOrder:{
+        type: Boolean,
+        required: false
     }
-    // quntity:{
-    //     type: String,
-    //     required: true
-    // }
    
    
 

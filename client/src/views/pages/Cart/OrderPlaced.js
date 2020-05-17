@@ -20,20 +20,50 @@ export default class OrderPlaced extends Component {
         let numberOfItem =this.props.totalNumberOfProduct;
         let userID= this.props.userId;
         let productList=this.props.productsList;
+
+        let card_id=this.props.cart_id;
+        
+        console.log("order object...");
+        console.log(TotalPrice);
+        console.log(numberOfItem);
+        console.log(userID);
+        console.log(productList);
+
+        let product_id_arry=[];
+
+        productList.map(elemet=>{
+          product_id_arry.push(elemet.product.id)
+        })
+
+        console.log(product_id_arry);
+        
+   
+      
+      let newOrder={
+
+        totalAmaount:TotalPrice,
+        user_id:userID,
+        products:product_id_arry,
+        numberOfItem:numberOfItem,
+        orderCreateDate:new Date()
+
+
+    };
+        
+      
+
+        console.log(newOrder);   
         
         
-        let newOrder={
 
-            totalAmaount:TotalPrice,
-            user_id:userID,
-            products:productList,
-            numberOfItem:numberOfItem,
-            orderCreateDate:new Date()
-
-
-        }
-
-        console.log(newOrder);
+        // Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+        // Axios.post('http://localhost:3001/order/add', newOrder)
+        //   .then(function (response) {
+        //     console.log(response);
+        // })
+        // .catch(function (error) {
+        //     console.log(error);
+        // });
         
         Axios.post('http://localhost:3001/order/add',newOrder)
             .then(res=>{
@@ -41,29 +71,31 @@ export default class OrderPlaced extends Component {
                   console.log(res.data);
                   this.setState({order_id:res.data})
                   let order_idsend=res.data
+                      console.log(card_id);
+                      
+                  Axios.delete('http://localhost:3001/cart/'+card_id)
+                  .then(res=>{
+                       console.log(res.data)
+                   })
+                  .catch(err=>console.log('error in dekete cart'+err)
+                  );
+                
+
                   window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
                 
                 
             })
             .catch(err=>console.log('Error in create order'+err)
-            )
+            );
+       
+       
+
             
-                            //navigate to payment
-                            // this.props.history.push({
-                            //   pathname: '/adminDashboard',
-                            //   state: {
-                            //     order_id: this.state.order_id,
-                            //     total_amount: TotalPrice,
-                            //     numberof_items:numberOfItem,
-                            //     products_list:productList
-            
-                            //   }
-                            // })
+                           
 
     }
 
-
-
+    
 
 
     render() {

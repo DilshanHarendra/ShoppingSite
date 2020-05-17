@@ -11,6 +11,7 @@ let Order = require('../schemas/OrderSchema');
 
 //Add new storemanager
 router.route('/add').post((req,res)=>{
+    
     const totalAmaount=req.body.totalAmaount;
     const user_id=req.body.user_id;
     const products=req.body.products;
@@ -27,14 +28,12 @@ router.route('/add').post((req,res)=>{
 
     newOrder.save()
         .then(newOrder=>{
-            newOrder.messege="order creat successful"
-            res.json(newOrder._id)
+              res.json(newOrder._id)
         })
         .catch(err=>{
             res.status(400).json('Error in Create new Store manager '+err)
-            
             }          
-            );
+        );
 
 
 });

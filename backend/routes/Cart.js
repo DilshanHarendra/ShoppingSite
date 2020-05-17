@@ -25,7 +25,8 @@ router.route('/add').post((req,res)=>{
         "products":{
             "product":products,
             "quntity":qnty
-        }
+        },
+        "isOrder":false
     }
 
     Cart.count({user:user_id},(err,count)=>{
@@ -100,8 +101,8 @@ router.route('/update/:id').post((req,res)=>{
 
     let selected_id=req.params.id;
 
-    let user=req.body.user;
-    let products=req.body.products;
+    // let card_id=req.body.card_id;
+    // let products=req.body.products;
     // let qunitity=req.body.qunitity;
     
     
