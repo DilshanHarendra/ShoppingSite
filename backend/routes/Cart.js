@@ -31,16 +31,24 @@ router.route('/add').post((req,res)=>{
     Cart.count({user:user_id},(err,count)=>{
         if(count>0){
             console.log("push");
-            
-            Cart.update({user:user_id},{
-                $push:{
-                    products: {
-                        "product":products,
-                        "quntity":qnty
 
-                    }
+            let newProduct={
+                "product":products,
+                "quntity":qnty
+
+            }
+
+            console.log(newProduct);
+            
+            
+            Cart.updateOne({user:user_id},{ $push:{ products:newProduct}},
+                (err,product)=>{
+                    res.send(product)
+
+                    
                 }
-            })
+            
+            )
 
         }else{
 
@@ -99,6 +107,8 @@ router.route('/update/:id').post((req,res)=>{
     
     console.log("recive_data: "+user+products+qunitity);
     
+       
+
     Cart.findByIdAndUpdate(
          selected_id,
         { 
