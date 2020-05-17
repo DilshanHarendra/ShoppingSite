@@ -15,9 +15,30 @@ import {
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import {Link,NavLink} from 'react-router-dom';
+import alertify from "alertifyjs";
 
 class PaymentMain extends Component {
-    state = {}
+    constructor(props) {
+        super(props)
+        this.state = {
+            orderID:''
+        };
+
+    }
+    componentDidMount() {
+        const search = this.props.location.search; // returns the URL query String
+        const params = new URLSearchParams(search);
+        const IdFromURL = params.get('order_id');
+
+        if(IdFromURL === null){
+            alert("No orders created!!");
+            window.location = "http://localhost:3000";
+        }
+        this.setState({
+            orderID: IdFromURL.toString()
+        });
+
+    }
 
     render() {
         return (
@@ -34,7 +55,11 @@ class PaymentMain extends Component {
                                     <CardTitle className="text-info font-weight-bold">Credit/Debit</CardTitle>
                                     <CardSubtitle>Pay by Credit/Debit card</CardSubtitle>
                                     <CardText>Clients will be able to make online payments through Credit/Debit card. We assure that this method is 100% secure. <br /> <br /></CardText>
-                                    <Link to="/cardPayment">
+                                    <Link to={{
+                                        pathname: '/cardPayment', state: {
+                                            orderID: this.state.orderID
+                                        }
+                                    }}>
                                         <Button color="primary">Next</Button>
                                     </Link>
                                 </CardBody>
@@ -52,9 +77,14 @@ class PaymentMain extends Component {
                                     <CardTitle className="text-info font-weight-bold">Bank receipt</CardTitle>
                                     <CardSubtitle>Pay through bank receipt</CardSubtitle>
                                     <CardText>Make payment to our bank account and submit the receipt here. <br /> Bank account: 11223345678  <br /> Bank: Commercial Bank PLC</CardText>
-                                    <Link to="/receiptPayment">
+                                    <Link to={{
+                                        pathname: '/receiptPayment', state: {
+                                            orderID: this.state.orderID
+                                        }
+                                    }}>
                                         <Button color="primary">Next</Button>
                                     </Link>
+
                                 </CardBody>
                                 <CardFooter>
                                     <h6 className="text-muted text-right">Handled by <span className="text-info">C4FASHIONSPayAdmin</span></h6>

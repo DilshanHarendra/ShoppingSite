@@ -7,7 +7,8 @@ const core = require('cors');
 const PaymentSchema=require('../schemas/PaymentSchema');
 const SecretCode=require('../schemas/PaymentSecretCodeSchema');
 const RefundPayment=require('../schemas/PaymentRefundSchema');
-const nodemailer=require('nodemailer');
+const OrderSchema=require('../schemas/OrderSchema');
+const nodemailer = require('nodemailer');
 router.use(bodyParser());
 router.use(core());
 var payUID;
@@ -82,6 +83,8 @@ router.post('/emailVerification',async function(req,res){
         let code = rn(options);
         const getEmail = req.body.email;
 
+        console.log("Email is " + getEmail);
+
         const data =({
             secretID: code
         });
@@ -121,6 +124,8 @@ router.post('/emailVerification',async function(req,res){
             html: '<label class="text-dark">Your code is <span class="text-danger font-weight-bold">=='+code+'==</span></label>'
 
         });
+
+        console.log("Sent to " + getEmail);
 
     }catch (e) {
 
@@ -318,10 +323,12 @@ router.post('/changeCardStatus',async function(req,res){
         };
         var result =await PaymentSchema.updateOne({payID:gotID},updatePaymentStatus);
 
-        let testAccount = await nodemailer.createTestAccount();
+        console.log("Status changed to Completed");
+
+        let testAccount1 = await nodemailer.createTestAccount();
 
         // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
+        let transporter1 = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 465,
             secure: true, // true for 465, false for other ports
@@ -332,7 +339,7 @@ router.post('/changeCardStatus',async function(req,res){
         });
 
         // send mail with defined transport object
-        let info = await transporter.sendMail({
+        let info1 = await transporter1.sendMail({
             from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
             to: userEmail, // list of receivers
             subject: "Payment completion", // Subject line
@@ -342,10 +349,11 @@ router.post('/changeCardStatus',async function(req,res){
                 +
                 '<a href="http://localhost:3000/payInvoice?getInvoice='+gotID+'">Click to get the receipt</a>'
 
-
         });
+        console.log("Sent to " + userEmail);
     }catch (e) {
         res.status(404).send("parameter error");
+        console.log(e);
     }
 
 });
@@ -437,6 +445,20 @@ router.post('/acceptRefund',async function(req,res){
             html: '<label class="text-dark">Your refund request: <span class="text-danger font-weight-bold">=='+gotID+'==</span> has been completed</label>'
 
         });
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
+router.post('/getOrderDetails',async function(req,res){
+    try{
+        let gotData = req.body.orderID;
+        console.log(gotData);
+        let query = {_id: gotData};
+        let data=await OrderSchema.find(query);
+
+        res.send(data);
     }catch (e) {
         res.status(404).send("parameter error");
     }
