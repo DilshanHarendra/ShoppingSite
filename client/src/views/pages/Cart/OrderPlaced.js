@@ -21,19 +21,47 @@ export default class OrderPlaced extends Component {
         let userID= this.props.userId;
         let productList=this.props.productsList;
         
+        console.log("order object...");
+        console.log(TotalPrice);
+        console.log(numberOfItem);
+        console.log(userID);
+        console.log(productList);
+
+        let product_id_arry=[];
+
+        productList.map(elemet=>{
+          product_id_arry.push(elemet.product.id)
+        })
+
+        console.log(product_id_arry);
         
-        let newOrder={
+   
+      
+      let newOrder={
 
-            totalAmaount:TotalPrice,
-            user_id:userID,
-            products:productList,
-            numberOfItem:numberOfItem,
-            orderCreateDate:new Date()
+        totalAmaount:TotalPrice,
+        user_id:userID,
+        products:product_id_arry,
+        numberOfItem:numberOfItem,
+        orderCreateDate:new Date()
 
 
-        }
+    };
+        
+      
 
-        console.log(newOrder);
+        console.log(newOrder);   
+        
+        
+
+        // Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+        // Axios.post('http://localhost:3001/order/add', newOrder)
+        //   .then(function (response) {
+        //     console.log(response);
+        // })
+        // .catch(function (error) {
+        //     console.log(error);
+        // });
         
         Axios.post('http://localhost:3001/order/add',newOrder)
             .then(res=>{
@@ -46,19 +74,12 @@ export default class OrderPlaced extends Component {
                 
             })
             .catch(err=>console.log('Error in create order'+err)
-            )
+            );
+       
+       
+
             
-                            //navigate to payment
-                            // this.props.history.push({
-                            //   pathname: '/adminDashboard',
-                            //   state: {
-                            //     order_id: this.state.order_id,
-                            //     total_amount: TotalPrice,
-                            //     numberof_items:numberOfItem,
-                            //     products_list:productList
-            
-                            //   }
-                            // })
+                           
 
     }
 

@@ -10,7 +10,11 @@ class CartList extends Component{
     render(){
         return(
            <tr>
-            <td><p>{this.props.product_data.product.proName}</p></td>
+            <td>
+                <p>{this.props.product_data.product.proName}</p>
+                <p><img src={this.props.product_data.product.images[0]}/></p>
+                
+            </td>
             <td><p>{this.props.product_data.product.price}</p></td>
             <td><p>{this.props.product_data.quntity}</p></td>
            </tr> 
