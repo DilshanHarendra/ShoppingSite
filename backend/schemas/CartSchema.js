@@ -6,8 +6,13 @@ const CartSchema = new mongoose.Schema({
         required:true
     },
     products:{
-        type: Array,
+        type: Object,
         required: true
+    },
+
+    quntity:{
+        type:String,
+        required:true
     },
     isOrder:{
         type: Boolean,

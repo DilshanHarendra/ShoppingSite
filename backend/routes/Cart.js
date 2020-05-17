@@ -10,7 +10,7 @@ router.use(core());
 let Cart = require('../schemas/CartSchema');
 
 //Add new storemanager
-router.route('/add').post((req,res)=>{
+router.route('/add2').post((req,res)=>{
     console.log("product filed")
     console.log(req.body.products);
     console.log("======================")
@@ -65,6 +65,55 @@ router.route('/add').post((req,res)=>{
    
   
 });
+
+
+router.route('/add').post((req,res)=>{
+    const user_id=req.body.user;
+    const products=req.body.products;
+    const qnty=req.body.qty;
+
+    const newItems =new Cart({
+        "user":user_id,
+        "products":products,
+        "quntity": qnty,
+        "isOrder":false
+
+    });
+
+    newItems.save()
+        .then(newItems=>res.json("new Item added"))
+        .catch(err=>res.status(400).json('Error in add Items'+err));
+
+
+
+
+
+})
+
+//Items isOrder state change
+
+router.route('/isorder/:id').post((req,res)=>{
+    let items_id=req.params.id;
+
+    Cart.findByIdAndUpdate(
+        items_id,
+       {            
+            "isOrder": true,        
+       
+       },(err,cart)=>{
+          
+           res.send(cart);
+          
+       }
+    )
+
+
+})
+
+
+
+
+
 
 //Delete selected product
 router.route('/:id').delete((req,res)=>{

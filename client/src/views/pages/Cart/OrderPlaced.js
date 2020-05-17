@@ -7,7 +7,8 @@ export default class OrderPlaced extends Component {
     constructor(props){
         super(props)
         this.state={
-          order_id:''
+          order_id:'',
+          items_ids:[]
         }
         
 
@@ -21,7 +22,7 @@ export default class OrderPlaced extends Component {
         let userID= this.props.userId;
         let productList=this.props.productsList;
 
-        let card_id=this.props.cart_id;
+        // let card_id=this.props.cart_id;
         
         console.log("order object...");
         console.log(TotalPrice);
@@ -31,8 +32,18 @@ export default class OrderPlaced extends Component {
 
         let product_id_arry=[];
 
+        let items_lists=[];
+
         productList.map(elemet=>{
-          product_id_arry.push(elemet.product.id)
+          product_id_arry.push(elemet.products.id)
+        })
+
+        productList.map(item=>{
+          items_lists.push(item._id)
+        })
+
+        this.setState({
+          items_ids:items_lists
         })
 
         console.log(product_id_arry);
@@ -54,34 +65,29 @@ export default class OrderPlaced extends Component {
 
         console.log(newOrder);   
         
-        
-
-        // Axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-        // Axios.post('http://localhost:3001/order/add', newOrder)
-        //   .then(function (response) {
-        //     console.log(response);
-        // })
-        // .catch(function (error) {
-        //     console.log(error);
-        // });
-        
         Axios.post('http://localhost:3001/order/add',newOrder)
             .then(res=>{
                 console.log("Order create");
                   console.log(res.data);
                   this.setState({order_id:res.data})
                   let order_idsend=res.data
-                      console.log(card_id);
+
+                      console.log("Items List");
                       
-                  Axios.delete('http://localhost:3001/cart/'+card_id)
-                  .then(res=>{
-                       console.log(res.data)
-                   })
-                  .catch(err=>console.log('error in dekete cart'+err)
-                  );
+                      console.log(this.state.items_ids);
+                      
+                      this.state.items_ids.map(itemid=>{
+                           Axios.post('http://localhost:3001/cart/isorder/'+itemid)
+                           .then(res=>{
+                               console.log(res.data)
+                           })
+                         .catch(err=>console.log('error in state change in cart item'+err)
+                          );
+                      })  
+                 
                 
 
-                  window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
+                  // window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
                 
                 
             })
