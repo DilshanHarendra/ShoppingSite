@@ -69,6 +69,8 @@ export default class OrderPlaced extends Component {
                   console.log(res.data);
                   this.setState({order_id:res.data})
                   let order_idsend=res.data
+                  
+
                   window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
                 
                 

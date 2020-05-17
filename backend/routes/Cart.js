@@ -25,7 +25,8 @@ router.route('/add').post((req,res)=>{
         "products":{
             "product":products,
             "quntity":qnty
-        }
+        },
+        "isOrder":false
     }
 
     Cart.count({user:user_id},(err,count)=>{
