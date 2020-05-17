@@ -20,6 +20,8 @@ export default class OrderPlaced extends Component {
         let numberOfItem =this.props.totalNumberOfProduct;
         let userID= this.props.userId;
         let productList=this.props.productsList;
+
+        let card_id=this.props.cart_id;
         
         console.log("order object...");
         console.log(TotalPrice);
@@ -69,7 +71,14 @@ export default class OrderPlaced extends Component {
                   console.log(res.data);
                   this.setState({order_id:res.data})
                   let order_idsend=res.data
-                  
+
+                  Axios.delete('http://localhost:3001/cart/'+card_id)
+                  .then(res=>{
+                       console.log(res.data)
+                   })
+                  .catch(err=>console.log('error in dekete cart'+err)
+                  );
+                
 
                   window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
                 
@@ -85,8 +94,7 @@ export default class OrderPlaced extends Component {
 
     }
 
-
-
+    
 
 
     render() {

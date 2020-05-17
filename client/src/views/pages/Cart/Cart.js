@@ -41,7 +41,8 @@ export default class Cart extends Component {
             TotalNumberOfProduct:'',
             Order_id:'',
             dataload:false,
-            user_id:''
+            user_id:'',
+            cart_id:''
            
         };
 
@@ -64,13 +65,14 @@ export default class Cart extends Component {
     }
 
    async loadProductListData(){
-        axios.get('http://localhost:3001/cart/5ec028db41f41d302864d784')
+        axios.get('http://localhost:3001/cart/'+this.state.user_id)
         .then(async ressopns=>{
             console.log(ressopns.data);
          this.setState({PrdouctList:ressopns.data}) 
-            console.log(this.state.PrdouctList[0].products);
+            console.log(this.state.PrdouctList[0]._id);
             
          this.setState({dataload:true})
+        // this.setState({cart_id:this.state.PrdouctList[0]._id})
          this.state.PrdouctList[0].products.map(el=>console.log(el.product.proName)) 
             console.log(this.state.PrdouctList[0].products[0]);
             console.log(this.state.PrdouctList[0].products);
@@ -153,7 +155,9 @@ export default class Cart extends Component {
                             totalPrice={this.state.TotalPrice}
                             totalNumberOfProduct={this.state.TotalNumberOfProduct}
                             productsList={this.state.ItemList} 
-                            userId={this.state.user_id}/>                        
+                            userId={this.state.user_id}
+                            cart_id={this.state.cart_id}
+                            />                        
                     </Col>
                 </Row>
             </Container>
