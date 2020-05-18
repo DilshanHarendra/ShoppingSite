@@ -6,7 +6,13 @@ export default class stormanagerchart extends Component {
     constructor(props){
         super(props)
         this.state={
-            storemanagerData:[],
+            CartDetaisls:[],
+            numberOfFrock:0,
+            numberOfCoats:0,
+            numberOfMiniDresses:0,
+            numberOfTShirt:0,
+            numberOfWedding:0
+
         }
         
     }
@@ -17,17 +23,48 @@ export default class stormanagerchart extends Component {
         
     }
     loadStoreManagerData(){
-        Axios.get('http://localhost:3001/storeManager/')
+        Axios.get('http://localhost:3001/cart/')
         .then(ressopns=>{
             console.log(ressopns);
-            this.setState({storemanagerData:ressopns.data})
-            this.chartGenerate()
-            console.log(ressopns.data);
-            
+            this.setState({CartDetaisls:ressopns.data})
+
+           let tempCart=this.state.CartDetaisls;
+
+                let numberOfFrock =tempCart.filter(item=>{
+                  return  item.products.subCatogory=='Frock'
+                    })
+
+                let numberOfCoats =tempCart.filter(item=>{
+                    return  item.products.subCatogory=='Coats'
+                    })
+
+                let numberOfMiniDresses =tempCart.filter(item=>{
+                    return  item.products.subCatogory=='Maxi Dresses'
+                    })
+  
+                let numberOfWedding =tempCart.filter(item=>{
+                      return  item.products.subCatogory=='Wedding'
+                    })
+                
+                let numberOfTShirt =tempCart.filter(item=>{
+                        return  item.products.subCatogory=='TShirt'
+                    })  
+                this.setState({
+                    numberOfTShirt:numberOfTShirt.length,
+                    numberOfCoats:numberOfCoats.length, 
+                    numberOfWedding:numberOfWedding.length,
+                    numberOfMiniDresses:numberOfMiniDresses.length,
+                    numberOfFrock:numberOfFrock.length
+                    
+                })      
+             
+                this.chartGenerate()
         })
         .catch((error)=>{
             console.log('error :'+error);
         })
+
+    
     }   
 
 
@@ -36,16 +73,15 @@ export default class stormanagerchart extends Component {
         var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            labels: ['TShirt', 'Coats', 'Wedding', 'MiniDresses', 'Frock',],
             datasets: [{
                 label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: [this.state.numberOfTShirt, this.state.numberOfCoats, this.state.numberOfWedding, this.state.numberOfMiniDresses, this.state.numberOfFrock],
                  backgroundColor: [
                     'rgba(255, 99, 132, 1)',
                     'rgba(54, 162, 235,1)',
                     'rgba(255, 206, 86, 1)',
                     'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255,1)',
                     'rgba(255, 159, 64,1)'
                 ],
              
@@ -68,6 +104,7 @@ export default class stormanagerchart extends Component {
     render() {
         return (
             <div style={chartStyle}>
+                <h5>Customer Prefers Insight</h5>
                 <canvas id="myChart" width="400" height="400"></canvas>
             </div>
         )
