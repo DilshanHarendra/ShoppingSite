@@ -16,12 +16,16 @@ import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import {Link,NavLink} from 'react-router-dom';
 import alertify from "alertifyjs";
+import axios from "axios";
 
 class PaymentMain extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            orderID:''
+            orderID:'',
+            gotData:[],
+            userID:'',
+            payAmount:''
         };
 
     }
@@ -34,9 +38,7 @@ class PaymentMain extends Component {
             alert("No orders created!!");
             window.location = "http://localhost:3000";
         }
-        this.setState({
-            orderID: IdFromURL.toString()
-        });
+        this.setState({orderID:IdFromURL.toString()})
 
     }
 
@@ -55,13 +57,17 @@ class PaymentMain extends Component {
                                     <CardTitle className="text-info font-weight-bold">Credit/Debit</CardTitle>
                                     <CardSubtitle>Pay by Credit/Debit card</CardSubtitle>
                                     <CardText>Clients will be able to make online payments through Credit/Debit card. We assure that this method is 100% secure. <br /> <br /></CardText>
-                                    <Link to={{
-                                        pathname: '/cardPayment', state: {
-                                            orderID: this.state.orderID
-                                        }
-                                    }}>
-                                        <Button color="primary">Next</Button>
-                                    </Link>
+
+
+                                        <Link to={{
+                                            pathname: '/cardPayment', state: {
+                                                orderID: this.state.orderID
+                                            }
+                                        }}>
+                                            <Button color="primary">Next</Button>
+                                        </Link>
+
+
                                 </CardBody>
                                 <CardFooter>
                                     <h6 className="text-muted text-right">Handled by <span className="text-info">C4FASHIONSPayAdmin</span></h6>

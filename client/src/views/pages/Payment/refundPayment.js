@@ -26,23 +26,22 @@ class refundPayment extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data:[],
-            status:false,
+            gotData:[],
+            userID: localStorage.getItem("id")
         };
 
         this.handleRefundOption = this.handleRefundOption.bind(this);
     }
     componentDidMount() {
-        axios({
-            method:"GET",
-            url:"http://localhost:3001/payment/getUserCardPayments"
-        }).then(res=>{
-            this.setState({
-                data: res.data
-            });
-        }).catch(err=>{
-            console.log(err);
-        })
+        const data = {
+            userID: this.state.userID
+        };
+
+        axios.post('http://localhost:3001/payment/getAllPaymentDetails',data)
+            .then(res=>this.setState({
+                gotData:res.data
+            }))
+            .catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }
 
     handleRefundOption(id){
@@ -80,7 +79,7 @@ class refundPayment extends Component {
                                     <th>Refund</th>
                                 </tr>
                                 </thead>
-                                {this.state.data.map(payments=>(
+                                {this.state.gotData.map(payments=>(
                                     <tbody>
                                     <tr>
                                         <td>{payments.payID}</td>

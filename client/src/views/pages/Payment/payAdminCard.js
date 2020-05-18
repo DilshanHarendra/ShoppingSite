@@ -38,8 +38,8 @@ class payAdminCard extends Component {
             })
     }
 
-    handleChangeStatus(id){
-        const sendId ={id};
+    handleChangeStatus(id,id1){
+        const sendId ={id,id1};
         axios.post('http://localhost:3001/payment/changeCardStatus', sendId)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
@@ -77,7 +77,7 @@ class payAdminCard extends Component {
                                     <td>{payments.payAmount}</td>
                                     <td>{payments.payType}</td>
                                     <td>{payments.paymentStatus}</td>
-                                    <td>{payments.paymentStatus == 'Processing' ? <Button onClick={() => this.handleChangeStatus(payments.payID)}>Complete</Button> : <p>No actions</p>}</td>
+                                    <td>{payments.paymentStatus == 'Processing' ? <Button onClick={() => this.handleChangeStatus(payments.payID,payments.userID)}>Complete</Button> : <p>No actions</p>}</td>
 
                             </tr>
                             </tbody>

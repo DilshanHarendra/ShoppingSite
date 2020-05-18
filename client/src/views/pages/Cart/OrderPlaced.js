@@ -87,7 +87,7 @@ export default class OrderPlaced extends Component {
                  
                 
 
-                  // window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
+                  window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
                 
                 
             })
