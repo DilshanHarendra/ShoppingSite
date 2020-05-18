@@ -9,17 +9,21 @@ import classnames from 'classnames';
 import { GiTShirt } from "react-icons/gi";
 import {GrUserManager} from "react-icons/gr";
 import {GoPackage} from "react-icons/go"
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
-
+//redirect to storemanager
 const handleStoreManager=()=>{
   window.location='http://localhost:3000/storeManager';
 
 }
+//redirect to product category
 
 const handleProductCategory=()=>{
   window.location='http://localhost:3000/productcategory';
 
 }
+//redirect to ordermanager
 
 const handleOrderManagemet=()=>{
   window.location='http://localhost:3000/orderDashbord';

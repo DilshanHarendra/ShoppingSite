@@ -9,6 +9,10 @@ router.use(core());
 
 let Cart = require('../schemas/CartSchema');
 
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
+
+
 //Add new storemanager
 router.route('/add2').post((req,res)=>{
     console.log("product filed")

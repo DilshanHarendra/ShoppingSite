@@ -4,7 +4,8 @@ import axios from 'axios'
 import { TiDeleteOutline } from "react-icons/ti";
 
 import OrderPlaced from './OrderPlaced';
-
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
 class CartList extends Component{
     
@@ -44,7 +45,7 @@ class CartList extends Component{
                     <Button 
                         onClick={()=>this.props.toggaleQuntityEdite(this.props.product_data._id)}
                         style={((this.props.qtyedite))?{display:"none"}:{display:"inherit"} }                   
-                        >Add New Quntity</Button>
+                        >Change Quntity</Button>
                 </p>
                 <p><Button color="primary"  
                            style={((this.props.qtyedite)&&(this.props.selectedEditeIds==this.props.product_data._id))?{display:"inherit"}:{display:"none"}  }
@@ -179,7 +180,7 @@ export default class Cart extends Component {
 
         window.location.href="/cart"
     }
-
+//This method sent put request to change seletected item quntity
     onchangeQuntity( ){
         console.log("onchnageQuntity call...");
         console.log(this.state.newQuntityValue);
@@ -199,12 +200,12 @@ export default class Cart extends Component {
             
             
     }
-
+//new quntity capturs
     handeleQuntityChangeValue(event){
         this.setState({newQuntityValue:event})
     }
 
-
+//this change edite mode and get selected item id
     toggaleQuntityEdite(editeId){
         
         this.editmodeToggle()
@@ -229,7 +230,7 @@ export default class Cart extends Component {
     }  
 
     categoryList(){    
-     
+     //generata list of items
         return this.state.PrdouctList.map(product_ele=>{
             return <CartList 
 

@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Table, Container, Input, Button } from 'reactstrap';
 import { RiDeleteBinLine ,RiCheckboxCircleLine,RiEditLine } from 'react-icons/ri';
-
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
 import axios from 'axios';
 
@@ -154,7 +155,7 @@ export default class storemanagerview extends Component {
         })
     }   
 
-
+    //load storemanager data
     loadStoreManagerData(){
         axios.get('http://localhost:3001/storeManager/')
         .then(ressopns=>{
@@ -167,7 +168,8 @@ export default class storemanagerview extends Component {
             console.log('error :'+error);
         })
     }   
- 
+
+    //==========get value form storemanager view componet and update states===================
     handeleEditFirstname=(event)=>{                
         this.setState({editFirstname: event})
                                
@@ -255,7 +257,7 @@ export default class storemanagerview extends Component {
         this.loadStoreManagerData();
 
     }
-    
+    //generate Storemagaer table
     storemanagrList(){
         return this.state.storemanagerlist.map(currentstoremanager=>{
             return <  StoreManager 
@@ -283,7 +285,7 @@ export default class storemanagerview extends Component {
                         key={currentstoremanager._id}/>;
         })
    }
-   
+   //privde search functions
    handleSearch(event){
        let storemng= event.target.value.trim().toLowerCase();
 

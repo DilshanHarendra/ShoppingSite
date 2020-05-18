@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Container, Row ,FormGroup, Label, Input, Form, Col, Button} from 'reactstrap'
 import Axios from 'axios'
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
 export default class OrderPlaced extends Component {
 
@@ -45,11 +47,11 @@ export default class OrderPlaced extends Component {
         let product_id_arry=[];
 
         let items_lists=[];
-
+        //create product id list
         productList.map(elemet=>{
           product_id_arry.push(elemet.products.id)
         })
-
+        //get item id
         productList.map(item=>{
           items_lists.push(item._id)
         })
@@ -61,7 +63,7 @@ export default class OrderPlaced extends Component {
         console.log(product_id_arry);
         
    
-      
+      //creata new order object
       let newOrder={
 
         totalAmaount:TotalPrice,
@@ -76,7 +78,7 @@ export default class OrderPlaced extends Component {
       
 
         console.log(newOrder);   
-        
+        //add order object use post request
         Axios.post('http://localhost:3001/order/add',newOrder)
             .then(res=>{
                 console.log("Order create");
