@@ -113,6 +113,9 @@ export default class OrderPlaced extends Component {
 
     }
 
+    onClancel(){
+      window.location.href= "http://localhost:3000/"
+    }
     
 
 
@@ -147,7 +150,7 @@ export default class OrderPlaced extends Component {
       <Row>
           <Col>
             <Button style={ButtonStyle} disabled={!(this.props.totalPrice>0)}  onClick={()=>{this.onCreateOrder()}} color="primary">Check out</Button>
-            <Button style={ButtonStyle} color="danger">Cancel</Button>
+            <Button style={ButtonStyle} color="danger" onClick={()=>{this.onClancel()}}>Cancel</Button>
         </Col>
       </Row>
     </Form>
