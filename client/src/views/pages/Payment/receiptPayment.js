@@ -25,16 +25,13 @@ class cardPayment extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            userID:'',
-            payAmount:0,
             gotData:[],
             bankName: '',
             bankBranch: '',
             depositedAmount: '',
             depositedDate: '',
             receiptNumber:'',
-            orderID:'',
-            data:[],
+            sendData:[]
         };
 
         this.handleBankName = this.handleBankName.bind(this);
@@ -47,8 +44,7 @@ class cardPayment extends Component {
 
     componentDidMount() {
         const data={
-            // orderID:this.props.location.state.orderID
-            orderID:"5ec0e9606a3f9e30b48143b1"
+            orderID:this.props.location.state.orderID
         };
 
         axios.post('http://localhost:3001/payment/getOrderDetails',data)
@@ -56,7 +52,6 @@ class cardPayment extends Component {
                 gotData:res.data
             }))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
-
     }
 
     handleBankName(event){
@@ -81,12 +76,10 @@ class cardPayment extends Component {
     onSubmit(event){
         event.preventDefault();
 
-        this.state.gotData.map((val)=>{
-
             const newBankPayment={
-                payAmount: val.totalAmaount,
-                userID:this.state.userID,
-                orderID: this.state.orderID,
+                payAmount: 0,
+                userID: null,
+                orderID: this.props.location.state.orderID,
                 payDate: new Date(),
                 bankName:this.state.bankName,
                 bankBranch:this.state.bankBranch,
@@ -99,20 +92,14 @@ class cardPayment extends Component {
                 expireDate: null,
                 cardType: null,
                 payReceipt:true
-            }
-
-            this.setState({
-                data:[newBankPayment,...this.state.data]
-            })
-
-        });
+            };
 
 
-        axios.post('http://localhost:3001/payment/addBankPayment',this.state.data)
+        axios.post('http://localhost:3001/payment/addBankPayment',newBankPayment)
             .then(res=>console.log('Added new bank payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
-        // var protection="Confirm";
-        // window.location.href= `http://localhost:3000/emailConfirm?protection=${protection}`;
+        var protection="Confirm";
+        window.location.href= `http://localhost:3000/payConfirm?protection=${protection}`;
     }
 
     render() {
@@ -188,7 +175,7 @@ class cardPayment extends Component {
                                                 <th>Order Date</th>
                                             </tr>
                                             </thead>
-                                            {this.state.gotData.map(details=>(
+                                            {this.state.gotData.map(details =>(
                                                 <tbody>
                                                 <tr>
                                                     <td>{details._id}</td>

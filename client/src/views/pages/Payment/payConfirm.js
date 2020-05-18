@@ -35,6 +35,13 @@ class payConfirm extends Component {
     }
 
     componentDidMount() {
+        const search = this.props.location.search; // returns the URL query String
+        const params = new URLSearchParams(search);
+        const IdFromURL = params.get('protection');
+        if(IdFromURL !== 'Confirm'){
+            alertify.alert("Access denied to this page!!");
+            window.location.href="/paymentMain";
+        }
         axios.get("http://localhost:3001/payment/getSecretCode")
             .then(result=>{
                 this.setState({

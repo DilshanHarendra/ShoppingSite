@@ -74,10 +74,10 @@ class cardPayment extends Component {
         event.preventDefault();
 
         const newCardPayment={
-            payAmount: 5000,
-            userID:10,
-            orderID: 500,
-            payDate:'13/5/2020',
+            payAmount: 0,
+            userID:null,
+            orderID: this.props.location.state.orderID,
+            payDate: new Date(),
             cardNumber: this.state.cardNumber,
             cardCSV: this.state.cardCSV,
             cardHolderName: this.state.cardHolderName,
@@ -91,7 +91,7 @@ class cardPayment extends Component {
             .then(res=>console.log('Add new payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         var protection="Confirm";
-        window.location.href= `http://localhost:3000/emailConfirm?protection=${protection}`;
+        window.location.href= `http://localhost:3000/payConfirm?protection=${protection}`;
     }
 
     render() {
