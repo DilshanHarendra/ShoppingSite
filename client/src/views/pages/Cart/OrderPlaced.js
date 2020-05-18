@@ -8,10 +8,22 @@ export default class OrderPlaced extends Component {
         super(props)
         this.state={
           order_id:'',
-          items_ids:[]
+          items_ids:[],
+          uid:'',
+          fulname:''
         }
         
 
+    }
+
+    componentDidMount() {
+      this.setState({ uid:localStorage.getItem('id')})
+      
+      console.log(this.state.uid);
+      
+      
+      
+      
     }
 
 
@@ -87,7 +99,7 @@ export default class OrderPlaced extends Component {
                  
                 
 
-                  // window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
+                  window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
                 
                 
             })
@@ -134,7 +146,7 @@ export default class OrderPlaced extends Component {
       </Row>
       <Row>
           <Col>
-            <Button style={ButtonStyle} onClick={()=>{this.onCreateOrder()}} color="primary">Check out</Button>
+            <Button style={ButtonStyle} disabled={!(this.props.totalPrice>0)}  onClick={()=>{this.onCreateOrder()}} color="primary">Check out</Button>
             <Button style={ButtonStyle} color="danger">Cancel</Button>
         </Col>
       </Row>
@@ -155,9 +167,10 @@ const ButtonStyle={
 const oderStyle={
    
     padding: '10px',
-    background: 'aliceblue',
+    background: 'white',
     borderRadius: '10px',
-    margin:'10px'
+    margin:'10px',
+    boxShadow: '0px 1px 15px 0px #bdbdbd'
     
 }
 

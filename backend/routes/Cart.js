@@ -68,25 +68,46 @@ router.route('/add2').post((req,res)=>{
 
 
 router.route('/add').post((req,res)=>{
-    const user_id=req.body.user;
-    const products=req.body.products;
-    const qnty=req.body.qty;
+        console.log(req.body.user);
+        
+        const user_id=req.body.user;
+        const products=req.body.products;
+        const qnty=req.body.qty;
 
-    const newItems =new Cart({
-        "user":user_id,
-        "products":products,
-        "quntity": qnty,
-        "isOrder":false
+           
+    
+                   
+        Cart.find({$and:[{user:user_id },{isOrder:false},{products:{_id:products._id}}]})
+             .then(res =>{
+                console.log(res);
+                if(res.length>0){
+                        console.log(res);
+                        
+                }else{
 
-    });
+                    
+                    const newItems =new Cart({
+                        "user":user_id,
+                        "products":products,
+                        "quntity": qnty,
+                        "isOrder":false
+            
+                });
+            
+                newItems.save()
+                    .then(newItems=>res.json("new Item added"))
+                    .catch(err=>res.status(400).json('Error in add Items'+err));
+                }
+             })
+             .catch(err =>{console.log("Does not exist product");
+             })    
 
-    newItems.save()
-        .then(newItems=>res.json("new Item added"))
-        .catch(err=>res.status(400).json('Error in add Items'+err));
 
 
 
 
+
+                 
 
 })
 
@@ -108,6 +129,23 @@ router.route('/isorder/:id').post((req,res)=>{
     )
 
 
+})
+
+
+router.route('/quntity/:id').put((req,res)=>{
+    let quntityChangeItemID=req.params.id;
+   
+    let newQuntity=req.body.quntity;
+
+        console.log(newQuntity);
+    
+        Cart.findByIdAndUpdate(
+            quntityChangeItemID,
+            {$set:{"quntity":newQuntity}},
+            (err,item)=>{
+                res.send(item)
+            }
+        )
 })
 
 

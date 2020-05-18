@@ -11,7 +11,7 @@ const CartSchema = new mongoose.Schema({
     },
 
     quntity:{
-        type:String,
+        type:Number,
         required:true
     },
     isOrder:{
