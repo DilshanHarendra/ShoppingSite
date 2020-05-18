@@ -3,6 +3,8 @@ import{ TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, Car
 import StoreManagerPanal from './StoreManagerRegister/StoremanagerPanal';
 import ProductCategoryPanal from './ProductCategory/createcategoryPanal';
 import StoremanagerChart from './admincart/stormanagerchart'
+import CartCharts from './Graphs/CartGraphs'
+import OrderTable from './Order/orderTable'
 import classnames from 'classnames';
 import { GiTShirt } from "react-icons/gi";
 import {GrUserManager} from "react-icons/gr";
@@ -44,13 +46,12 @@ export default function Admindashbord() {
         <Col style={col3} onClick={handleOrderManagemet}>
           <h2>Order Managment</h2>
           <GoPackage size="3em" color="black"/>
+        </Col>
         
-         </Col>
-        <Col  style={col4}>.col</Col>
       </Row>
        <Row>
           <Col><StoremanagerChart></StoremanagerChart></Col>
-          <Col>etet</Col>         
+            <Col> <CartCharts/> </Col>     
       </Row> 
 
       </Container>
