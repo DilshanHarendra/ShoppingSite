@@ -105,7 +105,7 @@ class DefaultHeader extends Component {
                                             <span>0</span>
                                         </div>
 										
-                                        <Link to="/">Shopping Cart</Link>
+                                        <Link to="/cart">Shopping Cart</Link>
                                     </div>
 
 

@@ -193,11 +193,11 @@ export default class Cart extends Component {
             "quntity":newQuntity
         }
         
-            axios.put('http://localhost:3001/cart/quntity/'+editedItemId,newQuntityObj)
+            axios.put(global.backend+'/cart/quntity/'+editedItemId,newQuntityObj)
                 .then(updateItem=>console.log(updateItem))
                 .catch(err=>console.log('error in update item'+err))
         this.editmodeToggle()
-       window.location.href="http://localhost:3000/cart"
+       window.location.href=global.backend+"/cart"
             
     }
 //new quntity capturs

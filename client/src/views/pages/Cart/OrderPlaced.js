@@ -79,7 +79,7 @@ export default class OrderPlaced extends Component {
 
         console.log(newOrder);   
         //add order object use post request
-        Axios.post('http://localhost:3001/order/add',newOrder)
+        Axios.post(global.backend+'/order/add',newOrder)
             .then(res=>{
                 console.log("Order create");
                   console.log(res.data);
@@ -91,7 +91,7 @@ export default class OrderPlaced extends Component {
                       console.log(this.state.items_ids);
                       
                       this.state.items_ids.map(itemid=>{
-                           Axios.post('http://localhost:3001/cart/isorder/'+itemid)
+                           Axios.post(global.backend+'/cart/isorder/'+itemid)
                            .then(res=>{
                                console.log(res.data)
                            })
