@@ -40,6 +40,8 @@ import payInvoice from "./views/pages/Payment/PaymentInvoice";
 //=========================CART===========================================
 // import Cart from "./views/pages/Cart/CartItems"
 import Cart2 from "./views/pages/Cart/Cart"
+import SearchResults from "./views/pages/Product/SearchResults/SearchResults";
+
 
 // import Cart from "./views/pages/Cart/Cart"
 
@@ -91,6 +93,8 @@ class App extends Component {
                     <Route path="/Myshop" exact component={MyShop} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
                     <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
+                    <Route path="/search/:key" exact component={SearchResults}/>
+
                     
                     {/* StoreManager */} 
                     <Route path="/adminDashboard" component={AdminDashbord}/>

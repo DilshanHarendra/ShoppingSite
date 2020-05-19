@@ -15,9 +15,17 @@ const users = {};
 io.on('connection', socket => {
 
     socket.on('addReview', review => {
-        console.log(review);
+
         socket.broadcast.emit('newReview', review);
     });
+
+    socket.on('NotifyUpdateReview', updateReview => {
+
+        socket.broadcast.emit('updateReview',updateReview);
+
+
+    });
+
 
 });
 
@@ -449,7 +457,8 @@ router.get('/getReviews',async function (req,res) {
         if (req.query.s){
             delete req.query.s;
             console.log("review",req.query);
-            var data=await reviewSchema.find(req.query);
+
+            var data=await reviewSchema.find(req.query).sort({addDate:-1});
             res.send( data);
         }else {
             res.status(500).send("query err");
@@ -459,6 +468,25 @@ router.get('/getReviews',async function (req,res) {
         res.status(500).send("err " + e);
     }
 });
+
+
+router.post('/updateReviews',async function (req,res) {
+
+    try {
+         console.log(req.body);
+        let rId= req.body.rid;
+        let query={isblock:req.body.action}
+        let pId=req.body.pid;
+        var result =await reviewSchema.updateOne({_id:rId},query);
+        console.log(result);
+        res.send(pId);
+
+    }catch (e) {
+        console.log(e);
+        res.status(500).send("err " + e);
+    }
+});
+
 
 
 module.exports = router;

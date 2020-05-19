@@ -15,8 +15,14 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Suggestions from "../Suggestions/Suggestions";
 import {Form, InputGroup} from "react-bootstrap";
-import Rating from "react-rating";
-import socketIOClient from "socket.io-client";
+
+
+import AddNewReview from "./AddNewReview";
+import ShowReview from "./ShowReview";
+
+
+
+
 
 
 
@@ -43,12 +49,8 @@ class ShowOneProduct extends Component{
             isAdmin:true,
             isDelete:false,
             showaddComment:true,
-            reviewButton:'Publish',
             isvalidate:false,
-            reviewText:'',
-            rating:-1,
             mess:'',
-            reviews:[],
             averageRating:0,
             uid:localStorage.getItem('id'),
             selectqty:0,
@@ -60,21 +62,13 @@ class ShowOneProduct extends Component{
 
     }
     componentDidMount(){
-    console.log(process.env.BACKEND_URL);
+
         document.body.scrollTop = 0;
         document.documentElement.scrollTop=0;
-        socketIOClient('http://localhost:4000').on('newReview', data => {
-          //  console.log("response",data);
-            if(data.pid==this.state.id){
-              //  console.log(data)
-                this.setState({
-                    reviews:[data,...this.state.reviews]
-                },()=>this.calAverageRating());
-            }
-
-        });
 
         this.props.history.listen((location, action) => {
+
+
             try {
                 document.getElementById('preloder').style.display="block";
                 let key= location.pathname.split("/")[2];
@@ -92,6 +86,11 @@ class ShowOneProduct extends Component{
 
         this.getData();
 
+        if(this.state.uid==null){
+            this.setState({
+                showaddComment:false
+            })
+        }
 
 
 
@@ -117,53 +116,59 @@ class ShowOneProduct extends Component{
                 pcatgory:res.data.catogory,
                 availabelQty:res.data[0].quantity
             },()=>{
-
-
-                axios({
-                    methode: 'GET',
-                    url:global.backend+'/product/getReviews',
-                    params:{s:true,pid:this.state.id},
-
-                }).then(res=>{
-                    this.setState({
-                        reviews:res.data
-                    },()=>{
-                        this.calAverageRating();
-                        setTimeout(()=>{
-                            document.getElementById('preloder').style.display="none";
-                        },400);
-                    });
-
-
-                }).catch(err=>{
-
-                    console.log(err);
-                });
-
-
-
+                document.getElementById('preloder').style.display="none";
             });
         }).catch(err=>console.log(err));
     }
 
-    calAverageRating(){
-        var x=0;
-        if(this.state.reviews.length>0){
-            for (var i=0;i<this.state.reviews.length;i++){
-                x+=this.state.reviews[i].rating;
-            }
-            x=Math.round (x/this.state.reviews.length);
 
+
+
+
+
+    buy=()=>{
+        if (this.state.uid==""||this.state.uid==null){
+
+        }else if (this.state.selectSize==''){
+            alert('Please select Size');
+        }else if (this.state.selectqty==0){
+            alert('Please Enter Quantity');
+        }else if(this.state.selectqty>this.state.availabelQty){
+            alert('Sorry Now availabel Quantity '+this.state.availabelQty);
+        } else{
+            let details={uid:this.state.uid,pid:this.state.id,qty:this.state.qty,size:this.state.selectSize}
+            alert(details)
         }
 
 
-        this.setState({
-            averageRating:x
-        });
+
 
     }
 
+    setaverageRating=x=>{
+        this.setState({
+            averageRating:x
+        })
+    }
 
+
+
+
+    addToCart=()=>{
+        let data={user:this.state.uid,products:this.state.pid,qty:this.state.qty}
+        axios.post(global.backend+'/cart/add',data)
+            .then(res=>
+                console.log(res.data)
+            ).catch(err=>
+            console.log(err)
+        );
+    }
+
+    setQty=e=>{
+        this.setState({
+            selectqty:e.target.value
+            })
+    }
     setStars(x){
         if(x==0){
             return<div className="p-rating">
@@ -222,107 +227,11 @@ class ShowOneProduct extends Component{
 
     }
 
-    buy=()=>{
-        if (this.state.uid==""||this.state.uid==null){
-
-        }else if (this.state.selectSize==''){
-            alert('Please select Size');
-        }else if (this.state.selectqty==0){
-            alert('Please Enter Quantity');
-        }else if(this.state.selectqty>this.state.availabelQty){
-            alert('Sorry Now availabel Quantity '+this.state.availabelQty);
-        } else{
-            let details={uid:this.state.uid,pid:this.state.id,qty:this.state.qty,size:this.state.selectSize}
-            alert(details)
-        }
-
-
-
-
-    }
-
-
-
-    handleSubmit=e=>{
-        e.preventDefault();
-
-        if (this.state.reviewText.trim()==""){
-            this.setState({
-                isvalidate:true
-            })
-        }else {
-            this.setState({
-                isvalidate:false
-            });
-            if (this.state.rating<0){
-                this.setState({
-                    mess:"Please add Rating"
-                });
-            }else{
-                let query={
-                    pid:this.state.id,
-                    uid:this.state.uid,
-                    review:this.state.reviewText,
-                    rating:this.state.rating,
-                };
-                axios.post(global.backend+'/product/addReview',query)
-                    .then(async function (res){
-                     //   console.log("send to soket")
-                            socketIOClient('http://localhost:4000').emit('addReview',query)
-
-                    })
-                    .catch(err=>{
-                        console.log(err)
-                    });
-
-                this.setState({
-                    reviewText:'',
-                    rating:-1,
-                });
-
-            }
-
-        }
-
-       //
-    }
-    getValues=e=>{
-        this.setState({
-            [e.target.name]:e.target.value
-        });
-
-    }
-    addrating=x=>{
-
-        this.setState({
-            rating:x
-        });
-      //  console.log(x);
-        if (this.state.rating<0){
-            this.setState({
-                mess:""
-            });
-        }
-    }
-    addToCart=()=>{
-        let data={user:this.state.uid,products:this.state.pid,qty:this.state.qty}
-        axios.post(global.backend+'/cart/add',data)
-            .then(res=>
-                console.log(res.data)
-            ).catch(err=>
-            console.log(err)
-        );
-    }
-
-    setQty=e=>{
-        this.setState({
-            selectqty:e.target.value
-            })
-    }
 
     setImages(){
         let c=1;
-        return <Carousel showArrows={true}
+        return <Carousel
+            showArrows={true}
                          interval={3000}
                          autoPlay={true}
                          infiniteLoop={true}
@@ -411,6 +320,9 @@ class ShowOneProduct extends Component{
                 <div className="loader"></div>
             </div>
 
+
+
+
             {this.state.data.map(product=>(
                 <>
                 <section className="product-section" key={product.id} >
@@ -455,7 +367,7 @@ class ShowOneProduct extends Component{
                                 <h5 style={{'color':'gray'}} className="p-title"><span className="tag">CATEGORY </span>{product.catogory+" "+product.subCatogory}</h5>
                                 <h2 style={{'color':'gray'}} className="p-title"><span className="tag">BRAND </span>{product.brand}</h2>
                                 {(product.discount!=0)?(
-                                    <h3 className="p-price"><strike style={{color:'gray'}} >{product.price}$ </strike> {" "+product.price-((product.price*product.discount)/100)}$</h3>
+                                    <h3 className="p-price"><strike style={{color:'gray'}} >{product.price}$ </strike> {" "+(product.price-((product.price*product.discount)/100)).toFixed(2)}$</h3>
                                 ):(
                                     <h3 className="p-price">{product.price} $</h3>
                                 )}
@@ -471,9 +383,7 @@ class ShowOneProduct extends Component{
 
                                 </h4>
                                 {this.setStars(this.state.averageRating)}
-                                <div className="p-review">
-                                    {this.state.reviews.length} reviews |
-                                </div>
+
                                 <div className="fw-size-choose" id="sizeContainor">
                                     <p>Size</p>
 
@@ -604,66 +514,12 @@ class ShowOneProduct extends Component{
 
 
             <div className="container">
-                <h1>Reviews</h1>
-                {this.state.showaddComment?(
-                    <div className="row" style={{display:this.state.showaddComment}}>
-                        <div className="col-md-2"></div>
-                        <div className="col-md-8">
-                            <Form noValidate validated={this.state.isvalidate} onSubmit={this.handleSubmit} >
-                                <label htmlFor="">Enter Your Review</label>
-                                <Form.Control
-                                    type="textarea"
-                                    as="textarea"
-                                    rows="6"
-                                    placeholder="Enter Somthing..."
-                                    aria-describedby="inputGroupPrepend"
-                                    required
-                                    name="reviewText"
-                                    id="reviewText"
-                                    onChange={this.getValues}
-                                    value={this.state.reviewText}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    Please Enter Your Review
-                                </Form.Control.Feedback><br/>
-                                <label htmlFor="">Enter Rating</label><br/>
+                <h1>Reviews</h1><br/>
+
+                <AddNewReview  id={this.state.id} />
 
 
-
-                                <Rating
-                                    id="rating"
-                                    onChange={this.addrating}
-                                    initialRating={this.state.rating}
-
-
-                                /><br/>
-                                <p className="errmess"> {this.state.mess}</p>
-
-                                <br/>
-                                <button className="btn btn-primary">{this.state.reviewButton}</button>
-
-                            </Form>
-
-                        </div>
-
-                    </div>
-                ):(
-                    <></>
-                )}
-
-                <div className="row">
-                    {this.state.reviews.map(review=>(
-                        <div className="card">
-                            <h3>Name</h3>
-                            <p>{review.review}</p>
-                            <div>
-                                {this.setStars(review.rating)}
-                               </div>
-                        </div>
-                    ))}
-
-
-                </div>
+                <ShowReview id={this.state.id} getaverageRating={this.setaverageRating} />
 
             </div>
 

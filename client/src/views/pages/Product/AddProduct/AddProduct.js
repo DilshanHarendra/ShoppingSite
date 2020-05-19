@@ -250,6 +250,7 @@ class AddProduct extends  Component{
             this.setState({
                 check:false
             });
+            document.getElementById('preloder').style.display="block";
             const  values=this.state;
 
             delete values.box;
