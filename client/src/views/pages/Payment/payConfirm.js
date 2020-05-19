@@ -1,3 +1,5 @@
+//for user to enter the verification code
+
 import React, { Component } from 'react';
 import {
     Card,
@@ -76,7 +78,7 @@ class payConfirm extends Component {
             <div>
                 <Container>
                     <Alert color="secondary">
-                        <h1 className="my-3 mx-auto text-center text-dark">VERIFICATION - FOR CARD PAYMENT</h1>
+                        <h1 className="my-3 mx-auto text-center text-dark">VERIFICATION - FOR YOUR PAYMENT</h1>
                     </Alert>
 
                     <Row className="my-2 justify-content-center">

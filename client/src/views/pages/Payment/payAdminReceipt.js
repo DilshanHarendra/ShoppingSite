@@ -1,3 +1,5 @@
+//for admin to view all bank payments and do actions
+
 import React, { Component } from "react";
 import {
     Button,
@@ -63,7 +65,7 @@ class payAdminReceipt extends Component {
                         </thead>
                         {this.state.data.map(payments=>(
                             <tbody>
-                            <tr>
+                                <tr>
                                 <td>{payments.userID}</td>
                                 <td>{payments.payID}</td>
                                 <td>{payments.orderID}</td>
@@ -73,7 +75,7 @@ class payAdminReceipt extends Component {
                                 <td>{payments.paymentStatus}</td>
                                 <td>{payments.paymentStatus == 'Processing' ? <Button onClick={() => this.handleChangeStatus(payments.payID,payments.userID)}>Complete</Button> : <p>No actions</p>}</td>
 
-                            </tr>
+                                </tr>
                             </tbody>
                         ))}
                     </Table>

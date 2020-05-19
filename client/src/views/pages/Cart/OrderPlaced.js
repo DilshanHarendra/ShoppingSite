@@ -33,7 +33,7 @@ export default class OrderPlaced extends Component {
 
         let TotalPrice= this.props.totalPrice;
         let numberOfItem =this.props.totalNumberOfProduct;
-        let userID= this.props.userId;
+        let userID= this.state.uid;
         let productList=this.props.productsList;
 
         // let card_id=this.props.cart_id;

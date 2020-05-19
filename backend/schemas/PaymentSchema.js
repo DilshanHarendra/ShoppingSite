@@ -1,3 +1,5 @@
+//for both card and bank payments
+
 const mongoose=require('mongoose');
 
 const PaymentSchema=new mongoose.Schema({

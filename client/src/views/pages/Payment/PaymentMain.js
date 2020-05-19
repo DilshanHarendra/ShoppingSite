@@ -1,3 +1,5 @@
+//for user to select the payment method
+
 import React, { Component } from 'react';
 import {
     Card,

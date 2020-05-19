@@ -1,3 +1,5 @@
+//for user to make bank payment
+
 import React, { Component } from 'react';
 import {
     Card,

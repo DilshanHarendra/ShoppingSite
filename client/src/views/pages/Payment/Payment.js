@@ -1,3 +1,5 @@
+//main payment details viewing page for user
+
 import React, { Component } from 'react';
 import {
     Card,

@@ -25,12 +25,8 @@ class PaymentSuccess extends Component {
             code:''
         };
 
-        this.getPaymentReceipt = this.getPaymentReceipt.bind(this);
     }
 
-    getPaymentReceipt(){
-
-    }
     render() {
         const percentage = 100;
         return (
