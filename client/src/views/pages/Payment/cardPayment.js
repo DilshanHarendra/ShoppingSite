@@ -10,7 +10,7 @@ import {
     Container,
     Row,
     Col,
-    Alert
+    Alert, Table
 } from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
@@ -26,6 +26,7 @@ class cardPayment extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            gotData:[],
             cardNumber: '',
             cardCSV: '',
             cardHolderName: '',
@@ -39,6 +40,18 @@ class cardPayment extends Component {
         this.handeleExpireDate = this.handeleExpireDate.bind(this);
         this.handeleCardType = this.handeleCardType.bind(this);
         this.onSubmit=this.onSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        const data={
+            orderID:this.props.location.state.orderID
+        };
+
+        axios.post('http://localhost:3001/payment/getOrderDetails',data)
+            .then(res=>this.setState({
+                gotData:res.data
+            }))
+            .catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }
 
     handeleName(event){
@@ -61,10 +74,10 @@ class cardPayment extends Component {
         event.preventDefault();
 
         const newCardPayment={
-            payAmount: 5000,
-            userID:10,
-            orderID: 500,
-            payDate:'13/5/2020',
+            payAmount: 0,
+            userID:null,
+            orderID: this.props.location.state.orderID,
+            payDate: new Date(),
             cardNumber: this.state.cardNumber,
             cardCSV: this.state.cardCSV,
             cardHolderName: this.state.cardHolderName,
@@ -78,7 +91,7 @@ class cardPayment extends Component {
             .then(res=>console.log('Add new payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         var protection="Confirm";
-        window.location.href= `http://localhost:3000/emailConfirm?protection=${protection}`;
+        window.location.href= `http://localhost:3000/payConfirm?protection=${protection}`;
     }
 
     render() {
@@ -89,7 +102,7 @@ class cardPayment extends Component {
                         <h1 className="my-3 mx-auto text-center text-dark">PAYMENT-CARD</h1>
                     </Alert>
                     <Row className="my-2">
-                        <Col className="mx-auto mb-5" xl="6">
+                        <Col className="mx-auto mb-5" xl="5">
                             <Card>
                                 <CardImg top width="100%" src="./images/Payment/1.jpg" alt="Card image cap" />
                                 <CardBody>
@@ -142,26 +155,33 @@ class cardPayment extends Component {
                             </Card>
                         </Col>
 
-                        <Col className="mx-auto mb-5" xl="6">
+                        <Col className="mx-auto mb-5" xl="7">
                             <Card>
                                 <CardImg top width="100%" src="./images/Payment/4.jpg" alt="Card image cap" />
                                 <CardBody>
                                     <CardTitle ><h3 className="text-info font-weight-bold text-center">Order Details</h3></CardTitle>
                                     <CardSubtitle className="font-weight-bold text-center mb-4">Refer below your order items before proceed further</CardSubtitle>
                                     <CardText className="text-center">
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
+                                        <Table responsive="md">
+                                            <thead>
+                                            <tr>
+                                                <th>Order ID</th>
+                                                <th>Number of Items</th>
+                                                <th>Full payment</th>
+                                                <th>Order Date</th>
+                                            </tr>
+                                            </thead>
+                                            {this.state.gotData.map(details=>(
+                                                <tbody>
+                                                <tr>
+                                                    <td>{details._id}</td>
+                                                    <td>{details.numberOfItem}</td>
+                                                    <td>{details.totalAmaount}</td>
+                                                    <td>{details.orderCreateDate}</td>
+                                                </tr>
+                                                </tbody>
+                                            ))}
+                                        </Table>
                                     </CardText>
                                 </CardBody>
                                 <CardFooter>

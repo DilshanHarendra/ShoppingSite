@@ -1,18 +1,58 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Table, Input, Form, Button, FormGroup, Label, ButtonGroup } from 'reactstrap'
+import { Container, Row, Col, Table, Input, Form, Button, FormGroup, Label, ButtonGroup, Badge } from 'reactstrap'
 import axios from 'axios'
-import Axios from 'axios'
+import { TiDeleteOutline } from "react-icons/ti";
 
 import OrderPlaced from './OrderPlaced';
-
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
 class CartList extends Component{
+    
     render(){
         return(
-           <tr>
-            <td>{this.props.product_data.product.proName}</td>
-            <td>{this.props.product_data.product.price}</td>
-            <td>{this.props.product_data.qunitity}</td>
+           <tr style={this.props.product_data.isOrder?{display:"none"}:{display:"table-row"} }>
+                <td>
+                    <p>{this.props.product_data.products.proName}</p>
+                    <p><img src={this.props.product_data.products.images[0]}/></p>
+                
+                </td>
+                <td>
+                    <p>{this.props.product_data.products.description} </p>
+                    <p><Badge color="warning"> {this.props.product_data.products.subCatogory} </Badge></p>
+                                
+                </td>
+
+                <td><p>{this.props.product_data.products.price}</p></td> 
+                <td>
+
+                    <p>{this.props.product_data.quntity}</p>
+                    <Input style={((this.props.qtyedite)&&(this.props.selectedEditeIds==this.props.product_data._id))?{display:"inherit"}:{display:"none"}  }
+                                   placeholder={this.props.product_data.quntity}
+                                   onChange={(e)=>this.props.handeleQuntityChangeValue(e.target.value)}
+                                   value={this.props.newQuntityValue}
+                                   name="quntity"
+             /> 
+                            
+                </td>
+
+            <td>
+                <p><this.props.delete_icon color="red" size="2em" 
+                    onClick={()=>{this.props.deleteItem(this.props.product_data._id)}} >Delete</this.props.delete_icon>
+                </p>
+
+                <p>
+                    <Button 
+                        onClick={()=>this.props.toggaleQuntityEdite(this.props.product_data._id)}
+                        style={((this.props.qtyedite))?{display:"none"}:{display:"inherit"} }                   
+                        >Change Quntity</Button>
+                </p>
+                <p><Button color="primary"  
+                           style={((this.props.qtyedite)&&(this.props.selectedEditeIds==this.props.product_data._id))?{display:"inherit"}:{display:"none"}  }
+                           onClick={()=>this.props.onchangeQuntity( )}>
+                               Change quntity
+                 </Button></p>
+            </td>
            </tr> 
         )
     }
@@ -37,15 +77,27 @@ export default class Cart extends Component {
             TotalNumberOfProduct:'',
             Order_id:'',
             dataload:false,
-            user_id:'55224455552244'
+            user_id:'',
+            cart_id:'',
+
+            qtyedite:false,
+            selectedEditeId:'',
+            newQuntityValue :''
            
         };
 
         this.loadProductListData=this.loadProductListData.bind(this);
         this.categoryList=this.categoryList.bind(this);
         this.notloaddata=this.notloaddata.bind(this);
+        this.deleteItem=this.deleteItem.bind(this);
+        this.onchangeQuntity=this.onchangeQuntity.bind(this);
+
+        this.toggaleQuntityEdite=this.toggaleQuntityEdite.bind(this);
+        this.editmodeToggle=this.editmodeToggle.bind(this);
+        this.handeleQuntityChangeValue=this.handeleQuntityChangeValue.bind(this);
+
         // this.countTotalPrice=this.countTotalPrice(this);
-        this.onCretateOrder=this.onCretateOrder(this);
+        // this.onCretateOrder=this.onCretateOrder(this);
        
         
 
@@ -53,77 +105,154 @@ export default class Cart extends Component {
 
      componentDidMount(){
       this.loadProductListData()
+      this.setState({user_id:localStorage.getItem('id')})
+      console.log("user id"+localStorage.getItem('id'));
+      
       
     }
 
    async loadProductListData(){
+        if(this.state.user_id==null){
+           alert('user is empty') 
+        }else{
+
         axios.get('http://localhost:3001/cart/'+this.state.user_id)
         .then(async ressopns=>{
-            console.log(ressopns);
-         this.setState({PrdouctList:ressopns.data}) 
-         this.setState({dataload:true})
-         this.state.PrdouctList[0].products.map(el=>console.log(el.product.proName)) 
-            console.log(this.state.PrdouctList[0].products[1].qunitity);
-            console.log(this.state.PrdouctList[0].products);
+            console.log(ressopns.data);
+            this.setState({PrdouctList:ressopns.data}) 
+
+            let noOrderedItems=this.state.PrdouctList.filter(Items=>{
+                return Items.isOrder==false
+            })
+
+            console.log(noOrderedItems);
+            this.setState({
+                PrdouctList:noOrderedItems
+            })
+            
+            this.state.PrdouctList.map(el=>console.log(el.products.proName)) 
+            // console.log(this.state.PrdouctList[0]._id);
+            
+            this.setState({dataload:true})
+        //  this.setState({cart_id:this.state.PrdouctList[0]._id})           
+            // console.log(this.state.PrdouctList[0].products[0]);
+            // console.log(this.state.PrdouctList[0].products);
            
             let i;
-            let Total=0;
-            let itemlist= this.state.PrdouctList[0].products
+            let totalPrice=0;
+            let itemlist= this.state.PrdouctList;
+            let totalNumberOfItems=this.state.PrdouctList.length;
 
-            this.setState({TotalNumberOfProduct:itemlist.length})
-            this.setState({ItemList:itemlist})
+            // this.setState({TotalNumberOfProduct:itemlist.length})
+            // this.setState({ItemList:itemlist})
 
             for(i=0;i<itemlist.length;i++){
-                Total+=itemlist[i].product.price*itemlist[i].qunitity
+                totalPrice+=itemlist[i].products.price*itemlist[i].quntity
              }
-            this.setState({TotalPrice:Total}) 
+            this.setState({TotalPrice:totalPrice}) 
+            this.setState({TotalNumberOfProduct:totalNumberOfItems})
+            console.log(this.state.TotalPrice);
+            console.log(totalNumberOfItems);
+            
          
-            //  let j;
-            //  let TotalQuntity=0;
+            // //  let j;
+            // //  let TotalQuntity=0;
 
-            //  for(j=0;i<itemlist.length;j++){
-            //     Total+=itemlist[j].product.price
-            //  }
+            // //  for(j=0;i<itemlist.length;j++){
+            // //     Total+=itemlist[j].product.price
+            // //  }
            
-            console.log(Total);
+                   
+            
+            // console.log(Total);
+            
             
             
         })
         .catch((error)=>{
             console.log('error :'+error);
         })
-       
+    }
     }
     
-
-    onCretateOrder(totalAmaount,user_id,products,numberOfItem){
-
-       if(this.state.dataload==true){
-        const newOrder={
-            totalAmaount:totalAmaount,
-            user_id: user_id,
-            products:products,
-            numberOfItem:numberOfItem
-
-        }
-        Axios.post('http://localhost:3001/order/add',newOrder)
-        .then(res=>{
-            console.log("new order create");
+    deleteItem(id){
+        axios.delete('http://localhost:3001/cart/'+id)
+        .then(res=>console.log(res.data));
+        this.setState({
+            PrdouctList:this.state.PrdouctList.filter(el=>el._id!==id)
         })
-        .catch(err=>console.log('error in create order'+err)
-        )
 
+        window.location.href="/cart"
+    }
+//This method sent put request to change seletected item quntity
+    onchangeQuntity( ){
+        console.log("onchnageQuntity call...");
+        console.log(this.state.newQuntityValue);
+        console.log(this.state.selectedEditeId);
 
+         let editedItemId=this.state.selectedEditeId;
+         let newQuntity=this.state.newQuntityValue;
 
-       }
+        let newQuntityObj={
+            "quntity":newQuntity
+        }
+        
+            axios.put(global.backend+'/cart/quntity/'+editedItemId,newQuntityObj)
+                .then(updateItem=>console.log(updateItem))
+                .catch(err=>console.log('error in update item'+err))
+        this.editmodeToggle()
+       window.location.href=global.backend+"/cart"
+            
+    }
+//new quntity capturs
+    handeleQuntityChangeValue(event){
+        this.setState({newQuntityValue:event})
     }
 
+//this change edite mode and get selected item id
+    toggaleQuntityEdite(editeId){
+        
+        this.editmodeToggle()
+        // this.state.selectedEditeId=editeId
+        this.setState({
+            selectedEditeId:editeId
+        })
+
+        
+        console.log(editeId);
+
+        console.log(this.state.selectedEditeId);
+        console.log(this.state.qtyedite);
+        
+    }
+
+    editmodeToggle(){
+        this.setState({
+            qtyedite:!this.state.qtyedite
+           
+        })
+    }  
+
     categoryList(){    
-     
-        return this.state.PrdouctList[0].products.map(product_ele=>{
-            return <CartList product_data={product_ele}
-                             key={product_ele.product._id}   
-            />
+     //generata list of items
+        return this.state.PrdouctList.map(product_ele=>{
+            return <CartList 
+
+                             product_data={product_ele}
+
+                            delete_icon={TiDeleteOutline}
+                            deleteItem={this.deleteItem}
+
+                            onchangeQuntity={this.onchangeQuntity}
+                            toggaleQuntityEdite={this.toggaleQuntityEdite}
+
+                            qtyedite ={this.state.qtyedite}
+                            selectedEditeIds={this.state.selectedEditeId}
+                            
+                            handeleQuntityChangeValue={this.handeleQuntityChangeValue}
+                            newQuntityValue={this.state.newQuntityValue}
+                             key={product_ele._id}   
+                    />
             }
             
         )
@@ -146,8 +275,10 @@ export default class Cart extends Component {
                         <thead>
                             <tr>
                                 <th> Product </th>
+                                <th> Description </th>
                                 <th> price </th>
                                 <th> qunitity </th>
+                                <th> actions </th>
                             </tr>
                         </thead>   
                         <tbody> 
@@ -162,8 +293,11 @@ export default class Cart extends Component {
                         <OrderPlaced
                             totalPrice={this.state.TotalPrice}
                             totalNumberOfProduct={this.state.TotalNumberOfProduct}
-                            productsList={this.state.ItemList} 
-                            userId={this.state.user_id}/>                        
+                            productsList={this.state.PrdouctList} 
+                            userId={this.state.user_id}
+                            
+                          
+                            />                        
                     </Col>
                 </Row>
             </Container>

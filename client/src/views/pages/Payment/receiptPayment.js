@@ -10,7 +10,7 @@ import {
     Container,
     Row,
     Col,
-    Alert
+    Alert, Table
 } from 'reactstrap';
 import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
@@ -25,11 +25,13 @@ class cardPayment extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            gotData:[],
             bankName: '',
             bankBranch: '',
             depositedAmount: '',
             depositedDate: '',
-            receiptNumber:''
+            receiptNumber:'',
+            sendData:[]
         };
 
         this.handleBankName = this.handleBankName.bind(this);
@@ -38,6 +40,18 @@ class cardPayment extends Component {
         this.handleDepositedDate = this.handleDepositedDate.bind(this);
         this.handleReceiptNumber = this.handleReceiptNumber.bind(this);
         this.onSubmit=this.onSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        const data={
+            orderID:this.props.location.state.orderID
+        };
+
+        axios.post('http://localhost:3001/payment/getOrderDetails',data)
+            .then(res=>this.setState({
+                gotData:res.data
+            }))
+            .catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }
 
     handleBankName(event){
@@ -62,28 +76,30 @@ class cardPayment extends Component {
     onSubmit(event){
         event.preventDefault();
 
-        const newBankPayment={
-            payAmount: 5000,
-            userID:10,
-            orderID: 500,
-            payDate:'13/5/2020',
-            bankName:this.state.bankName,
-            bankBranch:this.state.bankBranch,
-            depositedAmount:this.state.depositedAmount,
-            depositedDate:this.state.depositedDate,
-            receiptNumber:this.state.receiptNumber,
-            cardNumber: null,
-            cardCSV: null,
-            cardHolderName: null,
-            expireDate: null,
-            cardType: null,
-            payReceipt:true
-        }
+            const newBankPayment={
+                payAmount: 0,
+                userID: null,
+                orderID: this.props.location.state.orderID,
+                payDate: new Date(),
+                bankName:this.state.bankName,
+                bankBranch:this.state.bankBranch,
+                depositedAmount:this.state.depositedAmount,
+                depositedDate:this.state.depositedDate,
+                receiptNumber:this.state.receiptNumber,
+                cardNumber: null,
+                cardCSV: null,
+                cardHolderName: null,
+                expireDate: null,
+                cardType: null,
+                payReceipt:true
+            };
+
 
         axios.post('http://localhost:3001/payment/addBankPayment',newBankPayment)
             .then(res=>console.log('Added new bank payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
-        window.location='http://localhost:3000/paymentMain';
+        var protection="Confirm";
+        window.location.href= `http://localhost:3000/payConfirm?protection=${protection}`;
     }
 
     render() {
@@ -94,7 +110,7 @@ class cardPayment extends Component {
                         <h1 className="my-3 mx-auto text-center text-dark">PAYMENT-RECEIPT</h1>
                     </Alert>
                     <Row className="my-2">
-                        <Col className="mx-auto mb-5" xl="6">
+                        <Col className="mx-auto mb-5" xl="5">
                             <Card>
                                 <CardImg top width="100%" src="./images/Payment/2.jpg" alt="Card image cap" />
                                 <CardBody>
@@ -143,26 +159,33 @@ class cardPayment extends Component {
                             </Card>
                         </Col>
 
-                        <Col className="mx-auto mb-5" xl="6">
+                        <Col className="mx-auto mb-5" xl="7">
                             <Card>
                                 <CardImg top width="100%" src="./images/Payment/4.jpg" alt="Card image cap" />
                                 <CardBody>
                                     <CardTitle ><h3 className="text-info font-weight-bold text-center">Order Details</h3></CardTitle>
                                     <CardSubtitle className="font-weight-bold text-center mb-4">Refer below your order items before proceed further</CardSubtitle>
                                     <CardText className="text-center">
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
-                                        <br />
-                                        Make payment to our bank account and submit the receipt here
+                                        <Table responsive="sm">
+                                            <thead>
+                                            <tr>
+                                                <th>Order ID</th>
+                                                <th>Number of Items</th>
+                                                <th>Full payment</th>
+                                                <th>Order Date</th>
+                                            </tr>
+                                            </thead>
+                                            {this.state.gotData.map(details =>(
+                                                <tbody>
+                                                <tr>
+                                                    <td>{details._id}</td>
+                                                    <td>{details.numberOfItem}</td>
+                                                    <td>{details.totalAmaount}</td>
+                                                    <td>{details.orderCreateDate}</td>
+                                                </tr>
+                                                </tbody>
+                                            ))}
+                                        </Table>
                                     </CardText>
                                 </CardBody>
                                 <CardFooter>

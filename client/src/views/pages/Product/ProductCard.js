@@ -1,9 +1,7 @@
 import React,{Component} from 'react';
 import {Link} from "react-router-dom";
 import axios from 'axios';
-import '../../../css/productCard.css';
-
-
+import '../../../css/productCard.css'
 class ProductCard extends Component{
 
    constructor(props) {
@@ -12,13 +10,10 @@ class ProductCard extends Component{
            product:props.data,
            uid:localStorage.getItem('id'),
            qty:1,
-           pid:props.data.id,
+           pid:props.data.id
 
        }
-
    }
-
-
     imgHover(id,image){
         document.getElementById(id).src=global.backend+image;
     }
@@ -27,7 +22,7 @@ class ProductCard extends Component{
        if (this.state.uid==null){
 
        }else {
-          // console.log("add to cart");
+           console.log("add to cart");
            let data={user:this.state.uid,products:this.state.product,qty:this.state.qty}
            axios.post(global.backend+'/cart/add',data)
                .then(res=>{
@@ -41,10 +36,6 @@ class ProductCard extends Component{
        }
 
     }
-
-
-
-
 
    render() {
        return <>
@@ -70,7 +61,7 @@ class ProductCard extends Component{
 
                    <div className="pi-links">
                        <div onClick={()=>this.addToCart()} className="addToCart"><i className="flaticon-bag"></i><span>ADD TO CART</span></div>
-                       <div  className="wishlist-btn"><i className="flaticon-heart"></i></div>
+                       <Link to="#"  className="wishlist-btn"><i className="flaticon-heart"></i></Link>
                    </div>
                </div>
                <Link to={"/oneProduct/"+this.state.product.id}> <div className="pi-text">

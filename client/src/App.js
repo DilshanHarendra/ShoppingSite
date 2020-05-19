@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import { HashRouter, Route, Switch ,BrowserRouter as Router} from 'react-router-dom';
+import { HashRouter, Route, Switch ,Redirect,BrowserRouter as Router} from 'react-router-dom';
 // import { renderRoutes } from 'react-router-config';
 import './App.scss';
+import alertify from "alertifyjs/build/alertify";
+import "alertifyjs/build/css/alertify.min.css";
+import "alertifyjs/build/css/alertify.css";
+import "alertifyjs/build/css/themes/default.min.css";
 
 import DefaultFooter from "./containers/DefaultLayout/DefaultFooter";
 import DefaultHeader from "./containers/DefaultLayout/DefaultHeader";
@@ -16,6 +20,7 @@ import MyShop from "./views/pages/Product/MyShop/MyShop";
 import AdminDashbord from "./views/pages/AdminPages/admindashbord";
 import fakeAuth from "../src/views/pages/fakeAuth"
 import Login from "../../client/src/views/pages/Login"
+import Login2 from "../../client/src/views/pages/Login/Login2"
 import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcategoryPanal";
 import StoreManagerPanal from "./views/pages/AdminPages/StoreManagerRegister/StoremanagerPanal";
 import registerVerify from "./views/pages/registerVerify";
@@ -27,7 +32,6 @@ import receiptPayment from "./views/pages/Payment/receiptPayment";
 import payConfirm from "./views/pages/Payment/payConfirm";
 import payAdmin from "./views/pages/Payment/payAdmin";
 import refundPayment from "./views/pages/Payment/refundPayment";
-import emailConfirm from "./views/pages/Payment/emailConfirm";
 import refundRequest from "./views/pages/Payment/refundRequest";
 import paymentSuccess from "./views/pages/Payment/PaymentSuccess";
 import payment from "./views/pages/Payment/Payment";
@@ -38,12 +42,12 @@ import payAdminRefund from "./views/pages/Payment/payAdminRefund";
 import payInvoice from "./views/pages/Payment/PaymentInvoice";
 
 //=========================CART===========================================
-// import Cart from "./views/pages/Cart/CartItems"
-import Cart2 from "./views/pages/Cart/Cart"
-import SearchResults from "./views/pages/Product/SearchResults/SearchResults";
 
+import Cart from "./views/pages/Cart/Cart"
 
-// import Cart from "./views/pages/Cart/Cart"
+//=========================ORDER==========================================
+import OrderDashbord from "./views/pages/AdminPages/Order/orderTable"
+
 
 //========================================================================
 const loading = () => <div className="animated fadeIn pt-3 text-center">Loading...</div>;
@@ -63,17 +67,64 @@ const loading = () => <div className="animated fadeIn pt-3 text-center">Loading.
 // const Page404 = React.lazy(() => import('./views/Pages/Page404'));
 // const Page500 = React.lazy(() => import('./views/Pages/Page500'));
 
-// const PrivateRoute = ({ component: Component, ...rest }) => (
-//   <Route {...rest} render={(props) => (
-//     fakeAuth.isAuthenticated === true
-//       ? <Component {...props} />
-//       : <Redirect to={{
-//           pathname: '/login',
-//           state: { from: props.location }
-//         }} />
-//   )} />
-// )
+const PrivateRouteUser = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    //fakeAuth.isAuthenticated === true
+    localStorage.getItem("type")==="user"
+      ? <Component {...props} />
+      : <Redirect to={{
+          pathname: '/login',
+          state: { from: props.location,
+            msg:"Access Denied Login as user to continue"  }
+        }} />
+       
+  )} />
+)
 
+
+const PrivateRouteAdmin = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    //fakeAuth.isAuthenticated === true
+    localStorage.getItem("type")==="admin"
+      ? <Component {...props} />
+      : <Redirect to={{
+          pathname: '/login',
+          state: { from: props.location,
+            msg:"Access Denied Login as admin to continue"  }
+        }} />
+       
+  )} />
+)
+
+const PrivateRoutePayadmin = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    //fakeAuth.isAuthenticated === true
+    localStorage.getItem("type")==="payadmin"
+      ? <Component {...props} />
+      : <Redirect to={{
+          pathname: '/login',
+          state: { from: props.location,
+            msg:"Access Denied Login as payment admin to continue" }
+          
+        }} />
+        
+       
+  )} />
+)
+
+const PrivateRouteStoreManager = ({ component: Component, ...rest }) => (
+  <Route {...rest} render={(props) => (
+    //fakeAuth.isAuthenticated === true
+    localStorage.getItem("type")==="storemanager"
+      ? <Component {...props} />
+      : <Redirect to={{
+          pathname: '/login',
+          state: { from: props.location,
+          msg:"Access Denied Login as Store Manager to continue" }
+        }} />
+       
+  )} />
+)
 
 class App extends Component {
 
@@ -84,7 +135,7 @@ class App extends Component {
             <div className="App">
                 <DefaultHeader/>
                 <Switch>
-                    <Route  path="/" exact   component={Home} />
+                    <Route  path ="/" exact   component={Home} />
                     
                     {/* <Route path="/login1" exact component={Login}/> */}
                     
@@ -93,11 +144,9 @@ class App extends Component {
                     <Route path="/Myshop" exact component={MyShop} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
                     <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
-                    <Route path="/search/:key" exact component={SearchResults}/>
-
                     
                     {/* StoreManager */} 
-                    <Route path="/adminDashboard" component={AdminDashbord}/>
+                    <PrivateRouteAdmin path="/adminDashboard" component={AdminDashbord}/>
                     <Route path="/productcategory" component={ProductCategory}/>
                     <Route path="/storeManager" component={StoreManagerPanal}/>
 
@@ -106,26 +155,29 @@ class App extends Component {
                     <Route path="/login" exact component={Login}/>
                     <Route exact path="/Register" component={Register} />
                     <Route exact path="/RegisterConfirm" component={registerVerify}/>
+                    <Route path="/Login" exact component={Login2}/>
 
                     {/* PAYMENT */}
-                    <Route path="/paymentMain" component={PaymentMain} />
-                    <Route path="/cardPayment" component={cardPayment} />
-                    <Route path="/receiptPayment" component={receiptPayment} />
-                    <Route path="/payConfirm" component={payConfirm} />
-                    <Route path="/payAdmin" component={payAdmin} />
-                    <Route path="/refundPayment" component={refundPayment} />
-                    <Route path="/emailConfirm" component={emailConfirm} />
-                    <Route path="/refundRequest" component={refundRequest} />
-                    <Route path="/paymentSuccess" component={paymentSuccess} />
+                    <PrivateRouteUser path="/paymentMain" component={PaymentMain} />
+                    <PrivateRouteUser path="/cardPayment" component={cardPayment} />
+                    <PrivateRouteUser path="/receiptPayment" component={receiptPayment} />
+                    <PrivateRouteUser path="/payConfirm" component={payConfirm} />
+                    <PrivateRoutePayadmin path="/payAdmin" component={payAdmin} />
+                    <PrivateRouteUser path="/refundPayment" component={refundPayment} />
+                    <PrivateRouteUser path="/refundRequest" component={refundRequest} />
+                    <PrivateRouteUser path="/paymentSuccess" component={paymentSuccess} />
                     <Route path="/payment" component={payment} />
-                    <Route path="/allPayments" component={viewAllPayments} />
-                    <Route path="/payAdminCard" component={payAdminCard} />
-                    <Route path="/payAdminReceipt" component={payAdminReceipt} />
-                    <Route path="/payAdminRefund" component={payAdminRefund} />
+                    <PrivateRouteUser path="/allPayments" component={viewAllPayments} />
+                    <PrivateRoutePayadmin path="/payAdminCard" component={payAdminCard} />
+                    <PrivateRoutePayadmin path="/payAdminReceipt" component={payAdminReceipt} />
+                    <PrivateRoutePayadmin path="/payAdminRefund" component={payAdminRefund} />
+                    <PrivateRouteUser path="/payInvoice" component={payInvoice} />
                     
                     {/*CART*/}
                     {/*<Route path="/cart" component={Cart}/>*/}
-                    <Route path="/cart" component={Cart2}/>
+                    <PrivateRouteUser path="/cart" component={Cart}/>
+                    {/*ORDER*/}
+                    <Route path="/orderDashbord" component={OrderDashbord}/>
 
                 </Switch>
                 <DefaultFooter/>

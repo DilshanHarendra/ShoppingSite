@@ -7,33 +7,50 @@ const core = require('cors');
 const PaymentSchema=require('../schemas/PaymentSchema');
 const SecretCode=require('../schemas/PaymentSecretCodeSchema');
 const RefundPayment=require('../schemas/PaymentRefundSchema');
-const nodemailer=require('nodemailer');
+const OrderSchema=require('../schemas/OrderSchema');
+const UserSchema = require('../schemas/UserSchema');
+const nodemailer = require('nodemailer');
 router.use(bodyParser());
 router.use(core());
 var payUID;
 var rn = require('random-number');
 
 router.post('/addCardPayment',async function(req,res){
-    
-    try {
-        payUID = uniqid();
-        const payID = payUID;
-        const userID = req.body.userID;
-        const orderID = req.body.orderID;
-        const payAmount = req.body.payAmount;
-        const payDate = req.body.payDate;
-        const payType = 'Card';
-        const paymentStatus = 'Processing';
-        const refundRequest = false;
-        const cardNumber = req.body.cardNumber;
-        const cardCSV = req.body.cardCSV;
-        const cardHolderName = req.body.cardHolderName;
-        const expireDate = req.body.expireDate;
-        const cardType = req.body.cardType;
-        const payReceipt = req.body.payReceipt;
-        const receiptNumber = req.body.receiptNumber;
 
-        const data =({
+
+    try {
+        let gotData = req.body.orderID;
+        let query = {_id: gotData};
+        let data = await OrderSchema.find(query);
+
+        let dataOrder = [];
+
+        data.forEach((details) => {
+            dataOrder = ({
+                userID : details.user_id,
+                payAmount : details.totalAmaount
+            })
+        });
+
+            payUID = uniqid();
+            const payID = payUID;
+            const userID = dataOrder.userID;
+            const orderID = req.body.orderID;
+            const payAmount = dataOrder.payAmount;
+            const payDate = req.body.payDate;
+            const payType = 'Card';
+            const paymentStatus = 'Processing';
+            const refundRequest = false;
+            const cardNumber = req.body.cardNumber;
+            const cardCSV = req.body.cardCSV;
+            const cardHolderName = req.body.cardHolderName;
+            const expireDate = req.body.expireDate;
+            const cardType = req.body.cardType;
+            const payReceipt = req.body.payReceipt;
+            const receiptNumber = req.body.receiptNumber;
+
+
+        const data1 =({
             payID: payID,
             userID: userID,
             orderID: orderID,
@@ -52,7 +69,7 @@ router.post('/addCardPayment',async function(req,res){
         });
 
 
-        const NewPayment=new PaymentSchema(data);
+        const NewPayment=new PaymentSchema(data1);
 
         console.log(NewPayment);
 
@@ -65,28 +82,31 @@ router.post('/addCardPayment',async function(req,res){
                 console.log(payment.payID + " added successfuly");
             }
         })
-    }catch (e) {
-        
-    }
 
-});
+        let userID1 = dataOrder.userID;
+        let query2 = {_id: userID1};
+        let data2 = await UserSchema.find(query2);
 
-router.post('/emailVerification',async function(req,res){
+        let fromUser = [];
 
-    try{
+        data2.forEach((details) => {
+            fromUser = ({
+                email: details.email
+            })
+        });
+
         var options = {
             min:  123456
             , max:  999999
             , integer: true
         };
         let code = rn(options);
-        const getEmail = req.body.email;
 
-        const data =({
+        const storeData =({
             secretID: code
         });
 
-        const NewSecret=new SecretCode(data);
+        const NewSecret=new SecretCode(storeData);
 
         await NewSecret.save(async function(err,payment) {
             if (err){
@@ -114,7 +134,7 @@ router.post('/emailVerification',async function(req,res){
         // send mail with defined transport object
         let info = await transporter.sendMail({
             from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
-            to: getEmail, // list of receivers
+            to: fromUser.email, // list of receivers
             subject: "Two step verification", // Subject line
             text:
                 "Please find the below secret code:",
@@ -123,30 +143,35 @@ router.post('/emailVerification',async function(req,res){
         });
 
     }catch (e) {
-
+        
     }
 
 });
 
-// router.get('/getVerifyCode',async function(req,res){
-//
-//     try{
-//         const codeToSend = req.body.code;
-//         res.send(codeToSend);
-//     }catch (e) {
-//
-//     }
-//
-// });
+
 
 router.post('/addBankPayment',async function(req,res){
 
     try {
+
+        let gotData = req.body.orderID;
+        let query = {_id: gotData};
+        let data = await OrderSchema.find(query);
+
+        let dataOrder = [];
+
+        data.forEach((details) => {
+            dataOrder = ({
+                userID : details.user_id,
+                payAmount : details.totalAmaount
+            })
+        });
+
         payUID = uniqid();
         const payID = payUID;
-        const userID = req.body.userID;
+        const userID = dataOrder.userID;
         const orderID = req.body.orderID;
-        const payAmount = req.body.payAmount;
+        const payAmount = dataOrder.payAmount;
         const payDate = req.body.payDate;
         const payType = 'Bank';
         const paymentStatus = 'Processing';
@@ -164,7 +189,7 @@ router.post('/addBankPayment',async function(req,res){
         const receiptNumber = req.body.receiptNumber;
 
 
-        const data =({
+        const data1 =({
             payID: payID,
             userID: userID,
             orderID: orderID,
@@ -187,7 +212,7 @@ router.post('/addBankPayment',async function(req,res){
         });
 
 
-        const NewBankPayment=new PaymentSchema(data);
+        const NewBankPayment=new PaymentSchema(data1);
 
         await NewBankPayment.save(async function(err,payment) {
             if (err){
@@ -198,6 +223,66 @@ router.post('/addBankPayment',async function(req,res){
                 console.log(payment.payID + " added successfuly");
             }
         })
+
+        let userID1 = dataOrder.userID;
+        let query2 = {_id: userID1};
+        let data2 = await UserSchema.find(query2);
+
+        let fromUser = [];
+
+        data2.forEach((details) => {
+            fromUser = ({
+                email: details.email
+            })
+        });
+
+        var options = {
+            min:  123456
+            , max:  999999
+            , integer: true
+        };
+        let code = rn(options);
+
+        const storeData =({
+            secretID: code
+        });
+
+        const NewSecret=new SecretCode(storeData);
+
+        await NewSecret.save(async function(err,payment) {
+            if (err){
+                console.log(err + "This is the error");
+            }
+            else
+            {
+                console.log("Secret code added successfuly");
+            }
+        });
+
+        let testAccount = await nodemailer.createTestAccount();
+
+        // create reusable transporter object using the default SMTP transport
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 465,
+            secure: true, // true for 465, false for other ports
+            auth: {
+                user: "codefoursliit@gmail.com", // generated ethereal user
+                pass: "codefour@123", // generated ethereal password
+            },
+        });
+
+        // send mail with defined transport object
+        let info = await transporter.sendMail({
+            from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
+            to: fromUser.email, // list of receivers
+            subject: "Two step verification", // Subject line
+            text:
+                "Please find the below secret code:",
+            html: '<label class="text-dark">Your code is <span class="text-danger font-weight-bold">=='+code+'==</span></label>'
+
+        });
+
     }catch (e) {
 
     }
@@ -262,9 +347,10 @@ router.post('/removeSecretCode',async function(req,res){
 
 });
 
-router.get('/getAllPaymentDetails',async function(req,res){
+router.post('/getAllPaymentDetails',async function(req,res){
     try{
-        var data=await PaymentSchema.find({});
+        var gotData = req.body.userID;
+        var data=await PaymentSchema.find({userID: gotData});
         res.send(data);
     }catch (e) {
         res.status(404).send("parameter error");
@@ -311,17 +397,30 @@ router.post('/getDataForInvoice',async function(req,res){
 router.post('/changeCardStatus',async function(req,res){
     try{
         //get user email
-        const userEmail = "kevingomez890@gmail.com";
+        const userID = req.body.id1;
         const gotID = req.body.id;
+        let query1 = {_id: userID};
+        let data1 = await UserSchema.find(query1);
+
+        let fromUser = [];
+
+        data1.forEach((details) => {
+            fromUser = ({
+                email: details.email
+            })
+        });
+
         var updatePaymentStatus = {
             paymentStatus :'Completed'
         };
         var result =await PaymentSchema.updateOne({payID:gotID},updatePaymentStatus);
 
-        let testAccount = await nodemailer.createTestAccount();
+        console.log("Status changed to Completed");
+
+        let testAccount1 = await nodemailer.createTestAccount();
 
         // create reusable transporter object using the default SMTP transport
-        let transporter = nodemailer.createTransport({
+        let transporter1 = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 465,
             secure: true, // true for 465, false for other ports
@@ -332,9 +431,9 @@ router.post('/changeCardStatus',async function(req,res){
         });
 
         // send mail with defined transport object
-        let info = await transporter.sendMail({
+        let info1 = await transporter1.sendMail({
             from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
-            to: userEmail, // list of receivers
+            to: fromUser.email, // list of receivers
             subject: "Payment completion", // Subject line
             text:
                 "Your below payment is completed:",
@@ -342,15 +441,28 @@ router.post('/changeCardStatus',async function(req,res){
                 +
                 '<a href="http://localhost:3000/payInvoice?getInvoice='+gotID+'">Click to get the receipt</a>'
 
-
         });
+        console.log("Sent to " + userEmail);
+    }catch (e) {
+        res.status(404).send("parameter error");
+        console.log(e);
+    }
+
+});
+
+router.post('/getRefundPaymentDetails',async function(req,res){
+    try{
+        var gotData = req.body.userID;
+        var query = {refundRequest: true, paymentStatus: 'Processing', userID: gotData};
+        var data=await PaymentSchema.find(query);
+        res.send(data);
     }catch (e) {
         res.status(404).send("parameter error");
     }
 
 });
 
-router.get('/getRefundPaymentDetails',async function(req,res){
+router.get('/getRefundPaymentDetailsForAdmin',async function(req,res){
     try{
         var query = {refundRequest: true, paymentStatus: 'Processing'};
         var data=await PaymentSchema.find(query);
@@ -363,9 +475,19 @@ router.get('/getRefundPaymentDetails',async function(req,res){
 
 router.post('/acceptRefund',async function(req,res){
     try{
-        //get user email
-        const userEmail = "kevingomez890@gmail.com";
+        const userID = req.body.id1;
         const gotID = req.body.id;
+        let query1 = {_id: userID};
+        let data1 = await UserSchema.find(query1);
+
+        let fromUser = [];
+
+        data1.forEach((details) => {
+            fromUser = ({
+                email: details.email
+            })
+        });
+
         var updatePaymentStatus = {
             paymentStatus :'Refunded'
         };
@@ -430,7 +552,7 @@ router.post('/acceptRefund',async function(req,res){
         // send mail with defined transport object
         let info = await transporter.sendMail({
             from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
-            to: userEmail, // list of receivers
+            to: fromUser.email, // list of receivers
             subject: "Refund request acceptance", // Subject line
             text:
                 "Your below refund payment is completed:",
@@ -442,5 +564,36 @@ router.post('/acceptRefund',async function(req,res){
     }
 
 });
+
+router.post('/getOrderDetails',async function(req,res){
+    try{
+
+        let gotData = req.body.orderID;
+        console.log(gotData);
+        let query = {_id: gotData};
+        let data=await OrderSchema.find(query);
+
+        // let sendData = [];
+        //
+        // data.forEach((details) => {
+        //     sendData = ({
+        //         _id: details._id,
+        //         numberOfItem: details.numberOfItem,
+        //         totalAmaount: details.totalAmaount,
+        //         orderCreateDate: details.orderCreateDate,
+        //         user_id: details.user_id
+        //     })
+        //
+        // });
+        //
+        // res.send(sendData);
+
+        res.send(data);
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
 
 module.exports = router;

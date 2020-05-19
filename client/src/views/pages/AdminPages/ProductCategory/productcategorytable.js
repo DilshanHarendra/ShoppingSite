@@ -3,7 +3,8 @@ import axios from 'axios'
 import { Container, Table,Badge, Input } from 'reactstrap'
 import { RiDeleteBinLine ,RiCheckboxCircleLine,RiEditLine } from 'react-icons/ri';
 
-
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
 
 class ProductCatergory extends Component{
