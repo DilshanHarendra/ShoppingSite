@@ -137,8 +137,40 @@ class ShowOneProduct extends Component{
             alert('Sorry Now availabel Quantity '+this.state.availabelQty);
         } else{
             let details={uid:this.state.uid,pid:this.state.id,qty:this.state.qty,size:this.state.selectSize}
-            alert(details)
+            // alert(details)
+
+            //Create new Order
+            let productsarray=[];
+            productsarray.push(this.state.id)
+            const order={
+                totalAmaount:this.state.price,
+                user_id:this.state.uid,
+                products:productsarray,
+                numberOfItem:1,
+                orderCreateDate:new Date()
+            }
+
+            console.log(order);
+            console.log(this.state.data);
+
+
+            axios.post('http://localhost:3001/order/add',order)
+                .then(res=>{
+                    console.log("Order create");
+                    console.log(res.data);
+                    this.setState({order_id:res.data})
+
+                    let order_idsend=this.state.order_id
+                    window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
+
+
+                })
+                .catch(err=>console.log('Error in create order'+err)
+                );
+
         }
+
+
 
 
 
