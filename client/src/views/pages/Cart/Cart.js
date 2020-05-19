@@ -112,6 +112,10 @@ export default class Cart extends Component {
     }
 
    async loadProductListData(){
+        if(this.state.user_id==null){
+           alert('user is empty') 
+        }else{
+
         axios.get('http://localhost:3001/cart/'+this.state.user_id)
         .then(async ressopns=>{
             console.log(ressopns.data);
@@ -168,7 +172,7 @@ export default class Cart extends Component {
         .catch((error)=>{
             console.log('error :'+error);
         })
-       
+    }
     }
     
     deleteItem(id){

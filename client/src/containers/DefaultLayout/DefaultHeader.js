@@ -13,6 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/slicknav.min.css';
 import '../../css/style.css';
 import axios from "axios";
+import Axios from 'axios';
 
 
 
@@ -37,7 +38,9 @@ class DefaultHeader extends Component {
 		  danger: false,
 		  info: false,
           skeyWord:'',
-          getCatogorys:[]
+          getCatogorys:[],
+
+          PrdouctList:[],
 		};
 
 	
@@ -59,7 +62,28 @@ class DefaultHeader extends Component {
                 });
 
             }).catch(err=>console.log(err));
+
+            this.getCartItem()
+
     }
+
+    getCartItem=()=>{
+
+        Axios.get('http://localhost:3001/cart/'+localStorage.getItem('id'))
+        .then(async ressopns=>{
+          
+            this.setState({PrdouctList:ressopns.data}) 
+            let noOrderedItems=this.state.PrdouctList.filter(Items=>{
+                return Items.isOrder==false
+            })
+                   this.setState({
+                        PrdouctList:noOrderedItems
+                    })
+        })
+        .catch(err=>console.log('error in get number of item'+err))
+
+        }
+
     getKeyWord=e=>{
 
 	    this.setState({
@@ -102,7 +126,7 @@ class DefaultHeader extends Component {
                                         <div className="shopping-card">
                                             <i className="flaticon-bag"></i>
 											
-                                            <span>0</span>
+                                            <span>{this.state.PrdouctList.length}</span>
                                         </div>
 										
                                         <Link to="/cart">Shopping Cart</Link>

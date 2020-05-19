@@ -175,7 +175,7 @@ class App extends Component {
                     
                     {/*CART*/}
                     {/*<Route path="/cart" component={Cart}/>*/}
-                    <Route path="/cart" component={Cart}/>
+                    <PrivateRouteUser path="/cart" component={Cart}/>
                     {/*ORDER*/}
                     <Route path="/orderDashbord" component={OrderDashbord}/>
 
