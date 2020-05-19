@@ -20,6 +20,11 @@ const Review = new mongoose.Schema({
     addDate:{
         type: Date,
         required: true
+    },
+    isblock:{
+        type:Boolean,
+        default:false,
+        required:true
     }
 
 

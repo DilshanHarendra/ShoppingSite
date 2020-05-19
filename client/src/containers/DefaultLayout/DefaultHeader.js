@@ -13,7 +13,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../../css/slicknav.min.css';
 import '../../css/style.css';
 import axios from "axios";
-import Axios from 'axios';
+
 
 
 
@@ -41,6 +41,8 @@ class DefaultHeader extends Component {
           getCatogorys:[],
 
           PrdouctList:[],
+
+            shownew:""
 		};
 
 	
@@ -56,9 +58,9 @@ class DefaultHeader extends Component {
     componentDidMount(){
        axios.get(global.backend+"/productCategory")
             .then(result=> {
-
+                this.state.getCatogorys=result.data.sort((a,b)=>a._id<b._id?-1:1);
                 this.setState({
-                    getCatogorys:result.data,
+                    shownew:this.state.getCatogorys[this.state.getCatogorys.length-1].categoryName
                 });
 
             }).catch(err=>console.log(err));
@@ -69,7 +71,7 @@ class DefaultHeader extends Component {
 
     getCartItem=()=>{
 
-        Axios.get('http://localhost:3001/cart/'+localStorage.getItem('id'))
+        axios.get('http://localhost:3001/cart/'+localStorage.getItem('id'))
         .then(async ressopns=>{
           
             this.setState({PrdouctList:ressopns.data}) 
@@ -114,7 +116,7 @@ class DefaultHeader extends Component {
                             </div>
                             <div className="col-xl-6 col-lg-5">
                                 <form className="header-search-form" onSubmit={this.search}>
-                                    <input type="text" onChange={this.getKeyWord} value={this.skeyWord} placeholder="Search on divisima ...."/>
+                                    <input type="text" onChange={this.getKeyWord} value={this.skeyWord} placeholder="Search ...."/>
                                     <button><i className="flaticon-search"></i></button>
                                 </form>
                             </div>
@@ -175,11 +177,21 @@ class DefaultHeader extends Component {
                 <nav className="main-navbar">
                     <div className="container">
                         <ul className="main-menu">
-                            <li><Link to="/">Home   <span className="new">New</span></Link></li>
+                            <li><Link to="/">Home  </Link></li>
 
 
                                 {this.state.getCatogorys.map(catogory=>(
-                                    <li key={catogory._id} ><Link to={"/allProducts/"+catogory.categoryName}  >{catogory.categoryName}</Link>
+                                    <li key={catogory._id} ><Link to={"/allProducts/"+catogory.categoryName}  >
+                                        {catogory.categoryName}
+                                        {this.state.shownew==catogory.categoryName?(
+
+                                            <span className="new">New</span>
+                                        ):(
+                                            <></>
+                                        )}
+
+
+                                    </Link>
                                         {(catogory.subCategory.length>0)?(
                                             <ul className="sub-menu">
                                                 {(catogory.subCategory.map(subCategory=>(

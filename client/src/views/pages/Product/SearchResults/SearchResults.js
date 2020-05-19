@@ -27,7 +27,9 @@ class SearchResults extends Component{
             getCatogorys:[],
             catogory:'',
             isLoadmore:true,
-            limit:3
+            limit:3,
+            loading:false
+
         };
         this.loadCatogories();
 
@@ -53,6 +55,9 @@ class SearchResults extends Component{
 
 
         this.props.history.listen((location, action) => {
+            if (action=="POP"){
+                window.location.reload();
+            }
            document.getElementById('preloder').style.display="block";
             this.clearSize();
 
@@ -74,19 +79,24 @@ class SearchResults extends Component{
 
             try {
                 const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-                var ditection= window.pageYOffset|| document.documentElement.scrollTop;
-
-                var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
 
                 var productBox=document.getElementById('productBox').scrollHeight*(0.5); //  box height 80%
-                //  var scrolled = (winScroll / height) * 100-productBox;
+
                 var scrolled =winScroll;
-                console.log(scrolled+" "+productBox);
+
                 if(scrolled>productBox &&((document.body.getBoundingClientRect()).top < scrollPos)){
                     this.state.next+=this.state.limit;
-                   // console.log(scrolled+" "+productBox);
+
                     if (this.state.isLoadmore){
+                        this.setState({
+                            loading:true
+                        })
+                        this.state.isLoadmore=false;
                         this.loadmore();
+                    }else {
+                        this.setState({
+                            loading:false
+                        })
                     }
 
                 }
@@ -100,6 +110,17 @@ class SearchResults extends Component{
 
 
         };
+
+
+        if (window.performance) {
+            if (performance.navigation.type == 1) {
+                document.body.scrollTop = 0;
+                document.documentElement.scrollTop=0;
+                this.state.next=0;
+                this.state.isLoadmore=true;
+                window.location.replace(this.props.history.location.pathname);
+            }
+        }
 
     }
 
@@ -121,7 +142,7 @@ class SearchResults extends Component{
 
 
     loadmore=async ()=>{
-        console.log("call load more")
+
         await axios({
             methode: 'GET',
             url:global.backend +'/product/getSearchProduct',
@@ -131,11 +152,12 @@ class SearchResults extends Component{
             if (res.data.length!=0){
                 this.setState({
                     data:[...this.state.data,...res.data]
-                },()=>{
 
-                    setTimeout(()=>{
-                        document.getElementById('preloder').style.display="none";
-                    },200);
+                },()=>{
+                    this.setState({
+                        loading:false
+                    })
+                    this.state.isLoadmore=true;
                 });
             }else {
                 this.state.isLoadmore=false;
@@ -315,16 +337,7 @@ class SearchResults extends Component{
                                     </div>
                                 </div>
                             </div>
-                            <div className="filter-widget">
-                                <h2 className="fw-title">Brand</h2>
-                                <ul className="category-menu">
-                                    <li>Abercrombie & Fitch <span>(2)</span></li>
-                                    <li>Asos<span>(56)</span></li>
-                                    <li>Bershka<span>(36)</span></li>
-                                    <li>Missguided<span>(27)</span></li>
-                                    <li>Zara<span>(19)</span></li>
-                                </ul>
-                            </div>
+
                         </div>
 
                         <div className="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0" id="products">
@@ -355,6 +368,12 @@ class SearchResults extends Component{
 
 
                             </div>
+                            {this.state.loading?(
+                                <img className="loading" src="/images/loading.gif" alt=""/>
+                            ):(
+                                <></>
+                            )}
+
                         </div>
                     </div>
                 </div>
