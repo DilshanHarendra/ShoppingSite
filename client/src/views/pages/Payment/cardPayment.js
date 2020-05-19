@@ -1,3 +1,4 @@
+// for user to make card payments
 import React, { Component } from 'react';
 import {
     Card,

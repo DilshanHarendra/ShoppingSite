@@ -1,3 +1,5 @@
+//for user to view refundable payments
+
 import React, { Component } from "react";
 import {
     Card,
@@ -37,7 +39,7 @@ class refundPayment extends Component {
             userID: this.state.userID
         };
 
-        axios.post('http://localhost:3001/payment/getAllPaymentDetails',data)
+        axios.post('http://localhost:3001/payment/getRefundPaymentDetails',data)
             .then(res=>this.setState({
                 gotData:res.data
             }))
@@ -87,7 +89,7 @@ class refundPayment extends Component {
                                         <td>{payments.payDate}</td>
                                         <td>{payments.payAmount}</td>
                                         <td>{payments.paymentStatus}</td>
-                                        {payments.paymentStatus == 'Processing' ?
+                                        {payments.paymentStatus === 'Processing' ?
                                             <td><Link to={{
                                                 pathname: '/refundRequest', state: {
                                                     payID: payments.payID,
@@ -97,10 +99,14 @@ class refundPayment extends Component {
                                                     paymentStatus: payments.paymentStatus
                                                 }
                                             }}>
-                                                <Button onClick={() => this.handleRefundOption(payments.payID)}>Refund</Button>
+                                                {payments.refundRequest === false ? <Button
+                                                        onClick={() => this.handleRefundOption(payments.payID)}>Refund</Button>
+                                                    :
+                                                    <p>Request sent</p>
+                                                }
                                             </Link></td>
                                             :
-                                            <td><p>Can't refund</p></td>
+                                            <td><p>No actions</p></td>
                                         }
 
                                     </tr>

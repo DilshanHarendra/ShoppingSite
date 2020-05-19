@@ -1,3 +1,5 @@
+//for payment verification code
+
 const mongoose=require('mongoose');
 
 const PaymentSecretCodeSchema=new mongoose.Schema({

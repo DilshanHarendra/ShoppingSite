@@ -1,3 +1,5 @@
+//for pay admin to view all refund requests and do actions
+
 import React, { Component } from "react";
 import {
     Button,
@@ -13,7 +15,8 @@ class payAdminRefund extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data:[]
+            data:[],
+            dataCheck:false
         };
 
         this.handleRefundChangeStatus = this.handleRefundChangeStatus.bind(this);
@@ -62,19 +65,23 @@ class payAdminRefund extends Component {
                         </tr>
                         </thead>
                         {this.state.data.map(payments=>(
-                            <tbody>
-                            <tr>
-                                <td>{payments.userID}</td>
-                                <td>{payments.payID}</td>
-                                <td>{payments.orderID}</td>
-                                <td>{payments.payDate}</td>
-                                <td>{payments.payAmount}</td>
-                                <td>{payments.payType}</td>
-                                <td>{payments.paymentStatus}</td>
-                                <td><Button onClick={() => this.handleRefundChangeStatus(payments.payID,payments.userID)} className="btn btn-success">Accept</Button></td>
 
-                            </tr>
-                            </tbody>
+                                    <tbody>
+                                        <tr>
+                                        <td>{payments.userID}</td>
+                                        <td>{payments.payID}</td>
+                                        <td>{payments.orderID}</td>
+                                        <td>{payments.payDate}</td>
+                                        <td>{payments.payAmount}</td>
+                                        <td>{payments.payType}</td>
+                                        <td>{payments.paymentStatus}</td>
+                                        <td><Button
+                                        onClick={() => this.handleRefundChangeStatus(payments.payID, payments.userID)}
+                                        className="btn btn-success">Accept</Button></td>
+                                        </tr>
+                                    </tbody>
+
+
                         ))}
                     </Table>
 

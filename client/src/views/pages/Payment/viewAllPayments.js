@@ -1,3 +1,5 @@
+//for user to view all payments
+
 import React, { Component } from "react";
 import {
     Card,
@@ -37,7 +39,7 @@ class viewAllPayments extends Component {
         };
         console.log("User id " + this.state.userID);
 
-        axios.post('http://localhost:3001/payment/getRefundPaymentDetails',data)
+        axios.post('http://localhost:3001/payment/getAllPaymentDetails',data)
             .then(res=>this.setState({
                 gotData:res.data
             }))
