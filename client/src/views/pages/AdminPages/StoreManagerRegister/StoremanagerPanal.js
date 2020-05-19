@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import StoreManagerForm from './storemanagerform';
 import StoreManagerTable from './storemanagertable'
+
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 export default class StoremanagerPanal extends Component {
     render() {
         return (

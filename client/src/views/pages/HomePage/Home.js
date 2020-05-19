@@ -3,7 +3,11 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import ProductCard from "../Product/ProductCard";
 
-import '../../../css/home.css'
+import '../../../css/home.css';
+
+
+
+
 
 class Home extends Component{
 
@@ -19,9 +23,11 @@ class Home extends Component{
             isLoadmore:false,
             next:0,
             limit:4,
-            loading:false
+            loading:false,
 
         }
+
+
     }
 
 
@@ -122,7 +128,7 @@ class Home extends Component{
                 this.setState({
                     latestProduct:res.data
                 });
-                console.log(this.state.latestProduct);
+              //  console.log(this.state.latestProduct);
                 axios({
                     methode: 'GET',
                     url:global.backend+"/productCategory",
@@ -256,23 +262,18 @@ class Home extends Component{
                         <div className="section-title" >
                             <h2>LATEST PRODUCTS</h2>
                         </div>
+                        <div className="row">
 
-                        <div className="marquee">
-                            <div className="track">
-                                {this.state.latestProduct.map(product=>(
-                             <ProductCard key={product.id} data={product} />
 
-                                ))}
 
-                            </div>
+
+                            {this.state.latestProduct.map(product=>(
+                                <div className="col-md-4" >   <ProductCard data={product} /> </div>
+                            ))}
+
+
+
                         </div>
-                       
-
-
-
-
-
-
 
 
 

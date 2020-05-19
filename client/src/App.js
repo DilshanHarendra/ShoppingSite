@@ -47,6 +47,7 @@ import Cart from "./views/pages/Cart/Cart"
 
 //=========================ORDER==========================================
 import OrderDashbord from "./views/pages/AdminPages/Order/orderTable"
+import SearchResults from "./views/pages/Product/SearchResults/SearchResults";
 
 
 //========================================================================
@@ -144,6 +145,7 @@ class App extends Component {
                     <Route path="/Myshop" exact component={MyShop} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
                     <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
+                    <Route path="/search/:key" exact component={SearchResults}/>
                     
                     {/* StoreManager */} 
                     <PrivateRouteAdmin path="/adminDashboard" component={AdminDashbord}/>
@@ -175,7 +177,7 @@ class App extends Component {
                     
                     {/*CART*/}
                     {/*<Route path="/cart" component={Cart}/>*/}
-                    <Route path="/cart" component={Cart}/>
+                    <PrivateRouteUser path="/cart" component={Cart}/>
                     {/*ORDER*/}
                     <Route path="/orderDashbord" component={OrderDashbord}/>
 

@@ -14,6 +14,7 @@ class ShowAllProducts extends Component{
 
     constructor(props) {
         super();
+
         let keys= this.seperatePara(props.history.location.pathname.split("/")[2]);
 
         this.state={
@@ -403,16 +404,7 @@ clearSize(){
                                 </div>
                             </div>
                         </div>
-                        <div className="filter-widget">
-                            <h2 className="fw-title">Brand</h2>
-                            <ul className="category-menu">
-                                <li>Abercrombie & Fitch <span>(2)</span></li>
-                                <li>Asos<span>(56)</span></li>
-                                <li>Bershka<span>(36)</span></li>
-                                <li>Missguided<span>(27)</span></li>
-                                <li>Zara<span>(19)</span></li>
-                            </ul>
-                        </div>
+
                     </div>
 
                     <div className="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0" id="products">

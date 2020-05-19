@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Container, Row ,FormGroup, Label, Input, Form, Col, Button} from 'reactstrap'
 import Axios from 'axios'
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
 export default class OrderPlaced extends Component {
 
@@ -8,10 +10,22 @@ export default class OrderPlaced extends Component {
         super(props)
         this.state={
           order_id:'',
-          items_ids:[]
+          items_ids:[],
+          uid:'',
+          fulname:''
         }
         
 
+    }
+
+    componentDidMount() {
+      this.setState({ uid:localStorage.getItem('id')})
+      
+      console.log(this.state.uid);
+      
+      
+      
+      
     }
 
 
@@ -19,7 +33,7 @@ export default class OrderPlaced extends Component {
 
         let TotalPrice= this.props.totalPrice;
         let numberOfItem =this.props.totalNumberOfProduct;
-        let userID= this.props.userId;
+        let userID= this.state.uid;
         let productList=this.props.productsList;
 
         // let card_id=this.props.cart_id;
@@ -33,11 +47,11 @@ export default class OrderPlaced extends Component {
         let product_id_arry=[];
 
         let items_lists=[];
-
+        //create product id list
         productList.map(elemet=>{
           product_id_arry.push(elemet.products.id)
         })
-
+        //get item id
         productList.map(item=>{
           items_lists.push(item._id)
         })
@@ -49,7 +63,7 @@ export default class OrderPlaced extends Component {
         console.log(product_id_arry);
         
    
-      
+      //creata new order object
       let newOrder={
 
         totalAmaount:TotalPrice,
@@ -64,8 +78,8 @@ export default class OrderPlaced extends Component {
       
 
         console.log(newOrder);   
-        
-        Axios.post('http://localhost:3001/order/add',newOrder)
+        //add order object use post request
+        Axios.post(global.backend+'/order/add',newOrder)
             .then(res=>{
                 console.log("Order create");
                   console.log(res.data);
@@ -77,7 +91,7 @@ export default class OrderPlaced extends Component {
                       console.log(this.state.items_ids);
                       
                       this.state.items_ids.map(itemid=>{
-                           Axios.post('http://localhost:3001/cart/isorder/'+itemid)
+                           Axios.post(global.backend+'/cart/isorder/'+itemid)
                            .then(res=>{
                                console.log(res.data)
                            })
@@ -101,6 +115,9 @@ export default class OrderPlaced extends Component {
 
     }
 
+    onClancel(){
+      window.location.href= "http://localhost:3000/"
+    }
     
 
 
@@ -134,8 +151,8 @@ export default class OrderPlaced extends Component {
       </Row>
       <Row>
           <Col>
-            <Button style={ButtonStyle} onClick={()=>{this.onCreateOrder()}} color="primary">Check out</Button>
-            <Button style={ButtonStyle} color="danger">Cancel</Button>
+            <Button style={ButtonStyle} disabled={!(this.props.totalPrice>0)}  onClick={()=>{this.onCreateOrder()}} color="primary">Check out</Button>
+            <Button style={ButtonStyle} color="danger" onClick={()=>{this.onClancel()}}>Cancel</Button>
         </Col>
       </Row>
     </Form>
@@ -155,9 +172,10 @@ const ButtonStyle={
 const oderStyle={
    
     padding: '10px',
-    background: 'aliceblue',
+    background: 'white',
     borderRadius: '10px',
-    margin:'10px'
+    margin:'10px',
+    boxShadow: '0px 1px 15px 0px #bdbdbd'
     
 }
 

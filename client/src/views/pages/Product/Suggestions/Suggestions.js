@@ -99,7 +99,7 @@ class Suggestions extends Component{
 
 
 
-                                    <div key={product.id}   className="product-item col-md-3">
+                                    <div key={product.id}   className="col-md-3">
                                         <Link to={"/oneProduct/"+product.id} >
                                            <ProductCard data={product}/>
                                         </Link>

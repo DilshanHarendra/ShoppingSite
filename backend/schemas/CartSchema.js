@@ -1,5 +1,6 @@
 const mongoose= require('mongoose');
-
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 const CartSchema = new mongoose.Schema({
     user:{
         type:String,
@@ -11,7 +12,7 @@ const CartSchema = new mongoose.Schema({
     },
 
     quntity:{
-        type:String,
+        type:Number,
         required:true
     },
     isOrder:{
