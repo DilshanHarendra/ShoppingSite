@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
-import { Container, Row, Col, Table, Input, Form, Button, FormGroup, Label, ButtonGroup, Badge } from 'reactstrap'
+import { Container, Row, Col, Table, Input, Form, Button, FormGroup, Label, ButtonGroup, Badge, InputGroupAddon } from 'reactstrap'
 import axios from 'axios'
-import { TiDeleteOutline } from "react-icons/ti";
+import { MdRemoveShoppingCart } from "react-icons/md";
+import { FaCartPlus ,FaCheck } from "react-icons/fa";
+
 
 import OrderPlaced from './OrderPlaced';
 // Student id :IT18045840
@@ -14,7 +16,7 @@ class CartList extends Component{
            <tr style={this.props.product_data.isOrder?{display:"none"}:{display:"table-row"} }>
                 <td>
                     <p>{this.props.product_data.products.proName}</p>
-                    <p><img src={this.props.product_data.products.images[0]}/></p>
+                    <p><img style={imageStyle} src={global.backend+this.props.product_data.products.images[0]}/></p>
                 
                 </td>
                 <td>
@@ -27,31 +29,35 @@ class CartList extends Component{
                 <td>
 
                     <p>{this.props.product_data.quntity}</p>
+                
                     <Input style={((this.props.qtyedite)&&(this.props.selectedEditeIds==this.props.product_data._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.product_data.quntity}
                                    onChange={(e)=>this.props.handeleQuntityChangeValue(e.target.value)}
                                    value={this.props.newQuntityValue}
                                    name="quntity"
-             /> 
+                                   min={0} max={this.props.product_data.products.quantity} type="number" step="1"
+       
+        /> <p>available quntity :<Badge color="secondry"> {this.props.product_data.products.quantity}</Badge></p>
                             
                 </td>
 
             <td>
-                <p><this.props.delete_icon color="red" size="2em" 
+                <p><this.props.delete_icon color="FF4054" size="2.5em" 
                     onClick={()=>{this.props.deleteItem(this.props.product_data._id)}} >Delete</this.props.delete_icon>
                 </p>
 
-                <p>
-                    <Button 
+                <p><FaCartPlus size="2em" color="#0389FF"
                         onClick={()=>this.props.toggaleQuntityEdite(this.props.product_data._id)}
                         style={((this.props.qtyedite))?{display:"none"}:{display:"inherit"} }                   
-                        >Change Quntity</Button>
+                        >
+                     </FaCartPlus> 
                 </p>
-                <p><Button color="primary"  
-                           style={((this.props.qtyedite)&&(this.props.selectedEditeIds==this.props.product_data._id))?{display:"inherit"}:{display:"none"}  }
+                <p><FaCheck color="#12D36D" size="3em"  
+                           style={((this.props.qtyedite)&&(this.props.selectedEditeIds==this.props.product_data._id)&&(!(this.props.product_data.products.quantity<this.props.newQuntityValue)))?{display:"inherit"}:{display:"none"}  }
                            onClick={()=>this.props.onchangeQuntity( )}>
-                               Change quntity
-                 </Button></p>
+                               
+                 </FaCheck>
+                 </p>
             </td>
            </tr> 
         )
@@ -116,7 +122,7 @@ export default class Cart extends Component {
            alert('user is empty') 
         }else{
 
-        axios.get('http://localhost:3001/cart/'+this.state.user_id)
+        axios.get('http://localhost:3001/cart/'+localStorage.getItem('id'))
         .then(async ressopns=>{
             console.log(ressopns.data);
             this.setState({PrdouctList:ressopns.data}) 
@@ -190,19 +196,23 @@ export default class Cart extends Component {
         console.log(this.state.newQuntityValue);
         console.log(this.state.selectedEditeId);
 
-         let editedItemId=this.state.selectedEditeId;
-         let newQuntity=this.state.newQuntityValue;
+        if(this.state.newQuntityValue==''){
+              alert('Quntity is Empty')  
+        }else{
 
-        let newQuntityObj={
+             let editedItemId=this.state.selectedEditeId;
+             let newQuntity=this.state.newQuntityValue;
+
+            let newQuntityObj={
             "quntity":newQuntity
-        }
+             }
         
-            axios.put(global.backend+'/cart/quntity/'+editedItemId,newQuntityObj)
-                .then(updateItem=>console.log(updateItem))
-                .catch(err=>console.log('error in update item'+err))
-        this.editmodeToggle()
-       window.location.href=global.backend+"/cart"
-            
+                 axios.put(global.backend+'/cart/quntity/'+editedItemId,newQuntityObj)
+                    .then(updateItem=>console.log(updateItem))
+                    .catch(err=>console.log('error in update item'+err))
+             this.editmodeToggle()
+             window.location.href="/cart"
+        }
     }
 //new quntity capturs
     handeleQuntityChangeValue(event){
@@ -240,7 +250,8 @@ export default class Cart extends Component {
 
                              product_data={product_ele}
 
-                            delete_icon={TiDeleteOutline}
+                            delete_icon={MdRemoveShoppingCart}
+                            FaCartPlus={FaCartPlus}
                             deleteItem={this.deleteItem}
 
                             onchangeQuntity={this.onchangeQuntity}
@@ -311,4 +322,10 @@ const cartsumeryStyle={
     borderRadius: '10px',
     padding: '10px',
     margin: '10px'
+}
+
+const imageStyle={ 
+    width: '15%',
+    borderRadius: '10px',
+    boxShadow: '0px 0px 13px #888888'
 }
