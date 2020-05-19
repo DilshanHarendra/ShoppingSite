@@ -346,10 +346,10 @@ class SearchResults extends Component{
                                     <h1>No Results Found</h1>
                                 ):(this.state.data.map(oneRow=>(
                                         <div className="col-lg-4 col-sm-6" key={oneRow.id}>
-                                            <Link to={"/oneProduct/"+oneRow.id} >
+
 
                                                     <ProductCard data={oneRow} />
-                                            </Link>
+
                                         </div>
 
                                     ))

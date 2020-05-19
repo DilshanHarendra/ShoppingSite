@@ -268,7 +268,7 @@ class Home extends Component{
 
 
                             {this.state.latestProduct.map(product=>(
-                                <div className="col-md-4" >   <ProductCard data={product} /> </div>
+                                <div className="col-md-3" >   <ProductCard data={product} /> </div>
                             ))}
 
 

@@ -207,7 +207,7 @@ router.get('/letestProduct',async function (req,res) {
         if (req.query.s){
             delete req.query.s;
             console.log(req.query);
-            var data=await productSchema.find({}).sort({addDate:-1}).limit(6);
+            var data=await productSchema.find({}).sort({addDate:-1}).limit(8);
             res.send( data);
         }else {
             res.status(500).send("query err");

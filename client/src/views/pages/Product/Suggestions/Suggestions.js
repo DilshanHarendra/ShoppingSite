@@ -69,9 +69,7 @@ class Suggestions extends Component{
 
     }
 
-    imgHover(id,image){
-        document.getElementById(id).src=global.backend+image;
-    }
+
 
 
     render() {
@@ -96,15 +94,9 @@ class Suggestions extends Component{
                         ):(
                             this.state.products.map(product => (
                                 <>
-
-
-
                                     <div key={product.id}   className="col-md-3">
-                                        <Link to={"/oneProduct/"+product.id} >
-                                           <ProductCard data={product}/>
-                                        </Link>
+                                        <ProductCard data={product}/>
                                     </div>
-
                                 </>
                                 ))
                         )}
