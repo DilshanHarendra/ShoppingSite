@@ -77,19 +77,22 @@ router.route('/add').post((req,res)=>{
         const user_id=req.body.user;
         const products=req.body.products;
         const qnty=req.body.qty;
-
-           
-    
                    
-        Cart.find({$and:[{user:user_id },{isOrder:false},{products:{_id:products._id}}]})
+        Cart.find({"user":user_id,"products.id":products.id,"isOrder":false})
              .then(res =>{
                 console.log(res);
                 if(res.length>0){
-                        console.log(res);
+                    console.log("==========================");
+                     Cart.update( {"user":user_id,"products.id":products.id,"isOrder":false},
+                                { $inc: {"quntity":1}},
+                                            (err,storemanager)=>{
+                                                 
+                                }
+                                     
+                    );
                         
                 }else{
-
-                    
+                   
                     const newItems =new Cart({
                         "user":user_id,
                         "products":products,

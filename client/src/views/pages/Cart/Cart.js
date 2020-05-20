@@ -80,6 +80,7 @@ export default class Cart extends Component {
             temproductlist:[],
             ItemList:[],
             TotalPrice:0,
+            TotalDiscount:0,
             TotalNumberOfProduct:'',
             Order_id:'',
             dataload:false,
@@ -146,6 +147,7 @@ export default class Cart extends Component {
            
             let i;
             let totalPrice=0;
+            let Totaldiscount=0;
             let itemlist= this.state.PrdouctList;
             let totalNumberOfItems=this.state.PrdouctList.length;
 
@@ -153,9 +155,16 @@ export default class Cart extends Component {
             // this.setState({ItemList:itemlist})
 
             for(i=0;i<itemlist.length;i++){
+
+                if(itemlist[i].products.discount==null){
                 totalPrice+=itemlist[i].products.price*itemlist[i].quntity
+                }else{
+                totalPrice+=itemlist[i].products.price*itemlist[i].quntity-itemlist[i].products.discount
+                }
+                Totaldiscount+=itemlist[i].products.discount
              }
             this.setState({TotalPrice:totalPrice}) 
+            this.setState({TotalDiscount:Totaldiscount})
             this.setState({TotalNumberOfProduct:totalNumberOfItems})
             console.log(this.state.TotalPrice);
             console.log(totalNumberOfItems);
@@ -281,7 +290,7 @@ export default class Cart extends Component {
 
                 <Row >
                     <Col>
-                    <h3>  Product List  </h3>
+                    <h3>  Cart/Wishlist </h3>
                         <Table responsive>
                         <thead>
                             <tr>
@@ -303,6 +312,7 @@ export default class Cart extends Component {
                     <h3>  Order Summery  </h3>
                         <OrderPlaced
                             totalPrice={this.state.TotalPrice}
+                            totalDiscount={this.state.TotalDiscount}
                             totalNumberOfProduct={this.state.TotalNumberOfProduct}
                             productsList={this.state.PrdouctList} 
                             userId={this.state.user_id}

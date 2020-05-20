@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Row ,FormGroup, Label, Input, Form, Col, Button} from 'reactstrap'
+import { Container, Row ,FormGroup, Label, Input, Form, Col, Button, Badge} from 'reactstrap'
 import Axios from 'axios'
 // Student id :IT18045840
 //Name :S.D.S.L Dissanayake
@@ -133,19 +133,22 @@ export default class OrderPlaced extends Component {
         </Col>
         <Col md={6}>
           <FormGroup>
-        <h5>{this.props.totalPrice}</h5>
+       
+        <h3><Badge color="success"> {this.props.totalPrice+" $"}</Badge></h3>
           </FormGroup>
         </Col>
       </Row>
       <Row form>
         <Col md={6}>
           <FormGroup>
-            <h5 for="exampleEmail">Number of Items</h5>
+          <h6 for="exampleEmail">Discount Amount:</h6>
+          <p for="exampleEmail">Number of Items </p>
           </FormGroup>
         </Col>
         <Col md={6}>
           <FormGroup>
-            <h5>{this.props.totalNumberOfProduct}</h5>
+           <h4><Badge color="warning"> {this.props.totalDiscount+" $"}</Badge></h4>
+           <h6 > <Badge color="warning">{this.props.totalNumberOfProduct }</Badge> </h6>
           </FormGroup>
         </Col>
       </Row>
