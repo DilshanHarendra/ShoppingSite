@@ -143,7 +143,7 @@ class ShowOneProduct extends Component{
             let productsarray=[];
             productsarray.push(this.state.id)
             const order={
-                totalAmaount:this.state.price,
+                totalAmaount:this.state.data[0].price,
                 user_id:this.state.uid,
                 products:productsarray,
                 numberOfItem:1,
@@ -151,7 +151,7 @@ class ShowOneProduct extends Component{
             }
 
             console.log(order);
-            console.log(this.state.data);
+            console.log(this.state.data[0].price);
 
 
             axios.post('http://localhost:3001/order/add',order)
