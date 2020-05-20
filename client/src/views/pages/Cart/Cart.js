@@ -207,6 +207,7 @@ export default class Cart extends Component {
 
         if(this.state.newQuntityValue==''){
               alert('Quntity is Empty')  
+              window.location.href= "/cart"
         }else{
 
              let editedItemId=this.state.selectedEditeId;
@@ -289,7 +290,7 @@ export default class Cart extends Component {
             <Container >
 
                 <Row >
-                    <Col>
+                    <Col >
                     <h3>  Cart/Wishlist </h3>
                         <Table responsive>
                         <thead>
@@ -308,9 +309,10 @@ export default class Cart extends Component {
                         </Table>
                     
                     </Col>
-                    <Col  xs="3">
+                   
+                    <Col xs={3} >
                     <h3>  Order Summery  </h3>
-                        <OrderPlaced
+                        <OrderPlaced 
                             totalPrice={this.state.TotalPrice}
                             totalDiscount={this.state.TotalDiscount}
                             totalNumberOfProduct={this.state.TotalNumberOfProduct}
@@ -320,6 +322,7 @@ export default class Cart extends Component {
                           
                             />                        
                     </Col>
+                    
                 </Row>
             </Container>
         )
@@ -331,7 +334,8 @@ const cartsumeryStyle={
     background: 'lavender',
     borderRadius: '10px',
     padding: '10px',
-    margin: '10px'
+    margin: '10px',
+    minWidth:'350px'
 }
 
 const imageStyle={ 

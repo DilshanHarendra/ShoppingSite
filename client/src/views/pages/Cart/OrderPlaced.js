@@ -123,7 +123,8 @@ export default class OrderPlaced extends Component {
 
     render() {
         return (
-    <Container style={oderStyle}>
+          <Row>
+        <Col style={oderStyle} responsive >
     <Form>
       <Row form>
         <Col md={6}>
@@ -134,7 +135,7 @@ export default class OrderPlaced extends Component {
         <Col md={6}>
           <FormGroup>
        
-        <h3><Badge color="success"> {this.props.totalPrice+" $"}</Badge></h3>
+        <h3><Badge color="success"> {Math.round(this.props.totalPrice*100)/100+" $"}</Badge></h3>
           </FormGroup>
         </Col>
       </Row>
@@ -160,7 +161,8 @@ export default class OrderPlaced extends Component {
       </Row>
     </Form>
                
-            </Container>
+    </Col>
+    </Row>
         )
     }
 }
@@ -178,7 +180,9 @@ const oderStyle={
     background: 'white',
     borderRadius: '10px',
     margin:'10px',
-    boxShadow: '0px 1px 15px 0px #bdbdbd'
+    boxShadow: '0px 1px 15px 0px #bdbdbd',
+    minWidth:'350px'
+
     
 }
 
