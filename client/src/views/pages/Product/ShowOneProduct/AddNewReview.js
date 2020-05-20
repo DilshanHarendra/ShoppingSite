@@ -15,15 +15,12 @@ class AddNewReview extends  Component{
             reviewButton:'Publish',
             id:props.id,
             uid:localStorage.getItem('id'),
+            username:'abc'
 
         }
     }
 
-    componentDidMount() {
-        if (this.state.uid!=null){
 
-        }
-    }
 
 
 
@@ -65,6 +62,7 @@ class AddNewReview extends  Component{
                 let query={
                     pid:this.state.id,
                     uid:this.state.uid,
+                    username:this.state.username,
                     review:this.state.reviewText,
                     rating:this.state.rating,
                 };

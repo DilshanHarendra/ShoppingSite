@@ -9,6 +9,7 @@ import axios from 'axios';
 import {Link} from "react-router-dom";
 import $ from 'jquery'
 import ProductCard from "../ProductCard";
+import socketIOClient from "socket.io-client";
 
 class SearchResults extends Component{
 
@@ -41,7 +42,13 @@ class SearchResults extends Component{
 
     componentDidMount(){
 
+        socketIOClient(global.backendSoket).on('NotifyProductChange', data => {
 
+
+            if (data.type=="update"||data.type=="delete"){
+                window.location.reload();
+            }
+        });
         const script = document.createElement("script");
         script.src = "../../../../js/main.js";
         script.async = true;

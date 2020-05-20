@@ -23,8 +23,15 @@ io.on('connection', socket => {
 
         socket.broadcast.emit('updateReview',updateReview);
 
+    });
+
+    socket.on('ChangeProduct', product => {
+        socket.broadcast.emit('NotifyProductChange',product);
 
     });
+
+
+
 
 
 });
@@ -57,9 +64,7 @@ router.get('/getProducts',async function (req,res) {
 
             let limit =parseInt(req.query.limit);
             delete req.query.limit;
-            console.log(req.query);
             var data=await productSchema.find(req.query).sort( { totClicks: -1 } ).skip(set).limit(limit).sort({_id:-1});
-            console.log(data.length);
             res.send(data);
         }else {
             res.status(500).send("query err");
@@ -72,6 +77,27 @@ router.get('/getProducts',async function (req,res) {
 });
 
 
+router.get('/myShop',async function (req,res) {
+
+    try {
+            delete req.query.s;
+            var set=parseInt(req.query.sets);
+            delete req.query.sets;
+            let limit =parseInt(req.query.limit);
+            delete req.query.limit;
+            var data=await productSchema.find(req.query).skip(set).limit(limit).sort({_id:-1}).sort({addDate:-1});
+            res.send(data);
+
+    }catch (e) {
+        console.log(e);
+        res.status(500).send("err " + e);
+    }
+
+});
+
+
+
+
 
 
 router.get('/getProduct',async function (req,res) {
@@ -81,8 +107,7 @@ router.get('/getProduct',async function (req,res) {
         if (req.query.s){
             delete req.query.s;
              var data=await productSchema.find(req.query);
-            console.log(data.catogory)
-          res.send( data);
+             res.send( data);
         }else {
             res.status(500).send("query err");
         }
@@ -103,9 +128,9 @@ router.get('/getSingelProduct',async function (req,res) {
             delete req.query.s;
 
             if (req.query.tclick==='true'){
-                var result=  await productSchema.updateOne({id:req.query.id},{ $inc:{totClicks:0.5}});
+                var result=  await productSchema.updateOne({id:req.query.id},{ $inc:{totClicks:1}});
                 delete req.query.tclick;
-                console.log(req.query);
+
             }
             delete req.query.tclick;
 

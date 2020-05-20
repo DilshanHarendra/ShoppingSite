@@ -4,6 +4,8 @@ import {Link} from "react-router-dom";
 import ProductCard from "../Product/ProductCard";
 
 import '../../../css/home.css';
+import LatestProducts from "./LatestProducts";
+import Catogories from "./Catogories";
 
 
 
@@ -16,14 +18,13 @@ class Home extends Component{
 
         super(props);
         this.state={
-            latestProduct:[],
+
             product:[],
-            popularProduct:[],
-            catogory:[],
             isLoadmore:false,
             next:0,
             limit:4,
             loading:false,
+            latestProduct:[]
 
         }
 
@@ -42,14 +43,14 @@ class Home extends Component{
 
 
         this.getData();
-
+        this.getlatestProduct();
 
 
 
         if (window.performance) {
             if (window.performance.navigation.type == 1) {
                 window.location.replace('/');
-                console.log("refresh");
+
             }
         }
         var scrollPos = 0;
@@ -84,7 +85,22 @@ class Home extends Component{
         };
     }
 
+    getlatestProduct=()=>{
 
+        axios({
+            methode: 'GET',
+            url:global.backend+'/product/letestProduct',
+            params:{s:true}
+        }).then(res=>{
+
+            this.setState({
+                latestProduct:res.data
+            },()=>console.log(this.state.latestProduct));
+
+        }).catch(err=>{
+            console.log(err);
+        });
+    }
 
 
     loadmore=async ()=>{
@@ -114,31 +130,11 @@ class Home extends Component{
         });
     }
 
-    changeActiveItem = (activeItemIndex) => this.setState({ activeItemIndex });
+
 
     getData=async () =>{
         try {
             await axios({
-                methode: 'GET',
-                url:global.backend+'/product/letestProduct',
-                params:{s:true}
-            }).then(res=>{
-                // this.state.product=res.data.sort((a,b)=>( a.addDate>b.addDate?-1:1) );
-               //this.state.latestProduct=res.data.sort((a,b)=>a.totClicks>b.totClicks?-1:1);
-                this.setState({
-                    latestProduct:res.data
-                });
-              //  console.log(this.state.latestProduct);
-                axios({
-                    methode: 'GET',
-                    url:global.backend+"/productCategory",
-
-                }).then(res=>{
-                    this.setState({
-                        catogory:res.data
-                    })
-
-                    axios({
                         methode: 'GET',
                         url:global.backend+"/product/getAllProduct",
                         params:{s:true,sets:this.state.next,limit:this.state.limit}
@@ -153,12 +149,8 @@ class Home extends Component{
                     }).catch(err=>{
                         console.log(err);
                     });
-                }).catch(err=>{
-                    console.log(err);
-                });
-            }).catch(err=>{
-                console.log(err);
-            });
+
+
         }catch (e) {
 
         }
@@ -254,31 +246,10 @@ class Home extends Component{
                     </div>
                 </section>
 
+                <LatestProducts/>
 
 
 
-                <section className="top-letest-product-section">
-                    <div className="container">
-                        <div className="section-title" >
-                            <h2>LATEST PRODUCTS</h2>
-                        </div>
-                        <div className="row">
-
-
-
-
-                            {this.state.latestProduct.map(product=>(
-                                <div className="col-md-3" >   <ProductCard data={product} /> </div>
-                            ))}
-
-
-
-                        </div>
-
-
-
-                    </div>
-                </section>
 
                 <section className="banner-section" >
                     <div className="container">
@@ -297,30 +268,13 @@ class Home extends Component{
                         <div className="section-title" >
                             <h2>BROWSE TOP SELLING PRODUCTS</h2>
                         </div>
-                        <ul className="product-filter-menu" >
-
-                            {this.state.catogory.map(catogory=>(
-                                <>
-                                    {(catogory.subCategory.length>0)?(
-                                        <>
-                                            {(catogory.subCategory.slice(0,5).map(subCategory=>(
-                                                <li><Link to={"/allProducts/"+catogory.categoryName+"~"+subCategory}>{subCategory}</Link></li>
-                                            )))}
-
-                                        </>
-
-                                    ):(
-                                        <></>
-                                    )}
+                        <Catogories/>
 
 
 
 
-                                </>
-                            ))}
 
 
-                        </ul>
                         <div className="row" id="productBox">
 
                             {this.state.product.map(product=>(

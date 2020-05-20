@@ -71,7 +71,7 @@ class DefaultHeader extends Component {
 
     getCartItem=()=>{
 
-        axios.get('http://localhost:3001/cart/'+localStorage.getItem('id'))
+        axios.get(global.backend+'/cart/'+localStorage.getItem('id'))
         .then(async ressopns=>{
           
             this.setState({PrdouctList:ressopns.data}) 
@@ -94,7 +94,11 @@ class DefaultHeader extends Component {
     }
     search=e=>{
         e.preventDefault();
-        window.location.replace('/search/'+this.state.skeyWord);
+        if (this.state.skeyWord!=""){
+            window.location.replace('/search/'+this.state.skeyWord);
+        }
+
+
 
     }
 
@@ -209,22 +213,22 @@ class DefaultHeader extends Component {
 
                                     </li>
                                 ))}
-                            <li><Link to="/">Pages</Link>
-                                <ul className="sub-menu">
-                                    <li><Link to="/">Product Page</Link></li>
-                                    <li><Link to="/">Category Page</Link></li>
-                                    <li><Link to="/">Cart Page</Link></li>
-                                    <li><Link to="/">Checkout Page</Link></li>
-                                    <li><Link to="/">Contact Page</Link></li>
-                                </ul>
-                            </li>
-                            <li><Link to="/Myshop">My Shop</Link>
-                                <ul className="sub-menu">
-                                    <li><Link  to="/Myshop">My Shop</Link></li>
-                                    <li><Link  to="/Myshop/addProduct">Add Product</Link></li>
 
-                                </ul>
-                            </li>
+                            {localStorage.getItem('type')=="store_manager"||localStorage.getItem('type')=="admin"?(
+                                <li><Link to="/Myshop">My Shop</Link>
+                                    <ul className="sub-menu">
+                                        <li><Link  to="/Myshop">My Shop</Link></li>
+                                        <li><Link  to="/Myshop/addProduct">Add Product</Link></li>
+
+                                    </ul>
+                                </li>
+                            ):(
+                                <></>
+                            )}
+
+
+
+
                             <li>
                                 <NavLink to="/adminDashboard" className="nav-link" >Dashboard</NavLink>
                             </li>

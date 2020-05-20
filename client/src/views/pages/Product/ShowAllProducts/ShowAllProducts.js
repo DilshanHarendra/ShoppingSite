@@ -9,6 +9,7 @@ import axios from 'axios';
 import {Link} from "react-router-dom";
 import $ from 'jquery'
 import ProductCard from "../ProductCard";
+import socketIOClient from "socket.io-client";
 
 class ShowAllProducts extends Component{
 
@@ -31,7 +32,8 @@ class ShowAllProducts extends Component{
             catogory:'',
             isLoadmore:true,
             limit:3,
-            loading:false
+            loading:false,
+
 
         };
         this.loadCatogories();
@@ -42,6 +44,12 @@ class ShowAllProducts extends Component{
 
     componentDidMount(){
 
+        socketIOClient(global.backendSoket).on('NotifyProductChange', data => {
+
+            if (data.type=="update"||data.type=="delete"){
+                window.location.reload();
+            }
+        });
 
 
         const script = document.createElement("script");

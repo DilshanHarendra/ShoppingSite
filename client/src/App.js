@@ -48,6 +48,7 @@ import Cart from "./views/pages/Cart/Cart"
 //=========================ORDER==========================================
 import OrderDashbord from "./views/pages/AdminPages/Order/orderTable"
 import SearchResults from "./views/pages/Product/SearchResults/SearchResults";
+import LatestProducts from "./views/pages/HomePage/LatestProducts";
 
 
 //========================================================================
@@ -146,6 +147,7 @@ class App extends Component {
                     <Route path="/Myshop/addProduct" component={AddProduct} />
                     <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
                     <Route path="/search/:key" exact component={SearchResults}/>
+                    <Route path="/test" exact component={LatestProducts}/>
                     
                     {/* StoreManager */} 
                     <PrivateRouteAdmin path="/adminDashboard" component={AdminDashbord}/>

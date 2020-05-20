@@ -19,6 +19,7 @@ import {Form, InputGroup} from "react-bootstrap";
 
 import AddNewReview from "./AddNewReview";
 import ShowReview from "./ShowReview";
+import socketIOClient from "socket.io-client";
 
 
 
@@ -46,13 +47,14 @@ class ShowOneProduct extends Component{
             id:this.props.match.params.id,
             pcatgory:'',
             data:[],
-            isAdmin:true,
+            isAdmin:false,
             isDelete:false,
             showaddComment:true,
             isvalidate:false,
             mess:'',
             averageRating:0,
-            uid:localStorage.getItem('id'),
+            uid:localStorage.getItem("id"),
+            type:localStorage.getItem("type"),
             selectqty:0,
             selectSize:'',
             availabelQty:0
@@ -61,10 +63,43 @@ class ShowOneProduct extends Component{
         };
 
     }
+
+    componentWillMount() {
+
+
+
+    }
+
+
     componentDidMount(){
 
         document.body.scrollTop = 0;
         document.documentElement.scrollTop=0;
+        socketIOClient(global.backendSoket).on('NotifyProductChange', data => {
+
+            if (data.type=="update"){
+                if (data.pid==this.state.id){
+                    window.location.replace(this.props.location.pathname);
+                }
+
+            }else if (data.type=="delete"){
+                if (data.pid==this.state.id){
+                    if (!this.state.isAdmin){
+                        window.location.replace("allProducts/"+this.state.data[0].catogory);
+                    }
+                }
+            }
+        });
+
+
+
+
+
+        if (window.performance) {
+            if (window.performance.navigation.type == 1) {
+                window.location.replace(this.props.location.pathname);
+            }
+        }
 
         this.props.history.listen((location, action) => {
 
@@ -110,15 +145,27 @@ class ShowOneProduct extends Component{
             url:global.backend+'/product/getSingelProduct',
             params:{s:true,id:this.state.id,tclick:true}
         }).then(res=>{
+            if (this.state.uid!=null){
+                    if(this.state.type=="store_manager"||this.state.type=="admin"){
+                        if (this.state.uid==res.data[0].sellerID){
 
-            this.setState({
-                data:res.data,
-                pcatgory:res.data.catogory,
-                availabelQty:res.data[0].quantity
-            },()=>{
+                            this.state.isAdmin=true;
+
+                        }
+                    }
+                }
+                this.setState({
+                    data:res.data,
+                    pcatgory:res.data[0].catogory,
+                     availabelQty:res.data[0].quantity
+                })
+
+
                 document.getElementById('preloder').style.display="none";
-            });
-        }).catch(err=>console.log(err));
+
+        }).catch(err=>{
+            console.log(err)
+        });
     }
 
 
@@ -154,14 +201,14 @@ class ShowOneProduct extends Component{
             console.log(this.state.data);
 
 
-            axios.post('http://localhost:3001/order/add',order)
+            axios.post(global.backend+'/order/add',order)
                 .then(res=>{
                     console.log("Order create");
                     console.log(res.data);
                     this.setState({order_id:res.data})
 
                     let order_idsend=this.state.order_id
-                    window.location.href= "http://localhost:3000/paymentMain?order_id="+order_idsend;
+                    window.location.href= global.backend+"/paymentMain?order_id="+order_idsend;
 
 
                 })
@@ -305,6 +352,7 @@ class ShowOneProduct extends Component{
                      this.setState({
                          isDelete:false
                      });
+                     socketIOClient(global.backendSoket).emit('ChangeProduct',{type:'delete',pid:this.state.id});
                      window.location.replace('/allProducts/'+this.state.pcatgory);
 
                  })
@@ -395,10 +443,12 @@ class ShowOneProduct extends Component{
                                         </button>
                                     </DialogActions>
                                 </Dialog>
-                                <h2 className="p-title">{product.proName}</h2>
+                                <h2 style={{'font-size':'25px'}} className="p-title">{product.proName}</h2>
+
+                                <h5 style={{'color':'gray'}} className="p-title"><span className="tag">CONDITION </span>{product.condition}</h5>
                                 <h5 style={{'color':'gray'}} className="p-title"><span className="tag">CATEGORY </span>{product.catogory+" "+product.subCatogory}</h5>
                                 <h2 style={{'color':'gray'}} className="p-title"><span className="tag">BRAND </span>{product.brand}</h2>
-                                {(product.discount!=0)?(
+                                {(product.discount!=0&&product.discount!=null)?(
                                     <h3 className="p-price"><strike style={{color:'gray'}} >{product.price}$ </strike> {" "+(product.price-((product.price*product.discount)/100)).toFixed(2)}$</h3>
                                 ):(
                                     <h3 className="p-price">{product.price} $</h3>

@@ -8,7 +8,7 @@ class ShowReview extends Component{
         this.state={
             reviews:[],
             id:props.id,
-            ucatogory:localStorage.getItem("type")
+
         }
     }
 
@@ -48,11 +48,11 @@ class ShowReview extends Component{
     }
 
     updateReview=(x,rid)=>{
-        console.log(x)
+
         let query={action:x,rid:rid,pid:this.state.id};
         axios.post(global.backend+'/product/updateReviews',query)
             .then(res=>{
-                console.log(res.data)
+
                 socketIOClient(global.backendSoket).emit('NotifyUpdateReview',{pid:res.data})
             }
         ).catch(
@@ -166,7 +166,7 @@ class ShowReview extends Component{
                 this.state.reviews.map(review=>(
                     !review.isblock?(
                         <div className="card">
-                            {this.state.ucatogory=="admin"?(
+                            {localStorage.getItem('type')=="store_manager"||localStorage.getItem('type')=="admin"?(
                                 <div style={{display:'flex',width:'100%'}}>
                                     <h2>Status : <span>UnBlocked Review</span></h2>
                                     <button  onClick={()=>this.updateReview(true,review._id)} style={{'margin-left':'50px'}} className="btn btn-danger">Hide</button>
@@ -182,7 +182,7 @@ class ShowReview extends Component{
                             </div>
                         </div>
                     ):(
-                        this.state.ucatogory=="admin"?(
+                        localStorage.getItem('type')=="store_manager"||localStorage.getItem('type')=="admin"?(
                             <div className="card">
                                 <div style={{display:'flex',width:'100%'}}>
                                     <h2>Status : <span>Blocked Review</span></h2>

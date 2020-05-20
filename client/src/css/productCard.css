@@ -23,7 +23,9 @@
     display: inline-block;
     color: #000;
 }
-
+.img{
+    height: 450px;
+}
 
 
 .addToCart span {
