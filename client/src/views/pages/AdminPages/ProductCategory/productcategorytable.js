@@ -259,7 +259,7 @@ export default class productcategorytable extends Component {
                         item.categoryName.toLowerCase().match(event.target.value)||
                         item.categoryDiscription.toLowerCase().match(event.target.value)||
                         item.categoryNote.toLowerCase().match(event.target.value)
-                        // item.subCategory.map( sub=> {return sub.toLowerCase().match(event.target.value)})
+                    //    item.subCategory.filter( sub=> { return sub.toLowerCase().match(event.target.value)})
                     
                      )
              })

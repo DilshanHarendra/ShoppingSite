@@ -81,7 +81,7 @@ class StoreManager extends Component{
         </td>
         <td>
         <RiEditLine  size="2em" color="#FFD478" style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} } onClick={()=>{this.props.editemodeToggle(this.props.storemanager._id)}}  > </RiEditLine>
-        <RiCheckboxCircleLine  size="2em" color="#4EB6E6 " style={this.props.editdatastatas?{display:"inherit"}:{display:"none"}  } onClick={()=>{this.props.updateStoremanager(
+        <RiCheckboxCircleLine  size="2em" color="#4EB6E6 " style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  } onClick={()=>{this.props.updateStoremanager(
             this.props.storemanager.firstName,
             this.props.storemanager.lastName,
             this.props.storemanager.birthDay,
@@ -329,7 +329,7 @@ export default class storemanagerview extends Component {
     render() {
         return (
           <Container style={Styles.regTablePlanal}>
-                <h4 style={Styles.regHeadertext}>Register new Store Manager</h4>
+                <h4 style={Styles.regHeadertext}>Store Manager Table</h4>
                     <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
                     <Table  responsive   >
                         <thead>
