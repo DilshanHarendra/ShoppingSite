@@ -7,6 +7,21 @@ import ProductCategoryTable from './productcategorytable';
 //Name :S.D.S.L Dissanayake
 
 export default class Createcategory extends Component {
+    constructor(props){
+        super()
+    }
+    
+    componentDidMount(){
+        
+        if(!(localStorage.getItem('type')=="admin")){
+            window.location.href="/"
+        }
+    }
+    
+
+
+
+
     render() {
         return (
             <Container style={divStyle}>

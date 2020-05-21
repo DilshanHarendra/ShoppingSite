@@ -13,7 +13,7 @@ class OderDetails extends Component{
                 <td> <p> {this.props.order.user_id} </p> </td>
                 <td><p> {this.props.order.numberOfItem} </p>  </td>
                 <td> <p>{this.props.order.orderCreateDate}</p> </td>
-                <td><p>{this.props.order.isDelevery?<Badge color="primary">Deliver</Badge>:<Badge color="danger">Not Delivered</Badge>}</p></td>
+                <td><p>{this.props.order.isDelevery?<Badge color="primary">Delivered</Badge>:<Badge color="danger">Not Delivered</Badge>}</p></td>
                 <td><Button outline color="danger" onClick={()=>{this.props.deleteOder(this.props.order._id)}} >Delete </Button></td>
                 <td><Button outline color="warning"onClick={()=>{this.props.changeStatus(this.props.order._id)}} disabled={this.props.order.isDelevery}  >Change delivery status </Button></td>
             </tr>
@@ -43,8 +43,16 @@ export default class orderPanal extends Component {
 
     }
 
+
+    
+
     componentDidMount(){
-          this.loadOrderData()
+        if(!(localStorage.getItem('type')=="admin")){
+            window.location.href="/"
+        }else{
+            this.loadOrderData()
+
+        }
     }
 
     loadOrderData(){

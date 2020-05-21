@@ -6,6 +6,20 @@ import StoreManagerTable from './storemanagertable'
 // Student id :IT18045840
 //Name :S.D.S.L Dissanayake
 export default class StoremanagerPanal extends Component {
+
+constructor(props){
+    super()
+}
+
+componentDidMount(){
+    
+    if(!(localStorage.getItem('type')=="admin")){
+        window.location.replace="/"
+    }
+}
+
+
+
     render() {
         return (
     <Container style={divStyle}>
