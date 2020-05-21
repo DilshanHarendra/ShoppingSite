@@ -161,7 +161,7 @@ class App extends Component {
                     <Route exact path="/Register" component={Register} />
                     <Route exact path="/RegisterConfirm" component={registerVerify}/>
                     <Route path="/Login2" exact component={Login2}/>
-                    <Route path="/userprofile" exact component={UserProfile}/>
+                    <PrivateRouteUser path="/userprofile" exact component={UserProfile}/>
 
                     {/* PAYMENT */}
                     <PrivateRouteUser path="/paymentMain" component={PaymentMain} />

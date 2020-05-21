@@ -8,6 +8,7 @@ import '../../../css/flaticon.css';
 import '../../../css/font-awesome.min.css';
 import fakeAuth from "../fakeAuth"
 import axios from 'axios';
+import UserProfile from "../UserProfile/UserProfile"
 
 import alertify from "alertifyjs/build/alertify";
 import "alertifyjs/build/css/alertify.min.css";
@@ -17,7 +18,8 @@ class Login2 extends Component {
     constructor(props) {
 		super(props);
 		this.state = {
-		  large: false,
+      large: false,
+      large1: false,
       redirectToReferrer:false,
       Username:"",
     newPassword:"",
@@ -52,6 +54,12 @@ componentDidMount=()=>{
 		  large: !this.state.large,
 		});
     }
+
+    toggleLarge1=()=> {
+      this.setState({
+        large1: !this.state.large1,
+      });
+      }
     
     onchangeHandler=(e)=>{
       this.setState({
@@ -71,10 +79,8 @@ e.preventDefault();
 localStorage.setItem("AccessToken",res.data.accessToken);
 localStorage.setItem("type",res.data.type);
 localStorage.setItem("id",res.data.id);
-this.setState({
-  large:false
-})
-
+localStorage.setItem("name",res.data.data.Username);
+this.props.toggle(false);
 alertify.success("Successfully logged in");
 
 if(res.data.type==="payadmin")
@@ -86,8 +92,21 @@ if(res.data.type==="admin"){
   window.location.href="/adminDashboard"
 
 }else
+if(res.data.type==="store_manager")
 {
-  window.location.reload();
+  window.location.href="/Myshop"
+}else{
+
+  global.name=res.data.data.Username;
+  console.log(res.data.data.Username)
+  console.log("this is name"+global.name)
+  if(res.data.data.address1===""||res.data.data.address2===""||res.data.data.nic==="")
+  {
+    this.toggleLarge1();
+    
+  }else{
+    window.location.reload();
+  }
 }
 
             
@@ -156,6 +175,19 @@ if(res.data.type==="admin"){
             </Col>
           </Row>
         </Container>
+
+
+        <Modal isOpen={this.state.large1} toggle={this.toggleLarge1}
+      className={'modal-lg ' + this.props.className}>
+        <ModalHeader>Update your info</ModalHeader>
+    <ModalBody>
+   <UserProfile/>
+   </ModalBody>
+   <ModalFooter>
+
+     <Button color="secondary" onClick={()=>{this.toggleLarge1();window.location.reload();}}>Skip</Button>
+   </ModalFooter>
+ </Modal>
       </div> );
     }
 }

@@ -2,12 +2,6 @@ import React, { Component } from 'react';
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import axios from 'axios';
-
-import alertify from "alertifyjs/build/alertify";
-import "alertifyjs/build/css/alertify.min.css";
-import "alertifyjs/build/css/alertify.css";
-import "alertifyjs/build/css/themes/default.min.css";
-
 import {
     Nav,
     NavItem,
@@ -42,7 +36,7 @@ import {
     Button
   } from "reactstrap";
 
-class UserProfile extends Component{
+class UserProfile2 extends Component{
 
     constructor(props){
         super(props);
@@ -55,12 +49,7 @@ class UserProfile extends Component{
             address1upd:"",
             address2upd:"",
             cityupd:"",
-            data:[],
-            valid:false,
-            invalid:false,
-            valid1:false,
-            invalid1:false,
-            oldpassword:"",
+            data:[]
 
         }
     }
@@ -82,13 +71,9 @@ class UserProfile extends Component{
         address1upd:res.data.data[0].address1,
         address2upd:res.data.data[0].address2,
         cityupd:res.data.data[0].city,
-        pass:res.data.data[0].newPassword,
         dialCode:"",
         isupdated:false,
-        newpassword:"",
-        oldpassword:"",
-        confirmPass:"",
-        isdeleted:false,
+
        })
         
     }).catch(err=>{
@@ -102,101 +87,6 @@ class UserProfile extends Component{
       [e.target.name]:e.target.value
     })
     
-  }
-
-
-
-  onChangeHandler=(e)=>{
-
-    this.setState({
-      [e.target.name]:e.target.value
-    })
-
-    if(e.target.value.length<7)
-    {
-      console.log("visited")
-      this.setState(
-        {
-          valid1: false,
-          invalid1: true,
-        }
-      );
-
-    }else{
-      console.log("visited 2")
-      this.setState(
-        {
-          invalid1: false,
-          valid1: true,
-        }
-      );
-
-    }
-   
-  }
-
-
-  HandlepasswordConfirm=(e)=>{
-
-    if (e.target.value === this.state.newpassword) {
-      this.setState(
-        {
-          valid: true,
-          invalid: false,
-        }
-      );
-    } else {
-      this.setState(
-        {
-          invalid: true,
-          valid: false,
-        }
-      );
-    }
-    // console.log(this.state.malidi);
-  
-  }
-
-
-
-  submitUpdatePassword=(e)=>{
-    e.preventDefault();
-    console.log("this is pass"+this.state.newpassword)
-    if(this.state.pass===this.state.oldpassword)
-    {
-      
-
-      const data={
-        id:localStorage.getItem("id"),
-        newPassword:this.state.newpassword,
-        
-      }
-  
-  
-      document.getElementById('preloder').style.display="block";
-      try {
-        axios.post("http://localhost:3001/user/updatepass", data).then((res) => {
-          console.log(res);
-          console.log(res.data);
-          setTimeout(()=>{
-            document.getElementById('preloder').style.display="none";
-           
-        },400);
-        window.location.href="/userprofile"
-        alertify.success("Successfully updated password");
-        
-        });
-      } catch (e) {
-        console.log(e)
-      }
-
-    }else{
-      alertify.alert("Old password is wrong");
-
-    }
-    
-
-
   }
 
   submithandler=(e)=>{
@@ -291,13 +181,6 @@ class UserProfile extends Component{
       tabPane() {
         return (
           <>
-           <div id="preloder">
-                <div className="loader"></div>
-            </div>
-
-            <p style={{display:"none"}}>{setTimeout(()=>{
-            document.getElementById('preloder').style.display="none";
-        },400)}</p>
             <TabPane tabId="1">
               {
                    <Col>
@@ -334,7 +217,7 @@ class UserProfile extends Component{
            mobileNum: country.slice(
              value.dialCode.length
            ),
-         },console.log(this.state.mobileNum));
+         });
        }}
      />
    </FormGroup>
@@ -419,89 +302,8 @@ class UserProfile extends Component{
 
             <TabPane tabId="2">
               {
-                <div>
-                  
-                  <Card style={{ borderColor: "white" }}>
-                    <CardHeader>Change password</CardHeader>
- <CardBody>
-                      <form onSubmit={this.submitUpdatePassword} >
-
-                      <InputGroup className="mb-3">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                      <i className="flaticon-unlock"></i>
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="password" placeholder="Old password" name="oldpassword" value={this.state.oldpassword} autoComplete="new-password" onChange={this.changeHandler} required/>
-                   
-                  </InputGroup>
-
-
-                    <InputGroup className="mb-3">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                      <i className="flaticon-unlock"></i>
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="password" placeholder="new password" name="newpassword" value={this.state.newpassword} autoComplete="new-password" valid={this.state.valid1} invalid={this.state.invalid1} onChange={this.onChangeHandler} required/>
-                    <FormFeedback>Password length should be more than 7</FormFeedback>
-                  </InputGroup>
-                  
-                  
-                  <InputGroup className="mb-4">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                      <i className="flaticon-unlock"></i>
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="password" placeholder="confirm new password" name="confirmPass"  autoComplete="new-password" valid={this.state.valid} invalid={this.state.invalid} onChange={this.HandlepasswordConfirm} required/>
-                    <FormFeedback>Passwords doesn't match</FormFeedback>
-                  </InputGroup>
-                  <Button type="submit" className="success">Update Password</Button>
-                  </form>
-                  </CardBody>
-                  </Card>
-                  </div>
+                   <div>Hi</div>
               }
-              </TabPane>
-              <TabPane tabId="3">
-                {
-                  <Card style={{ borderColor: "white" }}>
-                  <CardHeader>Delete Account</CardHeader>
-<CardBody>
-  <p>Deleting this account will remove all your data. You won't be able to enjoy any services from C4fashions</p>
-  <p>please re-think before deleting</p>
-                  <Button type="submit" className="success" onClick={()=>{this.setState({
-                    isdeleted:true
-                  })}}>Delete profile</Button>
-
-                  {this.state.isdeleted===true?<div>
-                    <InputGroup className="mb-3">
-                    <InputGroupAddon addonType="prepend">
-                      <InputGroupText>
-                      <i className="flaticon-unlock"></i>
-                      </InputGroupText>
-                    </InputGroupAddon>
-                    <Input type="password" placeholder="enter password" name="deletepassword" value={this.state.newpassword} autoComplete="new-password"  onChange={this.onChangeHandler} required/>
-                    
-                  </InputGroup>
-
-                  <FormGroup>
-     <Label htmlFor="reason">Reason for deleting</Label>
-     <Input
-       type="textarea"
-       id="reason"
-       name="reason"
-       placeholder="Enter reason for deleting account"
-       value={this.state.reason}
-       onChange={this.changeHandler}
-     />
-   </FormGroup>
-
-                  </div>:<></>}
-                  </CardBody>
-                  </Card>
-                }
               </TabPane>
             </>);
             
@@ -534,16 +336,16 @@ render(){
             Security
           </NavLink>
         </NavItem>
-        <NavItem>
+        {/* <NavItem>
           <NavLink
             active={this.state.activeTab[0] === "3"}
             onClick={() => {
               this.toggle(0, "3");
             }}
           >
-            Settings
+            Messages
           </NavLink>
-        </NavItem>
+        </NavItem> */}
       </Nav>
       <TabContent activeTab={this.state.activeTab[0]}>
         {this.tabPane()}
@@ -556,4 +358,4 @@ render(){
 }
 
 }
-export default UserProfile;
+export default UserProfile2;

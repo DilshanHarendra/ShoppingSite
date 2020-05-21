@@ -48,9 +48,15 @@ class DefaultHeader extends Component {
 	
 		this.toggleLarge = this.toggleLarge.bind(this);
 		
-	  }
+      }
+      
+      changefalse=(value)=>{
+          this.setState({
+large:value
+          })
+      }
 
-	toggleLarge() {
+	toggleLarge(large) {
 		this.setState({
 		  large: !this.state.large,
 		});
@@ -106,6 +112,13 @@ class DefaultHeader extends Component {
 
     state = {  }
     render() { 
+        // if(localStorage.getItem("AccessToken")!==null)
+        // {
+        //     this.setState({
+        //         large:false
+
+        //     })
+        // }
         return ( <React.Fragment>
 
 
@@ -138,8 +151,7 @@ class DefaultHeader extends Component {
                                         <Link to="/cart">Shopping Cart</Link>
                                         
                                     </div>
-
-
+                                    
                                     <div className="up-item">
                               {localStorage.getItem("AccessToken")===null?
 
@@ -147,7 +159,7 @@ class DefaultHeader extends Component {
                               Sign In or Create Account</div>:(
                                   <>
                                   <div className="dropdown">
-                                      <button className="dropbtn" style={{"backgroundImage":"url('/images/product/1.jpg')"}}></button>
+                                      <button className="dropbtn" >{localStorage.getItem("name").charAt(0)}</button>
                                       <div className="dropdown-content">
                                           {localStorage.getItem("type")==="user"?
                     
@@ -166,7 +178,7 @@ class DefaultHeader extends Component {
                        className={'modal-lg ' + this.props.className}>
                   
                   <ModalBody>
-                   <Login2 toggle={this.toggleLarge}/>
+                   <Login2 toggle={this.changefalse.bind(this,this.state.large)}/>
                   </ModalBody>
                   {/* <ModalFooter>
 					  <Link to="/Register">

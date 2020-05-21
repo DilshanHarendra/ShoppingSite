@@ -116,6 +116,38 @@ router.route('/addtoken').post((req,res)=>{
 });
 
 
+
+
+
+router.route('/updateuser').post((req,res)=>{
+ 
+
+  UserSchema.findByIdAndUpdate(req.body.id,{
+
+    "Fullname":req.body.Fullname,
+      "mobile":req.body.mobile,
+      "nic":req.body.nic,
+      "Username":req.body.Username,
+      "address1":req.body.address1,
+      "address2":req.body.address2,
+      "city":req.body.city,
+},(err,user)=>res.send("updated"))
+});
+
+
+
+router.route('/updatepass').post((req,res)=>{
+ 
+ 
+
+  UserSchema.findByIdAndUpdate(req.body.id,{
+
+    "newPassword":req.body.newPassword,
+      
+},(err,user)=>res.send("updated"))
+});
+
+
 router.get("/getuserbyid",async function(req,res){
 console.log("visited function")
   var data=await UserSchema.find(req.query);

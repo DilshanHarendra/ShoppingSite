@@ -40,6 +40,7 @@ class Login extends Component {
 
     localStorage.clear();
     
+    
    }
 
    
@@ -83,6 +84,7 @@ e.preventDefault();
               localStorage.setItem("AccessToken",res.data.accessToken);
               localStorage.setItem("type",res.data.type);
               localStorage.setItem("id",res.data.id);
+              localStorage.setItem("name",res.data.data.Username);
               this.setState({
                 large:false
               });

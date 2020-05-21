@@ -59,14 +59,15 @@ router.post('/login',async function (req,res) {
   try{
   var pass=req.body.newPassword.trim();
    var data=await  UserSchema.findOne({Username:req.body.Username});
+   
 
-   if (data==null){
+   if (data===null){
           res.json({success:false,err:"Invalid Username"})
       }else {
           if (data.newPassword.trim()===pass){
               const accTocken=data['token'].trim();
               const token=jwt.sign(accTocken,process.env.ACCESS_TOKEN_SECRET);
-              res.json({success:true,accessToken:token,type:data['type'],id:data['id']})
+              res.json({success:true,accessToken:token,type:data['type'],id:data['id'],data:data})
              
           }else{
             res.json({success:false,err:"Invalid password"})
