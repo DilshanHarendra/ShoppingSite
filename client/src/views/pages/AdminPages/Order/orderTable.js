@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, Input, Table, Badge } from 'reactstrap'
+import { Container, Input, Table, Badge, Button } from 'reactstrap'
 import Axios from 'axios';
 // Student id :IT18045840
 //Name :S.D.S.L Dissanayake
@@ -9,10 +9,13 @@ class OderDetails extends Component{
         return(
             <tr>
                 <td><p> {this.props.order._id}</p></td>
-                <td> <p> {this.props.order.totalAmaount} </p> </td>
+                <td> <p> {Math.round(this.props.order.totalAmaount*100)/100} </p> </td>
                 <td> <p> {this.props.order.user_id} </p> </td>
                 <td><p> {this.props.order.numberOfItem} </p>  </td>
                 <td> <p>{this.props.order.orderCreateDate}</p> </td>
+                <td><p>{this.props.order.isDelevery?<Badge color="primary">Delivered</Badge>:<Badge color="danger">Not Delivered</Badge>}</p></td>
+                <td><Button outline color="danger" onClick={()=>{this.props.deleteOder(this.props.order._id)}} >Delete </Button></td>
+                <td><Button outline color="warning"onClick={()=>{this.props.changeStatus(this.props.order._id)}} disabled={this.props.order.isDelevery}  >Change delivery status </Button></td>
             </tr>
         )
     }
@@ -29,7 +32,7 @@ export default class orderPanal extends Component {
 
 
         this.state={
-            orderList:{},
+            orderList:[],
             dataload:false,
         }
 
@@ -40,8 +43,16 @@ export default class orderPanal extends Component {
 
     }
 
+
+    
+
     componentDidMount(){
-          this.loadOrderData()
+        if(!(localStorage.getItem('type')=="admin")){
+            window.location.href="/"
+        }else{
+            this.loadOrderData()
+
+        }
     }
 
     loadOrderData(){
@@ -49,7 +60,7 @@ export default class orderPanal extends Component {
         .then(ressopns=>{
             
                 this.setState({orderList:ressopns.data,dataload:true})
-                     
+
 
                             
         })
@@ -58,9 +69,40 @@ export default class orderPanal extends Component {
         })
     }
 
+   async deleteOder(order_id){
+        Axios.delete('http://localhost:3001/order/'+order_id)
+            .then(ressopns=>{
+                console.log("Order delete"+ressopns);
+                    this.setState({
+                        orderList:this.state.orderList.filter(el=>el._id!==order_id)
+                     })
+                        this.loadOrderData();
+
+            })
+            .catch(err=>console.log("error in delete order"))
+            // window.location.href="/orderDashbord"
+    }
+
+    changeStatus=(ordr_id)=>{
+        Axios.put(global.backend+'/order/changestatus'+ordr_id)
+            .then(response=>{
+                console.log("Change order status");
+                this.loadOrderData();
+
+                                
+            })
+            .catch(err=>console.log("Errror in change status"+err))
+    }
+
+
     orderManagmetList(){
         return this.state.orderList.map(currentorder=>{
-             return <OderDetails order={currentorder} key={currentorder._id} ></OderDetails>
+             return <OderDetails 
+                    order={currentorder}
+                    deleteOder={this.deleteOder}
+                    changeStatus={this.changeStatus}
+                    
+                    key={currentorder._id} ></OderDetails>
         })
     }
 
@@ -103,7 +145,10 @@ export default class orderPanal extends Component {
                             <th>Total Amount</th>
                             <th>User ID</th>
                             <th>Number of Items</th> 
-                            <th>Order Create date</th>     
+                            <th>Order Create date</th> 
+                            <th>Deliver status</th> 
+                            <th>Delete</th> 
+                            <th>Chnage Status</th>   
                          </tr>
                     </thead>
                         <tbody>

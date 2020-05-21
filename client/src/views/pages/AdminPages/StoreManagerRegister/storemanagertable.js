@@ -137,9 +137,16 @@ export default class storemanagerview extends Component {
     }
 
     componentDidMount(){
+
+        if(localStorage.getItem('id')==null){
+            window.location.href="/";
+        }else{
+
         this.loadStoreManagerData();
         
        }
+
+    }  
 
     enableEditeMode(edite_id){
         this.setState({

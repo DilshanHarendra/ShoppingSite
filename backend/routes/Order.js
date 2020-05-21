@@ -18,13 +18,15 @@ router.route('/add').post((req,res)=>{
     const products=req.body.products;
     const numberOfItem =req.body.numberOfItem;
     const orderCreateDate=req.body.orderCreateDate;
+    const isDelevery=req.body.isDelevery;
     
     const newOrder=new Order({
         totalAmaount,
         user_id,
         products,
         numberOfItem,
-        orderCreateDate
+        orderCreateDate,
+        isDelevery
     });
 
     newOrder.save()
@@ -36,6 +38,24 @@ router.route('/add').post((req,res)=>{
             }          
         );
 
+
+});
+
+
+router.route('/changestatus:id').put((req,res)=>{
+    let order_id=req.params.id;
+    Order.findByIdAndUpdate(
+        order_id,
+       {            
+            "isDelevery": true,        
+       
+       },{
+          
+            
+          
+       }
+    ).then(order=>res.json('change order status '))
+    .catch(err=>res.status(400).json('Error: '+err));
 
 });
 
