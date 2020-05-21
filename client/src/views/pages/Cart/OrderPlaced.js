@@ -70,7 +70,8 @@ export default class OrderPlaced extends Component {
         user_id:userID,
         products:product_id_arry,
         numberOfItem:numberOfItem,
-        orderCreateDate:new Date()
+        orderCreateDate:new Date(),
+        isDelevery:false
 
 
     };

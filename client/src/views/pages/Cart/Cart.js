@@ -25,7 +25,10 @@ class CartList extends Component{
                                 
                 </td>
 
-                <td><p>{this.props.product_data.products.price}</p></td> 
+                <td>
+                    <h5><Badge color="success">{this.props.product_data.products.price+" $"}</Badge></h5>
+                    {(!(this.props.product_data.products.discount==null))?<p> <Badge outline color="danger"> {("-"+this.props.product_data.products.discount+" $ OFF")}</Badge></p>:''}
+                </td> 
                 <td>
 
                     <p>{this.props.product_data.quntity}</p>
@@ -37,7 +40,7 @@ class CartList extends Component{
                                    name="quntity"
                                    min={0} max={this.props.product_data.products.quantity} type="number" step="1"
        
-        /> <p>available quntity :<Badge color="secondry"> {this.props.product_data.products.quantity}</Badge></p>
+        /> <p>available quantity :<Badge color="secondry"> {this.props.product_data.products.quantity}</Badge></p>
                             
                 </td>
 
@@ -53,7 +56,7 @@ class CartList extends Component{
                      </FaCartPlus> 
                 </p>
                 <p><FaCheck color="#12D36D" size="3em"  
-                           style={((this.props.qtyedite)&&(this.props.selectedEditeIds==this.props.product_data._id)&&(!(this.props.product_data.products.quantity<this.props.newQuntityValue)))?{display:"inherit"}:{display:"none"}  }
+                           style={((this.props.qtyedite)&&(this.props.selectedEditeIds==this.props.product_data._id)&&(!(this.props.product_data.products.quantity<this.props.newQuntityValue))&&(this.props.newQuntityValue>0))?{display:"inherit"}:{display:"none"}  }
                            onClick={()=>this.props.onchangeQuntity( )}>
                                
                  </FaCheck>
@@ -159,9 +162,9 @@ export default class Cart extends Component {
                 if(itemlist[i].products.discount==null){
                 totalPrice+=itemlist[i].products.price*itemlist[i].quntity
                 }else{
-                totalPrice+=itemlist[i].products.price*itemlist[i].quntity-itemlist[i].products.discount
+                totalPrice+=(itemlist[i].products.price-itemlist[i].products.discount)*itemlist[i].quntity
                 }
-                Totaldiscount+=itemlist[i].products.discount
+                Totaldiscount+=itemlist[i].products.discount*itemlist[i].quntity
              }
             this.setState({TotalPrice:totalPrice}) 
             this.setState({TotalDiscount:Totaldiscount})
@@ -298,7 +301,7 @@ export default class Cart extends Component {
                                 <th> Product </th>
                                 <th> Description </th>
                                 <th> price </th>
-                                <th> qunitity </th>
+                                <th> quantity   </th>
                                 <th> actions </th>
                             </tr>
                         </thead>   

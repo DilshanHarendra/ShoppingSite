@@ -22,10 +22,11 @@ class ProductCard extends Component{
        if (this.state.uid==null){
 
        }else {
-           console.log("add to cart");
+           
            let data={user:this.state.uid,products:this.state.product,qty:this.state.qty}
            axios.post(global.backend+'/cart/add',data)
                .then(res=>{
+                console.log("add to cart");
                    window.location.replace('/cart');
                        console.log(res.data)
                }

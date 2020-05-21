@@ -71,50 +71,43 @@ router.route('/add2').post((req,res)=>{
 });
 
 
-router.route('/add').post((req,res)=>{
-        console.log(req.body.user);
+router.route('/add').post(async function (req,res){
+    console.log(req.body.user);
         
-        const user_id=req.body.user;
-        const products=req.body.products;
-        const qnty=req.body.qty;
-                   
-        Cart.find({"user":user_id,"products.id":products.id,"isOrder":false})
-             .then(res =>{
-                console.log(res);
-                if(res.length>0){
-                    console.log("==========================");
-                     Cart.update( {"user":user_id,"products.id":products.id,"isOrder":false},
-                                { $inc: {"quntity":1}},
-                                            (err,storemanager)=>{
-                                                 
-                                }
-                                     
-                    );
-                        
-                }else{
-                   
-                    const newItems =new Cart({
-                        "user":user_id,
-                        "products":products,
-                        "quntity": qnty,
-                        "isOrder":false
-            
-                });
-            
-                newItems.save()
-                    .then(newItems=>res.json("new Item added"))
-                    .catch(err=>res.status(400).json('Error in add Items'+err));
-                }
-             })
-             .catch(err =>{console.log("Does not exist product");
-             })    
-
-
-
-
-
-
-                 
+    const user_id=req.body.user;
+    const products=req.body.products;
+    const qnty=req.body.qty;
+               
+    await Cart.find({"user":user_id,"products.id":products.id,"isOrder":false})
+         .then(async function (res1) {
+             console.log("add to cart");
+            if(res1.length>0){
+                console.log("add to cart length 1");
+              let  x= await Cart.updateOne( {"user":user_id,"products.id":products.id,"isOrder":false},{ $inc: {"quntity":1}});
+                  if (x.ok==1){
+                      res.send("success");
+                  } else {
+                      res.status(500).send("cart update fail");
+                  }
+            }else{
+                console.log("add to cart  new ");
+                const newItems =new Cart({
+                    "user":user_id,
+                    "products":products,
+                    "quntity": qnty,
+                    "isOrder":false
+        
+            });
+        
+            newItems.save()
+                .then(newItems=>res.json("new Item added"))
+                .catch(err=>res.status(400).json('Error in add Items'+err));
+            }
+         })
+         .catch(err =>{
+             console.log("Does not exist product");
+             res.status(400).json('Error in add Items'+err)
+         })
 
 })
 
