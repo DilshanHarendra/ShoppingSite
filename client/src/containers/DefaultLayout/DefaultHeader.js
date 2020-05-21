@@ -136,6 +136,7 @@ class DefaultHeader extends Component {
                                         </div>
 										
                                         <Link to="/cart">Shopping Cart</Link>
+                                        
                                     </div>
 
 
@@ -148,8 +149,10 @@ class DefaultHeader extends Component {
                                   <div className="dropdown">
                                       <button className="dropbtn" style={{"backgroundImage":"url('/images/product/1.jpg')"}}></button>
                                       <div className="dropdown-content">
-                                          <div >Profile</div>
-                                          <div >Link 2</div>
+                                          {localStorage.getItem("type")==="user"?
+                    
+                                          <div onClick={()=>{window.location.href="/userprofile"}}>Profile</div>:<></>}
+                                         
                                           <div onClick={()=>{localStorage.clear(); window.location.href="/"}}>Logout</div>
                                       </div>
                                   </div>
@@ -230,6 +233,7 @@ class DefaultHeader extends Component {
 
 
                             <li>
+                                
                                 <NavLink to="/adminDashboard" className="nav-link" >Dashboard</NavLink>
                             </li>
 

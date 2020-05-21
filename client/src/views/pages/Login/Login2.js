@@ -74,7 +74,7 @@ localStorage.setItem("id",res.data.id);
 this.setState({
   large:false
 })
-window.location.reload();
+
 alertify.success("Successfully logged in");
 
 if(res.data.type==="payadmin")
@@ -83,8 +83,11 @@ if(res.data.type==="payadmin")
 }else
 if(res.data.type==="admin"){
 
-  window.location.href="/payAdmin"
+  window.location.href="/adminDashboard"
 
+}else
+{
+  window.location.reload();
 }
 
             

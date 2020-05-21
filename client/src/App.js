@@ -118,7 +118,7 @@ const PrivateRoutePayadmin = ({ component: Component, ...rest }) => (
 const PrivateRouteStoreManager = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
     //fakeAuth.isAuthenticated === true
-    localStorage.getItem("type")==="storemanager"
+    localStorage.getItem("type")==="store_manager"
       ? <Component {...props} />
       : <Redirect to={{
           pathname: '/login',

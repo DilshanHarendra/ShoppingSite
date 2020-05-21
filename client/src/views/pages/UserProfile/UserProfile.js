@@ -41,6 +41,13 @@ class UserProfile extends Component{
         super(props);
         this.state={
             activeTab: new Array(4).fill("1"),
+            fullname:"",
+            mobileNumber:"",
+            Nic:"",
+            username:"",
+            address1upd:"",
+            address2upd:"",
+            cityupd:""
 
         }
     }
@@ -103,7 +110,7 @@ class UserProfile extends Component{
      <PhoneInput
        country={"lk"}
        name="mobileNumber"
-       // value={this.state.mobileNumber}
+       value={this.state.mobileNumber}
        onChange={(country, value, event) => {
          this.setState({
            dialCode: value["dialCode"],
