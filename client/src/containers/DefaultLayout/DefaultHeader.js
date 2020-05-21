@@ -231,11 +231,21 @@ class DefaultHeader extends Component {
 
 
 
+                            {localStorage.getItem('type')=="store_manager"||localStorage.getItem('type')=="admin"?(
+                                    <li>
+                                       <NavLink to="/adminDashboard" className="nav-link" >Dashboard</NavLink>
+                                    </li>                         
+                            ):(
+                                <></>
+                            )
+                            
+                            }
 
-                            <li>
-                                
-                                <NavLink to="/adminDashboard" className="nav-link" >Dashboard</NavLink>
-                            </li>
+
+
+
+
+
 
                             <li>
                                 <Link to="/payment" className="nav-link">Payment</Link>
