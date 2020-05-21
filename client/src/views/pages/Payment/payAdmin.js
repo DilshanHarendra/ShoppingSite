@@ -1,3 +1,5 @@
+//main pay admin page
+
 import React, { Component } from 'react';
 import {
     Card,

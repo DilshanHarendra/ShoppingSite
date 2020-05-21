@@ -1,3 +1,5 @@
+//for user to view refundable payments
+
 import React, { Component } from "react";
 import {
     Card,
@@ -26,23 +28,22 @@ class refundPayment extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data:[],
-            status:false,
+            gotData:[],
+            userID: localStorage.getItem("id")
         };
 
         this.handleRefundOption = this.handleRefundOption.bind(this);
     }
     componentDidMount() {
-        axios({
-            method:"GET",
-            url:"http://localhost:3001/payment/getUserCardPayments"
-        }).then(res=>{
-            this.setState({
-                data: res.data
-            });
-        }).catch(err=>{
-            console.log(err);
-        })
+        const data = {
+            userID: this.state.userID
+        };
+
+        axios.post('http://localhost:3001/payment/getRefundPaymentDetails',data)
+            .then(res=>this.setState({
+                gotData:res.data
+            }))
+            .catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }
 
     handleRefundOption(id){
@@ -80,7 +81,7 @@ class refundPayment extends Component {
                                     <th>Refund</th>
                                 </tr>
                                 </thead>
-                                {this.state.data.map(payments=>(
+                                {this.state.gotData.map(payments=>(
                                     <tbody>
                                     <tr>
                                         <td>{payments.payID}</td>
@@ -88,7 +89,7 @@ class refundPayment extends Component {
                                         <td>{payments.payDate}</td>
                                         <td>{payments.payAmount}</td>
                                         <td>{payments.paymentStatus}</td>
-                                        {payments.paymentStatus == 'Processing' ?
+                                        {payments.paymentStatus === 'Processing' ?
                                             <td><Link to={{
                                                 pathname: '/refundRequest', state: {
                                                     payID: payments.payID,
@@ -98,10 +99,14 @@ class refundPayment extends Component {
                                                     paymentStatus: payments.paymentStatus
                                                 }
                                             }}>
-                                                <Button onClick={() => this.handleRefundOption(payments.payID)}>Refund</Button>
+                                                {payments.refundRequest === false ? <Button
+                                                        onClick={() => this.handleRefundOption(payments.payID)}>Refund</Button>
+                                                    :
+                                                    <p>Request sent</p>
+                                                }
                                             </Link></td>
                                             :
-                                            <td><p>Can't refund</p></td>
+                                            <td><p>No actions</p></td>
                                         }
 
                                     </tr>

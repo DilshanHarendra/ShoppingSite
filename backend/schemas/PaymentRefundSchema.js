@@ -1,3 +1,5 @@
+//for refunded payments
+
 const mongoose=require('mongoose');
 
 const PaymentRefundSchema=new mongoose.Schema({

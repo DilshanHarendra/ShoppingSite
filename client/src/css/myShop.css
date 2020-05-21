@@ -6,11 +6,26 @@ table {
     margin-right: auto;
     margin-bottom: 50px;
     margin-top: 10px;
+    border: 1px solid #dddddd;
+
 }
 
-td, th {
+.div{
+    overflow-x:auto;
+}
+.product-col{
+    border: none;
+
+}
+td{
+    text-align: center;
     border: 1px solid #dddddd;
-    text-align: left;
+
+}
+ th {
+     font-weight: 900;
+     border: 1px solid #dddddd;
+     text-align: left;
     padding: 8px;
     text-align: center;
 }
@@ -18,14 +33,15 @@ td, th {
 tr:nth-child(even) {
     background-color: #dddddd;
 }
-.pImage{
-    width: 150px;
-    height:250px; ;
-}
+
 .hbox{
     width: 100%;
     padding: 20px;
     padding-left: 10%;
     background-color: rgba(221, 221, 221, 0.17);
 
+}
+h1{
+    text-align: center;
+    padding: 20px;
 }

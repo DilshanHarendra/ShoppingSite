@@ -9,6 +9,10 @@ const Review = new mongoose.Schema({
         type: String,
         required: true
     },
+    username:{
+        type: String,
+        required: true
+    },
     review:{
         type: String,
         required: true
@@ -20,6 +24,11 @@ const Review = new mongoose.Schema({
     addDate:{
         type: Date,
         required: true
+    },
+    isblock:{
+        type:Boolean,
+        default:false,
+        required:true
     }
 
 

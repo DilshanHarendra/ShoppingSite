@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Table, Container, Input, Button } from 'reactstrap';
 import { RiDeleteBinLine ,RiCheckboxCircleLine,RiEditLine } from 'react-icons/ri';
-
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
 import axios from 'axios';
 
@@ -80,7 +81,7 @@ class StoreManager extends Component{
         </td>
         <td>
         <RiEditLine  size="2em" color="#FFD478" style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} } onClick={()=>{this.props.editemodeToggle(this.props.storemanager._id)}}  > </RiEditLine>
-        <RiCheckboxCircleLine  size="2em" color="#4EB6E6 " style={this.props.editdatastatas?{display:"inherit"}:{display:"none"}  } onClick={()=>{this.props.updateStoremanager(
+        <RiCheckboxCircleLine  size="2em" color="#4EB6E6 " style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  } onClick={()=>{this.props.updateStoremanager(
             this.props.storemanager.firstName,
             this.props.storemanager.lastName,
             this.props.storemanager.birthDay,
@@ -154,7 +155,7 @@ export default class storemanagerview extends Component {
         })
     }   
 
-
+    //load storemanager data
     loadStoreManagerData(){
         axios.get('http://localhost:3001/storeManager/')
         .then(ressopns=>{
@@ -167,7 +168,8 @@ export default class storemanagerview extends Component {
             console.log('error :'+error);
         })
     }   
- 
+
+    //==========get value form storemanager view componet and update states===================
     handeleEditFirstname=(event)=>{                
         this.setState({editFirstname: event})
                                
@@ -255,7 +257,7 @@ export default class storemanagerview extends Component {
         this.loadStoreManagerData();
 
     }
-    
+    //generate Storemagaer table
     storemanagrList(){
         return this.state.storemanagerlist.map(currentstoremanager=>{
             return <  StoreManager 
@@ -283,7 +285,7 @@ export default class storemanagerview extends Component {
                         key={currentstoremanager._id}/>;
         })
    }
-   
+   //privde search functions
    handleSearch(event){
        let storemng= event.target.value.trim().toLowerCase();
 
@@ -327,7 +329,7 @@ export default class storemanagerview extends Component {
     render() {
         return (
           <Container style={Styles.regTablePlanal}>
-                <h4 style={Styles.regHeadertext}>Register new Store Manager</h4>
+                <h4 style={Styles.regHeadertext}>Store Manager Table</h4>
                     <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
                     <Table  responsive   >
                         <thead>

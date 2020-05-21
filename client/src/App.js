@@ -33,7 +33,6 @@ import receiptPayment from "./views/pages/Payment/receiptPayment";
 import payConfirm from "./views/pages/Payment/payConfirm";
 import payAdmin from "./views/pages/Payment/payAdmin";
 import refundPayment from "./views/pages/Payment/refundPayment";
-import emailConfirm from "./views/pages/Payment/emailConfirm";
 import refundRequest from "./views/pages/Payment/refundRequest";
 import paymentSuccess from "./views/pages/Payment/PaymentSuccess";
 import payment from "./views/pages/Payment/Payment";
@@ -49,6 +48,8 @@ import Cart from "./views/pages/Cart/Cart"
 
 //=========================ORDER==========================================
 import OrderDashbord from "./views/pages/AdminPages/Order/orderTable"
+import SearchResults from "./views/pages/Product/SearchResults/SearchResults";
+import LatestProducts from "./views/pages/HomePage/LatestProducts";
 
 
 //========================================================================
@@ -146,6 +147,8 @@ class App extends Component {
                     <Route path="/Myshop" exact component={MyShop} />
                     <Route path="/Myshop/addProduct" component={AddProduct} />
                     <Route path="/Myshop/UpdateProduct/:id" exact component={UpdateProduct} />
+                    <Route path="/search/:key" exact component={SearchResults}/>
+                    <Route path="/test" exact component={LatestProducts}/>
                     
                     {/* StoreManager */} 
                     <PrivateRouteAdmin path="/adminDashboard" component={AdminDashbord}/>
@@ -167,7 +170,6 @@ class App extends Component {
                     <PrivateRouteUser path="/payConfirm" component={payConfirm} />
                     <PrivateRoutePayadmin path="/payAdmin" component={payAdmin} />
                     <PrivateRouteUser path="/refundPayment" component={refundPayment} />
-                    <PrivateRouteUser path="/emailConfirm" component={emailConfirm} />
                     <PrivateRouteUser path="/refundRequest" component={refundRequest} />
                     <PrivateRouteUser path="/paymentSuccess" component={paymentSuccess} />
                     <Route path="/payment" component={payment} />
@@ -175,10 +177,11 @@ class App extends Component {
                     <PrivateRoutePayadmin path="/payAdminCard" component={payAdminCard} />
                     <PrivateRoutePayadmin path="/payAdminReceipt" component={payAdminReceipt} />
                     <PrivateRoutePayadmin path="/payAdminRefund" component={payAdminRefund} />
+                    <PrivateRouteUser path="/payInvoice" component={payInvoice} />
                     
                     {/*CART*/}
                     {/*<Route path="/cart" component={Cart}/>*/}
-                    <Route path="/cart" component={Cart}/>
+                    <PrivateRouteUser path="/cart" component={Cart}/>
                     {/*ORDER*/}
                     <Route path="/orderDashbord" component={OrderDashbord}/>
 

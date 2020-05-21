@@ -9,8 +9,12 @@ router.use(core());
 
 let Cart = require('../schemas/CartSchema');
 
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
+
+
 //Add new storemanager
-router.route('/add').post((req,res)=>{
+router.route('/add2').post((req,res)=>{
     console.log("product filed")
     console.log(req.body.products);
     console.log("======================")
@@ -25,22 +29,31 @@ router.route('/add').post((req,res)=>{
         "products":{
             "product":products,
             "quntity":qnty
-        }
+        },
+        "isOrder":false
     }
 
     Cart.count({user:user_id},(err,count)=>{
         if(count>0){
             console.log("push");
-            
-            Cart.update({user:user_id},{
-                $push:{
-                    products: {
-                        "product":products,
-                        "quntity":qnty
 
-                    }
+            let newProduct={
+                "product":products,
+                "quntity":qnty
+
+            }
+
+            console.log(newProduct);
+            
+            
+            Cart.updateOne({user:user_id},{ $push:{ products:newProduct}},
+                (err,product)=>{
+                    res.send(product)
+
+                    
                 }
-            })
+            
+            )
 
         }else{
 
@@ -56,6 +69,96 @@ router.route('/add').post((req,res)=>{
    
   
 });
+
+
+router.route('/add').post((req,res)=>{
+        console.log(req.body.user);
+        
+        const user_id=req.body.user;
+        const products=req.body.products;
+        const qnty=req.body.qty;
+                   
+        Cart.find({"user":user_id,"products.id":products.id,"isOrder":false})
+             .then(res =>{
+                console.log(res);
+                if(res.length>0){
+                    console.log("==========================");
+                     Cart.update( {"user":user_id,"products.id":products.id,"isOrder":false},
+                                { $inc: {"quntity":1}},
+                                            (err,storemanager)=>{
+                                                 
+                                }
+                                     
+                    );
+                        
+                }else{
+                   
+                    const newItems =new Cart({
+                        "user":user_id,
+                        "products":products,
+                        "quntity": qnty,
+                        "isOrder":false
+            
+                });
+            
+                newItems.save()
+                    .then(newItems=>res.json("new Item added"))
+                    .catch(err=>res.status(400).json('Error in add Items'+err));
+                }
+             })
+             .catch(err =>{console.log("Does not exist product");
+             })    
+
+
+
+
+
+
+                 
+
+})
+
+//Items isOrder state change
+
+router.route('/isorder/:id').post((req,res)=>{
+    let items_id=req.params.id;
+
+    Cart.findByIdAndUpdate(
+        items_id,
+       {            
+            "isOrder": true,        
+       
+       },(err,cart)=>{
+          
+           res.send(cart);
+          
+       }
+    )
+
+
+})
+
+
+router.route('/quntity/:id').put((req,res)=>{
+    let quntityChangeItemID=req.params.id;
+   
+    let newQuntity=req.body.quntity;
+
+        console.log(newQuntity);
+    
+        Cart.findByIdAndUpdate(
+            quntityChangeItemID,
+            {$set:{"quntity":newQuntity}},
+            (err,item)=>{
+                res.send(item)
+            }
+        )
+})
+
+
+
+
+
 
 //Delete selected product
 router.route('/:id').delete((req,res)=>{
@@ -92,13 +195,15 @@ router.route('/update/:id').post((req,res)=>{
 
     let selected_id=req.params.id;
 
-    let user=req.body.user;
-    let products=req.body.products;
+    // let card_id=req.body.card_id;
+    // let products=req.body.products;
     // let qunitity=req.body.qunitity;
     
     
     console.log("recive_data: "+user+products+qunitity);
     
+       
+
     Cart.findByIdAndUpdate(
          selected_id,
         { 

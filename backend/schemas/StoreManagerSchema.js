@@ -1,5 +1,6 @@
 const mongoose= require('mongoose');
-
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 const StoreManagerSchema = new mongoose.Schema({
     firstName:{
         type:String,

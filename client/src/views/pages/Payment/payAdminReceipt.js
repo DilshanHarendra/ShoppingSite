@@ -1,3 +1,5 @@
+//for admin to view all bank payments and do actions
+
 import React, { Component } from "react";
 import {
     Button,
@@ -32,8 +34,8 @@ class payAdminReceipt extends Component {
         })
     }
 
-    handleChangeStatus(id){
-        const sendId ={id};
+    handleChangeStatus(id,id1){
+        const sendId ={id,id1};
         axios.post('http://localhost:3001/payment/changeCardStatus', sendId)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
@@ -63,7 +65,7 @@ class payAdminReceipt extends Component {
                         </thead>
                         {this.state.data.map(payments=>(
                             <tbody>
-                            <tr>
+                                <tr>
                                 <td>{payments.userID}</td>
                                 <td>{payments.payID}</td>
                                 <td>{payments.orderID}</td>
@@ -71,9 +73,9 @@ class payAdminReceipt extends Component {
                                 <td>{payments.payAmount}</td>
                                 <td>{payments.payType}</td>
                                 <td>{payments.paymentStatus}</td>
-                                <td>{payments.paymentStatus == 'Processing' ? <Button onClick={() => this.handleChangeStatus(payments.payID)}>Complete</Button> : <p>No actions</p>}</td>
+                                <td>{payments.paymentStatus == 'Processing' ? <Button onClick={() => this.handleChangeStatus(payments.payID,payments.userID)}>Complete</Button> : <p>No actions</p>}</td>
 
-                            </tr>
+                                </tr>
                             </tbody>
                         ))}
                     </Table>

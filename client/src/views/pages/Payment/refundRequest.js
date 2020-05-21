@@ -1,3 +1,5 @@
+//final refund request raised page
+
 import React, { Component } from 'react';
 import {
     Card,
@@ -26,7 +28,8 @@ class refundRequest extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data:[]
+            data:[],
+
         };
 
     }
@@ -47,7 +50,7 @@ class refundRequest extends Component {
                         You will be notified via email shortly
                     </Alert>
                     <Row className="my-2 justify-content-center">
-                        <Col className="mx-auto mb-5" xl="8">
+                        <Col className="mx-auto mb-5" xl="9">
                             <Card>
                                 <CardBody>
                                     <CardTitle ><h3 className="text-info font-weight-bold">Refund Details</h3></CardTitle>

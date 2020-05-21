@@ -2,28 +2,30 @@ import React, { Component } from 'react';
 import { Container, Row, Col } from 'reactstrap';
 import StoreManagerForm from './storemanagerform';
 import StoreManagerTable from './storemanagertable'
+
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 export default class StoremanagerPanal extends Component {
     render() {
         return (
     <Container style={divStyle}>
             <Row>
                 <Col  style={colStyleheder}>
-                    <h2>Admin Dashboard</h2>
+                    <h2>StoreManager Controler</h2>
                 </Col>
             </Row>
             <Row xs="auto">
                 <Col  style={colStyle}>
                     <StoreManagerForm/>
                 </Col>
-                <Col  style={colStyle}>
+                
+            </Row>
+            <Row>
+            <   Col  style={colStyle}>
                     <StoreManagerTable/>
                 </Col>
             </Row>
-            <Row>
-                <Col>
-                    <p>3</p>
-                </Col>
-            </Row>
+          
     </Container>
         )
     }

@@ -1,3 +1,5 @@
+//for user to enter the verification code
+
 import React, { Component } from 'react';
 import {
     Card,
@@ -35,6 +37,13 @@ class payConfirm extends Component {
     }
 
     componentDidMount() {
+        const search = this.props.location.search; // returns the URL query String
+        const params = new URLSearchParams(search);
+        const IdFromURL = params.get('protection');
+        if(IdFromURL !== 'Confirm'){
+            alertify.alert("Access denied to this page!!");
+            window.location.href="/paymentMain";
+        }
         axios.get("http://localhost:3001/payment/getSecretCode")
             .then(result=>{
                 this.setState({
@@ -69,7 +78,7 @@ class payConfirm extends Component {
             <div>
                 <Container>
                     <Alert color="secondary">
-                        <h1 className="my-3 mx-auto text-center text-dark">VERIFICATION - FOR CARD PAYMENT</h1>
+                        <h1 className="my-3 mx-auto text-center text-dark">VERIFICATION - FOR YOUR PAYMENT</h1>
                     </Alert>
 
                     <Row className="my-2 justify-content-center">

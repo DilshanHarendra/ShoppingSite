@@ -3,7 +3,8 @@ import axios from 'axios'
 import { Container, Table,Badge, Input } from 'reactstrap'
 import { RiDeleteBinLine ,RiCheckboxCircleLine,RiEditLine } from 'react-icons/ri';
 
-
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
 
 class ProductCatergory extends Component{
@@ -258,7 +259,7 @@ export default class productcategorytable extends Component {
                         item.categoryName.toLowerCase().match(event.target.value)||
                         item.categoryDiscription.toLowerCase().match(event.target.value)||
                         item.categoryNote.toLowerCase().match(event.target.value)
-                        // item.subCategory.map( sub=> {return sub.toLowerCase().match(event.target.value)})
+                    //    item.subCategory.filter( sub=> { return sub.toLowerCase().match(event.target.value)})
                     
                      )
              })

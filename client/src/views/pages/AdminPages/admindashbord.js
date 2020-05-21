@@ -1,22 +1,35 @@
 import React, { useState } from 'react';
-import{ TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Container } from 'reactstrap';
+import{ TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Container, Form } from 'reactstrap';
 import StoreManagerPanal from './StoreManagerRegister/StoremanagerPanal';
 import ProductCategoryPanal from './ProductCategory/createcategoryPanal';
 import StoremanagerChart from './admincart/stormanagerchart'
+import CartCharts from './Graphs/CartGraphs'
+import OrderTable from './Order/orderTable'
 import classnames from 'classnames';
 import { GiTShirt } from "react-icons/gi";
 import {GrUserManager} from "react-icons/gr";
+import {GoPackage} from "react-icons/go"
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 
-
+//redirect to storemanager
 const handleStoreManager=()=>{
   window.location='http://localhost:3000/storeManager';
 
 }
+//redirect to product category
 
 const handleProductCategory=()=>{
   window.location='http://localhost:3000/productcategory';
 
 }
+//redirect to ordermanager
+
+const handleOrderManagemet=()=>{
+  window.location='http://localhost:3000/orderDashbord';
+
+}
+
 
 export default function Admindashbord() {
     
@@ -34,12 +47,15 @@ export default function Admindashbord() {
           <h2>Product Category </h2>
           <GiTShirt size="3em" color="black"/>
         </Col>
-        {/* <Col style={col3}> </Col>
-        <Col  style={col4}>.col</Col> */}
+        <Col style={col3} onClick={handleOrderManagemet}>
+          <h2>Order Managment</h2>
+          <GoPackage size="3em" color="black"/>
+        </Col>
+        
       </Row>
        <Row>
           <Col><StoremanagerChart></StoremanagerChart></Col>
-          <Col>etet</Col>         
+            <Col> <CartCharts/> </Col>     
       </Row> 
 
       </Container>
@@ -77,7 +93,9 @@ const col3={
   backgroundImage: 'linear-gradient(to right top, #eec635, #f6a819, #fc870f, #fe621c, #fd2d2d)',
   borderRadius: '8px',
   margin: '4px',
-  padding: '10px'
+  padding: '10px',
+  boxShadow: '-1px 0px 5px black'
+
 }
 
 const col4={

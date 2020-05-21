@@ -18,6 +18,7 @@ import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type';
 import FilePondPluginImageValidateSize from 'filepond-plugin-image-validate-size';
 import {Checkbox, TextField} from "@material-ui/core";
 import ShowError from "../ShowError";
+import socketIOClient from "socket.io-client";
 
 
 registerPlugin(FilePondPluginImageExifOrientation, FilePondPluginImagePreview,FilePondPluginImageResize,FilePondPluginFileValidateType,FilePondPluginImageValidateSize)
@@ -47,10 +48,11 @@ constructor(props) {
         shipping:null,
         discount:null,
         check:false,
-        sellerID:"001",
+        sellerID:localStorage.getItem("id"),
+        type:localStorage.getItem("type"),
         files:  [ ],
         cImages:[],
-        sSize:'',
+        sSize:"false",
         id:this.props.match.params.id,
         maxImages:6,
         getCatogorys:[],
@@ -60,33 +62,82 @@ constructor(props) {
 
 
 }
-    componentDidMount(){
-    axios({
-            methode: 'GET',
-            url:'http://localhost:3001/product/getProduct',
-            params:{s:true,id:this.state.id}
-        }).then(res=>{
-            this.setState({
-                data:res.data
-            },()=>{this.setElemets()})
 
-        axios.get("http://localhost:3001/productCategory")
+    componentWillMount() {
+
+        if (this.state.sellerID==null||this.state.sellerID==""){
+           window.location.replace("/");
+        }else if(this.state.type!="store_manager"){
+            if(this.state.type!="admin"){
+                window.location.replace("/");
+            }
+        }
+
+
+    }
+
+
+    componentDidMount(){
+
+        if (window.performance) {
+            if (window.performance.navigation.type == 1) {
+                window.location.replace(this.props.location.pathname);
+            }
+        }
+        const script = document.createElement("script");
+        script.src = "../../../js/main.js";
+        script.async = true;
+        document.body.appendChild(script);
+
+       this.getData();
+
+
+        this.props.history.listen((location, action) => {
+            document.getElementById('preloder').style.display="block";
+            this.state.id=location.pathname.split("/")[2]
+         this.getData();
+
+        })
+
+
+
+}
+
+getData(){
+    axios({
+        methode: 'GET',
+        url:global.backend+'/product/getProduct',
+        params:{s:true,id:this.state.id}
+    }).then(res=>{
+        this.state.data=res.data;
+        if (this.state.sellerID!=this.state.data[0].sellerID){
+
+               window.location.replace("/");
+            }
+        this.setElemets();
+
+
+        axios.get(global.backend+"/productCategory")
             .then(result=>{
                 this.setState({
                     getCatogorys:result.data
                 },()=>{
+                    document.getElementById('preloder').style.display="none";
 
-                    setTimeout(()=>{
-                        document.getElementById('preloder').style.display="none";
-                    },200);
                 });
-                console.log(result.data);
-            }).catch(err=>console.log(err));
+
+            }).catch(err=>{
+                console.log(err)
+        });
 
 
 
-        }).catch(err=>console.log(err));
-    }
+    }).catch(err=>{
+        console.log(err)
+    });
+}
+
+
 
     setElemets(){
     let pData=this.state.data[0];
@@ -94,13 +145,13 @@ constructor(props) {
 
     for (let i=0;i<pData.images.length;i++){
         let tarr={
-            source: 'http://localhost:3001'+pData.images[i],
+            source: global.backend+pData.images[i],
             options: {type: 'local'}
         }
         imgArr=[...imgArr,tarr];
 
     }
-        console.log(imgArr);
+
 
     let isShippingFree,isDiscount;
     if (pData.shipping==""||pData.shipping==null){
@@ -115,28 +166,27 @@ constructor(props) {
     }
 
 
-    this.setState({
-        freeShipping:isShippingFree,
-        agree:false,
-        addDiscount:isDiscount,
-        proName:pData.proName,
-        catogory:pData.catogory,
-        subCatogory:pData.subCatogory,
-        size:[pData.size[0],pData.size[1],pData.size[2],pData.size[3],pData.size[4],pData.size[5]],
-        brand:pData.brand,
-        quantity:pData.quantity,
-        condition:pData.condition,
-        description:pData.description,
-        price:pData.price,
-        shipping:pData.shipping,
-        discount:pData.discount,
-        check:false,
-        sellerID:"001",
-        files:[],
-        cImages:pData.images,
-        sSize:'',
-        maxImages:(6-pData.images.length)
-    })
+
+        this.state.freeShipping=isShippingFree;
+            this.state.agree=false;
+            this.state.addDiscount=isDiscount;
+            this.state.proName=pData.proName;
+            this.state.catogory=pData.catogory;
+            this.state.subCatogory=pData.subCatogory;
+            this.state.size=[pData.size[0],pData.size[1],pData.size[2],pData.size[3],pData.size[4],pData.size[5]];
+            this.state.brand=pData.brand;
+            this.state.quantity=pData.quantity;
+            this.state.condition=pData.condition;
+            this.state.description=pData.description;
+            this.state.price=pData.price;
+            this.state.shipping=pData.shipping;
+            this.state.discount=pData.discount;
+            this.state.check=false;
+            this.state.files=[];
+            this.state.cImages=pData.images;
+            this.state.sSize='false';
+            this.state.maxImages=(6-pData.images.length);
+
     }
 
 
@@ -221,7 +271,7 @@ constructor(props) {
         })
 
        for (let i=0;i<6; i++){
-            if(this.state.size[i]!='false'){
+            if(this.state.size[i]!="false"){
                 this.setState({
                     sSize:"ok"
                 })
@@ -248,9 +298,12 @@ constructor(props) {
           img:image,
           uImages:tImage
         }
-axios.post("http://localhost:3001/product/deleteImage",sendData)
+axios.post(global.backend+"/product/deleteImage",sendData)
     .then(res=>console.log("img delete res",res))
-    .catch(err=>console.log("img delete err",err))
+    .catch(err=>{
+
+        console.log("img delete err",err)
+    })
 
     }
 
@@ -327,7 +380,8 @@ showSubCatogory() {
         delete values.agree;
         delete values.sSize;
         delete values.maxImages;
-
+        delete values.sellerID;
+        delete values.type;
         delete  values.check;
         let imgs=[];
 
@@ -346,17 +400,18 @@ showSubCatogory() {
             values.proimages = imgs;
            // console.log("form data",len)
 
-            axios.post('http://localhost:3001/product/updateProduct',values)
+            axios.post(global.backend+'/product/updateProduct',values)
                 .then(response1=>{
                   //  console.log(response1.statusText);
                     if(len!=0){
-                        axios.post('http://localhost:3001/product/uploadProduct',formData)
+                        axios.post(global.backend+'/product/uploadProduct',formData)
                             .then(response2=>{
 
                            //     console.log(response2.statusText);
                                 this.setState({
                                     error:response2.statusText
                                 });
+                                socketIOClient(global.backendSoket).emit('ChangeProduct',{type:'update',pid:this.state.id,ndata:values});
                                window.location.replace('/oneProduct/'+response2.data);
                             })
                             .catch(error=>{
@@ -368,6 +423,7 @@ showSubCatogory() {
 
                             });
                     }else{
+                        socketIOClient(global.backendSoket).emit('ChangeProduct',{type:'update',pid:this.state.id,ndata:values});
                         window.location.replace('/oneProduct/'+response1.data);
                     }
 
@@ -559,7 +615,7 @@ showSubCatogory() {
                                         <br/><br/>
                                         {this.showDiscountPrice()}
 
-                                        <ShowError isShow={this.state.check} value={null} name={"Please add Product Images"} />
+
                                         <br/>
                                         <Checkbox
                                             required
@@ -580,8 +636,6 @@ showSubCatogory() {
                                         <br/><br/>
 
 
-                                        <button className="submit" type="submit">Update Product</button>
-                                        <br/><br/><br/><br/>
                                     </div>
                                     <div className="col-md-6">
                                         <label htmlFor="validationCustom01">Choose Images (max Images {this.state.maxImages})<span>*</span></label><br/>
@@ -591,7 +645,7 @@ showSubCatogory() {
 
                                         <div className="imgconatinor" key={image}>
                                             <div >
-                                                <img className="imgbox" src={"http://localhost:3001"+image} alt=""/>
+                                                <img className="imgbox" src={global.backend+image} alt=""/>
                                                 <i onClick={()=>this.deleteImage(image)} className="fa fa-close"></i>
 
                                             </div>
@@ -636,14 +690,17 @@ showSubCatogory() {
                                         >
 
                                         </FilePond>
-
-
-
-
-
+                                        <ShowError isShow={this.state.check} value={this.state.files} name={"Please add Product Images"} />
+                                    </div>
 
 
                                     </div>
+                                    <div className="row">
+                                        <div className="col-md-6" >
+                                            <br/><br/>
+                                            <button className="btn btn-primary" type="submit">Update Product</button>
+                                            <br/><br/><br/><br/>
+                                        </div>
                                     </div>
                                 </div>
                                 </form>

@@ -9,11 +9,13 @@ import axios from 'axios';
 import {Link} from "react-router-dom";
 import $ from 'jquery'
 import ProductCard from "../ProductCard";
+import socketIOClient from "socket.io-client";
 
 class ShowAllProducts extends Component{
 
     constructor(props) {
         super();
+
         let keys= this.seperatePara(props.history.location.pathname.split("/")[2]);
 
         this.state={
@@ -30,7 +32,8 @@ class ShowAllProducts extends Component{
             catogory:'',
             isLoadmore:true,
             limit:3,
-            loading:false
+            loading:false,
+
 
         };
         this.loadCatogories();
@@ -41,6 +44,12 @@ class ShowAllProducts extends Component{
 
     componentDidMount(){
 
+        socketIOClient(global.backendSoket).on('NotifyProductChange', data => {
+
+            if (data.type=="update"||data.type=="delete"){
+                window.location.reload();
+            }
+        });
 
 
         const script = document.createElement("script");
@@ -403,16 +412,7 @@ clearSize(){
                                 </div>
                             </div>
                         </div>
-                        <div className="filter-widget">
-                            <h2 className="fw-title">Brand</h2>
-                            <ul className="category-menu">
-                                <li>Abercrombie & Fitch <span>(2)</span></li>
-                                <li>Asos<span>(56)</span></li>
-                                <li>Bershka<span>(36)</span></li>
-                                <li>Missguided<span>(27)</span></li>
-                                <li>Zara<span>(19)</span></li>
-                            </ul>
-                        </div>
+
                     </div>
 
                     <div className="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0" id="products">
@@ -421,10 +421,10 @@ clearSize(){
                                 <h1>No Results Found</h1>
                             ):(this.state.data.map(oneRow=>(
                                 <div className="col-lg-4 col-sm-6" key={oneRow.id}>
-                                    <Link to={"/oneProduct/"+oneRow.id} >
+
 
                                         <ProductCard data={oneRow} />
-                                    </Link>
+
                                 </div>
 
                             ))

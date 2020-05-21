@@ -61,7 +61,7 @@ class ProductCard extends Component{
 
                    <div className="pi-links">
                        <div onClick={()=>this.addToCart()} className="addToCart"><i className="flaticon-bag"></i><span>ADD TO CART</span></div>
-                       <Link to="#"  className="wishlist-btn"><i className="flaticon-heart"></i></Link>
+                       <div   className="wishlist-btn"><i className="flaticon-heart"></i></div>
                    </div>
                </div>
                <Link to={"/oneProduct/"+this.state.product.id}> <div className="pi-text">

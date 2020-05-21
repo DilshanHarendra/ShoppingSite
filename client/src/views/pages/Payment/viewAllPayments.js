@@ -1,3 +1,5 @@
+//for user to view all payments
+
 import React, { Component } from "react";
 import {
     Card,
@@ -26,21 +28,22 @@ class viewAllPayments extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data:[]
+            gotData:[],
+            userID: localStorage.getItem("id")
         };
 
     }
     componentDidMount() {
-        axios({
-            method:"GET",
-            url:"http://localhost:3001/payment/getAllPaymentDetails"
-        }).then(res=>{
-            this.setState({
-                data: res.data
-            });
-        }).catch(err=>{
-            console.log(err);
-        })
+        const data = {
+            userID: this.state.userID
+        };
+        console.log("User id " + this.state.userID);
+
+        axios.post('http://localhost:3001/payment/getAllPaymentDetails',data)
+            .then(res=>this.setState({
+                gotData:res.data
+            }))
+            .catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }
 
     render() {
@@ -62,7 +65,7 @@ class viewAllPayments extends Component {
                             <th>Status</th>
                         </tr>
                         </thead>
-                        {this.state.data.map(payments=>(
+                        {this.state.gotData.map(payments=>(
                             <tbody>
                             <tr>
                                 <td>{payments.payID}</td>

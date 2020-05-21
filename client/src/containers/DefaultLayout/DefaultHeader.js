@@ -16,6 +16,7 @@ import axios from "axios";
 
 
 
+
 const propTypes = {
     children: PropTypes.node,
   };
@@ -37,7 +38,11 @@ class DefaultHeader extends Component {
 		  danger: false,
 		  info: false,
           skeyWord:'',
-          getCatogorys:[]
+          getCatogorys:[],
+
+          PrdouctList:[],
+
+            shownew:""
 		};
 
 	
@@ -53,13 +58,34 @@ class DefaultHeader extends Component {
     componentDidMount(){
        axios.get(global.backend+"/productCategory")
             .then(result=> {
-
+                this.state.getCatogorys=result.data.sort((a,b)=>a._id<b._id?-1:1);
                 this.setState({
-                    getCatogorys:result.data,
+                    shownew:this.state.getCatogorys[this.state.getCatogorys.length-1].categoryName
                 });
 
             }).catch(err=>console.log(err));
+
+            this.getCartItem()
+
     }
+
+    getCartItem=()=>{
+
+        axios.get(global.backend+'/cart/'+localStorage.getItem('id'))
+        .then(async ressopns=>{
+          
+            this.setState({PrdouctList:ressopns.data}) 
+            let noOrderedItems=this.state.PrdouctList.filter(Items=>{
+                return Items.isOrder==false
+            })
+                   this.setState({
+                        PrdouctList:noOrderedItems
+                    })
+        })
+        .catch(err=>console.log('error in get number of item'+err))
+
+        }
+
     getKeyWord=e=>{
 
 	    this.setState({
@@ -68,7 +94,11 @@ class DefaultHeader extends Component {
     }
     search=e=>{
         e.preventDefault();
-        window.location.replace('/search/'+this.state.skeyWord);
+        if (this.state.skeyWord!=""){
+            window.location.replace('/search/'+this.state.skeyWord);
+        }
+
+
 
     }
 
@@ -90,7 +120,7 @@ class DefaultHeader extends Component {
                             </div>
                             <div className="col-xl-6 col-lg-5">
                                 <form className="header-search-form" onSubmit={this.search}>
-                                    <input type="text" onChange={this.getKeyWord} value={this.skeyWord} placeholder="Search on divisima ...."/>
+                                    <input type="text" onChange={this.getKeyWord} value={this.skeyWord} placeholder="Search ...."/>
                                     <button><i className="flaticon-search"></i></button>
                                 </form>
                             </div>
@@ -102,10 +132,10 @@ class DefaultHeader extends Component {
                                         <div className="shopping-card">
                                             <i className="flaticon-bag"></i>
 											
-                                            <span>0</span>
+                                            <span>{this.state.PrdouctList.length}</span>
                                         </div>
 										
-                                        <Link to="/">Shopping Cart</Link>
+                                        <Link to="/cart">Shopping Cart</Link>
                                     </div>
 
 
@@ -151,11 +181,21 @@ class DefaultHeader extends Component {
                 <nav className="main-navbar">
                     <div className="container">
                         <ul className="main-menu">
-                            <li><Link to="/">Home   <span className="new">New</span></Link></li>
+                            <li><Link to="/">Home  </Link></li>
 
 
                                 {this.state.getCatogorys.map(catogory=>(
-                                    <li key={catogory._id} ><Link to={"/allProducts/"+catogory.categoryName}  >{catogory.categoryName}</Link>
+                                    <li key={catogory._id} ><Link to={"/allProducts/"+catogory.categoryName}  >
+                                        {catogory.categoryName}
+                                        {this.state.shownew==catogory.categoryName?(
+
+                                            <span className="new">New</span>
+                                        ):(
+                                            <></>
+                                        )}
+
+
+                                    </Link>
                                         {(catogory.subCategory.length>0)?(
                                             <ul className="sub-menu">
                                                 {(catogory.subCategory.map(subCategory=>(
@@ -173,22 +213,22 @@ class DefaultHeader extends Component {
 
                                     </li>
                                 ))}
-                            <li><Link to="/">Pages</Link>
-                                <ul className="sub-menu">
-                                    <li><Link to="/">Product Page</Link></li>
-                                    <li><Link to="/">Category Page</Link></li>
-                                    <li><Link to="/">Cart Page</Link></li>
-                                    <li><Link to="/">Checkout Page</Link></li>
-                                    <li><Link to="/">Contact Page</Link></li>
-                                </ul>
-                            </li>
-                            <li><Link to="/Myshop">My Shop</Link>
-                                <ul className="sub-menu">
-                                    <li><Link  to="/Myshop">My Shop</Link></li>
-                                    <li><Link  to="/Myshop/addProduct">Add Product</Link></li>
 
-                                </ul>
-                            </li>
+                            {localStorage.getItem('type')=="store_manager"||localStorage.getItem('type')=="admin"?(
+                                <li><Link to="/Myshop">My Shop</Link>
+                                    <ul className="sub-menu">
+                                        <li><Link  to="/Myshop">My Shop</Link></li>
+                                        <li><Link  to="/Myshop/addProduct">Add Product</Link></li>
+
+                                    </ul>
+                                </li>
+                            ):(
+                                <></>
+                            )}
+
+
+
+
                             <li>
                                 <NavLink to="/adminDashboard" className="nav-link" >Dashboard</NavLink>
                             </li>

@@ -4,7 +4,7 @@ import '../../../../css/addProduct.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import axios from 'axios'
 import {BrowserRouter as Router, Link} from "react-router-dom";
-
+import socketIOClient from "socket.io-client";
 
 
 import { FilePond, File, registerPlugin } from 'react-filepond';
@@ -47,7 +47,8 @@ class AddProduct extends  Component{
             shipping:null,
             discount:null,
             check:false,
-            sellerID:"001",
+            sellerID:localStorage.getItem("id"),
+            type:localStorage.getItem("type"),
             files: [],
             sSize:'',
             getCatogorys:[],
@@ -57,6 +58,20 @@ class AddProduct extends  Component{
 
 
     }
+
+    componentWillMount() {
+        if (this.state.sellerID==null||this.state.sellerID==""){
+            window.location.replace("/");
+        }else if(this.state.type!="store_manager"){
+            if(this.state.type!="admin"){
+                window.location.replace("/");
+            }
+        }
+
+
+    }
+
+
     componentDidMount() {
         // fetch('/product/getProducts').then(data=>data.json()).then(data=>console.log(data)).catch(err=>console.log(err));
         const script = document.createElement("script");
@@ -72,12 +87,10 @@ class AddProduct extends  Component{
                 this.setState({
                     getCatogorys:result.data
                 },()=>{
+                    document.getElementById('preloder').style.display="none";
 
-                    setTimeout(()=>{
-                        document.getElementById('preloder').style.display="none";
-                    },200);
                 });
-                console.log(result.data);
+
             }).catch(err=>console.log(err));
 
 
@@ -250,6 +263,7 @@ class AddProduct extends  Component{
             this.setState({
                 check:false
             });
+            document.getElementById('preloder').style.display="block";
             const  values=this.state;
 
             delete values.box;
@@ -279,12 +293,14 @@ class AddProduct extends  Component{
                         console.log(response1.statusText);
                         axios.post(global.backend +'/product/uploadProduct',formData)
                             .then(response2=>{
-
-                                console.log(response2.statusText);
                                 this.setState({
                                     error:response2.statusText
+                                },()=>{
+                                    socketIOClient(global.backendSoket).emit('ChangeProduct',{type:'addNew',pid:response2.data});
+                                    window.location.replace('/oneProduct/'+response2.data);
                                 });
-                                window.location.replace('/oneProduct/'+response2.data);
+
+
 
                             })
                             .catch(error=>{
@@ -499,7 +515,7 @@ class AddProduct extends  Component{
                             <br/><br/>
                             {this.showDiscountPrice()}
 
-                            <ShowError isShow={this.state.check} value={null} name={"Please add Product Images"} />
+
                             <br/>
                             <Checkbox
                                 required
@@ -520,12 +536,11 @@ class AddProduct extends  Component{
                             <br/><br/>
 
 
-                            <button className="submit" type="submit">Add Product</button>
-                            <br/><br/><br/><br/>
+
                         </div>
                         <div className="col-md-6">
                             <label htmlFor="validationCustom01">Choose Images (max 6 images) <span>*</span></label><br/>
-
+                            <ShowError isShow={this.state.check} value={null} name={"Please add Product Images"} />
 
                             <FilePond
                                 required={true}
@@ -544,7 +559,7 @@ class AddProduct extends  Component{
                                 imageValidateSizeMinWidth={200}
                                 oninit={() => this.handleInit() }
                                 onupdatefiles={(fileItems) => {
-                                    console.log(fileItems)
+
                                     this.setState({
                                         files: fileItems.map(fileItem => fileItem.file)
 
@@ -565,13 +580,13 @@ class AddProduct extends  Component{
                             >
 
                             </FilePond>
-
-
-
-
-
-
-
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-md-6" >
+                            <br/><br/>
+                            <button className="btn btn-primary" type="submit">Add Product</button>
+                            <br/><br/><br/><br/>
                         </div>
                     </div>
                 </div>

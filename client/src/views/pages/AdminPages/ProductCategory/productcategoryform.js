@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Form, Row, Col,FormGroup ,Label, Input, Button,Alert,Fade ,Badge, ListGroup, ListGroupItem } from 'reactstrap';
 import { MdAddCircle } from 'react-icons/md';
 import axios from 'axios';
-
+// Student id :IT18045840
+//Name :S.D.S.L Dissanayake
 export default class Productcategoryform extends Component {
     
     constructor(props){

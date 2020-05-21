@@ -1,3 +1,5 @@
+//for pay admin to view all refund requests and do actions
+
 import React, { Component } from "react";
 import {
     Button,
@@ -13,7 +15,8 @@ class payAdminRefund extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            data:[]
+            data:[],
+            dataCheck:false
         };
 
         this.handleRefundChangeStatus = this.handleRefundChangeStatus.bind(this);
@@ -22,7 +25,7 @@ class payAdminRefund extends Component {
     componentDidMount() {
         axios({
             method:"GET",
-            url:"http://localhost:3001/payment/getRefundPaymentDetails"
+            url:"http://localhost:3001/payment/getRefundPaymentDetailsForAdmin"
         }).then(res=>{
             this.setState({
                 data: res.data
@@ -32,8 +35,8 @@ class payAdminRefund extends Component {
         })
     }
 
-    handleRefundChangeStatus(id){
-        const sendId ={id};
+    handleRefundChangeStatus(id,id1){
+        const sendId ={id,id1};
         axios.post('http://localhost:3001/payment/acceptRefund', sendId)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
@@ -62,19 +65,23 @@ class payAdminRefund extends Component {
                         </tr>
                         </thead>
                         {this.state.data.map(payments=>(
-                            <tbody>
-                            <tr>
-                                <td>{payments.userID}</td>
-                                <td>{payments.payID}</td>
-                                <td>{payments.orderID}</td>
-                                <td>{payments.payDate}</td>
-                                <td>{payments.payAmount}</td>
-                                <td>{payments.payType}</td>
-                                <td>{payments.paymentStatus}</td>
-                                <td><Button onClick={() => this.handleRefundChangeStatus(payments.payID)} className="btn btn-success">Accept</Button></td>
 
-                            </tr>
-                            </tbody>
+                                    <tbody>
+                                        <tr>
+                                        <td>{payments.userID}</td>
+                                        <td>{payments.payID}</td>
+                                        <td>{payments.orderID}</td>
+                                        <td>{payments.payDate}</td>
+                                        <td>{payments.payAmount}</td>
+                                        <td>{payments.payType}</td>
+                                        <td>{payments.paymentStatus}</td>
+                                        <td><Button
+                                        onClick={() => this.handleRefundChangeStatus(payments.payID, payments.userID)}
+                                        className="btn btn-success">Accept</Button></td>
+                                        </tr>
+                                    </tbody>
+
+
                         ))}
                     </Table>
 
