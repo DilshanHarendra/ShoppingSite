@@ -18,6 +18,8 @@ import alertify from "alertifyjs/build/alertify";
 import "alertifyjs/build/css/alertify.min.css";
 import "alertifyjs/build/css/alertify.css";
 import "alertifyjs/build/css/themes/default.min.css";
+
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -74,13 +76,35 @@ class Register extends Component {
     
     delete data.Valid;
     delete data.Invalid;
+    document.getElementById('preloder').style.display="block";
 
     try {
       axios.post("http://localhost:3001/user/addUser", data).then((res) => {
         console.log(res);
         console.log(res.data);
+        if(res.data.success===true)
+        {
+          setTimeout(()=>{
+            document.getElementById('preloder').style.display="none";
+           
+        },400);
+
         alertify.success("Successfully registered");
-        alertify.alert("Email sent..please click on link for registration complete")
+          alertify.alert("Email sent..please click on link for registration complete")
+
+        
+          
+          
+        }else{
+          
+            setTimeout(()=>{
+              document.getElementById('preloder').style.display="none";
+             
+          },400);
+
+          alertify.alert("Error registering please contact administrator "+res.data.err);
+        }
+        
 
       });
     } catch (e) {
@@ -90,6 +114,15 @@ class Register extends Component {
   render() {
     return (
       <div className="app flex-row align-items-center">
+        
+        <div id="preloder">
+                <div className="loader"></div>
+            </div>
+
+            {setTimeout(()=>{
+            document.getElementById('preloder').style.display="none";
+        },400)}
+
         <Container>
           <Row className="justify-content-center">
             <Col md="9" lg="7" xl="6">

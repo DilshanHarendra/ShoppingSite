@@ -22,6 +22,21 @@ const UserSchema=new mongoose.Schema({
     },
     newPassword:{
         type:String,
+    },
+    mobile:{
+        type:String,
+    },
+    nic:{
+        type:String,
+    },
+    address1:{
+        type:String,
+    },
+    address2:{
+        type:String,
+    },
+    city:{
+        type:String,
         
 
     },   token:{

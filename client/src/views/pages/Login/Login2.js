@@ -31,7 +31,9 @@ class Login2 extends Component {
 		
     }
     
-
+componentDidMount=()=>{
+  localStorage.clear();
+}
 
     //loggedIn: BehaviorSubject<boolean>
 
@@ -74,6 +76,16 @@ this.setState({
 })
 window.location.reload();
 alertify.success("Successfully logged in");
+
+if(res.data.type==="payadmin")
+{
+  window.location.href="/payAdmin"
+}else
+if(res.data.type==="admin"){
+
+  window.location.href="/payAdmin"
+
+}
 
             
            });

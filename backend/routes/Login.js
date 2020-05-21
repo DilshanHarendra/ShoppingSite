@@ -97,7 +97,7 @@ res.send('i\'m protected');
 
 router.get('/getUser', passport.authenticate('jwt', { session: false }), (req, res) => {
 console.log(req.headers);
-res.send(req.user);
+res.send(req.id);
 });
 
 
