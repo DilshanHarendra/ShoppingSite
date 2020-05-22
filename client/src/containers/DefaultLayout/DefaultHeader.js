@@ -178,7 +178,7 @@ large:value
                        className={'modal-lg ' + this.props.className}>
                   
                   <ModalBody>
-                   <Login2 toggle={this.changefalse.bind(this,this.state.large)}/>
+                   <Login2 toggle={this.toggleLarge}/>
                   </ModalBody>
                   {/* <ModalFooter>
 					  <Link to="/Register">

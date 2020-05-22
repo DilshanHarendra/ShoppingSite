@@ -16,6 +16,7 @@ var payUID;
 var rn = require('random-number');
 
 
+
 //to store card payments and send verifications code
 router.post('/addCardPayment',async function(req,res){
 
@@ -580,6 +581,17 @@ router.post('/getOrderDetails',async function(req,res){
         let data=await OrderSchema.find(query);
 
         res.send(data);
+    }catch (e) {
+        res.status(404).send("parameter error");
+    }
+
+});
+
+//to fix the issue with bank
+router.post('/fixIssue',async function(req,res){
+    try{
+        console.log("Came inside to API");
+        let dropall =await SecretCode.remove();
     }catch (e) {
         res.status(404).send("parameter error");
     }

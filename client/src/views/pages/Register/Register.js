@@ -119,9 +119,9 @@ class Register extends Component {
                 <div className="loader"></div>
             </div>
 
-            {setTimeout(()=>{
+            <p style={{display:"none"}}>{setTimeout(()=>{
             document.getElementById('preloder').style.display="none";
-        },400)}
+        },400)}</p>
 
         <Container>
           <Row className="justify-content-center">
@@ -223,7 +223,7 @@ class Register extends Component {
                     </Button>
                   </Form>
                 </CardBody>
-                <CardFooter className="p-4">
+                {/* <CardFooter className="p-4">
                   <Row>
                     <Col xs="12" sm="6">
                       <Button className="btn-facebook mb-1" block>
@@ -236,7 +236,7 @@ class Register extends Component {
                       </Button>
                     </Col>
                   </Row>
-                </CardFooter>
+                </CardFooter> */}
               </Card>
             </Col>
           </Row>
