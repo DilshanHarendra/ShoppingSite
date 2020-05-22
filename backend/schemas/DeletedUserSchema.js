@@ -1,3 +1,4 @@
+//Delete user schema by V.D Dantanarayana
 const mongoose=require('mongoose');
 
 const DeletedUserSchema=new mongoose.Schema({

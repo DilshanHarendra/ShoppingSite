@@ -1,17 +1,21 @@
+// User management by V.D Dantanarayana
 const express=require('express');
+const authenticateToken = require('./authenticateToken');
+
 const router=express.Router();
 const uniqid=require('uniqid');
 const bodyParser=require('body-parser');
 const core = require('cors');
 const UserSchema=require('../schemas/UserSchema');
 const DeleteUserSchema=require('../schemas/DeletedUserSchema');
-//const bycrpt=require('bcrypt');
+
 const crypto=require('crypto');
 const nodemailer=require('nodemailer');
 router.use(bodyParser());
 router.use(core());
 var UID;
 
+//adding user to system (registering user) and sending verification mail - create
 router.post('/addUser',async function(req,res){
 
 try{
@@ -28,13 +32,14 @@ try{
     newQuery=req.body;
     newQuery['uid']=UID;
     newQuery['regDate']=new Date();
+    newQuery['newPassword']="",
     newQuery['isdeleted']=false;
     newQuery['mobile']="",
     newQuery['nic']="",
     newQuery['address1']="",
     newQuery['address2']="",
     newQuery['city']="",    
-   // token=await bycrpt.hash(UID+new Date(),10);
+   
    
    token=await crypto.createHash('md5').update(UID+new Date()).digest('hex');
 
@@ -106,6 +111,100 @@ console.log("after")
 }
 });
 
+
+
+
+
+
+
+
+//forget password and password verification email- update
+router.post('/forgotpassword',async function(req,res){
+
+  try{
+  
+    
+    var data=await  UserSchema.findOne({email:req.body.email});
+   
+    if(data!==null)
+    {
+  
+      
+     var UID=uniqid();
+  
+      
+     
+     var token=await crypto.createHash('md5').update(UID+new Date()).digest('hex');
+  
+      var userid=data['_id'];
+    
+            try{
+     
+  console.log("befire")
+              let testAccount = await nodemailer.createTestAccount();
+  console.log("after")
+              // create reusable transporter object using the default SMTP transport
+              let transporter = nodemailer.createTransport({
+                host: "smtp.gmail.com",
+                port: 465,
+                secure: true, // true for 465, false for other ports
+                auth: {
+                  user: "codefoursliit@gmail.com", // generated ethereal user
+                  pass: "codefour@123", // generated ethereal password
+                },
+              });
+              var email=await data["email"];
+              console.log(email)
+            console.log("transport visited")
+              // send mail with defined transport object
+              let info = await transporter.sendMail({
+                from: '"C4fashions" <codefoursliit@gmail.com>', // sender address
+                to: email, // list of receivers
+                subject: "complete Forgot password", // Subject line
+                text:
+                  "http://localhost:3000/RegisterConfirm?token="+token+"&user_id="+userid+"", // plain text body
+                html: '<a href="http://localhost:3000/RegisterConfirm?token='+token+'&user_id='+userid+'">Click to reset password</a>',
+               
+            
+              });
+            
+              console.log("Message sent: %s", info.messageId);
+              // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+            
+              // Preview only available when sending through an Ethereal account
+              console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+              // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+  
+              res.json({success:true});
+          
+            }catch(e)
+            {
+              console.log(e)
+              res.json({success:false});
+            }
+          
+  
+    }else{
+  
+      res.json({success:false,err:"There is no user with this email"});
+    }
+  
+  }catch(e)
+  {
+    console.log(e);
+    res.send(e);
+  }
+  });
+  
+
+
+
+
+
+
+
+
+// adding token and password to system - update
 router.route('/addtoken').post((req,res)=>{
  
 
@@ -119,7 +218,7 @@ router.route('/addtoken').post((req,res)=>{
 
 
 
-
+// updating user details - update
 router.route('/updateuser').post((req,res)=>{
  
 
@@ -136,7 +235,7 @@ router.route('/updateuser').post((req,res)=>{
 });
 
 
-
+// updating password - update
 router.route('/updatepass').post((req,res)=>{
  
  
@@ -149,8 +248,9 @@ router.route('/updatepass').post((req,res)=>{
 });
 
 
+//getting user details by id - retrieve
 router.get("/getuserbyid",async function(req,res){
-console.log("visited function")
+
   var data=await UserSchema.find(req.query);
 
   if(data===null)
@@ -164,8 +264,8 @@ res.json({success:false,data:data})
 
 })
 
-
-router.post("/removeuser",async function(req,res){
+//removing user from schema and adding to user delete schema - delete and create
+router.post("/removeuser",authenticateToken,async function(req,res){
 
 
   let data = await UserSchema.find({_id:req.body.id});
@@ -205,12 +305,15 @@ await deleteUser.save(async function(err,deluser) {
 var removeRefund = await UserSchema.deleteOne({_id:req.body.id});
 if(removeRefund===null)
 {
-  res.json("error");
+  res.json({success:false,status:400});
 }else{
-  res.json("success");
+  res.json({success:true,status:200});
 }
 
 })
+
+
+
 
 
 router.get("/", function (req, res) {

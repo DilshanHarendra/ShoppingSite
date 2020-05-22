@@ -25,6 +25,7 @@ import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcate
 import StoreManagerPanal from "./views/pages/AdminPages/StoreManagerRegister/StoremanagerPanal";
 import registerVerify from "./views/pages/registerVerify";
 import UserProfile from "./views/pages/UserProfile"
+import forgetpassword from "./views/pages/Forgetpassword/forgetpassword"
 
 //=========================PAYMENT PAGES==================================
 import PaymentMain from "./views/pages/Payment/PaymentMain";
@@ -162,6 +163,7 @@ class App extends Component {
                     <Route exact path="/RegisterConfirm" component={registerVerify}/>
                     <Route path="/Login2" exact component={Login2}/>
                     <PrivateRouteUser path="/userprofile" exact component={UserProfile}/>
+                    <Route path="/forgotpassword" exact component={forgetpassword}/>
 
                     {/* PAYMENT */}
                     <PrivateRouteUser path="/paymentMain" component={PaymentMain} />

@@ -1,3 +1,4 @@
+//User schema by V.D Dantanarayana
 const mongoose=require('mongoose');
 
 const UserSchema=new mongoose.Schema({

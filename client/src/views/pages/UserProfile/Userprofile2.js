@@ -1,3 +1,4 @@
+//User profile at login prompt by V.D Dantanarayana
 import React, { Component } from 'react';
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -122,6 +123,7 @@ class UserProfile2 extends Component{
           document.getElementById('preloder').style.display="none";
          
       },400);
+      alertify.success("Successfully updated profile");
       window.location.href="/"
       
       });
@@ -145,15 +147,12 @@ class UserProfile2 extends Component{
 
     }
 
-    document.getElementById('preloder').style.display="block";
+
     try {
       axios.post("http://localhost:3001/user/updateuser", data).then((res) => {
         console.log(res);
         console.log(res.data);
-        setTimeout(()=>{
-          document.getElementById('preloder').style.display="none";
-         
-      },400);
+       
       window.location.href="/"
      
       });
@@ -186,13 +185,13 @@ class UserProfile2 extends Component{
       tabPane() {
         return (
           <>
-            <div id="preloder">
+            {/* <div id="preloder">
                 <div className="loader"></div>
             </div>
 
             <p style={{display:"none"}}>{setTimeout(()=>{
             document.getElementById('preloder').style.display="none";
-        },400)}</p>
+        },400)}</p> */}
             <TabPane tabId="1">
               {
                    <Col>

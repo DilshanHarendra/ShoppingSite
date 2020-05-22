@@ -114,7 +114,7 @@ if(res.data.type==="store_manager")
 }
              }else{
 
-              alertify.alert("Unable to login");
+              alertify.alert(res.data.err);
              }
             
            });
@@ -160,7 +160,9 @@ if(res.data.type==="store_manager")
                           <Button type="submit" color="primary" className="px-4">Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">Forgot password?</Button>
+                          <Link to="/forgotpassword">
+                          <Button color="link" onClick={()=>this.props.toggle} className="px-0">Forgot password?</Button>
+                          </Link>
                         </Col>
                       </Row>
                     </Form>
@@ -193,7 +195,7 @@ if(res.data.type==="store_manager")
    </ModalBody>
    <ModalFooter>
 
-     <Button color="secondary" onClick={()=>{this.toggleLarge1();window.location.reload();}}>Skip</Button>
+     <Button color="secondary" onClick={()=>{this.toggleLarge1();window.location.href="/";}}>Skip</Button>
    </ModalFooter>
  </Modal>
       </div> );

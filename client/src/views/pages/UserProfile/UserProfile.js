@@ -1,3 +1,4 @@
+//User profile for user by V>D Dantanarayana
 import React, { Component } from 'react';
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
@@ -215,19 +216,45 @@ if(this.state.deletepassword===this.state.pass)
 {
     document.getElementById('preloder').style.display="block";
     try {
-      axios.post("http://localhost:3001/user/removeuser", data).then((res) => {
+      axios(global.backend +"/user/removeuser",{
+        method:"POST",
+      headers: {
+        "content-type": "application/json", // whatever you want
+        authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+      },
+      data}).then((res) => {
         console.log(res);
         console.log(res.data);
+        if(res.data.success===true)
+        {
         setTimeout(()=>{
           document.getElementById('preloder').style.display="none";
          
       },400);
+      alertify.success("Successfully deleted profile");
       localStorage.clear();
       window.location.href="/"
-     
+
+    }else if(res.data.success===false&&res.data.status===401)
+    {
+      
+        setTimeout(()=>{
+          document.getElementById('preloder').style.display="none";
+         
+      },400);
+      alertify.alert("unauthorized. delete failed");
+    }else{
+      
+        setTimeout(()=>{
+          document.getElementById('preloder').style.display="none";
+         
+      },400);
+      alertify.alert("delete error");
+    }
       });
     } catch (e) {
       console.log(e)
+      alertify.alert("delete error");
     }
   }else{
 
@@ -263,6 +290,7 @@ if(this.state.deletepassword===this.state.pass)
           document.getElementById('preloder').style.display="none";
          
       },400);
+      alertify.success("Successfully updated profile");
       window.location.href="/"
       
       });

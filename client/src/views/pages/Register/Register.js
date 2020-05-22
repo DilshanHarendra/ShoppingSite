@@ -45,27 +45,7 @@ class Register extends Component {
     // console.log(this.state.newPassword);
   };
 
-  handlePasswordConfirm = (e) => {
-    if (e.target.value === this.state.newPassword) {
-      this.setState(
-        {
-          vidula: true,
-          malidi: false,
-        },
-        () => console.log(this.state.malidi)
-      );
-    } else {
-      this.setState(
-        {
-          malidi: true,
-          vidula: false,
-        },
-        () => console.log(this.state.malidi)
-      );
-    }
-    // console.log(this.state.malidi);
-  };
-
+  
   submitHandler = (e) => {
     e.preventDefault();
     // alertify.notify("sample", "success", 5, function () {

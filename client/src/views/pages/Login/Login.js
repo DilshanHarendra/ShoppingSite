@@ -1,3 +1,4 @@
+//General Login UI by V.D Dantanarayana
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Card, CardBody, CardGroup, Col, Container, Form, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
@@ -43,20 +44,6 @@ class Login extends Component {
     
    }
 
-   
-
-
-    //loggedIn: BehaviorSubject<boolean>
-
-  
-
-  //   login = () => {
-  //     fakeAuth.authenticate(() => {
-  //       this.setState(() => ({
-  //         redirectToReferrer: true
-  //       }))
-  //     })
-  //   }
 
 	toggleLarge() {
 		this.setState({
@@ -107,7 +94,7 @@ e.preventDefault();
 
      
         const { from } = this.props.location.state || { from: { pathname: '/' } }
-        // const { redirectToReferrer } = this.state
+        
     
         if (localStorage.getItem("AccessToken")!==null) {
           return <Redirect to={from.pathname} />
@@ -147,7 +134,9 @@ e.preventDefault();
                           <Button type="submit" color="primary" className="px-4">Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
+                          <Link to="/forgotpassword">
                           <Button color="link" className="px-0">Forgot password?</Button>
+                          </Link>
                         </Col>
                       </Row>
                     </Form>
