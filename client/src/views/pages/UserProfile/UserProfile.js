@@ -89,6 +89,8 @@ class UserProfile extends Component{
         oldpassword:"",
         confirmPass:"",
         isdeleted:false,
+        reason:"",
+        deletepassword:"",
        })
         
     }).catch(err=>{
@@ -197,6 +199,40 @@ class UserProfile extends Component{
     
 
 
+  }
+
+
+
+  SubmitDeleteUser=(e)=>{
+    e.preventDefault();
+
+    const data={
+      id:localStorage.getItem("id"),
+      reason:this.state.reason
+    }
+
+if(this.state.deletepassword===this.state.pass)
+{
+    document.getElementById('preloder').style.display="block";
+    try {
+      axios.post("http://localhost:3001/user/removeuser", data).then((res) => {
+        console.log(res);
+        console.log(res.data);
+        setTimeout(()=>{
+          document.getElementById('preloder').style.display="none";
+         
+      },400);
+      localStorage.clear();
+      window.location.href="/"
+     
+      });
+    } catch (e) {
+      console.log(e)
+    }
+  }else{
+
+    alertify.alert("Password you entered is incorrect");
+  }
   }
 
   submithandler=(e)=>{
@@ -473,16 +509,17 @@ class UserProfile extends Component{
   <p>please re-think before deleting</p>
                   <Button type="submit" className="success" onClick={()=>{this.setState({
                     isdeleted:true
-                  })}}>Delete profile</Button>
+                  })}}>Delete profile</Button><br></br>
 
-                  {this.state.isdeleted===true?<div>
+                  {this.state.isdeleted===true?<div style={{paddingTop:10}}>
+                    <form onSubmit={this.SubmitDeleteUser}>
                     <InputGroup className="mb-3">
                     <InputGroupAddon addonType="prepend">
                       <InputGroupText>
                       <i className="flaticon-unlock"></i>
                       </InputGroupText>
                     </InputGroupAddon>
-                    <Input type="password" placeholder="enter password" name="deletepassword" value={this.state.newpassword} autoComplete="new-password"  onChange={this.onChangeHandler} required/>
+                    <Input type="password" placeholder="enter password" name="deletepassword" value={this.state.deletepassword} autoComplete="new-password"  onChange={this.changeHandler} required/>
                     
                   </InputGroup>
 
@@ -495,9 +532,11 @@ class UserProfile extends Component{
        placeholder="Enter reason for deleting account"
        value={this.state.reason}
        onChange={this.changeHandler}
+       required
      />
    </FormGroup>
-
+   <Button type="submit">submit</Button>
+   </form>
                   </div>:<></>}
                   </CardBody>
                   </Card>

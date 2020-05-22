@@ -4,6 +4,7 @@ const uniqid=require('uniqid');
 const bodyParser=require('body-parser');
 const core = require('cors');
 const UserSchema=require('../schemas/UserSchema');
+const DeleteUserSchema=require('../schemas/DeletedUserSchema');
 //const bycrpt=require('bcrypt');
 const crypto=require('crypto');
 const nodemailer=require('nodemailer');
@@ -160,6 +161,54 @@ console.log("visited function")
 res.json({success:false,data:data})
   }
 
+
+})
+
+
+router.post("/removeuser",async function(req,res){
+
+
+  let data = await UserSchema.find({_id:req.body.id});
+
+  let addDelete = [];
+  data.forEach((details) => {
+    addDelete = ({
+      uid: details._id,
+        Fullname: details.Fullname,
+        Username: details.Username,
+        email: details.email,
+        type: details.type,
+        mobile: details.mobile,
+        nic: details.nic,
+        address1: details.address1,
+        address2: details.address2,
+        city: details.city,
+        isdeleted: "true",
+        reason: req.body.reason,
+       
+    })
+
+});
+
+const deleteUser=new DeleteUserSchema(addDelete);
+
+await deleteUser.save(async function(err,deluser) {
+  if (err){
+      console.log(err + "Error adding");
+  }
+  else
+  {
+      console.log(deluser.Fullname + " User added successfully");
+  }
+})
+
+var removeRefund = await UserSchema.deleteOne({_id:req.body.id});
+if(removeRefund===null)
+{
+  res.json("error");
+}else{
+  res.json("success");
+}
 
 })
 

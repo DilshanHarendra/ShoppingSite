@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import axios from 'axios';
+
+import alertify from "alertifyjs/build/alertify";
+import "alertifyjs/build/css/alertify.min.css";
+import "alertifyjs/build/css/alertify.css";
+import "alertifyjs/build/css/themes/default.min.css";
 import {
     Nav,
     NavItem,
@@ -121,7 +126,7 @@ class UserProfile2 extends Component{
       
       });
     } catch (e) {
-      console.log(e)
+      alertify.alert("Error updating user");
     }
   }else{
 
@@ -153,7 +158,7 @@ class UserProfile2 extends Component{
      
       });
     } catch (e) {
-      console.log(e)
+      alertify.alert("Error updating user");
     }
 
 
@@ -181,6 +186,13 @@ class UserProfile2 extends Component{
       tabPane() {
         return (
           <>
+            <div id="preloder">
+                <div className="loader"></div>
+            </div>
+
+            <p style={{display:"none"}}>{setTimeout(()=>{
+            document.getElementById('preloder').style.display="none";
+        },400)}</p>
             <TabPane tabId="1">
               {
                    <Col>
@@ -300,11 +312,11 @@ class UserProfile2 extends Component{
               }
             </TabPane>
 
-            <TabPane tabId="2">
+            {/* <TabPane tabId="2">
               {
                    <div>Hi</div>
               }
-              </TabPane>
+              </TabPane> */}
             </>);
             
         }
@@ -326,7 +338,7 @@ render(){
             Update Profile
           </NavLink>
         </NavItem>
-        <NavItem>
+        {/* <NavItem>
           <NavLink
             active={this.state.activeTab[0] === "2"}
             onClick={() => {
@@ -335,7 +347,7 @@ render(){
           >
             Security
           </NavLink>
-        </NavItem>
+        </NavItem> */}
         {/* <NavItem>
           <NavLink
             active={this.state.activeTab[0] === "3"}

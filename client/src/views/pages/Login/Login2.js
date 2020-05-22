@@ -8,7 +8,7 @@ import '../../../css/flaticon.css';
 import '../../../css/font-awesome.min.css';
 import fakeAuth from "../fakeAuth"
 import axios from 'axios';
-import UserProfile from "../UserProfile/UserProfile"
+import UserProfile2 from "../UserProfile/Userprofile2"
 
 import alertify from "alertifyjs/build/alertify";
 import "alertifyjs/build/css/alertify.min.css";
@@ -34,7 +34,7 @@ class Login2 extends Component {
     }
     
 componentDidMount=()=>{
-  localStorage.clear();
+  //localStorage.clear();
 }
 
     //loggedIn: BehaviorSubject<boolean>
@@ -76,11 +76,15 @@ e.preventDefault();
       }
       try {
            axios.post("http://localhost:3001/login/login", data).then((res) => {
+             if(res.data.success===true)
+             {
+
+             
 localStorage.setItem("AccessToken",res.data.accessToken);
 localStorage.setItem("type",res.data.type);
 localStorage.setItem("id",res.data.id);
 localStorage.setItem("name",res.data.data.Username);
-this.props.toggle(false);
+
 alertify.success("Successfully logged in");
 
 if(res.data.type==="payadmin")
@@ -108,12 +112,16 @@ if(res.data.type==="store_manager")
     window.location.reload();
   }
 }
+             }else{
 
+              alertify.alert("Unable to login");
+             }
             
            });
+          
          } catch (e) {
 
-          console.log(e);
+          alertify.alert("Unable to login");
          }
     }
     render() { 
@@ -181,7 +189,7 @@ if(res.data.type==="store_manager")
       className={'modal-lg ' + this.props.className}>
         <ModalHeader>Update your info</ModalHeader>
     <ModalBody>
-   <UserProfile/>
+   <UserProfile2/>
    </ModalBody>
    <ModalFooter>
 
