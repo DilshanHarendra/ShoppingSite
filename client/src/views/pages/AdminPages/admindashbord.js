@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import{ TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Container, Form } from 'reactstrap';
 import StoreManagerPanal from './StoreManagerRegister/StoremanagerPanal';
 import ProductCategoryPanal from './ProductCategory/createcategoryPanal';
-import StoremanagerChart from './admincart/stormanagerchart'
+import AdminChrats from './admincart/stormanagerchart'
 import CartCharts from './Graphs/CartGraphs'
 import OrderTable from './Order/orderTable'
 import classnames from 'classnames';
@@ -54,7 +54,7 @@ export default function Admindashbord() {
         
       </Row>
        <Row>
-          <Col><StoremanagerChart></StoremanagerChart></Col>
+          <Col><AdminChrats></AdminChrats></Col>
             <Col> <CartCharts/> </Col>     
       </Row> 
 
