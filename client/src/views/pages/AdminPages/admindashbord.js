@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import{ TabContent, TabPane, Nav, NavItem, NavLink, Card, Button, CardTitle, CardText, Row, Col, Container, Form } from 'reactstrap';
 import StoreManagerPanal from './StoreManagerRegister/StoremanagerPanal';
 import ProductCategoryPanal from './ProductCategory/createcategoryPanal';
@@ -11,6 +11,9 @@ import {GrUserManager} from "react-icons/gr";
 import {GoPackage} from "react-icons/go"
 // Student id :IT18045840
 //Name :S.D.S.L Dissanayake
+
+
+
 
 //redirect to storemanager
 const handleStoreManager=()=>{
@@ -31,7 +34,19 @@ const handleOrderManagemet=()=>{
 }
 
 
+
+
+
+
+
+
 export default function Admindashbord() {
+
+  useEffect(() => {
+    if(!(localStorage.getItem('type')=='admin')){
+        window.location.href="/"
+    }
+  });
     
     return (
       <Container>
