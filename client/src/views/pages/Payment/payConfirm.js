@@ -99,7 +99,6 @@ class payConfirm extends Component {
                                         </Row>
                                         <Button color="secondary" type="submit">VERIFY</Button>
                                         <br />
-                                        <Label>Did not get the code? <a href="#">Send again</a></Label>
                                     </Form>
                                 </CardBody>
                                 <CardFooter>
