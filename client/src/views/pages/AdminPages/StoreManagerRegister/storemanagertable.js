@@ -283,7 +283,7 @@ export default class storemanagerview extends Component {
                 Fullname:this.state.editFirstname+" "+this.state.editLastname,
                 email:this.state.editEmailAddress,
                 Username:this.state.editFirstname+"_stmanager",
-                address1:this.state.editEmailAddress
+                address1:this.state.editAddress
             }
                 axios.post('http://localhost:3001/storeManager/updateuser',UpdateSuer)
                 .then(ressopns=>console.log("Error in change data in user collection"))
