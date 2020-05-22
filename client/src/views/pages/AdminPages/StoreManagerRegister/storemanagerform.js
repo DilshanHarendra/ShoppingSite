@@ -15,7 +15,8 @@ export default class Storemanagerform extends Component {
             email:'',
             password:'',
             address:'',
-            telephonenumber:''
+            telephonenumber:'',
+           
 
         }
 
@@ -30,47 +31,48 @@ export default class Storemanagerform extends Component {
 
     }
 
+    componentDidMount(){
+
+
+    }
+
+    //get first name
     handeleFirstName(event){
         this.setState({firstName: event.target.value})
     }
-
+    // get last name
     handeleLasttName(event){
         this.setState({lastName: event.target.value})
     }
-
+    //get birthday
     handelebirthDay(event){
         this.setState({birthDay: event.target.value})
     }
-
+    //get email
     handeleEmail(event){
         this.setState({email: event.target.value})
     }
-
+    //get password
     handelePassword(event){
         this.setState({password: event.target.value})
     }
-
+    //get email
     handeleAddress(event){
         this.setState({address: event.target.value})
     }
 
+    //get telephone number
     handeleTelephoneNumber(event){
         this.setState({telephonenumber:event.target.value})
     }
 
+    //create store manager
     onSubmitForm(event){
        event.preventDefault();
-       
-       const storeManager={
-            firstName:this.state.firstName,
-            lastName:this.state.lastName,
-            birthDay:this.state.birthDay,
-            email:this.state.email,
-            password:this.state.password,
-            address:this.state.address,
-            telephonenumber:this.state.telephonenumber
-       }
 
+       console.log("submited...");
+            
+        //object post for ussr collection
        const storemanager_user={
         Fullname:this.state.firstName+" "+this.state.lastName,
         Username:this.state.firstName+"_stmanager",
@@ -79,19 +81,45 @@ export default class Storemanagerform extends Component {
         newPassword:this.state.password
        }
 
-       axios.post('http://localhost:3001/storeManager/add',storeManager)
+       axios.post('http://localhost:3001/storeManager/addasUser',storemanager_user)
        .then(res=>{
-           console.log('new StpreManager create :'+res.data)
-            axios.post("http://localhost:3001/User/addUser",storemanager_user)
-            .then(res_user=>console.log("new user create as storemanager "+res_user))
+           console.log('new StpreManager create :')
+           console.log(res)
+
+           if(res.data.success||!(res.data._id==null)){
+            // use for store manager table
+           const storeManager={
+            firstName:this.state.firstName,
+            lastName:this.state.lastName,
+            birthDay:this.state.birthDay,
+            email:this.state.email,
+            password:this.state.password,
+            address:this.state.address,
+            telephonenumber:this.state.telephonenumber,
+            userTableId:res.data._id
+            
+            }
+
+         
+            axios.post("http://localhost:3001/storeManager/add",storeManager)
+            .then(res_user=>{
+                console.log("new user create as storemanager "+res_user)
+                window.location.href="/storeManager";
+
+             })
             .catch(err_useer=>console.log("error in creating store manager as user"+err_useer))        
-        
+         }else if(!res.data.success) {
+             alert("Email is already exists !"); //if email already exist alrt propmt
+          }
         })
-       .catch(err=>console.log('error in sendig storemanager :'+err.data));
+       .catch(err=>{
+           console.log('error in sendig storemanager :'+err.data)
+          
+        
+        });
 
 
 
-       window.location='http://localhost:3000/storeManager';
        
         
     }
@@ -120,7 +148,7 @@ export default class Storemanagerform extends Component {
                  <Col md={6}>
                      <FormGroup>
                          <Label for="examplePassword">Last Name</Label>
-                        <Input type="name" name="name"   placeholder="last name" value={this.state.lastName}  onChange={this.handeleLasttName} required/>
+                        <Input   name="name"   placeholder="last name" value={this.state.lastName}  onChange={this.handeleLasttName} required/>
                     </FormGroup>
                  
                     <FormGroup>

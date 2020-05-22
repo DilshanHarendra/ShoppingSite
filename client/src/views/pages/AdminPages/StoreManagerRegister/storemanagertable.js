@@ -59,7 +59,7 @@ class StoreManager extends Component{
             <p style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"none"}:{display:"inherit"} }>{this.props.storemanager.address}</p>
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.storemanager.address}
-                                   onChange={(e)=>this.props.handeleEmailAddress(e.target.value)}
+                                   onChange={(e)=>this.props.handeleAddress(e.target.value)}
                                    value={this.props.editAddress}
                                    name="address"
 
@@ -77,7 +77,7 @@ class StoreManager extends Component{
         
         </td>
         <td>
-        <RiDeleteBinLine size="2em" color="#FF9592"  onClick={()=>{this.props.deleteStoreManager(this.props.storemanager._id)}}>Delete</RiDeleteBinLine>
+        <RiDeleteBinLine size="2em" color="#FF9592"  onClick={()=>{this.props.deleteStoreManager(this.props.storemanager._id,this.props.storemanager.userTableId)}}>Delete</RiDeleteBinLine>
         </td>
         <td>
         <RiEditLine  size="2em" color="#FFD478" style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} } onClick={()=>{this.props.editemodeToggle(this.props.storemanager._id)}}  > </RiEditLine>
@@ -88,6 +88,7 @@ class StoreManager extends Component{
             this.props.storemanager.emailAddress,
             this.props.storemanager.address,
             this.props.storemanager.telephoneNumber,
+            this.props.storemanager.userTableId,
 
         )}} ></RiCheckboxCircleLine>
         </td> 
@@ -203,22 +204,38 @@ export default class storemanagerview extends Component {
     }
 
 
-    deleteStoreManager(id){
-        axios.delete('http://localhost:3001/storeManager/'+id)
+    deleteStoreManager(storemanager_id,user_id){
+
+        var reason_text = prompt("Please enter reason for delete Store manager ", " ");
+        if(reason_text==null){
+            reason_text="Delete by admin for maintain purpose"
+        }
+
+        let deleteuser={
+            reason:reason_text,
+            id:user_id
+        };
+
+        axios.post('http://localhost:3001/storeManager/removeuser',deleteuser)
         .then(res=>{
-            // axios.delete('http://localhost:3001/storeManager/'+id)
+            axios.delete('http://localhost:3001/storeManager/'+storemanager_id)
+            .then(res=>{
+                // axios.delete('http://localhost:3001/storeManager/'+id)
+                console.log(res.data)
+            
+            });
+            this.setState({
+                storemanagerlist:this.state.storemanagerlist.filter(el=>el._id!==storemanager_id)
+            })
 
-
-            console.log(res.data)
-        
-        });
-        this.setState({
-            storemanagerlist:this.state.storemanagerlist.filter(el=>el._id!==id)
         })
+        .catch(err=>console.log(err));
+
+       
         
     }
 
-    onSubmitUpdateForm(dfname,dlname,dbday,demil,daddress,dtel){
+    onSubmitUpdateForm(dfname,dlname,dbday,demil,daddress,dtel,id){
         // event.preventDefault()
         
                
@@ -258,10 +275,28 @@ export default class storemanagerview extends Component {
         }
 
         axios.post('http://localhost:3001/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
-        .then(res=>console.log("store manager update sucessful"+res.data))
+        .then(res=>{
+            console.log("store manager update sucessful"+res.data)
+
+            const UpdateSuer={
+                id:id,
+                Fullname:this.state.editFirstname+" "+this.state.editLastname,
+                email:this.state.editEmailAddress,
+                Username:this.state.editFirstname+"_stmanager",
+                address1:this.state.editEmailAddress
+            }
+                axios.post('http://localhost:3001/storeManager/updateuser',UpdateSuer)
+                .then(ressopns=>console.log("Error in change data in user collection"))
+                .catch(err=>console.log('Err in edite user table'))
+
+
+
+
+                this.loadStoreManagerData();
+
+        })
         .catch(err=>console.log('error in update :'+err.data))
         this.editmodeToggle();
-        this.loadStoreManagerData();
 
     }
     //generate Storemagaer table

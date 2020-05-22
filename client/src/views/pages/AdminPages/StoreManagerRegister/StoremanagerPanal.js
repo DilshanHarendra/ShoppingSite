@@ -14,7 +14,7 @@ constructor(props){
 componentDidMount(){
     
     if(!(localStorage.getItem('type')=="admin")){
-        window.location.replace="/"
+        window.location.href="/"
     }
 }
 
