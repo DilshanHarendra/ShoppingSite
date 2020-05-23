@@ -5,6 +5,10 @@ const core = require('cors');
 //******************************************Routers***********************************************************************
 const productRoute = require('./routes/Product');
 
+
+
+
+
 app.use('/product',productRoute);
 //==================STOREMANAGER======================
 const storeManagerRoute =require('./routes/StoreManager');
@@ -54,11 +58,10 @@ mydb.once('open', () => {
 
 
 app.get('/',function (req,res) {
-    res.send('hello');
 
-
-
+    res.send("hello");
 });
+
 
 
 

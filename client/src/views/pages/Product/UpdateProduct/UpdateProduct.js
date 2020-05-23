@@ -575,7 +575,7 @@ showSubCatogory() {
                                         <label htmlFor="validationCustom03">Condition<span>*</span></label>
                                         <select name="condition" value={this.state.condition} className="form-control"  onChange={this.changeHandler} required>
                                             <option value="">Choose</option>
-                                            <option value="BarandNew">Barand New</option>
+                                            <option value="BarandNew">Brand New</option>
                                             <option value="Used">Used</option>
                                         </select>
                                         <ShowError isShow={this.state.check} value={this.state.condition} name={"Select Condition"} />

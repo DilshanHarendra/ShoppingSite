@@ -146,7 +146,7 @@ class DefaultHeader extends Component {
                               Sign In or Create Account</div>:(
                                   <>
                                   <div className="dropdown">
-                                      <button className="dropbtn" style={{"backgroundImage":"url('/images/product/1.jpg')"}}></button>
+                                      <button className="dropbtn" >D</button>
                                       <div className="dropdown-content">
                                           <div >Profile</div>
                                           <div >Link 2</div>
@@ -235,6 +235,10 @@ class DefaultHeader extends Component {
 
                             <li>
                                 <Link to="/payment" className="nav-link">Payment</Link>
+                            </li>
+
+                            <li>
+                                <Link to="/contactus" className="nav-link">Contact us</Link>
                             </li>
                         </ul>
                     </div>

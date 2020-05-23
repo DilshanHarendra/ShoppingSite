@@ -188,7 +188,7 @@ class ShowReview extends Component{
                                     <h2>Status : <span>Blocked Review</span></h2>
                                     <button  onClick={()=>this.updateReview(false,review._id)} style={{'margin-left':'50px'}} className="btn btn-secondary">Unhide</button>
                                 </div>
-                                <h3>Name</h3>
+                                <h3>{review.username}</h3>
                                 <p>{review.review}</p>
                                 <div>
                                     {this.setStars(review.rating)}

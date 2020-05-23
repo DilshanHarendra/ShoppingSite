@@ -21,6 +21,7 @@ constructor(props) {
         next:0,
         limit:4,
         loading:false,
+        find:''
 
 
     }
@@ -70,7 +71,7 @@ constructor(props) {
             var productBox=productBoxEle.scrollHeight*(75/100); //  box height 80%
 
             if(winScroll>(productBoxEle.offsetTop+productBox) &&((document.body.getBoundingClientRect()).top < scrollPos)) {
-                console.log(winScroll,productBoxEle.offsetTop+productBox)
+             
                 if (this.state.loading){
                     this.state.next+=this.state.limit;
                     this.loadmore();
@@ -164,6 +165,8 @@ getData=()=>{
                 <section className="cart-section spad">
                     <div className="container">
                         <div className="row">
+
+
                             <div className="col-lg-12">
                                 <div className="cart-table">
 

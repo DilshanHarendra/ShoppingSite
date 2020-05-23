@@ -41,9 +41,8 @@ class Home extends Component{
         document.body.appendChild(script);
 
 
-
         this.getData();
-        this.getlatestProduct();
+
 
 
 
@@ -85,22 +84,7 @@ class Home extends Component{
         };
     }
 
-    getlatestProduct=()=>{
 
-        axios({
-            methode: 'GET',
-            url:global.backend+'/product/letestProduct',
-            params:{s:true}
-        }).then(res=>{
-
-            this.setState({
-                latestProduct:res.data
-            },()=>console.log(this.state.latestProduct));
-
-        }).catch(err=>{
-            console.log(err);
-        });
-    }
 
 
     loadmore=async ()=>{

@@ -15,7 +15,7 @@ class AddNewReview extends  Component{
             reviewButton:'Publish',
             id:props.id,
             uid:localStorage.getItem('id'),
-            username:'abc'
+            username:localStorage.getItem('name'),
 
         }
     }

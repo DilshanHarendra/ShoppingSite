@@ -353,7 +353,7 @@ class ShowOneProduct extends Component{
                          isDelete:false
                      });
                      socketIOClient(global.backendSoket).emit('ChangeProduct',{type:'delete',pid:this.state.id});
-                     window.location.replace('/allProducts/'+this.state.pcatgory);
+                     window.location.replace('/Myshop');
 
                  })
                  .catch(err=>console.log(err))

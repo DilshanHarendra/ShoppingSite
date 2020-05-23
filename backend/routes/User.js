@@ -10,6 +10,10 @@ const nodemailer=require('nodemailer');
 router.use(bodyParser());
 router.use(core());
 var UID;
+const Hogan= require('hogan.js');
+const fs=require('fs');
+var template = fs.readFileSync('./views/Etemplate.hjs','utf-8');
+var comileTemplate=Hogan.compile(template);
 
 router.post('/addUser',async function(req,res){
 
@@ -98,5 +102,55 @@ router.route('/addtoken').post((req,res)=>{
 router.get("/", function (req, res) {
     res.send("hello");
   });
+
+
+router.post("/sendmail",async function (req,res) {
+
+
+    let transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
+        secure: true, // true for 465, false for other ports
+        auth: {
+            user: "codefoursliit@gmail.com", // generated ethereal user
+            pass: "codefour@123", // generated ethereal password
+        },
+    });
+
+
+    try {
+        let info = await transporter.sendMail({
+            from: 'CFashion', // sender address
+            to: req.body.mail, // list of receivers
+            subject: req.body.subject.toString().trim(), // Subject line
+            text: "Dear "+req.body.name , // plain text body
+            html: comileTemplate.render({url:process.env.BACKENDURL,furl:process.env.FROUNTENDURL, name:req.body.name ,message:"Thank You for message us. we will response you as soon as possible"})
+
+
+        });
+        let info2 =  transporter.sendMail({
+            from: 'CFashion New Message ', // sender address
+            to: "pereraharen48@gmail.com", // list of receivers
+            subject: "New massage", // Subject line
+            html: 'new message from '+req.body.name+'<br>'+req.body.message
+
+
+        });
+        res.status(200).send("success");
+
+    }catch (e) {
+        res.status(404).send("errror");
+    }
+
+
+
+
+
+
+
+
+})
+
+
 
 module.exports = router;

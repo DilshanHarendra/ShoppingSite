@@ -180,8 +180,8 @@ export default class Cart extends Component {
                    
             
             // console.log(Total);
-            
-            
+
+            document.getElementById('preloder').style.display="none";
             
         })
         .catch((error)=>{
@@ -287,6 +287,10 @@ export default class Cart extends Component {
 
     render() {
         return (
+            <>
+                <div id="preloder">
+                    <div className="loader"></div>
+                </div>
             <Container >
 
                 <Row >
@@ -325,6 +329,7 @@ export default class Cart extends Component {
                     
                 </Row>
             </Container>
+                </>
         )
     }
 }
