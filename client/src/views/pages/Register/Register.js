@@ -42,15 +42,12 @@ class Register extends Component {
       () => console.log(this.state.newPassword)
     );
 
-    // console.log(this.state.newPassword);
   };
 
   
   submitHandler = (e) => {
     e.preventDefault();
-    // alertify.notify("sample", "success", 5, function () {
-    //   console.log("dismissed");
-    // });
+   
     const data = this.state;
 
     
@@ -59,7 +56,7 @@ class Register extends Component {
     document.getElementById('preloder').style.display="block";
 
     try {
-      axios.post("http://localhost:3001/user/addUser", data).then((res) => {
+      axios.post(global.backend+"/user/addUser", data).then((res) => {
         console.log(res);
         console.log(res.data);
         if(res.data.success===true)

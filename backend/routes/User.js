@@ -154,7 +154,7 @@ router.post('/forgotpassword',async function(req,res){
                 secure: true, // true for 465, false for other ports
                 auth: {
                   user: "codefoursliit@gmail.com", // generated ethereal user
-                  pass: "codefour@123", // generated ethereal password
+                  pass: process.env.EMAILPASS, // generated ethereal password
                 },
               });
               var email=await data["email"];
@@ -167,7 +167,7 @@ router.post('/forgotpassword',async function(req,res){
                 subject: "complete Forgot password", // Subject line
                 text:
                   "http://localhost:3000/RegisterConfirm?token="+token+"&user_id="+userid+"", // plain text body
-                html: '<a href="http://localhost:3000/RegisterConfirm?token='+token+'&user_id='+userid+'">Click to reset password</a>',
+                html: '<a href="'+process.env.FROUNTENDURL+'/resetpassword?token='+token+'&user_id='+userid+'">Click to reset password</a>',
                
             
               });

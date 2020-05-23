@@ -65,7 +65,7 @@ e.preventDefault();
        
       }
       try {
-           axios.post("http://localhost:3001/login/login", data).then((res) => {
+           axios.post(global.backend+"/login/login", data).then((res) => {
              if(res.data.success===true)
              {
               localStorage.setItem("AccessToken",res.data.accessToken);

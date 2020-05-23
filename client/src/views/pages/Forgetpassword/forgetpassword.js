@@ -34,7 +34,7 @@ class forgetpassword extends Component {
     };
   }
 
-  
+ 
   onChangeHandler = (e) => {
     this.setState(
       {
@@ -58,7 +58,7 @@ class forgetpassword extends Component {
     document.getElementById('preloder').style.display="block";
 
     try {
-      axios.post("http://localhost:3001/user/forgotpassword", data).then((res) => {
+      axios.post(global.backend+"/user/forgotpassword", data).then((res) => {
         console.log(res);
         console.log(res.data);
         if(res.data.success===true)

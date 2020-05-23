@@ -26,7 +26,7 @@ import StoreManagerPanal from "./views/pages/AdminPages/StoreManagerRegister/Sto
 import registerVerify from "./views/pages/registerVerify";
 import UserProfile from "./views/pages/UserProfile"
 import forgetpassword from "./views/pages/Forgetpassword/forgetpassword"
-
+import ResetVerify from "./views/pages/ResetVerify/ResetVerify"
 //=========================PAYMENT PAGES==================================
 import PaymentMain from "./views/pages/Payment/PaymentMain";
 import cardPayment from "./views/pages/Payment/cardPayment";
@@ -165,6 +165,7 @@ class App extends Component {
                     <Route path="/Login2" exact component={Login2}/>
                     <PrivateRouteUser path="/userprofile" exact component={UserProfile}/>
                     <Route path="/forgotpassword" exact component={forgetpassword}/>
+                    <Route path="/resetpassword" exact component={ResetVerify}/>
 
                     {/* PAYMENT */}
                     <PrivateRouteUser path="/paymentMain" component={PaymentMain} />

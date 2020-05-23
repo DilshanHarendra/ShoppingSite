@@ -75,7 +75,7 @@ e.preventDefault();
        
       }
       try {
-           axios.post("http://localhost:3001/login/login", data).then((res) => {
+           axios.post(global.backend+"/login/login", data).then((res) => {
              if(res.data.success===true)
              {
 
@@ -109,7 +109,7 @@ if(res.data.type==="store_manager")
     this.toggleLarge1();
     
   }else{
-    window.location.reload();
+    window.location.href="/";
   }
 }
              }else{
