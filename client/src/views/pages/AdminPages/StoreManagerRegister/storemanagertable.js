@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Container, Input, Button } from 'reactstrap';
+import { Table, Container, Input, Button, Fade, Alert } from 'reactstrap';
 import { RiDeleteBinLine ,RiCheckboxCircleLine,RiEditLine } from 'react-icons/ri';
 // Student id :IT18045840
 //Name :S.D.S.L Dissanayake
@@ -131,7 +131,9 @@ export default class storemanagerview extends Component {
                       editEmailAddress:'',
                       editAddress:'',
                       editTelephoneNumber:'',
-                      edite_Id:''
+                      edite_Id:'',
+                      datasendSuccessful: false,
+                      datasendError: false,
         };
   
  
@@ -221,6 +223,14 @@ export default class storemanagerview extends Component {
             axios.delete('http://localhost:3001/storeManager/'+storemanager_id)
             .then(res=>{
                 // axios.delete('http://localhost:3001/storeManager/'+id)
+                this.setState({
+                    datasendSuccessful:true
+                   
+                })
+
+                setTimeout(()=>{
+                    this.setState({datasendSuccessful:false})
+                },1600);
                 console.log(res.data)
             
             });
@@ -229,7 +239,16 @@ export default class storemanagerview extends Component {
             })
 
         })
-        .catch(err=>console.log(err));
+        .catch(err=>{
+            console.log(err)
+            this.setState({
+                datasendError:this
+            })
+            setTimeout(()=>{
+                this.setState({datasendError:false})
+            },1600);
+        
+        });
 
        
         
@@ -286,8 +305,29 @@ export default class storemanagerview extends Component {
                 address1:this.state.editAddress
             }
                 axios.post('http://localhost:3001/storeManager/updateuser',UpdateSuer)
-                .then(ressopns=>console.log("Error in change data in user collection"))
-                .catch(err=>console.log('Err in edite user table'))
+                .then(ressopns=>{
+                    this.setState({
+                        datasendSuccessful:true
+                       
+                    })
+    
+                    setTimeout(()=>{
+                        this.setState({datasendSuccessful:false})
+                    },1600);
+                    console.log("Error in change data in user collection")
+                
+                })
+                .catch(err=>{
+                    console.log('Err in edite user table')
+                    
+                    this.setState({
+                        datasendError:this
+                    })
+                    setTimeout(()=>{
+                        this.setState({datasendError:false})
+                    },1600);
+                
+                })
 
 
 
@@ -295,10 +335,38 @@ export default class storemanagerview extends Component {
                 this.loadStoreManagerData();
 
         })
-        .catch(err=>console.log('error in update :'+err.data))
+        .catch(err=>{console.log('error in update :'+err.data)
+        this.setState({
+            datasendError:this
+        })
+        setTimeout(()=>{
+            this.setState({datasendError:false})
+        },1600);
+    
+        })
         this.editmodeToggle();
+        this.clearText();
 
     }
+
+    clearText=()=>{
+        this.setState({
+
+            editFirstname:'',
+            editLastname:'',
+            editBirthday:'',
+            editEmailAddress:'',
+            editAddress:'',
+            editTelephoneNumber:'',
+            edite_Id:'',
+        })
+
+
+    }
+
+
+
+
     //generate Storemagaer table
     storemanagrList(){
         return this.state.storemanagerlist.map(currentstoremanager=>{
@@ -371,6 +439,39 @@ export default class storemanagerview extends Component {
     render() {
         return (
           <Container style={Styles.regTablePlanal}>
+               <div style={Styles.regForm}>
+        {
+           
+           this.state.datasendSuccessful ? (<Fade>	
+                                                <Alert color="success" >
+                                                    Data updated successful
+                                                </Alert>
+                                            </Fade>	
+                                            ):(<p></p>)
+        }
+        
+        { 
+            this.state.datasendError ? (<Fade>	
+                                             <Alert color="danger" >
+                                                Error in update 
+                                            </Alert>
+                                        </Fade>	):(<p></p>)
+         
+                
+        }
+         
+
+        </div>
+
+
+
+
+
+
+
+
+
+
                 <h4 style={Styles.regHeadertext}>Store Manager Table</h4>
                     <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
                     <Table  responsive   >
@@ -408,5 +509,10 @@ const Styles={
         padding: '10px',
         borderRadius:'10px'
     },
+    regForm:{
+        backgroundColor:"white",
+        padding: '10px',
+        borderRadius:'10px'
+    }
 
 }

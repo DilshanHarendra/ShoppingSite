@@ -1,5 +1,7 @@
 const express = require('express');
 const router =express.Router();
+const authenticateToken = require('./authenticateToken');
+
 
 const bodyParser =require('body-parser');
 const core = require('cors');
@@ -106,7 +108,7 @@ router.post('/addasUser',async function(req,res){
                 console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
                 // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
     
-                res.json({success:true});
+                // res.json({success:true});
             
               }catch(e)
               {
@@ -165,6 +167,7 @@ router.route('/add').post((req,res)=>{
 //Delete Storemanager in User
 router.post("/removeuser",async function(req,res){
 
+console.log(req.body);
 
   let data = await UserSchema.find({_id:req.body.id});
 
@@ -203,12 +206,12 @@ await deleteUser.save(async function(err,deluser) {
 var removeRefund = await UserSchema.deleteOne({_id:req.body.id});
 if(removeRefund===null)
 {
-  res.json("error");
+  res.json({success:false,status:400});
 }else{
-  res.json("success");
+  res.json({success:true,status:200});
 }
 
-})
+});
 
 
 
@@ -306,8 +309,109 @@ router.route('/update/:id').post((req,res)=>{
 });
 
 
-router.route('/updateuser').post((req,res)=>{
+router.route('/updateuser').post(async (req,res)=>{
  
+  getpriviousfrstname= await UserSchema.findById(req.body.id);
+
+  if(!(req.body.Username==getpriviousfrstname.Username)){
+   
+    console.log("Youser name is chnage");
+
+    console.log(req.body.Username);
+    console.log(getpriviousfrstname.Username);
+
+    let testAccount = await nodemailer.createTestAccount();
+    console.log("after")
+                // create reusable transporter object using the default SMTP transport
+                let transporter = nodemailer.createTransport({
+                  host: "smtp.gmail.com",
+                  port: 465,
+                  secure: true, // true for 465, false for other ports
+                  auth: {
+                    user: "codefoursliit@gmail.com", // generated ethereal user
+                    pass: "codefour@123", // generated ethereal password
+                  },
+                });
+                var email=await getpriviousfrstname.email;
+                console.log(email)
+               console.log("transport visited")
+                // send mail with defined transport object
+                let info = await transporter.sendMail({
+                    from: '"C4fashions" <codefoursliit@gmail.com>', // sender address
+                    to: email, // list of receivers
+                   subject: "user name is update", // Subject line
+                    text:
+                    "User name is change ", // plain text body
+                    html: '<p>Your User name is changed, New user name is :<b>'+req.body.Username+'</b> ✍ </p>',
+                 
+              
+                });
+              
+                console.log("Message sent: %s", info.messageId);
+                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+              
+                // Preview only available when sending through an Ethereal account
+                console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    
+ 
+
+
+
+    
+    
+    
+  }
+
+  if(!(req.body.email==getpriviousfrstname.email)){
+   
+    console.log("Youser email is chnage");
+
+    console.log(req.body.email);
+    console.log(getpriviousfrstname.email);
+
+    let testAccount = await nodemailer.createTestAccount();
+    console.log("after")
+                // create reusable transporter object using the default SMTP transport
+                let transporter = nodemailer.createTransport({
+                  host: "smtp.gmail.com",
+                  port: 465,
+                  secure: true, // true for 465, false for other ports
+                  auth: {
+                    user: "codefoursliit@gmail.com", // generated ethereal user
+                    pass: "codefour@123", // generated ethereal password
+                  },
+                });
+                var email=await req.body.email;
+                console.log(email)
+               console.log("transport visited")
+                // send mail with defined transport object
+                let info = await transporter.sendMail({
+                  from: '"C4fashions" <codefoursliit@gmail.com>', // sender address
+                  to: email, // list of receivers
+                  subject: "user name is update", // Subject line
+                  text:
+                    "User name is change ", // plain text body
+                  html: '<p>This email register as new Email of,User : <b>'+req.body.Username+'</b> 📧</p>',
+                 
+              
+                });
+              
+                console.log("Message sent: %s", info.messageId);
+                // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+              
+                // Preview only available when sending through an Ethereal account
+                console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+                // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    
+ 
+
+
+
+    
+    
+    
+  }
 
   UserSchema.findByIdAndUpdate(req.body.id,{
 
