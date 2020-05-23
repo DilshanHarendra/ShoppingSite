@@ -175,7 +175,7 @@ class ShowReview extends Component{
                                 <></>
                                 )}
 
-                            <h3>Name</h3>
+                            <h3>{review.username}</h3>
                             <p>{review.review}</p>
                             <div>
                                 {this.setStars(review.rating)}

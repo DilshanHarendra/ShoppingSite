@@ -45,7 +45,7 @@ class ContactUs extends Component{
         });
 
         let values={name:this.state.name,mail:this.state.mail,subject:this.state.subject,message:this.state.description}
-        axios.post(global.backend+'/user//sendmail',values)
+        axios.post(global.backend+'/user/sendmail',values)
             .then(res=>{
                 this.setState({
                     mess:1,
@@ -64,9 +64,11 @@ class ContactUs extends Component{
 
             })
         })
-
-
-
+        setTimeout(()=>{
+            this.setState({
+                mess:3,
+            })
+        },5000);
 
     }
     }
