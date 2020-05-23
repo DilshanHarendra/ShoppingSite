@@ -30,6 +30,11 @@ const StoreManagerSchema = new mongoose.Schema({
     telephoneNumber:{
         type:String,
         required:true
+    },
+
+    userTableId:{
+        type:String,
+        required:false
     }
    
 

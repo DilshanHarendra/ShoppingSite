@@ -13,7 +13,7 @@ export default class CartGrahps extends Component {
             ProductDataArry:[],
             StoreManagers:[],
 
-            
+            AuthHedader:{},
 
             totalOrde:0,
             totalUser:0,
@@ -22,6 +22,8 @@ export default class CartGrahps extends Component {
         }
 
         // this.loadStoreManagerData=this.loadStoreManagerData.bind(this);
+
+       
         
     }
 
@@ -31,13 +33,31 @@ export default class CartGrahps extends Component {
        this.loadStreManagerData()
        this.loadProductCategoryData()
        
+
+       this.setState({
+           AuthHedader:{
+                    headers: {
+                        "content-type": "application/json", // whatever you want
+                        authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+                     }
+          }
+       })
+       
         
         
     }
 
   
     loadOrderData=()=>{
-        Axios.get('http://localhost:3001/order/')
+
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+              }
+          };
+
+        Axios.get(global.backend+'/order/',options)
             .then(ressopns=>{
                 this.setState({DataArry:ressopns.data,isLoading:true,totalOrde:ressopns.data.length})
             })
@@ -47,7 +67,16 @@ export default class CartGrahps extends Component {
     }
   
     loadUsersData=()=>{
-        Axios.get('http://localhost:3001/order/')
+
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+              }
+          };
+
+
+        Axios.get(global.backend+'/order/',options)
         .then(ressopns=>{
             this.setState({UsersDataArry:ressopns.data,totalUser:ressopns.data.length})
         })
@@ -57,7 +86,18 @@ export default class CartGrahps extends Component {
     }
 
     loadStreManagerData=()=>{
-        Axios.get('http://localhost:3001/storemanager/')
+
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+              }
+          };
+
+
+
+
+        Axios.get(global.backend+'/storemanager/',options)
         .then(ressopns=>{
             this.setState({StoreManagers:ressopns.data,totalStoremanager:ressopns.data.length})
         })
@@ -67,7 +107,7 @@ export default class CartGrahps extends Component {
     }
 
     loadProductCategoryData=()=>{
-        Axios.get('http://localhost:3001/productCategory/')
+        Axios.get(global.backend+'/productCategory/')
         .then(ressopns=>{
             this.setState({ProductDataArry:ressopns.data,totaProductCat:ressopns.data.length})
         })

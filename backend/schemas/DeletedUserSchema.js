@@ -1,7 +1,7 @@
-//User schema by V.D Dantanarayana
+//Delete user schema by V.D Dantanarayana
 const mongoose=require('mongoose');
 
-const UserSchema=new mongoose.Schema({
+const DeletedUserSchema=new mongoose.Schema({
 
     Fullname:{
         type:String,
@@ -21,9 +21,6 @@ const UserSchema=new mongoose.Schema({
         required:true
 
     },
-    newPassword:{
-        type:String,
-    },
     mobile:{
         type:String,
     },
@@ -40,16 +37,16 @@ const UserSchema=new mongoose.Schema({
         type:String,
         
 
-    },   token:{
-        type:String,
-        
-
     }, isdeleted:{
         type:String,
         required:true
         
 
-    }, 
+    }, reason:{
+
+        type:String,
+
+    }
 
 });
-module.exports=mongoose.model('Users',UserSchema,'User')
+module.exports=mongoose.model('DelUsers',DeletedUserSchema,'DelUser')

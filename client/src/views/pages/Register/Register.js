@@ -18,6 +18,8 @@ import alertify from "alertifyjs/build/alertify";
 import "alertifyjs/build/css/alertify.min.css";
 import "alertifyjs/build/css/alertify.css";
 import "alertifyjs/build/css/themes/default.min.css";
+
+
 class Register extends Component {
   constructor(props) {
     super(props);
@@ -43,27 +45,7 @@ class Register extends Component {
     // console.log(this.state.newPassword);
   };
 
-  handlePasswordConfirm = (e) => {
-    if (e.target.value === this.state.newPassword) {
-      this.setState(
-        {
-          vidula: true,
-          malidi: false,
-        },
-        () => console.log(this.state.malidi)
-      );
-    } else {
-      this.setState(
-        {
-          malidi: true,
-          vidula: false,
-        },
-        () => console.log(this.state.malidi)
-      );
-    }
-    // console.log(this.state.malidi);
-  };
-
+  
   submitHandler = (e) => {
     e.preventDefault();
     // alertify.notify("sample", "success", 5, function () {
@@ -74,13 +56,35 @@ class Register extends Component {
     
     delete data.Valid;
     delete data.Invalid;
+    document.getElementById('preloder').style.display="block";
 
     try {
       axios.post("http://localhost:3001/user/addUser", data).then((res) => {
         console.log(res);
         console.log(res.data);
+        if(res.data.success===true)
+        {
+          setTimeout(()=>{
+            document.getElementById('preloder').style.display="none";
+           
+        },400);
+
         alertify.success("Successfully registered");
-        alertify.alert("Email sent..please click on link for registration complete")
+          alertify.alert("Email sent..please click on link for registration complete")
+
+        
+          
+          
+        }else{
+          
+            setTimeout(()=>{
+              document.getElementById('preloder').style.display="none";
+             
+          },400);
+
+          alertify.alert("Error registering please contact administrator "+res.data.err);
+        }
+        
 
       });
     } catch (e) {
@@ -90,6 +94,15 @@ class Register extends Component {
   render() {
     return (
       <div className="app flex-row align-items-center">
+        
+        <div id="preloder">
+                <div className="loader"></div>
+            </div>
+
+            <p style={{display:"none"}}>{setTimeout(()=>{
+            document.getElementById('preloder').style.display="none";
+        },400)}</p>
+
         <Container>
           <Row className="justify-content-center">
             <Col md="9" lg="7" xl="6">
@@ -190,7 +203,7 @@ class Register extends Component {
                     </Button>
                   </Form>
                 </CardBody>
-                <CardFooter className="p-4">
+                {/* <CardFooter className="p-4">
                   <Row>
                     <Col xs="12" sm="6">
                       <Button className="btn-facebook mb-1" block>
@@ -203,7 +216,7 @@ class Register extends Component {
                       </Button>
                     </Col>
                   </Row>
-                </CardFooter>
+                </CardFooter> */}
               </Card>
             </Col>
           </Row>

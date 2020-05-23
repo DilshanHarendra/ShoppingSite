@@ -48,9 +48,15 @@ class DefaultHeader extends Component {
 	
 		this.toggleLarge = this.toggleLarge.bind(this);
 		
-	  }
+      }
+      
+      changefalse=(value)=>{
+          this.setState({
+large:value
+          })
+      }
 
-	toggleLarge() {
+	toggleLarge(large) {
 		this.setState({
 		  large: !this.state.large,
 		});
@@ -106,6 +112,13 @@ class DefaultHeader extends Component {
 
     state = {  }
     render() { 
+        // if(localStorage.getItem("AccessToken")!==null)
+        // {
+        //     this.setState({
+        //         large:false
+
+        //     })
+        // }
         return ( <React.Fragment>
 
 
@@ -136,9 +149,9 @@ class DefaultHeader extends Component {
                                         </div>
 										
                                         <Link to="/cart">Shopping Cart</Link>
+                                        
                                     </div>
-
-
+                                    
                                     <div className="up-item">
                               {localStorage.getItem("AccessToken")===null?
 
@@ -146,10 +159,12 @@ class DefaultHeader extends Component {
                               Sign In or Create Account</div>:(
                                   <>
                                   <div className="dropdown">
-                                      <button className="dropbtn" >D</button>
+                                      <button className="dropbtn" >{localStorage.getItem("name").charAt(0)}</button>
                                       <div className="dropdown-content">
-                                          <div >Profile</div>
-                                          <div >Link 2</div>
+                                          {localStorage.getItem("type")==="user"?
+                    
+                                          <div onClick={()=>{window.location.href="/userprofile"}}>Profile</div>:<></>}
+                                         
                                           <div onClick={()=>{localStorage.clear(); window.location.href="/"}}>Logout</div>
                                       </div>
                                   </div>
@@ -228,17 +243,24 @@ class DefaultHeader extends Component {
 
 
 
+                            {localStorage.getItem('type')=="store_manager"||localStorage.getItem('type')=="admin"?(
+                                    <li>
+                                       <NavLink to="/adminDashboard" className="nav-link" >Dashboard</NavLink>
+                                    </li>                         
+                            ):(
+                                <></>
+                            )
+                            
+                            }
 
-                            <li>
-                                <NavLink to="/adminDashboard" className="nav-link" >Dashboard</NavLink>
-                            </li>
+
+
+
+
+
 
                             <li>
                                 <Link to="/payment" className="nav-link">Payment</Link>
-                            </li>
-
-                            <li>
-                                <Link to="/contactus" className="nav-link">Contact us</Link>
                             </li>
                         </ul>
                     </div>

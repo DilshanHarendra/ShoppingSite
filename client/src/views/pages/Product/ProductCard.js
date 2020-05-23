@@ -19,13 +19,15 @@ class ProductCard extends Component{
     }
 
     addToCart=()=>{
-       if (this.state.uid==null){
+       if (this.state.uid==null||localStorage.getItem('type')=="admin"){
+        window.location.replace('/'); //if user id null or admin redirect to home page
 
        }else {
-           console.log("add to cart");
+           
            let data={user:this.state.uid,products:this.state.product,qty:this.state.qty}
            axios.post(global.backend+'/cart/add',data)
                .then(res=>{
+                console.log("add to cart");
                    window.location.replace('/cart');
                        console.log(res.data)
                }

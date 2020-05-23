@@ -24,6 +24,8 @@ import Login2 from "../../client/src/views/pages/Login/Login2"
 import ProductCategory from "./views/pages/AdminPages/ProductCategory/createcategoryPanal";
 import StoreManagerPanal from "./views/pages/AdminPages/StoreManagerRegister/StoremanagerPanal";
 import registerVerify from "./views/pages/registerVerify";
+import UserProfile from "./views/pages/UserProfile"
+import forgetpassword from "./views/pages/Forgetpassword/forgetpassword"
 
 //=========================PAYMENT PAGES==================================
 import PaymentMain from "./views/pages/Payment/PaymentMain";
@@ -118,7 +120,7 @@ const PrivateRoutePayadmin = ({ component: Component, ...rest }) => (
 const PrivateRouteStoreManager = ({ component: Component, ...rest }) => (
   <Route {...rest} render={(props) => (
     //fakeAuth.isAuthenticated === true
-    localStorage.getItem("type")==="storemanager"
+    localStorage.getItem("type")==="store_manager"
       ? <Component {...props} />
       : <Redirect to={{
           pathname: '/login',
@@ -160,7 +162,9 @@ class App extends Component {
                     <Route path="/login" exact component={Login}/>
                     <Route exact path="/Register" component={Register} />
                     <Route exact path="/RegisterConfirm" component={registerVerify}/>
-                    <Route path="/Login" exact component={Login2}/>
+                    <Route path="/Login2" exact component={Login2}/>
+                    <PrivateRouteUser path="/userprofile" exact component={UserProfile}/>
+                    <Route path="/forgotpassword" exact component={forgetpassword}/>
 
                     {/* PAYMENT */}
                     <PrivateRouteUser path="/paymentMain" component={PaymentMain} />

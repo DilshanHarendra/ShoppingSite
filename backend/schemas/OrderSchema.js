@@ -22,6 +22,10 @@ const OrderSchema = new mongoose.Schema({
     orderCreateDate:{
         type:String,
         required:false
+    },
+    isDelevery :{
+        type:Boolean,
+        required:false
     }
     
    

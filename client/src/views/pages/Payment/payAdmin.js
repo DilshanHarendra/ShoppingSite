@@ -18,12 +18,31 @@ import CardFooter from "reactstrap/es/CardFooter";
 import CFooter from "@coreui/react/es/CFooter";
 import CanvasJSReact from "./Assets/canvasjs.react";
 import {Link} from "react-router-dom";
+import axios from "axios";
 var CanvasJS = CanvasJSReact.CanvasJS;
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 var dataPoints =[];
 
 class payAdmin extends Component {
-    state = {  }
+    constructor(props) {
+        super(props)
+        this.state = {
+        };
+
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleSubmit(event){
+        event.preventDefault();
+
+        axios.post('http://localhost:3001/payment/fixIssue')
+            .then(res=>console.log('Add new payment :'+res.data))
+            .catch(err=>console.log('Error!! unsuccessful :'+err.data));
+        alert("Error fixed!!");
+
+        window.location.href= `http://localhost:3000/payAdmin`;
+    }
+
     render() {
 
         //for 1st graph
@@ -158,6 +177,13 @@ class payAdmin extends Component {
                             <Link to="/payAdminRefund">
                                 <Button color="primary">Next</Button>
                             </Link>
+                        </Col>
+                    </Row>
+                    <Row className="my-2">
+                        <Col className="mx-auto mb-5 -align-right" xl="5">
+                            <Alert color="info">
+                                <h5>Fix issue with bank secret code: <Button onClick={this.handleSubmit}>Fix</Button></h5>
+                            </Alert>
                         </Col>
                     </Row>
                     <CFooter><h6 className="text-right">By <span className="text-danger">PaymentAdmin</span></h6></CFooter>

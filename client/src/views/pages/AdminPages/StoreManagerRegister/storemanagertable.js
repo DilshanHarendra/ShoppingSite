@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Container, Input, Button } from 'reactstrap';
+import { Table, Container, Input, Button, Fade, Alert } from 'reactstrap';
 import { RiDeleteBinLine ,RiCheckboxCircleLine,RiEditLine } from 'react-icons/ri';
 // Student id :IT18045840
 //Name :S.D.S.L Dissanayake
@@ -59,7 +59,7 @@ class StoreManager extends Component{
             <p style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"none"}:{display:"inherit"} }>{this.props.storemanager.address}</p>
             <Input style={((this.props.editdatastatas)&&(this.props.selectedite_id==this.props.storemanager._id))?{display:"inherit"}:{display:"none"}  }
                                    placeholder={this.props.storemanager.address}
-                                   onChange={(e)=>this.props.handeleEmailAddress(e.target.value)}
+                                   onChange={(e)=>this.props.handeleAddress(e.target.value)}
                                    value={this.props.editAddress}
                                    name="address"
 
@@ -77,7 +77,7 @@ class StoreManager extends Component{
         
         </td>
         <td>
-        <RiDeleteBinLine size="2em" color="#FF9592"  onClick={()=>{this.props.deleteStoreManager(this.props.storemanager._id)}}>Delete</RiDeleteBinLine>
+        <RiDeleteBinLine size="2em" color="#FF9592"  onClick={()=>{this.props.deleteStoreManager(this.props.storemanager._id,this.props.storemanager.userTableId)}}>Delete</RiDeleteBinLine>
         </td>
         <td>
         <RiEditLine  size="2em" color="#FFD478" style={!this.props.editdatastatas?{display:"inherit"}:{display:"none"} } onClick={()=>{this.props.editemodeToggle(this.props.storemanager._id)}}  > </RiEditLine>
@@ -88,6 +88,7 @@ class StoreManager extends Component{
             this.props.storemanager.emailAddress,
             this.props.storemanager.address,
             this.props.storemanager.telephoneNumber,
+            this.props.storemanager.userTableId,
 
         )}} ></RiCheckboxCircleLine>
         </td> 
@@ -130,17 +131,27 @@ export default class storemanagerview extends Component {
                       editEmailAddress:'',
                       editAddress:'',
                       editTelephoneNumber:'',
-                      edite_Id:''
+                      edite_Id:'',
+                      datasendSuccessful: false,
+                      datasendError: false,
         };
   
  
     }
 
     componentDidMount(){
+        //if id is null redirect to root
+        if(localStorage.getItem('id')==null){
+            window.location.href="/";
+        }else{
+
+        //load data        
         this.loadStoreManagerData();
         
        }
 
+    }  
+    //enable edite mode
     enableEditeMode(edite_id){
         this.setState({
             edite_Id:edite_id
@@ -149,6 +160,7 @@ export default class storemanagerview extends Component {
         this.editmodeToggle()
     }   
 
+    //edite mode state change
     editmodeToggle(){
         this.setState({
             editdata:!this.state.editdata,
@@ -157,7 +169,18 @@ export default class storemanagerview extends Component {
 
     //load storemanager data
     loadStoreManagerData(){
-        axios.get('http://localhost:3001/storeManager/')
+
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+              }
+          };
+
+
+
+
+        axios.get(global.backend+'/storeManager/',options)
         .then(ressopns=>{
             console.log(ressopns);
             this.setState({storemanagerlist:ressopns.data})
@@ -196,22 +219,55 @@ export default class storemanagerview extends Component {
     }
 
 
-    deleteStoreManager(id){
-        axios.delete('http://localhost:3001/storeManager/'+id)
+    deleteStoreManager(storemanager_id,user_id){
+
+        var reason_text = prompt("Please enter reason for delete Store manager ", " ");
+        if(reason_text==null){
+            reason_text="Delete by admin for maintain purpose"
+        }
+
+        let deleteuser={
+            reason:reason_text,
+            id:user_id
+        };
+
+        axios.post(global.backend+'/storeManager/removeuser',deleteuser)
         .then(res=>{
-            // axios.delete('http://localhost:3001/storeManager/'+id)
+            axios.delete(global.backend+'/storeManager/'+storemanager_id)
+            .then(res=>{
+                // axios.delete('http://localhost:3001/storeManager/'+id)
+                this.setState({
+                    datasendSuccessful:true
+                   
+                })
 
+                setTimeout(()=>{
+                    this.setState({datasendSuccessful:false})
+                },1600);
+                console.log(res.data)
+            
+            });
+            this.setState({
+                storemanagerlist:this.state.storemanagerlist.filter(el=>el._id!==storemanager_id)
+            })
 
-            console.log(res.data)
+        })
+        .catch(err=>{
+            console.log(err)
+            this.setState({
+                datasendError:this
+            })
+            setTimeout(()=>{
+                this.setState({datasendError:false})
+            },1600);
         
         });
-        this.setState({
-            storemanagerlist:this.state.storemanagerlist.filter(el=>el._id!==id)
-        })
+
+       
         
     }
 
-    onSubmitUpdateForm(dfname,dlname,dbday,demil,daddress,dtel){
+    onSubmitUpdateForm(dfname,dlname,dbday,demil,daddress,dtel,id){
         // event.preventDefault()
         
                
@@ -250,13 +306,80 @@ export default class storemanagerview extends Component {
             telephonenumber:this.state.editTelephoneNumber
         }
 
-        axios.post('http://localhost:3001/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
-        .then(res=>console.log("store manager update sucessful"+res.data))
-        .catch(err=>console.log('error in update :'+err.data))
+        axios.post(global.backend+'/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
+        .then(res=>{
+            console.log("store manager update sucessful"+res.data)
+
+            const UpdateSuer={
+                id:id,
+                Fullname:this.state.editFirstname+" "+this.state.editLastname,
+                email:this.state.editEmailAddress,
+                Username:this.state.editFirstname+"_stmanager",
+                address1:this.state.editAddress
+            }
+                axios.post(global.backend+'/storeManager/updateuser',UpdateSuer)
+                .then(ressopns=>{
+                    this.setState({
+                        datasendSuccessful:true
+                       
+                    })
+    
+                    setTimeout(()=>{
+                        this.setState({datasendSuccessful:false})
+                    },1600);
+                    console.log("Error in change data in user collection")
+                
+                })
+                .catch(err=>{
+                    console.log('Err in edite user table')
+                    
+                    this.setState({
+                        datasendError:this
+                    })
+                    setTimeout(()=>{
+                        this.setState({datasendError:false})
+                    },1600);
+                
+                })
+
+
+
+
+                this.loadStoreManagerData();
+
+        })
+        .catch(err=>{console.log('error in update :'+err.data)
+        this.setState({
+            datasendError:this
+        })
+        setTimeout(()=>{
+            this.setState({datasendError:false})
+        },1600);
+    
+        })
         this.editmodeToggle();
-        this.loadStoreManagerData();
+        this.clearText();
 
     }
+
+    clearText=()=>{
+        this.setState({
+
+            editFirstname:'',
+            editLastname:'',
+            editBirthday:'',
+            editEmailAddress:'',
+            editAddress:'',
+            editTelephoneNumber:'',
+            edite_Id:'',
+        })
+
+
+    }
+
+
+
+
     //generate Storemagaer table
     storemanagrList(){
         return this.state.storemanagerlist.map(currentstoremanager=>{
@@ -329,6 +452,39 @@ export default class storemanagerview extends Component {
     render() {
         return (
           <Container style={Styles.regTablePlanal}>
+               <div style={Styles.regForm}>
+        {
+           
+           this.state.datasendSuccessful ? (<Fade>	
+                                                <Alert color="success" >
+                                                    Data updated successful
+                                                </Alert>
+                                            </Fade>	
+                                            ):(<p></p>)
+        }
+        
+        { 
+            this.state.datasendError ? (<Fade>	
+                                             <Alert color="danger" >
+                                                Error in update 
+                                            </Alert>
+                                        </Fade>	):(<p></p>)
+         
+                
+        }
+         
+
+        </div>
+
+
+
+
+
+
+
+
+
+
                 <h4 style={Styles.regHeadertext}>Store Manager Table</h4>
                     <Input type="text" onChange={this.handleSearch} placeholder="Search hear"></Input>
                     <Table  responsive   >
@@ -366,5 +522,10 @@ const Styles={
         padding: '10px',
         borderRadius:'10px'
     },
+    regForm:{
+        backgroundColor:"white",
+        padding: '10px',
+        borderRadius:'10px'
+    }
 
 }

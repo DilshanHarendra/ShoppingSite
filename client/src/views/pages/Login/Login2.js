@@ -8,6 +8,7 @@ import '../../../css/flaticon.css';
 import '../../../css/font-awesome.min.css';
 import fakeAuth from "../fakeAuth"
 import axios from 'axios';
+import UserProfile2 from "../UserProfile/Userprofile2"
 
 import alertify from "alertifyjs/build/alertify";
 import "alertifyjs/build/css/alertify.min.css";
@@ -17,7 +18,8 @@ class Login2 extends Component {
     constructor(props) {
 		super(props);
 		this.state = {
-		  large: false,
+      large: false,
+      large1: false,
       redirectToReferrer:false,
       Username:"",
     newPassword:"",
@@ -31,7 +33,9 @@ class Login2 extends Component {
 		
     }
     
-
+componentDidMount=()=>{
+  //localStorage.clear();
+}
 
     //loggedIn: BehaviorSubject<boolean>
 
@@ -50,6 +54,12 @@ class Login2 extends Component {
 		  large: !this.state.large,
 		});
     }
+
+    toggleLarge1=()=> {
+      this.setState({
+        large1: !this.state.large1,
+      });
+      }
     
     onchangeHandler=(e)=>{
       this.setState({
@@ -66,20 +76,52 @@ e.preventDefault();
       }
       try {
            axios.post("http://localhost:3001/login/login", data).then((res) => {
+             if(res.data.success===true)
+             {
+
+             
 localStorage.setItem("AccessToken",res.data.accessToken);
 localStorage.setItem("type",res.data.type);
 localStorage.setItem("id",res.data.id);
-this.setState({
-  large:false
-})
-window.location.reload();
+localStorage.setItem("name",res.data.data.Username);
+
 alertify.success("Successfully logged in");
 
+if(res.data.type==="payadmin")
+{
+  window.location.href="/payAdmin"
+}else
+if(res.data.type==="admin"){
+
+  window.location.href="/adminDashboard"
+
+}else
+if(res.data.type==="store_manager")
+{
+  window.location.href="/Myshop"
+}else{
+
+  global.name=res.data.data.Username;
+  console.log(res.data.data.Username)
+  console.log("this is name"+global.name)
+  if(res.data.data.address1===""||res.data.data.address2===""||res.data.data.nic==="")
+  {
+    this.toggleLarge1();
+    
+  }else{
+    window.location.reload();
+  }
+}
+             }else{
+
+              alertify.alert(res.data.err);
+             }
             
            });
+          
          } catch (e) {
 
-          console.log(e);
+          alertify.alert("Unable to login");
          }
     }
     render() { 
@@ -118,7 +160,9 @@ alertify.success("Successfully logged in");
                           <Button type="submit" color="primary" className="px-4">Login</Button>
                         </Col>
                         <Col xs="6" className="text-right">
-                          <Button color="link" className="px-0">Forgot password?</Button>
+                          <Link to="/forgotpassword">
+                          <Button color="link" onClick={()=>this.props.toggle} className="px-0">Forgot password?</Button>
+                          </Link>
                         </Col>
                       </Row>
                     </Form>
@@ -141,6 +185,19 @@ alertify.success("Successfully logged in");
             </Col>
           </Row>
         </Container>
+
+
+        <Modal isOpen={this.state.large1} toggle={this.toggleLarge1}
+      className={'modal-lg ' + this.props.className}>
+        <ModalHeader>Update your info</ModalHeader>
+    <ModalBody>
+   <UserProfile2/>
+   </ModalBody>
+   <ModalFooter>
+
+     <Button color="secondary" onClick={()=>{this.toggleLarge1();window.location.href="/";}}>Skip</Button>
+   </ModalFooter>
+ </Modal>
       </div> );
     }
 }

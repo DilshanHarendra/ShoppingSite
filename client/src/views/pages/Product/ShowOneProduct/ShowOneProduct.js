@@ -194,7 +194,8 @@ class ShowOneProduct extends Component{
                 user_id:this.state.uid,
                 products:productsarray,
                 numberOfItem:1,
-                orderCreateDate:new Date()
+                orderCreateDate:new Date(),
+                isDelevery:false
             }
 
             console.log(order);
@@ -208,7 +209,7 @@ class ShowOneProduct extends Component{
                     this.setState({order_id:res.data})
 
                     let order_idsend=this.state.order_id
-                    window.location.href= global.backend+"/paymentMain?order_id="+order_idsend;
+                    window.location.href="/paymentMain?order_id="+order_idsend;
 
 
                 })

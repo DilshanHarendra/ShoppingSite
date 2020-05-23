@@ -70,7 +70,8 @@ export default class OrderPlaced extends Component {
         user_id:userID,
         products:product_id_arry,
         numberOfItem:numberOfItem,
-        orderCreateDate:new Date()
+        orderCreateDate:new Date(),
+        isDelevery:false
 
 
     };
@@ -143,7 +144,7 @@ export default class OrderPlaced extends Component {
         <Col md={6}>
           <FormGroup>
           <h6 for="exampleEmail">Discount Amount:</h6>
-          <p for="exampleEmail">Number of Items </p>
+          <p for="exampleEmail">Number of individual Items </p>
           </FormGroup>
         </Col>
         <Col md={6}>

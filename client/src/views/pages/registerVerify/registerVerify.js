@@ -1,3 +1,4 @@
+//Register verify by V.D Dantanarayana
 import React, { Component } from "react";
 import {
   Button,
@@ -46,7 +47,7 @@ console.log(this.props.location.search)
     if(values.token===undefined||values.user_id===undefined)
     {
       alertify.alert("Unable to register. Please contact system administrator or check your email inbox for registration link");
-      window.location.href="/login";
+      window.location.href="/";
     }else{
 
       this.setState({
@@ -130,11 +131,17 @@ console.log("value of userID"+values.user_id)
       token:this.state.token
 
     }
-
+    document.getElementById('preloder').style.display="block";
     try {
       axios.post("http://localhost:3001/user/addtoken", data).then((res) => {
         console.log(res);
         console.log(res.data);
+        setTimeout(()=>{
+          document.getElementById('preloder').style.display="none";
+         
+      },400);
+      window.location.href="/Login2"
+      alertify.alert("login to continue")
       });
     } catch (e) {
       console.log(e)
@@ -143,6 +150,13 @@ console.log("value of userID"+values.user_id)
   render() {
     return (
       <div className="app flex-row align-items-center">
+          <div id="preloder">
+                <div className="loader"></div>
+            </div>
+
+            {setTimeout(()=>{
+            document.getElementById('preloder').style.display="none";
+        },400)}
         <Container>
           <Row className="justify-content-center">
             <Col md="9" lg="7" xl="6">
