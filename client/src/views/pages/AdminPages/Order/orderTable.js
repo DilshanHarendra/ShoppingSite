@@ -76,7 +76,7 @@ export default class orderPanal extends Component {
                     this.setState({
                         orderList:this.state.orderList.filter(el=>el._id!==order_id)
                      })
-                        this.loadOrderData();
+                    this.loadOrderData();
 
             })
             .catch(err=>console.log("error in delete order"))
