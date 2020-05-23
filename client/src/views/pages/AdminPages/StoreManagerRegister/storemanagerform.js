@@ -81,7 +81,7 @@ export default class Storemanagerform extends Component {
         newPassword:this.state.password
        }
 
-       axios.post('http://localhost:3001/storeManager/addasUser',storemanager_user)
+       axios.post(global.backend+'/storeManager/addasUser',storemanager_user)
        .then(res=>{
            console.log('new StpreManager create :')
            console.log(res)
@@ -100,8 +100,16 @@ export default class Storemanagerform extends Component {
             
             }
 
+
+
+            const options = {
+                headers: {
+                    "content-type": "application/json", // whatever you want
+                    authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+                  }
+              };
          
-            axios.post("http://localhost:3001/storeManager/add",storeManager)
+            axios.post(global.backend+"/storeManager/add",storeManager,options)
             .then(res_user=>{
                 console.log("new user create as storemanager "+res_user)
                 window.location.href="/storeManager";

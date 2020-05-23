@@ -56,13 +56,19 @@ export default class orderPanal extends Component {
     }
 
     loadOrderData(){
-        Axios.get('http://localhost:3001/order')
+
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+              }
+          };
+        
+
+        Axios.get(global.backend+'/order',options)
         .then(ressopns=>{
-            
                 this.setState({orderList:ressopns.data,dataload:true})
-
-
-                            
+                           
         })
         .catch((error)=>{
             console.log('error :'+error);
@@ -70,7 +76,7 @@ export default class orderPanal extends Component {
     }
 
    async deleteOder(order_id){
-        Axios.delete('http://localhost:3001/order/'+order_id)
+        Axios.delete(global.backend+'/order/'+order_id)
             .then(ressopns=>{
                 console.log("Order delete"+ressopns);
                     this.setState({

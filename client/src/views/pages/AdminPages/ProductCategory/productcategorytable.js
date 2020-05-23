@@ -131,7 +131,7 @@ export default class productcategorytable extends Component {
         })
     }  
     loadProductCategoryData(){
-        axios.get('http://localhost:3001/productCategory/')
+        axios.get(global.backend+'/productCategory/')
         .then(ressopns=>{
             console.log(ressopns);
             this.setState({productcategorylist:ressopns.data})
@@ -144,7 +144,7 @@ export default class productcategorytable extends Component {
     }
 
     deleteProductCategory(id){
-        axios.delete('http://localhost:3001/productCategory/'+id)
+        axios.delete(global.backend+'/productCategory/'+id)
         .then(res=>console.log(res.data));
         this.setState({
             productcategorylist:this.state.productcategorylist.filter(el=>el._id!==id)
@@ -189,7 +189,7 @@ export default class productcategorytable extends Component {
 
        
 
-        axios.post('http://localhost:3001/productCategory/update/'+this.state.edite_Id,productcatCategoryUpdated)
+        axios.post(global.backend+'/productCategory/update/'+this.state.edite_Id,productcatCategoryUpdated)
         .then(res=>console.log("store manager update sucessful"+res.data))
         .catch(err=>console.log('error in update :'+err.data))
         this.clearState(); //clear states

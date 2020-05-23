@@ -4,6 +4,9 @@ const bodyParser =require('body-parser');
 const core = require('cors');
 const fs= require('fs');
 
+const authenticateToken = require('./authenticateToken');
+
+
 router.use(bodyParser());
 router.use(core());
 // Student id :IT18045840
@@ -73,11 +76,20 @@ router.route('/:id').get((req,res)=>{
         .catch(err=>res.status(400).json('Error: '+err));
 });
 //Get all storemanager
-router.route('/').get((req,res)=>{
+
+// router.post("/removeuser",authenticateToken,async function(req,res){
+
+router.get("/",authenticateToken,async function(req,res){
     Order.find()
-        .then(order=>res.json(order))
-        .catch(err=>res.status(400).json('Error: '+err));
-});
+    .then(order=>res.json(order))
+    .catch(err=>res.status(400).json('Error: '+err));
+
+})
+// router.route('/').get(async (req,res)=>{
+//     Order.find()
+//         .then(order=>res.json(order))
+//         .catch(err=>res.status(400).json('Error: '+err));
+// });
 
 
 //update selected product storemanager

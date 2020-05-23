@@ -27,7 +27,7 @@ export default class stormanagerchart extends Component {
     }
 
     loadProductCategery(){
-        Axios.get('http://localhost:3001/productCategory')
+        Axios.get(global.backend+'/productCategory')
         .then(ressopns=>{
             console.log(ressopns.data);
                 this.setState({ProductCategory:ressopns.data})
@@ -41,7 +41,7 @@ export default class stormanagerchart extends Component {
 
 
     loadStoreManagerData(){
-        Axios.get('http://localhost:3001/cart/')
+        Axios.get(global.backend+'/cart/')
         .then(ressopns=>{
             console.log(ressopns);
             this.setState({CartDetaisls:ressopns.data})

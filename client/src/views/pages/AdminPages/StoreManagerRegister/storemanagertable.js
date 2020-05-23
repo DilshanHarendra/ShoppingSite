@@ -140,17 +140,18 @@ export default class storemanagerview extends Component {
     }
 
     componentDidMount(){
-
+        //if id is null redirect to root
         if(localStorage.getItem('id')==null){
             window.location.href="/";
         }else{
 
+        //load data        
         this.loadStoreManagerData();
         
        }
 
     }  
-
+    //enable edite mode
     enableEditeMode(edite_id){
         this.setState({
             edite_Id:edite_id
@@ -159,6 +160,7 @@ export default class storemanagerview extends Component {
         this.editmodeToggle()
     }   
 
+    //edite mode state change
     editmodeToggle(){
         this.setState({
             editdata:!this.state.editdata,
@@ -167,7 +169,18 @@ export default class storemanagerview extends Component {
 
     //load storemanager data
     loadStoreManagerData(){
-        axios.get('http://localhost:3001/storeManager/')
+
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+              }
+          };
+
+
+
+
+        axios.get(global.backend+'/storeManager/',options)
         .then(ressopns=>{
             console.log(ressopns);
             this.setState({storemanagerlist:ressopns.data})
@@ -218,9 +231,9 @@ export default class storemanagerview extends Component {
             id:user_id
         };
 
-        axios.post('http://localhost:3001/storeManager/removeuser',deleteuser)
+        axios.post(global.backend+'/storeManager/removeuser',deleteuser)
         .then(res=>{
-            axios.delete('http://localhost:3001/storeManager/'+storemanager_id)
+            axios.delete(global.backend+'/storeManager/'+storemanager_id)
             .then(res=>{
                 // axios.delete('http://localhost:3001/storeManager/'+id)
                 this.setState({
@@ -293,7 +306,7 @@ export default class storemanagerview extends Component {
             telephonenumber:this.state.editTelephoneNumber
         }
 
-        axios.post('http://localhost:3001/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
+        axios.post(global.backend+'/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
         .then(res=>{
             console.log("store manager update sucessful"+res.data)
 
@@ -304,7 +317,7 @@ export default class storemanagerview extends Component {
                 Username:this.state.editFirstname+"_stmanager",
                 address1:this.state.editAddress
             }
-                axios.post('http://localhost:3001/storeManager/updateuser',UpdateSuer)
+                axios.post(global.backend+'/storeManager/updateuser',UpdateSuer)
                 .then(ressopns=>{
                     this.setState({
                         datasendSuccessful:true

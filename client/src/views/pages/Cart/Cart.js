@@ -126,7 +126,7 @@ export default class Cart extends Component {
            alert('user is empty') 
         }else{
 
-        axios.get('http://localhost:3001/cart/'+localStorage.getItem('id'))
+        axios.get(global.backend+'/cart/'+localStorage.getItem('id'))
         .then(async ressopns=>{
             console.log(ressopns.data);
             this.setState({PrdouctList:ressopns.data}) 
@@ -194,7 +194,7 @@ export default class Cart extends Component {
     }
     
     deleteItem(id){
-        axios.delete('http://localhost:3001/cart/'+id)
+        axios.delete(global.backend+'/cart/'+id)
         .then(res=>console.log(res.data));
         this.setState({
             PrdouctList:this.state.PrdouctList.filter(el=>el._id!==id)

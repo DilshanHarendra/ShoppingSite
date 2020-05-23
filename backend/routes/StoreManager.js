@@ -136,7 +136,10 @@ router.post('/addasUser',async function(req,res){
 
 
 //Add new storemanager
-router.route('/add').post((req,res)=>{
+// router.route('/add').post((req,res)=>{
+
+router.post("/add",authenticateToken,async function(req,res){
+
     const firstName=req.body.firstName;
     const lastName=req.body.lastName;
     const birthDay=req.body.birthDay;
@@ -231,7 +234,7 @@ router.route('/:id').get((req,res)=>{
         .catch(err=>res.status(400).json('Error: '+err));
 });
 //Get all storemanager
-router.route('/').get((req,res)=>{
+router.get('/',authenticateToken,async function(req,res){
     StoreManager.find()
         .then(exercise=>res.json(exercise))
         .catch(err=>res.status(400).json('Error: '+err));

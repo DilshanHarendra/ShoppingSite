@@ -85,7 +85,7 @@ export default class Productcategoryform extends Component {
             subCategoryArry:this.state.subCategoryArry
         }
 
-        axios.post('http://localhost:3001/productCategory/add',productCategory)
+        axios.post(global.backend+'/productCategory/add',productCategory)
         .then(res=>{
             console.log('new product category create :'+res.data)
             this.setState({
