@@ -27,7 +27,7 @@ class CartList extends Component{
 
                 <td>
                     <h5><Badge color="success">{this.props.product_data.products.price+" $"}</Badge></h5>
-                    {(!(this.props.product_data.products.discount==null))?<p> <Badge outline color="danger"> {("-"+this.props.product_data.products.discount+" $ OFF")}</Badge></p>:''}
+                    {(!(this.props.product_data.products.discount==null))?<p> <Badge outline color="danger"> {("-"+this.props.product_data.products.discount+" % OFF")}</Badge></p>:''}
                 </td> 
                 <td>
 
@@ -162,9 +162,9 @@ export default class Cart extends Component {
                 if(itemlist[i].products.discount==null){
                 totalPrice+=itemlist[i].products.price*itemlist[i].quntity
                 }else{
-                totalPrice+=(itemlist[i].products.price-itemlist[i].products.discount)*itemlist[i].quntity
+                totalPrice+=(itemlist[i].products.price*(1-((itemlist[i].products.discount)/100)))*itemlist[i].quntity
                 }
-                Totaldiscount+=itemlist[i].products.discount*itemlist[i].quntity
+                Totaldiscount+=itemlist[i].products.price*itemlist[i].quntity;
              }
             this.setState({TotalPrice:totalPrice}) 
             this.setState({TotalDiscount:Totaldiscount})
