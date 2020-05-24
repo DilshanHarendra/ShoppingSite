@@ -40,7 +40,14 @@ class PaymentInvoice extends Component {
             payID: IdFromURL.toString()
         };
 
-        axios.post('http://localhost:3001/payment/getDataForInvoice', data).then(res=>{
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+
+        axios.post('http://localhost:3001/payment/getDataForInvoice', data, options).then(res=>{
             this.setState({
                 data: res.data
             });
@@ -139,7 +146,7 @@ class PaymentInvoice extends Component {
 
                                             </Page>
                                         </Document>}
-                                        fileName="test.pdf"
+                                        fileName="Receipt.pdf"
                                         style={{
                                             textDecoration: "none",
                                             padding: "10px",

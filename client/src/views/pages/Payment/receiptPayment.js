@@ -49,7 +49,14 @@ class cardPayment extends Component {
             orderID:this.props.location.state.orderID
         };
 
-        axios.post('http://localhost:3001/payment/getOrderDetails',data)
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+
+        axios.post('http://localhost:3001/payment/getOrderDetails',data, options)
             .then(res=>this.setState({
                 gotData:res.data
             }))
@@ -96,8 +103,14 @@ class cardPayment extends Component {
                 payReceipt:true
             };
 
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
 
-        axios.post('http://localhost:3001/payment/addBankPayment',newBankPayment)
+        axios.post('http://localhost:3001/payment/addBankPayment',newBankPayment, options)
             .then(res=>console.log('Added new bank payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         var protection="Confirm";

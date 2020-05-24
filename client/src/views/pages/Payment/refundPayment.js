@@ -39,7 +39,14 @@ class refundPayment extends Component {
             userID: this.state.userID
         };
 
-        axios.post('http://localhost:3001/payment/getRefundPaymentDetails',data)
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+
+        axios.post('http://localhost:3001/payment/getRefundPaymentDetails',data, options)
             .then(res=>this.setState({
                 gotData:res.data
             }))
@@ -48,7 +55,13 @@ class refundPayment extends Component {
 
     handleRefundOption(id){
         const sendId ={id};
-        axios.post('http://localhost:3001/payment/refundRequest',sendId)
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+        axios.post('http://localhost:3001/payment/refundRequest',sendId, options)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }

@@ -306,17 +306,23 @@ export default class storemanagerview extends Component {
             telephonenumber:this.state.editTelephoneNumber
         }
 
+        console.log(storeManagerUpdated);
+        
+
         axios.post(global.backend+'/storeManager/update/'+this.state.edite_Id,storeManagerUpdated)
         .then(res=>{
             console.log("store manager update sucessful"+res.data)
 
             const UpdateSuer={
                 id:id,
-                Fullname:this.state.editFirstname+" "+this.state.editLastname,
-                email:this.state.editEmailAddress,
-                Username:this.state.editFirstname+"_stmanager",
-                address1:this.state.editAddress
+                Fullname:storeManagerUpdated.firstName+" "+storeManagerUpdated.lastName,
+                email:storeManagerUpdated.email,
+                Username:storeManagerUpdated.firstName+"_stmanager",
+                address1:storeManagerUpdated.address
             }
+
+            console.log(UpdateSuer)
+            
                 axios.post(global.backend+'/storeManager/updateuser',UpdateSuer)
                 .then(ressopns=>{
                     this.setState({
@@ -327,7 +333,7 @@ export default class storemanagerview extends Component {
                     setTimeout(()=>{
                         this.setState({datasendSuccessful:false})
                     },1600);
-                    console.log("Error in change data in user collection")
+                    console.log("change data in user collection"+ressopns)
                 
                 })
                 .catch(err=>{

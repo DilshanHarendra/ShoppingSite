@@ -22,21 +22,30 @@ class payAdminReceipt extends Component {
     }
 
     componentDidMount() {
-        axios({
-            method:"GET",
-            url:"http://localhost:3001/payment/getBankPaymentDetails"
-        }).then(res=>{
-            this.setState({
+
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+
+        axios.get('http://localhost:3001/payment/getBankPaymentDetails',options)
+            .then(res=>{this.setState({
                 data: res.data
             });
-        }).catch(err=>{
-            console.log(err);
-        })
+            }).catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }
 
     handleChangeStatus(id,id1){
         const sendId ={id,id1};
-        axios.post('http://localhost:3001/payment/changeCardStatus', sendId)
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+        axios.post('http://localhost:3001/payment/changeCardStatus', sendId, options)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         window.location='http://localhost:3000/payAdminReceipt';

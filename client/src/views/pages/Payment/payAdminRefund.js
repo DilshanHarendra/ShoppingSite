@@ -23,21 +23,30 @@ class payAdminRefund extends Component {
     }
 
     componentDidMount() {
-        axios({
-            method:"GET",
-            url:"http://localhost:3001/payment/getRefundPaymentDetailsForAdmin"
-        }).then(res=>{
-            this.setState({
+
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+
+        axios.get('http://localhost:3001/payment/getRefundPaymentDetailsForAdmin',options)
+            .then(res=>{this.setState({
                 data: res.data
             });
-        }).catch(err=>{
-            console.log(err);
-        })
+            }).catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }
 
     handleRefundChangeStatus(id,id1){
         const sendId ={id,id1};
-        axios.post('http://localhost:3001/payment/acceptRefund', sendId)
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+        axios.post('http://localhost:3001/payment/acceptRefund', sendId, options)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         window.location='http://localhost:3000/payAdminRefund';

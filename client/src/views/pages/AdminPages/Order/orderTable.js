@@ -9,10 +9,10 @@ class OderDetails extends Component{
         return(
             <tr>
                 <td><p> {this.props.order._id}</p></td>
-                <td> <p> {Math.round(this.props.order.totalAmaount*100)/100} </p> </td>
+                <td> <p> {Math.round((this.props.order.totalAmaount*100)/100)+" $"} </p> </td>
                 <td> <p> {this.props.order.user_id} </p> </td>
                 <td><p> {this.props.order.numberOfItem} </p>  </td>
-                <td> <p>{this.props.order.orderCreateDate}</p> </td>
+                <td> <p>{new Date(this.props.order.orderCreateDate).toDateString()+" : "+new Date(this.props.order.orderCreateDate).toTimeString()}</p> </td>
                 <td><p>{this.props.order.isDelevery?<Badge color="primary">Delivered</Badge>:<Badge color="danger">Not Delivered</Badge>}</p></td>
                 <td><Button outline color="danger" onClick={()=>{this.props.deleteOder(this.props.order._id)}} >Delete </Button></td>
                 <td><Button outline color="warning"onClick={()=>{this.props.changeStatus(this.props.order._id)}} disabled={this.props.order.isDelevery}  >Change delivery status </Button></td>
@@ -75,18 +75,20 @@ export default class orderPanal extends Component {
         })
     }
 
-   async deleteOder(order_id){
+    deleteOder(order_id){
         Axios.delete(global.backend+'/order/'+order_id)
             .then(ressopns=>{
                 console.log("Order delete"+ressopns);
-                    this.setState({
-                        orderList:this.state.orderList.filter(el=>el._id!==order_id)
-                     })
-                    this.loadOrderData();
+                this.loadOrderData();
+
+                    // this.setState({
+                    //     orderList:this.state.orderList.filter(el=>el._id!==order_id)
+                    //  })
 
             })
             .catch(err=>console.log("error in delete order"))
-            // window.location.href="/orderDashbord"
+
+    window.location.href="/orderDashbord"
     }
 
     changeStatus=(ordr_id)=>{
