@@ -23,8 +23,7 @@ class DefaultFooter extends Component{
                         <div className="col-lg-3 col-sm-6">
                             <div className="footer-widget about-widget">
                                 <h2>About</h2>
-                                <p>Donec vitae purus nunc. Morbi faucibus erat sit amet congue mattis. Nullam frin-gilla
-                                    faucibus urna, id dapibus erat iaculis ut. Integer ac sem.</p>
+                                <p>We are an online fashion store that provides fashion goods with safe authentication for users which provides more secure payment methods. </p>
                                 <img src="images/cards.png" alt=""/>
                             </div>
                         </div>

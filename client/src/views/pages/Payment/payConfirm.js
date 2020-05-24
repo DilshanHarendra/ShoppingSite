@@ -44,7 +44,13 @@ class payConfirm extends Component {
             alertify.alert("Access denied to this page!!");
             window.location.href="/paymentMain";
         }
-        axios.get("http://localhost:3001/payment/getSecretCode")
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+        axios.get("http://localhost:3001/payment/getSecretCode", options)
             .then(result=>{
                 this.setState({
                     getCode:result.data.secretID
@@ -71,6 +77,8 @@ class payConfirm extends Component {
             alert("Wrong secret code, provide the email again!!!");
             window.location.href= `http://localhost:3000/emailConfirm?protection=Confirm`;
         }
+
+
     }
 
     render() {

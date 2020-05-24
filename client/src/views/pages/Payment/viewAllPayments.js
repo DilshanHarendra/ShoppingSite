@@ -37,9 +37,14 @@ class viewAllPayments extends Component {
         const data = {
             userID: this.state.userID
         };
-        console.log("User id " + this.state.userID);
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
 
-        axios.post('http://localhost:3001/payment/getAllPaymentDetails',data)
+        axios.post('http://localhost:3001/payment/getAllPaymentDetails',data, options)
             .then(res=>this.setState({
                 gotData:res.data
             }))

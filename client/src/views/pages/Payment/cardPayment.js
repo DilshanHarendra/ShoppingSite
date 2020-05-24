@@ -48,7 +48,14 @@ class cardPayment extends Component {
             orderID:this.props.location.state.orderID
         };
 
-        axios.post('http://localhost:3001/payment/getOrderDetails',data)
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+
+        axios.post('http://localhost:3001/payment/getOrderDetails',data, options)
             .then(res=>this.setState({
                 gotData:res.data
             }))
@@ -86,9 +93,16 @@ class cardPayment extends Component {
             cardType: 'VISA',
             payReceipt:false,
             receiptNumber:null
-        }
+        };
 
-        axios.post('http://localhost:3001/payment/addCardPayment',newCardPayment)
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+
+        axios.post('http://localhost:3001/payment/addCardPayment',newCardPayment, options)
             .then(res=>console.log('Add new payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         var protection="Confirm";

@@ -28,21 +28,30 @@ class payAdminCard extends Component {
             alert("Access denied");
             window.location='http://localhost:3000/payAdmin';
         }
-         axios({
-                method:"GET",
-                url:"http://localhost:3001/payment/getCardPaymentDetails"
-            }).then(res=>{
-                this.setState({
-                    data: res.data
-                });
-            }).catch(err=>{
-                console.log(err);
-            })
+
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+
+        axios.get('http://localhost:3001/payment/getCardPaymentDetails',options)
+            .then(res=>{this.setState({
+                data: res.data
+            });
+            }).catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }
 
     handleChangeStatus(id,id1){
         const sendId ={id,id1};
-        axios.post('http://localhost:3001/payment/changeCardStatus', sendId)
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+        axios.post('http://localhost:3001/payment/changeCardStatus', sendId, options)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         window.location='http://localhost:3000/payAdminCard';
