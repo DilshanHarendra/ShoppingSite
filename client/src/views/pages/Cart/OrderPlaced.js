@@ -143,13 +143,13 @@ export default class OrderPlaced extends Component {
       <Row form>
         <Col md={6}>
           <FormGroup>
-          <h6 for="exampleEmail">Total price without discount:</h6>
+          <h6 style={(this.props.totalDiscount==this.props.totalPrice)?{display:"none"}:{display:"inherit"}  } for="exampleEmail">Total price without discount:</h6>
           <p for="exampleEmail">Number of individual Items </p>
           </FormGroup>
         </Col>
         <Col md={6}>
           <FormGroup>
-           <h4><Badge color="warning"> <del>{this.props.totalDiscount+" $"}</del> </Badge></h4>
+           <h4  style={(this.props.totalDiscount==this.props.totalPrice)?{display:"none"}:{display:"inherit"}  } ><Badge color="warning"> <del>{this.props.totalDiscount+" $"}</del> </Badge></h4>
            <h6 > <Badge color="warning">{this.props.totalNumberOfProduct }</Badge> </h6>
           </FormGroup>
         </Col>
