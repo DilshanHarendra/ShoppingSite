@@ -70,7 +70,7 @@ class UserProfile extends Component{
     componentDidMount=()=>{
       axios({
         method:"GET",
-        url:"http://localhost:3001/user/getuserbyid",
+        url:global.backend+"/user/getuserbyid",
         params:{_id:localStorage.getItem("id")},
        
     }).then(res=>{

@@ -133,7 +133,7 @@ console.log("value of userID"+values.user_id)
     }
     document.getElementById('preloder').style.display="block";
     try {
-      axios.post("http://localhost:3001/user/addtoken", data).then((res) => {
+      axios.post(global.backend+"/user/addtoken", data).then((res) => {
         console.log(res);
         console.log(res.data);
         setTimeout(()=>{
