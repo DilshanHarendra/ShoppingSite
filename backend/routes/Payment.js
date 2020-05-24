@@ -10,6 +10,11 @@ const RefundPayment=require('../schemas/PaymentRefundSchema');
 const OrderSchema=require('../schemas/OrderSchema');
 const UserSchema = require('../schemas/UserSchema');
 const nodemailer = require('nodemailer');
+
+//for API authentication
+const authenticateToken = require('./authenticateToken');
+
+
 router.use(bodyParser());
 router.use(core());
 var payUID;
@@ -18,7 +23,7 @@ var rn = require('random-number');
 
 
 //to store card payments and send verifications code
-router.post('/addCardPayment',async function(req,res){
+router.post('/addCardPayment', authenticateToken, async function(req,res){
 
     try {
         let gotData = req.body.orderID;
@@ -150,7 +155,7 @@ router.post('/addCardPayment',async function(req,res){
 
 
 //to store bank payment which is receipt payments and send verification code
-router.post('/addBankPayment',async function(req,res){
+router.post('/addBankPayment', authenticateToken, async function(req,res){
     try {
 
         let gotData = req.body.orderID;
@@ -289,21 +294,8 @@ router.post('/addBankPayment',async function(req,res){
 });
 
 
-//get only card payments
-router.get('/getUserCardPayments',async function(req,res){
-
-    try{
-        var query = {payType: 'Card'};
-        var data=await PaymentSchema.find(query);
-        res.send(data);
-    }catch (e) {
-        res.status(404).send("parameter error");
-    }
-
-});
-
 //once a refund request is raised, to change the refund request status as true
-router.post('/refundRequest',async function(req,res){
+router.post('/refundRequest', authenticateToken, async function(req,res){
 
     try{
         const searchID = req.body.id;
@@ -329,7 +321,7 @@ router.post('/refundRequest',async function(req,res){
 });
 
 //to check the verification code
-router.get('/getSecretCode',async function(req,res){
+router.get('/getSecretCode', authenticateToken, async function(req,res){
     try{
         var data=await SecretCode.findOne();
         res.send(data);
@@ -340,8 +332,9 @@ router.get('/getSecretCode',async function(req,res){
 });
 
 //once the verification code is validated, remove from table
-router.post('/removeSecretCode',async function(req,res){
+router.post('/removeSecretCode', async function(req,res){
     try{
+        console.log("Came inside remove secret code");
         let dropall =await SecretCode.deleteOne();
     }catch (e) {
         res.status(404).send("parameter error");
@@ -350,7 +343,7 @@ router.post('/removeSecretCode',async function(req,res){
 });
 
 //get both card and bank payment details according to the user logged in
-router.post('/getAllPaymentDetails',async function(req,res){
+router.post('/getAllPaymentDetails', authenticateToken, async function(req,res){
     try{
         var gotData = req.body.userID;
         var data=await PaymentSchema.find({userID: gotData});
@@ -362,7 +355,7 @@ router.post('/getAllPaymentDetails',async function(req,res){
 });
 
 //for payment admin, to view all the card payments of users
-router.get('/getCardPaymentDetails',async function(req,res){
+router.get('/getCardPaymentDetails',authenticateToken,async function(req,res){
     try{
         var query = {payType: 'Card'};
         var data=await PaymentSchema.find(query);
@@ -374,7 +367,7 @@ router.get('/getCardPaymentDetails',async function(req,res){
 });
 
 //for payment admin, to view all the bank payments of users
-router.get('/getBankPaymentDetails',async function(req,res){
+router.get('/getBankPaymentDetails',authenticateToken,async function(req,res){
     try{
         var query = {payType: 'Bank'};
         var data=await PaymentSchema.find(query);
@@ -386,7 +379,7 @@ router.get('/getBankPaymentDetails',async function(req,res){
 });
 
 //generating data for the payment invoice for a particular payment
-router.post('/getDataForInvoice',async function(req,res){
+router.post('/getDataForInvoice', authenticateToken, async function(req,res){
     try{
         let gotData = req.body.payID;
         let query = {payID: gotData};
@@ -400,7 +393,7 @@ router.post('/getDataForInvoice',async function(req,res){
 });
 
 //for payment admin, to change the both card/bank payment status as accepted or else can keep it as processing
-router.post('/changeCardStatus',async function(req,res){
+router.post('/changeCardStatus', authenticateToken, async function(req,res){
     try{
         const userID = req.body.id1;
         const gotID = req.body.id;
@@ -454,7 +447,7 @@ router.post('/changeCardStatus',async function(req,res){
 });
 
 //get payment details to refund section for user
-router.post('/getRefundPaymentDetails',async function(req,res){
+router.post('/getRefundPaymentDetails', authenticateToken, async function(req,res){
     try{
         var gotData = req.body.userID;
         var data=await PaymentSchema.find({payType: 'Card', userID: gotData});
@@ -466,7 +459,7 @@ router.post('/getRefundPaymentDetails',async function(req,res){
 });
 
 //for payment admin, get refund requests from users
-router.get('/getRefundPaymentDetailsForAdmin',async function(req,res){
+router.get('/getRefundPaymentDetailsForAdmin', authenticateToken, async function(req,res){
     try{
         var query = {refundRequest: true, paymentStatus: 'Processing'};
         var data=await PaymentSchema.find(query);
@@ -479,7 +472,7 @@ router.get('/getRefundPaymentDetailsForAdmin',async function(req,res){
 
 //for payment admin, to do actions on refund requests and send emails to user regarding their refund request
 //and move refund accepted payments to refund table
-router.post('/acceptRefund',async function(req,res){
+router.post('/acceptRefund', authenticateToken, async function(req,res){
     try{
         const userID = req.body.id1;
         const gotID = req.body.id;
@@ -572,7 +565,7 @@ router.post('/acceptRefund',async function(req,res){
 });
 
 //get order details
-router.post('/getOrderDetails',async function(req,res){
+router.post('/getOrderDetails', authenticateToken, async function(req,res){
     try{
 
         let gotData = req.body.orderID;
@@ -588,7 +581,7 @@ router.post('/getOrderDetails',async function(req,res){
 });
 
 //to fix the issue with bank
-router.post('/fixIssue',async function(req,res){
+router.post('/fixIssue', authenticateToken, async function(req,res){
     try{
         console.log("Came inside to API");
         let dropall =await SecretCode.remove();

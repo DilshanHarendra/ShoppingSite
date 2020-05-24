@@ -35,7 +35,14 @@ class payAdmin extends Component {
     handleSubmit(event){
         event.preventDefault();
 
-        axios.post('http://localhost:3001/payment/fixIssue')
+        const options = {
+            headers: {
+                "content-type": "application/json", // whatever you want
+                authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
+            }
+        };
+
+        axios.post('http://localhost:3001/payment/fixIssue', options)
             .then(res=>console.log('Add new payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         alert("Error fixed!!");
