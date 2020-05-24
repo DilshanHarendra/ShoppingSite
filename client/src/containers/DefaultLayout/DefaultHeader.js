@@ -140,7 +140,7 @@ class DefaultHeader extends Component {
                                 <div className="col-xl-4 col-lg-5">
 
                                     <div className="user-panel">
-
+                                    {localStorage.getItem("type")==="user"?
                                         <div className="up-item">
                                             <div className="shopping-card">
                                                 <i className="flaticon-bag"></i>
@@ -151,6 +151,7 @@ class DefaultHeader extends Component {
                                             <Link to="/cart">Shopping Cart</Link>
 
                                         </div>
+                                        :<></>}
 
                                         <div className="up-item">
                                             {localStorage.getItem("AccessToken")===null?
@@ -258,11 +259,11 @@ class DefaultHeader extends Component {
 
 
 
-
+                                {localStorage.getItem("type")==="user"?
                                 <li>
                                     <Link to="/payment" className="nav-link">Payment</Link>
                                 </li>
-
+                                :<></>}
                                 <li>
                                     <Link to="/contactus" className="nav-link">Contact us</Link>
                                 </li>

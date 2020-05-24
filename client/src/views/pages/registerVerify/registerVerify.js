@@ -154,9 +154,10 @@ console.log("value of userID"+values.user_id)
                 <div className="loader"></div>
             </div>
 
-            {setTimeout(()=>{
+            <p style={{display:"none"}}>{setTimeout(()=>{
             document.getElementById('preloder').style.display="none";
-        },400)}
+        },400)}</p>
+        
         <Container>
           <Row className="justify-content-center">
             <Col md="9" lg="7" xl="6">
