@@ -42,7 +42,7 @@ class payAdmin extends Component {
             }
         };
 
-        axios.post('http://localhost:3001/payment/fixIssue', options)
+        axios.post(global.backend+'/payment/fixIssue', options)
             .then(res=>console.log('Add new payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         alert("Error fixed!!");

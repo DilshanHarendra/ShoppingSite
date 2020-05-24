@@ -331,7 +331,7 @@ router.route('/updateuser').post(async (req,res)=>{
                   port: 465,
                   secure: true, // true for 465, false for other ports
                   auth: {
-                    user: "codefoursliit@gmail.com", // generated ethereal user
+                    user: "c4fashions@gmail.com", // generated ethereal user
                     pass: process.env.EMAILPASS, // generated ethereal password
                   },
                 });
@@ -340,7 +340,7 @@ router.route('/updateuser').post(async (req,res)=>{
                console.log("transport visited")
                 // send mail with defined transport object
                 let info = await transporter.sendMail({
-                    from: '"C4fashions" <codefoursliit@gmail.com>', // sender address
+                    from: '"C4fashions" <c4fashions@gmail.com>', // sender address
                     to: email, // list of receivers
                    subject: "user name is update", // Subject line
                     text:

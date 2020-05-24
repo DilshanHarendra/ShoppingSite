@@ -44,7 +44,7 @@ class viewAllPayments extends Component {
             }
         };
 
-        axios.post('http://localhost:3001/payment/getAllPaymentDetails',data, options)
+        axios.post(global.backend+'/payment/getAllPaymentDetails',data, options)
             .then(res=>this.setState({
                 gotData:res.data
             }))

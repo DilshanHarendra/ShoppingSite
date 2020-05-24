@@ -65,7 +65,7 @@ console.log("after")
               port: 465,
               secure: true, // true for 465, false for other ports
               auth: {
-                user: "codefoursliit@gmail.com", // generated ethereal user
+                user: "c4fashions@gmail.com", // generated ethereal user
                 pass: process.env.EMAILPASS, // generated ethereal password
               },
             });
@@ -74,7 +74,7 @@ console.log("after")
           console.log("transport visited")
             // send mail with defined transport object
             let info = await transporter.sendMail({
-              from: '"C4fashions" <codefoursliit@gmail.com>', // sender address
+              from: '"C4fashions" <c4fashions@gmail.com>', // sender address
               to: email, // list of receivers
               subject: "complete user registration", // Subject line
               text:
@@ -153,7 +153,7 @@ router.post('/forgotpassword',async function(req,res){
                 port: 465,
                 secure: true, // true for 465, false for other ports
                 auth: {
-                  user: "codefoursliit@gmail.com", // generated ethereal user
+                  user: "c4fashions@gmail.com", // generated ethereal user
                   pass: process.env.EMAILPASS, // generated ethereal password
                 },
               });
@@ -162,7 +162,7 @@ router.post('/forgotpassword',async function(req,res){
             console.log("transport visited")
               // send mail with defined transport object
               let info = await transporter.sendMail({
-                from: '"C4fashions" <codefoursliit@gmail.com>', // sender address
+                from: '"C4fashions" <c4fashions@gmail.com>', // sender address
                 to: email, // list of receivers
                 subject: "complete Forgot password", // Subject line
                 text:
@@ -333,8 +333,8 @@ router.post("/sendmail",async function (req,res) {
         port: 465,
         secure: true, // true for 465, false for other ports
         auth: {
-            user: "codefoursliit@gmail.com", // generated ethereal user
-            pass: "codefour@123", // generated ethereal password
+            user: "c4fashions@gmail.com", // generated ethereal user
+            pass: process.env.EMAILPASS, // generated ethereal password
         },
     });
 
@@ -351,7 +351,7 @@ router.post("/sendmail",async function (req,res) {
         });
         let info2 =  transporter.sendMail({
             from: 'CFashion New Message ', // sender address
-            to: "pereraharen48@gmail.com", // list of receivers
+            to: "c4fashions@gmail.com", // list of receivers
             subject: "New massage", // Subject line
             html: 'new message from '+req.body.name+'<br>'+req.body.message
 

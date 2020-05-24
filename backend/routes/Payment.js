@@ -1,4 +1,4 @@
-//payment controller - by Gomez K. J
+//payment controller - by Gomez K. J - IT18038606
 const express = require('express');
 const router = express.Router();
 const uniqid = require('uniqid');
@@ -131,14 +131,14 @@ router.post('/addCardPayment', authenticateToken, async function(req,res){
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-                user: "codefoursliit@gmail.com", // generated ethereal user
-                pass: "codefour@123", // generated ethereal password
+                user: "c4fashions@gmail.com", // generated ethereal user
+                pass: process.env.EMAILPASS, // generated ethereal password
             },
         });
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-            from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
+            from: '"C4 Fashions" <c4fashions@gmail.com>', // sender address
             to: fromUser.email, // list of receivers
             subject: "Two step verification", // Subject line
             text:
@@ -271,14 +271,14 @@ router.post('/addBankPayment', authenticateToken, async function(req,res){
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-                user: "codefoursliit@gmail.com", // generated ethereal user
-                pass: "codefour@123", // generated ethereal password
+                user: "c4fashions@gmail.com", // generated ethereal user
+                pass: process.env.EMAILPASS, // generated ethereal password
             },
         });
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-            from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
+            from: '"C4 Fashions" <c4fashions@gmail.com>', // sender address
             to: fromUser.email, // list of receivers
             subject: "Two step verification", // Subject line
             text:
@@ -422,14 +422,14 @@ router.post('/changeCardStatus', authenticateToken, async function(req,res){
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-                user: "codefoursliit@gmail.com", // generated ethereal user
-                pass: "codefour@123", // generated ethereal password
+                user: "c4fashions@gmail.com", // generated ethereal user
+                pass: process.env.EMAILPASS, // generated ethereal password
             },
         });
 
         // send mail with defined transport object
         let info1 = await transporter1.sendMail({
-            from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
+            from: '"C4 Fashions" <c4fashions@gmail.com>', // sender address
             to: fromUser.email, // list of receivers
             subject: "Payment completion", // Subject line
             text:
@@ -543,14 +543,14 @@ router.post('/acceptRefund', authenticateToken, async function(req,res){
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-                user: "codefoursliit@gmail.com", // generated ethereal user
-                pass: "codefour@123", // generated ethereal password
+                user: "c4fashions@gmail.com", // generated ethereal user
+                pass: process.env.EMAILPASS, // generated ethereal password
             },
         });
 
         // send mail with defined transport object
         let info = await transporter.sendMail({
-            from: '"C4 Fashions" <codefoursliit@gmail.com>', // sender address
+            from: '"C4 Fashions" <c4fashions@gmail.com>', // sender address
             to: fromUser.email, // list of receivers
             subject: "Refund request acceptance", // Subject line
             text:

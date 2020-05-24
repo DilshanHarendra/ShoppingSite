@@ -50,7 +50,7 @@ class payConfirm extends Component {
                 authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
             }
         };
-        axios.get("http://localhost:3001/payment/getSecretCode", options)
+        axios.get(global.backend+"/payment/getSecretCode", options)
             .then(result=>{
                 this.setState({
                     getCode:result.data.secretID
@@ -65,7 +65,7 @@ class payConfirm extends Component {
     onSubmit(event){
         event.preventDefault();
 
-        axios.post("http://localhost:3001/payment/removeSecretCode")
+        axios.post(global.backend+"/payment/removeSecretCode")
             .then().catch(err=>console.log(err));
 
         if(this.state.code == this.state.getCode)

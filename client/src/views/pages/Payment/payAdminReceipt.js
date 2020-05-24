@@ -30,7 +30,7 @@ class payAdminReceipt extends Component {
             }
         };
 
-        axios.get('http://localhost:3001/payment/getBankPaymentDetails',options)
+        axios.get(global.backend+'/payment/getBankPaymentDetails',options)
             .then(res=>{this.setState({
                 data: res.data
             });
@@ -45,7 +45,7 @@ class payAdminReceipt extends Component {
                 authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
             }
         };
-        axios.post('http://localhost:3001/payment/changeCardStatus', sendId, options)
+        axios.post(global.backend+'/payment/changeCardStatus', sendId, options)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         window.location='http://localhost:3000/payAdminReceipt';

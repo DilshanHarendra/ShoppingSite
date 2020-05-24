@@ -47,7 +47,7 @@ class PaymentInvoice extends Component {
             }
         };
 
-        axios.post('http://localhost:3001/payment/getDataForInvoice', data, options).then(res=>{
+        axios.post(global.backend+'/payment/getDataForInvoice', data, options).then(res=>{
             this.setState({
                 data: res.data
             });

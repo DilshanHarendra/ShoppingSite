@@ -46,7 +46,7 @@ class refundPayment extends Component {
             }
         };
 
-        axios.post('http://localhost:3001/payment/getRefundPaymentDetails',data, options)
+        axios.post(global.backend+'/payment/getRefundPaymentDetails',data, options)
             .then(res=>this.setState({
                 gotData:res.data
             }))
@@ -61,7 +61,7 @@ class refundPayment extends Component {
                 authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
             }
         };
-        axios.post('http://localhost:3001/payment/refundRequest',sendId, options)
+        axios.post(global.backend+'/payment/refundRequest',sendId, options)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
     }

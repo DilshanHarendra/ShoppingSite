@@ -56,7 +56,7 @@ class cardPayment extends Component {
             }
         };
 
-        axios.post('http://localhost:3001/payment/getOrderDetails',data, options)
+        axios.post(global.backend+'/payment/getOrderDetails',data, options)
             .then(res=>this.setState({
                 gotData:res.data
             }))
@@ -110,7 +110,7 @@ class cardPayment extends Component {
             }
         };
 
-        axios.post('http://localhost:3001/payment/addBankPayment',newBankPayment, options)
+        axios.post(global.backend+'/payment/addBankPayment',newBankPayment, options)
             .then(res=>console.log('Added new bank payment :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         var protection="Confirm";

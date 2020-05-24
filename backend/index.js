@@ -45,7 +45,7 @@ app.use('/uploads',express.static('./uploads'));
 
 
 //*********************************************Connect to Db**************************************************************
-var uri = "mongodb://admin:admin123@cluster0-shard-00-00-9jpmm.mongodb.net:27017,cluster0-shard-00-01-9jpmm.mongodb.net:27017,cluster0-shard-00-02-9jpmm.mongodb.net:27017/ShoppingSite?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin&retryWrites=true&w=majority";
+var uri = process.env.DB_URL;
 mongoose.connect(uri, {useNewUrlParser: true});
 const mydb = mongoose.connection;
 mydb.on('error', error => console.log(error));

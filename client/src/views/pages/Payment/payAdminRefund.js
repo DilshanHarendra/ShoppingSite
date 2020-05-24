@@ -31,7 +31,7 @@ class payAdminRefund extends Component {
             }
         };
 
-        axios.get('http://localhost:3001/payment/getRefundPaymentDetailsForAdmin',options)
+        axios.get(global.backend+'/payment/getRefundPaymentDetailsForAdmin',options)
             .then(res=>{this.setState({
                 data: res.data
             });
@@ -46,7 +46,7 @@ class payAdminRefund extends Component {
                 authorization: "Bearer ".concat(localStorage.getItem("AccessToken")),
             }
         };
-        axios.post('http://localhost:3001/payment/acceptRefund', sendId, options)
+        axios.post(global.backend+'/payment/acceptRefund', sendId, options)
             .then(res=>console.log('Request sent :'+res.data))
             .catch(err=>console.log('Error!! unsuccessful :'+err.data));
         window.location='http://localhost:3000/payAdminRefund';
