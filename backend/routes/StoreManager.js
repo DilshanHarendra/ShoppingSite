@@ -83,7 +83,7 @@ router.post('/addasUser',async function(req,res){
                   secure: true, // true for 465, false for other ports
                   auth: {
                     user: "codefoursliit@gmail.com", // generated ethereal user
-                    pass: "codefour@123", // generated ethereal password
+                    pass: process.env.EMAILPASS, // generated ethereal password
                   },
                 });
                 var email=await product.email;
@@ -95,8 +95,8 @@ router.post('/addasUser',async function(req,res){
                   to: email, // list of receivers
                   subject: "complete user registration", // Subject line
                   text:
-                    "http://localhost:3000/RegisterConfirm?token="+token+"&user_id="+product._id+"", // plain text body
-                  html: '<p>You are Register as a Store Manager Your User name is :<b>'+product.Username+'</b> 👍 </p> <a href="http://localhost:3000/RegisterConfirm?token='+token+'&user_id='+product._id+'">to complete registration click hear</a>',
+                  ""+process.env.FROUNTENDURL+"/RegisterConfirm?token="+token+"&user_id="+product._id+"", // plain text body
+                  html: '<p>You are Register as a Store Manager Your User name is :<b>'+product.Username+'</b> 👍 </p> <a href="'+process.env.FROUNTENDURL+'/RegisterConfirm?token='+token+'&user_id='+product._id+'">to complete registration click hear</a>',
                  
               
                 });
@@ -332,7 +332,7 @@ router.route('/updateuser').post(async (req,res)=>{
                   secure: true, // true for 465, false for other ports
                   auth: {
                     user: "codefoursliit@gmail.com", // generated ethereal user
-                    pass: "codefour@123", // generated ethereal password
+                    pass: process.env.EMAILPASS, // generated ethereal password
                   },
                 });
                 var email=await getpriviousfrstname.email;
@@ -382,7 +382,7 @@ router.route('/updateuser').post(async (req,res)=>{
                   secure: true, // true for 465, false for other ports
                   auth: {
                     user: "codefoursliit@gmail.com", // generated ethereal user
-                    pass: "codefour@123", // generated ethereal password
+                    pass: process.env.EMAILPASS, // generated ethereal password
                   },
                 });
                 var email=await req.body.email;
@@ -415,7 +415,7 @@ router.route('/updateuser').post(async (req,res)=>{
     
     
   }
-
+  //user table update
   UserSchema.findByIdAndUpdate(req.body.id,{
 
       "Fullname":req.body.Fullname,

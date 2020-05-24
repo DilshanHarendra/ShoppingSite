@@ -108,7 +108,7 @@ export default class Productcategoryform extends Component {
             },1600);
         
         });
-        // window.location='http://localhost:3000/adminDashbord';
+        // window.location='/adminDashbord';
         this.cleartextFilde();
         this.setState({subCategoryArry:[]})
 

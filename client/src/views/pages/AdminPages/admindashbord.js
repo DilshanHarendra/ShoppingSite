@@ -17,19 +17,19 @@ import {GoPackage} from "react-icons/go"
 
 //redirect to storemanager
 const handleStoreManager=()=>{
-  window.location='http://localhost:3000/storeManager';
+  window.location='/storeManager';
 
 }
 //redirect to product category
 
 const handleProductCategory=()=>{
-  window.location='http://localhost:3000/productcategory';
+  window.location='/productcategory';
 
 }
 //redirect to ordermanager
 
 const handleOrderManagemet=()=>{
-  window.location='http://localhost:3000/orderDashbord';
+  window.location='/orderDashbord';
 
 }
 

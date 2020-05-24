@@ -19,8 +19,17 @@ class ProductCard extends Component{
     }
 
     addToCart=()=>{
-       if (this.state.uid==null||localStorage.getItem('type')=="admin"){
-        window.location.replace('/'); //if user id null or admin redirect to home page
+       if ((this.state.uid==null)||(!(localStorage.getItem('type')=="user"))){
+
+                            
+                window.location.replace('/'); //if user id null or admin redirect to home page
+
+
+
+            
+
+
+           
 
        }else {
            
