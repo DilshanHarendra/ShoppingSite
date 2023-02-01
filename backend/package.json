@@ -21,7 +21,7 @@
     "hogan.js": "^3.0.2",
     "jsonwebtoken": "^9.0.0",
     "mongodb": "^3.5.5",
-    "mongoose": "^5.9.5",
+    "mongoose": "^5.13.15",
     "nodemailer": "^6.4.16",
     "nodemon": "^2.0.2",
     "passport": "^0.4.1",
